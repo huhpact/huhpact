@@ -7,9 +7,10 @@ body {
 
 header {
   margin-top: 5px; 
-  position: relative;
+  position: fixed;
   width: 100%;
   padding: 10px;
+  max-width: 99%;
 }
 
 #logo {
@@ -24,7 +25,9 @@ header {
   border-color: #eece30;
   border-width: 0.1px;
   border-style: solid;
-  width: 100%;
+  width: 99%;
+  position: fixed;
+  margin-top: 66px;
 }
 
 .box {
@@ -33,6 +36,7 @@ header {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 30px;
+  max-width: 90%;
 }
 
 @keyframes cursor-blink {
@@ -67,6 +71,7 @@ footer {
   left: 0;
   display: block;
   width: 100%;
+  max-width: 100%;
   border-top: 1px solid rgba(23, 23, 23, 0.8); 
   color: rgba(255, 255, 255, .7);
   background-color: #292929;
