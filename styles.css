@@ -7,10 +7,8 @@ body {
 
 header {
   margin-top: 5px; 
-  position: fixed;
-  width: 100%;
+  position: relative;
   padding: 10px;
-  max-width: 99%;
 }
 
 #logo {
@@ -19,15 +17,15 @@ header {
   display: block;
   width: 200px;
   margin-bottom: 10px;
+  top: 10px;
+  left: 10px;
 }
 
 #diviseur {
   border-color: #eece30;
   border-width: 0.1px;
   border-style: solid;
-  width: 99%;
-  position: fixed;
-  margin-top: 66px;
+  position: relative;
 }
 
 .box {
