@@ -114,6 +114,13 @@ display: inline-block;
 @media screen and (max-width: 600px) {
   .box {
     font-size: 17px; 
-
+  }
+  .box p::after {
+    content: "";
+    width: 4px;
+    height: 20px;
+    background: #DDDDDD;
+    display: inline-block;
+    animation: cursor-blink 2s steps(2) infinite;
   }
 }
