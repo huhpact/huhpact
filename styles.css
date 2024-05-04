@@ -6,13 +6,10 @@ body {
 }
 
 header {
-  margin-top: 0; 
-  position: fixed; 
-  top: 0; 
-  width: 100%; 
-  z-index: 999; 
-  padding: 10px; 
-  box-sizing: border-box; 
+  margin-top: 5px; 
+  position: relative;
+  width: 100%;
+  padding: 10px;
 }
 
 #logo {
@@ -28,7 +25,6 @@ header {
   border-width: 0.1px;
   border-style: solid;
   width: 100%;
-  margin-top: 65px;
 }
 
 .box {
@@ -107,4 +103,10 @@ display: inline-block;
   font-size: 2rem;
   font-weight: 500;
   margin-left: 17px;
+}
+
+.txt-confi {
+  color: #9b9a97;
+  margin-left: 17px;
+  margin-right: 20px;
 }
