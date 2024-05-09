@@ -8,6 +8,8 @@
     <link rel="icon" type="images/x-icon" href="logo.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
+
 
 *{
     margin: 0;
@@ -24,6 +26,32 @@ body {
     height: 100vh;
     background-color: #001120;
 
+}
+
+.shop-title {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    color: white;
+    font-size: 30px;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.titre {
+    color: white;
+    font-size: 30px;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    -webkit-text-stroke: 1px navy;
+    transition: all 0.3s;
+}
+
+.titre:hover {
+    color: navy;
 }
 
 .back {
@@ -266,9 +294,12 @@ body {
     <header>
         <svg id="visual" viewBox="0 0 1920 300" width="100%" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><rect x="0" y="0" width="1920" height="300" fill="#001220"></rect><path d="M0 173L45.7 173.2C91.3 173.3 182.7 173.7 274.2 166.3C365.7 159 457.3 144 548.8 134.7C640.3 125.3 731.7 121.7 823 128.2C914.3 134.7 1005.7 151.3 1097 150.5C1188.3 149.7 1279.7 131.3 1371.2 131.8C1462.7 132.3 1554.3 151.7 1645.8 156.8C1737.3 162 1828.7 153 1874.3 148.5L1920 144L1920 0L1874.3 0C1828.7 0 1737.3 0 1645.8 0C1554.3 0 1462.7 0 1371.2 0C1279.7 0 1188.3 0 1097 0C1005.7 0 914.3 0 823 0C731.7 0 640.3 0 548.8 0C457.3 0 365.7 0 274.2 0C182.7 0 91.3 0 45.7 0L0 0Z" fill="#4facf7"></path><path d="M0 89L45.7 90C91.3 91 182.7 93 274.2 99C365.7 105 457.3 115 548.8 115.2C640.3 115.3 731.7 105.7 823 99C914.3 92.3 1005.7 88.7 1097 93.8C1188.3 99 1279.7 113 1371.2 113.2C1462.7 113.3 1554.3 99.7 1645.8 97.5C1737.3 95.3 1828.7 104.7 1874.3 109.3L1920 114L1920 0L1874.3 0C1828.7 0 1737.3 0 1645.8 0C1554.3 0 1462.7 0 1371.2 0C1279.7 0 1188.3 0 1097 0C1005.7 0 914.3 0 823 0C731.7 0 640.3 0 548.8 0C457.3 0 365.7 0 274.2 0C182.7 0 91.3 0 45.7 0L0 0Z" fill="#2b9dfc"></path><path d="M0 111L45.7 103.8C91.3 96.7 182.7 82.3 274.2 81.3C365.7 80.3 457.3 92.7 548.8 98.2C640.3 103.7 731.7 102.3 823 103.3C914.3 104.3 1005.7 107.7 1097 102C1188.3 96.3 1279.7 81.7 1371.2 81C1462.7 80.3 1554.3 93.7 1645.8 97.2C1737.3 100.7 1828.7 94.3 1874.3 91.2L1920 88L1920 0L1874.3 0C1828.7 0 1737.3 0 1645.8 0C1554.3 0 1462.7 0 1371.2 0C1279.7 0 1188.3 0 1097 0C1005.7 0 914.3 0 823 0C731.7 0 640.3 0 548.8 0C457.3 0 365.7 0 274.2 0C182.7 0 91.3 0 45.7 0L0 0Z" fill="#008cff"></path><path d="M0 70L45.7 67.2C91.3 64.3 182.7 58.7 274.2 54.2C365.7 49.7 457.3 46.3 548.8 51C640.3 55.7 731.7 68.3 823 71.7C914.3 75 1005.7 69 1097 67.7C1188.3 66.3 1279.7 69.7 1371.2 68.3C1462.7 67 1554.3 61 1645.8 59C1737.3 57 1828.7 59 1874.3 60L1920 61L1920 0L1874.3 0C1828.7 0 1737.3 0 1645.8 0C1554.3 0 1462.7 0 1371.2 0C1279.7 0 1188.3 0 1097 0C1005.7 0 914.3 0 823 0C731.7 0 640.3 0 548.8 0C457.3 0 365.7 0 274.2 0C182.7 0 91.3 0 45.7 0L0 0Z" fill="#007aff"></path><path d="M0 51L45.7 47.7C91.3 44.3 182.7 37.7 274.2 33C365.7 28.3 457.3 25.7 548.8 26.2C640.3 26.7 731.7 30.3 823 32.3C914.3 34.3 1005.7 34.7 1097 33C1188.3 31.3 1279.7 27.7 1371.2 25C1462.7 22.3 1554.3 20.7 1645.8 24.5C1737.3 28.3 1828.7 37.7 1874.3 42.3L1920 47L1920 0L1874.3 0C1828.7 0 1737.3 0 1645.8 0C1554.3 0 1462.7 0 1371.2 0C1279.7 0 1188.3 0 1097 0C1005.7 0 914.3 0 823 0C731.7 0 640.3 0 548.8 0C457.3 0 365.7 0 274.2 0C182.7 0 91.3 0 45.7 0L0 0Z" fill="#0066ff"></path></svg>
     </svg>
-        <div class="back">
+    <div class="shop-title">
+        <a class="titre" href="/greengroveemporium/index.html">GreenGroveEmporium</a>
+    </div>
+        <!--<div class="back">
         <a href="index.html">
-            <button class="btn"><i class='bx bx-arrow-back'></i>Zurück zur Homepage</button>
+            <button class="btn"><i class='bx bx-arrow-back'></i>Zurück zur Homepage</button>-->
         </a>
         </div>
     </header>
