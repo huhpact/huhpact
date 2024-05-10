@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenGroveEmporium - Página principal</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="icon" type="images/x-icon" href="logo.png">
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #001220; 
+  }
+
+  header {
+    position: relative;
+    width: 100%; 
+    overflow: hidden;
+    margin-bottom: 0px;
+
+  }
+
+  .header-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1;
+  }
+
+  .header-content h1 {
+    color: white;
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+
+  .header-content button {
+    background-color: #4facf7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+  }
+
+  .heading {
+    color: white;
+    display: inline-block;
+    margin-left: 70px;
+    font-size: 40px;
+    width: 50%;
+
+  }
+
+  .heading span {
+    color: #4facf7;
+
+  }
+
+  .heading button {
+    padding-left: 5px;
+    font-size: 18px;
+  }
+
+  .left {
+    text-decoration: none;
+    color: white;
+}
+  .left span {
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  .left:hover {
+    color: lightblue !important;
+  }
+  
+  .sous-titre {
+    color: white;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .shop-title {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 30px;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.titre {
+    color: white;
+    font-size: 30px;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    -webkit-text-stroke: 1px navy;
+    transition: all 0.3s;
+}
+
+.titre:hover {
+    color: navy;
+}
+
+
+  .login-btn {
+    padding: 0.6em 2em;
+    border: none;
+    outline: none;
+    color: rgb(255, 255, 255);
+    background: #111;
+    cursor: pointer;
+    z-index: 0;
+    border-radius: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+
+  }
+
+  .login-btn:before {
+    content: "";
+    background: linear-gradient(
+      45deg,
+      #AED6F1,
+      #3498DB,
+      #2874A6,
+      white,
+      #39A3EA,
+      #002bff,
+      #8BD0FF,
+      #2899E5,
+      white
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing-button-85 20s linear infinite;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 10px;
+  }
+
+  @keyframes glowing-button-85 {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 400% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  .login-btn:after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #222;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+  }
+
+  .right {
+    display: inline-block;
+    margin-left: 30px;
+    text-align: center;
+  }
+
+  .right-pic {
+    width: 500px;
+    border-style: solid;
+    border-color: #4facf7;
+    box-shadow: rgba(46, 182, 240, 0.4) 5px 5px, rgba(38, 120, 234, 0.3) 10px 10px, rgba(8, 46, 182, 0.2) 15px 15px, rgba(17, 14, 219, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
+  }
+
+  footer {
+    background-color: #001220;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    position: relative; 
+    z-index: 2; 
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .tendance {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .header-svg,
+  .footer-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    height: 100vh;
+    margin: 0px 0px;
+    padding: 0px 0px;
+  }
+
+  .right-pic {
+    width: 500px;
+    border-style: solid;
+    border-color: #4facf7;
+    box-shadow: rgba(46, 182, 240, 0.4) 5px 5px, rgba(38, 120, 234, 0.3) 10px 10px, rgba(8, 46, 182, 0.2) 15px 15px, rgba(17, 14, 219, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
+    transition: transform .2s;
+    margin: 0 auto;
+  }
+  
+  .right-pic:hover {
+    transform: scale(1.2); 
+  }
+
+  .diviseur {
+    margin-left: 70px;
+    margin-top: 30px;
+    margin-right: 110px;
+  }
+
+  .souligner::before {  
+    transform: scaleX(0);
+    transform-origin: bottom right;
+  }
+  
+  .souligner:hover::before {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+  
+  .souligner::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    inset: 0 0 0 0;
+    background: hsl(200, 81%, 45%);
+    z-index: -1;
+    transition: transform .3s ease;
+  }
+  
+  .souligner {
+    position: relative;
+  }
+  
+  html {
+    block-size: 100%;
+    inline-size: 100%;
+  }
+
+  
+  @media (orientation: landscape) {
+    body {
+      grid-auto-flow: column;
+    }
+  }
+  
+  .heading-about {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    margin-top: 20;
+
+  }
+
+  .span-about {
+    color: white;
+  
+  }
+
+  .span-x {
+    color:hsl(200, 81%, 45%);
+    font-weight: bold;
+  }
+
+  .about {
+    margin-left: 70px;
+    margin-right: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .about-titre {
+    margin-bottom: 10px;
+  }
+
+  .moyens-paiement {
+    color: white !important;
+    margin-left: 70px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+
+  }
+
+  .moyens-paiement:link {
+    color: white;
+  }
+
+  .envoi-heading {
+    color: white;
+    font-weight: bold;
+    margin-left: 70px;
+    margin-bottom: 10px;
+  }
+
+  .img-about {
+    border-color: #39A3EA;
+    border-style: solid;
+    border-width: 3px;
+    transition: transform .2s;
+    margin-bottom: 20px;
+    margin: auto;
+    width: 90%;
+    margin-left: 70px;
+
+  }
+  
+  .img-about:hover {
+    transform: scale(1.015);
+  }
+
+  .copyright {
+    height: 33px;
+    width: 100px;
+    border-radius: 8px;
+    border-style: solid;
+    border-color: #001220;
+    margin-right: 20px;
+    background-image: linear-gradient(to right, #2b64c9, #64b4fc);
+    color: white;
+    font-weight: 550;
+    cursor: not-allowed;
+  }
+
+  .impressum {
+    height: 33px;
+    width: 100px;
+    border-radius: 8px;
+    border-style: solid;
+    border-color: #001220;
+    margin-right: 20px;
+    background-image: linear-gradient(to right, #2b64c9, #64b4fc);
+    color: white;
+    font-weight: 550;
+    cursor: not-allowed;
+  }
+
+  .donation {
+    height: 33px;
+    width: 100px;
+    border-radius: 8px;
+    border-style: solid;
+    border-color: #001220;
+    margin-right: 20px;
+    background-image: linear-gradient(to right, #2b64c9, #64b4fc);
+    color: white;
+    font-weight: 550;
+    cursor: pointer;
+  }
+
+  .support {
+    height: 33px;
+    width: 100px;
+    border-radius: 8px;
+    border-style: solid;
+    border-color: #001220;
+    margin-right: 20px;
+    background-image: linear-gradient(to right, #2b64c9, #64b4fc);
+    color: white;
+    font-weight: 550;
+    cursor: pointer;
+  }
+
+  .moyens {
+    margin-left: 70px;
+    color: white;
+  }
+
+  .bitcoin-div, .paypal-div, .mastercard-div, .visa-div {
+    /*border-color: white;
+    border-style: solid;*/
+    display: inline-block;
+    margin-right: 20%;
+  }
+
+  .bitcoin-div span, .paypal-div span, .mastercard-div span, .visa-div span {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; 
+}
+  /* Sources */
+  /* https://htmlcolorcodes.com/color-picker/ */
+  /* https://getcssscan.com/ */
+  /* https://boxicons.com/ */
+  /* https://fonts.google.com/ */
+  </style>
+</head>
+<body style="padding: 0;">
+  <canvas id="canvas"></canvas>
+  <header>
+    
+
+    
+<svg id="visual" viewBox="0 0 1920 320" width="1920" height="320" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><path d="M0 114L53.3 112C106.7 110 213.3 106 320 107.2C426.7 108.3 533.3 114.7 640 115.5C746.7 116.3 853.3 111.7 960 106.2C1066.7 100.7 1173.3 94.3 1280 97.3C1386.7 100.3 1493.3 112.7 1600 120.2C1706.7 127.7 1813.3 130.3 1866.7 131.7L1920 133L1920 0L1866.7 0C1813.3 0 1706.7 0 1600 0C1493.3 0 1386.7 0 1280 0C1173.3 0 1066.7 0 960 0C853.3 0 746.7 0 640 0C533.3 0 426.7 0 320 0C213.3 0 106.7 0 53.3 0L0 0Z" fill="#0066ff"></path><path d="M0 88L53.3 89.7C106.7 91.3 213.3 94.7 320 98.2C426.7 101.7 533.3 105.3 640 106.7C746.7 108 853.3 107 960 106.3C1066.7 105.7 1173.3 105.3 1280 102.8C1386.7 100.3 1493.3 95.7 1600 93.7C1706.7 91.7 1813.3 92.3 1866.7 92.7L1920 93L1920 0L1866.7 0C1813.3 0 1706.7 0 1600 0C1493.3 0 1386.7 0 1280 0C1173.3 0 1066.7 0 960 0C853.3 0 746.7 0 640 0C533.3 0 426.7 0 320 0C213.3 0 106.7 0 53.3 0L0 0Z" fill="#007aff"></path><path d="M0 66L53.3 64.3C106.7 62.7 213.3 59.3 320 56.8C426.7 54.3 533.3 52.7 640 56.3C746.7 60 853.3 69 960 70.2C1066.7 71.3 1173.3 64.7 1280 64.2C1386.7 63.7 1493.3 69.3 1600 67.7C1706.7 66 1813.3 57 1866.7 52.5L1920 48L1920 0L1866.7 0C1813.3 0 1706.7 0 1600 0C1493.3 0 1386.7 0 1280 0C1173.3 0 1066.7 0 960 0C853.3 0 746.7 0 640 0C533.3 0 426.7 0 320 0C213.3 0 106.7 0 53.3 0L0 0Z" fill="#008cff"></path><path d="M0 58L53.3 54.7C106.7 51.3 213.3 44.7 320 40C426.7 35.3 533.3 32.7 640 32.8C746.7 33 853.3 36 960 37C1066.7 38 1173.3 37 1280 36.8C1386.7 36.7 1493.3 37.3 1600 36.5C1706.7 35.7 1813.3 33.3 1866.7 32.2L1920 31L1920 0L1866.7 0C1813.3 0 1706.7 0 1600 0C1493.3 0 1386.7 0 1280 0C1173.3 0 1066.7 0 960 0C853.3 0 746.7 0 640 0C533.3 0 426.7 0 320 0C213.3 0 106.7 0 53.3 0L0 0Z" fill="#2b9dfc"></path><path d="M0 36L53.3 32.2C106.7 28.3 213.3 20.7 320 18.5C426.7 16.3 533.3 19.7 640 20.8C746.7 22 853.3 21 960 20.5C1066.7 20 1173.3 20 1280 21.8C1386.7 23.7 1493.3 27.3 1600 28.5C1706.7 29.7 1813.3 28.3 1866.7 27.7L1920 27L1920 0L1866.7 0C1813.3 0 1706.7 0 1600 0C1493.3 0 1386.7 0 1280 0C1173.3 0 1066.7 0 960 0C853.3 0 746.7 0 640 0C533.3 0 426.7 0 320 0C213.3 0 106.7 0 53.3 0L0 0Z" fill="#4facf7"></path></svg>
+<div class="shop-title">
+  <a class="titre" href="index.html">GreenGroveEmporium</a>
+</div>
+    <a href="login.html"><button class="login-btn" role="button">Acceso</button></a>
+  </header>
+    <div class="heading">
+      <h1>¡Bienvenidos al<span>paraíso!</span></h1>
+      <!--plus tard-->
+      <a class="left" href="produits.html">
+        <i class='bx bx-basket'></i>
+        <span>Compra ahora</span>
+    </a>
+    </div>
+    <div class="right">
+      <div class="tendance">
+        <p><span class="souligner"><i class='bx bx-chevrons-right bx-sm'></i>&nbsp;Tendencia en este momento&nbsp;<i class='bx bx-chevrons-left bx-sm' ></i></span></p>
+      </div>
+      <img class="right-pic" src="aleatoire.webp" alt="image aléatoire">
+      <p class="sous-titre"><i class='bx bx-trending-up' ></i> &nbsp;Blue Forest Berry Kush - 17.80 EUR</p>
+    </div>
+    <hr class="diviseur">
+    <div class="about">
+    <div class="about-titre"><span class="heading-about">Sobre nosotros</span><br></div>
+    <span class="span-about">Green Grove Emporium es una fuente líder de variedades de cannabis de alta calidad disponibles legalmente. Nuestra pasión por la <span class="span-x">calidad y sostenibilidad</span> se refleja en cada variedad que ofrecemos. Desde la exquisita Banana Haze hasta la vigorizante OG Kush, ofrecemos una selección diversa que refleja las necesidades y preferencias de nuestros clientes. Nuestro compromiso con la transparencia y el <span class="span-x">cultivo ético</span> nos permite ganarnos la confianza de nuestros clientes y crear un cambio positivo en la industria del cannabis. Bienvenido a Green Grove Emporium, donde la calidad, la sostenibilidad y la responsabilidad ocupan un lugar central.</span><br>
+    </div>
+    <img class="img-about" src="plantage.webp" alt="Unsere erste Plantage">
+    <hr class="diviseur">
+    
+    <span class="envoi-heading">Métodos de pago</span>
+    <div class="moyens">
+    <div class="bitcoin-div">
+      <div><i class='bx bx-bitcoin bx-lg'></i></div><br>
+      <span>Bitcoin</span>
+    </div>
+
+    <div class="paypal-div">
+      <div><i class='bx bxl-paypal bx-lg'></i></div><br>
+      <span>PayPal</span>
+    </div>
+
+    <div class="mastercard-div">
+      <div><i class='bx bxl-mastercard bx-lg'></i></div><br>
+      <span>MasterCard</span>
+    </div>
+
+    <div class="visa-div">
+      <div><i class='bx bxl-visa bx-lg'></i></div><br>
+      <span>Visa</span>
+    </div>
+    
+    </div>
+    <hr class="diviseur">
+
+
+  <footer>
+    <div class="disclaimer">
+      <a href="error.html"><button class="copyright" disabled>Derechos de autor</button></a>
+      <a href="error.html"><button class="impressum" disabled>Impresión</button></a>
+      <a href="https://www.paypal.me/paulchappuzeau" target="_blank"><button class="donation">Donación</button></a>
+      <a href="support.html"><button class="support">Apoyo</button></a>
+    </div>
+  </footer>
+  
+  <!--<script src="bg.js"></script>-->
+  
+</body>
+</html>
