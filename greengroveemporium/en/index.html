@@ -426,6 +426,38 @@ body {
   height: 100%;
   z-index: -1; 
 }
+
+#langSelectDiv {
+      position: relative;
+      z-index: 2; 
+      
+}
+
+#langSelect {
+  margin-left: 20px;
+  height: 30px;
+  width: 80px;
+  border-radius: 7px;
+  border:rgba(8, 46, 182, 0.2);
+  border-style: solid;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  transition: all 0.125s;
+}
+
+#langSelect:hover {
+  opacity: 0.7;
+}
+
+#langSelect option {
+      background-color: #001220;
+      color: white;
+    }
+
+#visual {
+      z-index: 1;
+}
   /* Sources */
   /* https://htmlcolorcodes.com/color-picker/ */
   /* https://getcssscan.com/ */
@@ -444,6 +476,18 @@ body {
   <a class="titre" href="index.html">GreenGroveEmporium</a>
 </div>
     <a href="login.html"><button class="login-btn" role="button">Log in</button></a>
+    <div id="langSelectDiv" style="position: absolute; top: 25px; right: 150px;">
+      <!--marche pas avec xampp-->
+      <select id="langSelect" onchange="changeLanguage()">
+        <option value="en">English</option>
+        <option value="ru">Русский</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+        <option value="de">Deutsch</option>
+        
+        
+      </select>
+    </div>
   </header>
     <div class="heading">
       <h1>Welcome in <span>Paradise!</span></h1>
@@ -504,6 +548,33 @@ body {
   </footer>
   
   <!--<script src="bg.js"></script>-->
+  <script>
+    
+    function changeLanguage() {
+      var langSelect = document.getElementById("langSelect");
+      var selectedLang = langSelect.options[langSelect.selectedIndex].value;
+      
+      switch (selectedLang) {
+        case "de":
+          window.location.href = "de/index.html";
+          break;
+        case "en":
+          window.location.href = "en/index.html";
+          break;
+        case "fr":
+          window.location.href = "fr/index.html";
+          break;
+        case "es":
+          window.location.href = "es/index.html";
+          break;
+        case "ru":
+          window.location.href = "ru/index.html";
+          break;
+        default:
+          break;
+      }
+    }
+  </script>
   
 </body>
 </html>
