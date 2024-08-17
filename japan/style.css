@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+body {
+	background-color: #1f1f1f;
+	font-family: 'Kanit', sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+.intro {
+	background-color: #1f1f1f;
+	color: white;
+	padding: 20px;
+	text-align: center;
+}
+
+.intro h1 {
+	font-size: 2em;
+	text-decoration: underline;
+}
+
+.intro p {
+	font-size: 1.5em;
+	text-decoration: underline;
+}
+
+.container {
+	background-color: #fff;
+	margin: 20px auto;
+	padding: 20px;
+	width: 80%;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.1);
+	transition: all 0.3s;
+	overflow-y: scroll;
+
+}
+
+.container:hover {
+	box-shadow: 0 0 10px rgba(0,0,0,0.2);
+	transform: translateY(-5px);
+
+}
+
+.container h1 {
+	font-size: 1.3em;
+	margin-top: 0;
+
+}
+
+.container h2 {
+	font-size: 1.2em;
+	margin-top: 0;
+}
+
+.container span {
+	color: #ff0000;
+}
+
+.container p {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+a {
+	color: #fff;
+	text-decoration: none;
+	transition: all 0.3s;
+}
+
+a:hover {
+	color: #ff0000;
+	text-decoration: underline #ff0000;
+}
+
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+	.container {
+		width: 90%;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.container {
+		width: 95%;
+	}
+}
+
+li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.divider {
+  height: 2px;
+  width: 100%;
+  background: blue;
+  background: linear-gradient(90deg, hsl(0, 0%, 20%), hsl(0, 0%, 70%), hsl(0, 0%, 20%));
+}
+
