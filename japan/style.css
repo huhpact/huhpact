@@ -1,11 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=New+Amsterdam&display=swap');
 
+html {
+	scroll-behavior: smooth;
+}
 
 body {
 	background-color: #1f1f1f;
 	font-family: 'Kanit', sans-serif;
 	margin: 0;
 	padding: 0;
+	width: 100%;
+	overflow-x: hidden;
 }
 
 .intro {
@@ -31,7 +37,7 @@ body {
 	padding: 20px;
 	width: 80%;
 	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0,0,0,0.1);
+	box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 	transition: all 0.3s;
 	overflow-y: scroll;
 
@@ -55,7 +61,8 @@ body {
 }
 
 .container span {
-	color: #ff0000;
+	color: #5981b8;
+	font-weight: bold;
 }
 
 .container p {
@@ -101,3 +108,140 @@ li {
   background: linear-gradient(90deg, hsl(0, 0%, 20%), hsl(0, 0%, 70%), hsl(0, 0%, 20%));
 }
 
+.container p {
+	margin-bottom: 5px;
+}
+
+
+.container img {
+	width: 100%;
+	max-height: 200px;
+	border-radius: 3px;
+	object-fit: cover;
+	box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+}
+
+.heading-span {
+	color: #1f1f1f !important;
+}
+
+footer {
+	background-color: #1f1f1f;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+iframe {
+	margin-bottom: 10px;
+}
+
+/* CSS */
+.button-53 {
+  background-color: #3DD1E7;
+  border: 0 solid #E5E7EB;
+  box-sizing: border-box;
+  color: #000000;
+  display: flex;
+  font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1.75rem;
+  padding: .5rem 1.65rem;
+  position: relative;
+  text-align: center;
+  text-decoration: none #000000 solid;
+  text-decoration-thickness: auto;
+  width: 80%;
+  max-width: 300px;
+  position: relative;
+  cursor: pointer;
+  transform: rotate(-2deg);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+	max-height: 45px;
+}
+
+.button-53:focus {
+  outline: 0;
+}
+
+.button-53:after {
+  content: '';
+  position: absolute;
+  border: 1px solid #000000;
+  bottom: 4px;
+  left: 4px;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+}
+
+.button-53:hover:after {
+  bottom: 2px;
+  left: 2px;
+}
+
+@media (min-width: 768px) {
+  .button-53 {
+    padding: .75rem 3rem;
+    font-size: 1.25rem;
+  }
+}
+
+.scroll-element {
+	opacity: 0;
+	transform: translateY(20px);
+	transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-element.in-view {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.credit {
+	font-family: "Roboto Mono", monospace;
+	font-size: 13px;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.credit a {
+	display: flex;
+	align-items: center;
+}
+
+.img-credit {
+	height: 20px;
+	margin-left: 5px;
+}
+
+.btn-maps {
+	padding: 10px 20px;
+	background-color: #3DD1E7;
+	color: #000;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.3s;
+	margin: 5px 0; 
+	font-size: 1em;
+	font-family: "New Amsterdam", sans-serif;
+	
+}
+
+@media screen and (max-width: 768px) {
+	.btn-maps {
+		padding: 5px 10px;
+		font-size: 0.8em;
+
+	}
+}
+
+.btn-maps:hover {
+	background-color: #288290;
+	color: #fff;
+}
