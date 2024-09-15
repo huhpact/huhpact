@@ -1,5 +1,10 @@
 /* General Styles */
 
+::selection {
+	background-color: #ff6f61;
+	color: #fff;
+}
+
 html {
 	box-sizing: border-box;
 	scroll-behavior: smooth;
