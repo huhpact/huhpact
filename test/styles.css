@@ -608,3 +608,36 @@ section {
     display: none;
   }
 }
+
+
+@media screen and (max-width: 768px) {
+
+  
+  .text-part {
+    font-size: 12vw;
+    height: 33vh;
+    text-align: left; 
+    padding-left: 20px;
+    width: 100%;
+  }
+
+  
+  .services-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .service-box {
+    width: 90%; 
+    max-width: 350px; 
+    margin-bottom: 20px;
+    height: 350px;
+  }
+
+  
+  #contact {
+    display: block;
+    padding-top: 500px;
+  }
+
+}
