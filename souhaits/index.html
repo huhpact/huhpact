@@ -6,9 +6,16 @@
     <title>Liste de Souhaits</title>
     <link rel="stylesheet" href="assets/styles.css">
     <link rel="shortcut icon" href="/B420B3F0-5DD8-4CA3-9772-BACBC8F56A91_4_5005_c.jpeg" type="image/x-icon">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-   
+    <div class="device-warning-modal" id="deviceWarningModal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Zu kleines Gerät</h2>
+            <p>Bitte wechseln Sie auf ein Tablet oder PC für eine bessere Benutzererfahrung.</p>
+        </div>
+    </div>
     <header>
         <h1>Liste de Souhaits</h1>
         <nav>
@@ -129,7 +136,7 @@
                 </div>
 
                 <div class="wishlist-item">
-                    <img src="assets/f0b4aba828542900b086b79d3864ebf1-img-apple-macbook-pro-m3-gray-front.avif" style="object-fit: contain;" alt="Volkswagen ID.4">
+                    <img src="assets/f0b4aba828542900b086b79d3864ebf1-img-apple-macbook-pro-m3-gray-front.avif" style="object-fit: contain;" alt="MacBook Pro">
                     <div class="item-details">
                         <h2>MacBook Pro M4 Pro</h2>
                         <p>2.499 EUR</p>
@@ -142,14 +149,33 @@
                             <span class="button-content">Disponible la semaine prochaine</span>
                         </button></a>
                     </div>
+                
+                    <!-- Chevron Toggle -->
+                    <div class="chevron-toggle" id="macbookChevron" style="cursor: pointer;">
+                        <i class='bx bx-chevron-down'></i> <!-- Chevron Down Icon -->
+                    </div>
+                
+                    <!-- Hidden Box with Image -->
+                    <div class="toggle-content" id="macbookDetails" style="display: none; padding: 10px;">
+                        <img id="macbookImage" src="assets/B9FE2313-7421-436B-BB3A-12F9173D7708.png" alt="MacBook Details" style="max-width: 100%; height: auto; cursor: pointer;">
+                    </div>
                 </div>
+                
+                <!-- Modal Box (initially hidden) -->
+                <div id="imageModal" class="modal">
+                    <img class="modal-content" id="modalImage">
+                </div>
+                
+                
+                
+                
         </section>
 
         <!-- Wartend Section -->
         <section id="waiting">
             <h2>🔄 En attente</h2>
             <div class="wishlist-item">
-                <img src="assets/lan-splitter.jpg" alt="LAN Splitter">
+                <img src="/assets/lan-splitter.jpg" alt="LAN Splitter">
                 <div class="item-details">
                     <h2>LAN Splitter</h2>
                     <p>12,99 EUR</p>
