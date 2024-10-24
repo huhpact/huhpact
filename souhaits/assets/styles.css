@@ -384,6 +384,7 @@ a {
 }
 
 /* Modal container */
+/* Modal container */
 .modal {
 	display: none; /* Initially hidden */
 	position: fixed;
@@ -395,7 +396,6 @@ a {
 	background-color: rgba(0, 0, 0, 0.8); /* Dark background with transparency */
 	justify-content: center;
 	align-items: center;
-	animation: fadeIn 0.3s ease; /* Smooth fade-in animation */
 }
 
 /* Modal content (the large image) */
@@ -403,19 +403,10 @@ a {
 	max-width: 80%;
 	max-height: 80%;
 	border-radius: 10px;
-	animation: zoomIn 0.5s ease; /* Smooth zoom animation */
+	animation: zoomIn 0.5s ease;
 }
 
-/* Close button for modal */
-.close-modal {
-	position: absolute;
-	top: 20px;
-	right: 30px;
-	color: white;
-	font-size: 40px;
-	font-weight: bold;
-	cursor: pointer;
-}
+
 
 /* Keyframes for fade-in and zoom-in animations */
 @keyframes fadeIn {

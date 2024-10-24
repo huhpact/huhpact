@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+
     // Open modal when the image is clicked
     document.getElementById('macbookImage').addEventListener('click', function() {
         var modal = document.getElementById('imageModal');
@@ -52,21 +53,13 @@ document.addEventListener("DOMContentLoaded", function () {
         modalImg.src = this.src; // Set the modal image to the clicked image
     });
 
-    // Close the modal when the 'x' is clicked
-    document.getElementById('closeModal').addEventListener('click', function() {
-        var modal = document.getElementById('imageModal');
-        modal.style.display = "none"; // Hide the modal
-    });
-
-    // Optionally, close the modal when clicking anywhere outside the modal image
+    // Close the modal when clicking anywhere outside the image
     window.addEventListener('click', function(event) {
         var modal = document.getElementById('imageModal');
         if (event.target === modal) {
             modal.style.display = "none"; // Hide the modal
         }
     });
-
-
 
 
 
