@@ -332,3 +332,37 @@ a {
 		margin-left: 12px;
 	}
 }
+
+
+
+/* Modal-Styling */
+.device-warning-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* dunkler Hintergrund */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* verhindert das Scrollen im Modal */
+}
+
+.device-warning-modal .modal-content {
+    background-color: #1f1f1f;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    width: 80%;
+}
+
+/* Media Query für kleine Geräte */
+@media (max-width: 600px) {
+    .device-warning-modal {
+        display: flex; /* Modal sichtbar machen */
+    }
+}

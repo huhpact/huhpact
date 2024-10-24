@@ -18,3 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
 			observer.observe(item);
 	});
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+	// Überprüfe die Bildschirmgröße
+	if (window.innerWidth <= 600) {
+			document.body.classList.add("blur"); // Hintergrund unscharf
+			document.querySelector('.device-warning-modal').style.display = "flex"; // Modal anzeigen
+	}
+});
+
