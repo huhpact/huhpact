@@ -418,3 +418,26 @@ a {
 	from { transform: scale(0.5); }
 	to { transform: scale(1); }
 }
+
+.reasons {
+	display: none; /* Initiale Anzeige wird von JavaScript gesteuert */
+	margin-top: 10px;
+	padding: 10px;
+	background-color: #2e2e2e;
+	color: #ddd;
+	border: 1px solid #444;
+	border-radius: 5px;
+}
+.chevron-icon {
+	font-size: 24px;
+	cursor: pointer;
+	margin-left: 10px;
+	color: #ff6f61;
+}
+.chevron-icon:hover {
+	color: #fff;
+}
+
+li {
+	list-style-type: circle;
+}
