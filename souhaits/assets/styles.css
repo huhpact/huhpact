@@ -420,7 +420,7 @@ a {
 }
 
 .reasons {
-	display: none; 
+	display: none; /* Initiale Anzeige wird von JavaScript gesteuert */
 	margin-top: 10px;
 	padding: 10px;
 	background-color: #2e2e2e;
