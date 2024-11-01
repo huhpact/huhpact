@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
+
+        *{
+    box-sizing: border-box;
+}
+        body{
+            font-family: 'Montserrat', sans-serif;
+            background-color: #001220; 
+        }
+        h1{
+            margin: 50px 0 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .shop-title {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 30px;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-bottom: 100px;
+}
+
+.titre {
+    color: white;
+    font-size: 30px;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    -webkit-text-stroke: 1px navy;
+    transition: all 0.3s;
+}
+
+.titre:hover {
+    color: navy;
+}
+        .faq-container{
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .faq{
+            background-color: transparent;
+            border: 1px solid #9fa4a8;
+            border-radius: 10px;
+            margin: 20px 0;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s ease;
+        }
+        .faq.active{
+            background-color: #001220;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1) ;
+
+        }
+        .faq.active::before, .faq.active::after{
+            color: #2ecc71;
+            font-size: 7rem;
+            position: absolute;
+            opacity: 0.2;
+            top: 20px;
+            left: 20px;
+            z-index: 0;
+        }
+        .faq.active::before{
+            color: #3498db;
+            top: -10px;
+            left: -30px;
+            transform: rotateY(-180deg);
+        }
+
+        .faq-title{
+            margin: 0 35px 0 0;
+            color: white;
+        }
+        .faq-text{
+            display: none;
+            margin: 30px 0 0;
+            color: white;
+        }
+        .faq.active .faq-text{
+            display: block;
+        }
+
+        .faq-toggle{
+            background-color: transparent;
+            border: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            padding: 0;
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            
+        }
+        .faq-toggle:focus{
+            outline: 0;
+        }
+        .faq-toggle .fa-times{
+            display: none;
+        }
+        .faq.active .faq-toggle .fa-times{
+            display: block;
+            color: #fff;
+        }
+        .faq.active .faq-toggle .fa-chevron-down{
+            display: none;
+        }
+        .faq.active .faq-toggle{
+            background-color: #4facf7;
+        }
+
+        .bx-chevron-down {
+            color: white;
+        }
+
+        .mail {
+            text-decoration: none;
+            color: #9fa4a8;
+            transition: all 0.123s;
+        }
+
+        .mail:hover {
+            color: #7a7a7a;
+        }
+    </style>
+    <title>Apoyo - GreenGroveEmporium</title>
+</head>
+
+<body>
+    <div class="shop-title">
+        <a class="titre" href="index.html">GreenGroveEmporium</a>
+    </div>
+<div="content-tout">
+    <h1>Bienvenido al soporte de GreenGroveEmporium</h1>
+    <div class="faq-container">
+        <div class="faq ">
+            <h3 class="faq-title">¿Cuánto tiempo tarda en llegar mi pedido?</h3>
+            <span class="faq-text">Nuestro equipo enviará su pedido dentro de 1 a 2 días hábiles y debería llegar a usted dentro de 2 a 3 días hábiles.</span>
+            <button class="faq-toggle">
+                <i class='bx bx-chevron-down'></i>
+            </button>
+        </div>
+        <div class="faq ">
+            <h3 class="faq-title">Mi pedido ha sido confiscado por la aduana. ¿Qué debo hacer?</h3>
+            <span class="faq-text">Para estos raros incidentes, nuestro departamento legal se comunicará con la aduana del país correspondiente y se asegurará de que su pedido sea entregado. Por favor contactar: <a class="mail" href="mailto:support@greengroveemporium.cs">support@greengroveemporium.cs</a></span>
+            <button class="faq-toggle">
+                <i class='bx bx-chevron-down'></i>
+            </button>
+        </div>
+        <div class="faq ">
+            <h3 class="faq-title">¿Sus productos se venden puros o estirados?</h3>
+            <span class="faq-text">Solo vendemos hierba pura y de alta calidad para garantizar la mejor experiencia a nuestros clientes.</span>
+            <button class="faq-toggle">
+                <i class='bx bx-chevron-down'></i>
+            </button>
+        </div>
+        <div class="faq ">
+            <h3 class="faq-title">No he recibido un número de seguimiento/correo electrónico de confirmación.</h3>
+            <span class="faq-text">Si no ha recibido un correo electrónico, comuníquese con nuestro correo electrónico de soporte: <a class="mail" href="mailto:support@greengroveemporium.cs">support@greengroveemporium.cs</a></span>
+            <button class="faq-toggle">
+                <i class='bx bx-chevron-down'></i>
+            </button>
+        </div>
+        <div class="faq ">
+            <h3 class="faq-title">¿Puedo obtener un reembolso si mi pedido no me queda bien?</h3>
+            <span class="faq-text">No</span>
+            <button class="faq-toggle">
+                <i class='bx bx-chevron-down'></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+    <script src="support.js"></script>
+</body>
+
+</html>

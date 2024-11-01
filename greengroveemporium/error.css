@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.conteneur-erreur {
+  text-align: center;
+}
+
+.icone-erreur {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  display: inline-block;
+}
+
+.croix {
+  position: absolute;
+  width: 50px;
+  height: 2px;
+  background-color: red;
+  transform: rotate(45deg);
+}
+
+.croix:nth-child(2) {
+  transform: rotate(-45deg);
+}
+
+.message-erreur {
+  font-size: 24px;
+  margin-top: 20px;
+}
+
+.contact-support {
+  margin-top: 10px;
+}

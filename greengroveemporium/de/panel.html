@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenGroveEmporium - Admin Panel</title>
+  <link rel="icon" type="images/x-icon" href="logo.png">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #001220; 
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .container {
+        text-align: center;
+      }
+      
+      .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: rgb(88, 101, 242);
+        color: #fff;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+      .btn:hover {
+        background-color: #540bb4;
+      }
+
+      h1 {
+        color: white;
+      }
+
+      .Btn {
+          display: inline-block;
+          outline: none;
+          cursor: pointer;
+          border-radius: 3px;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 16px;
+          padding: 2px 16px;
+          height: 38px;
+          min-width: 96px;
+          min-height: 38px;
+          border: none;
+          color: #fff;
+          background-color: rgb(88, 101, 242);
+          transition: background-color .17s ease,color .17s ease;
+          margin-top: 30px;
+          margin-left: 30px;
+        }
+          .Btn:hover {
+          background-color: rgb(71, 82, 196);
+          }
+
+      .homepage-btn {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+      }
+
+  </style>
+</head>
+<body>
+  <a href="../index.html" class="homepage-btn"><button class="Btn"><i class='bx bx-home-alt'></i>&nbsp; Homepage</button></a>
+
+  <div class="container">
+    <h1>Admin Panel Übersicht</h1>
+    <a href="produits.php" class="btn">Produkte verwalten</a>
+    <a href="clients.php" class="btn">Kunden verwalten</a>
+    <a href="commandes.php" class="btn">Bestellungen verwalten</a>
+  </div>
+</body>
+</html>

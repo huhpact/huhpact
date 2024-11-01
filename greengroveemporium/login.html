@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="images/x-icon" href="logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #001120;
+
+}
+
+.shop-title {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    color: white;
+    font-size: 30px;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.titre {
+    color: white;
+    font-size: 30px;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    -webkit-text-stroke: 1px navy;
+    transition: all 0.3s;
+}
+
+.titre:hover {
+    color: navy;
+}
+
+.back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-bottom: 0;
+    color: inherit; 
+    text-decoration: none; 
+    margin-top: 40px;
+}
+
+.btn {
+    padding-bottom: 7px;
+    padding-top: 7px;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 13px;
+    border-radius: 8px;
+    margin: 15px;
+    background-color: #2b64c9;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: black;
+    color: white;
+    border-color: #64b4fc;
+    border-style: solid;
+    border-width: 1px;
+    font-weight: bold;
+    box-shadow: 4px 2px 10px rgb(156, 156, 156);
+}
+
+.container{
+    background-color: #fff;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+}
+
+.container p{
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 20px 0;
+}
+
+.container span{
+    font-size: 12px;
+}
+
+.container a{
+    color: #333;
+    font-size: 13px;
+    text-decoration: none;
+    margin: 15px 0 10px;
+}
+
+.container button{
+    background-image: linear-gradient(to right, #2b64c9, #64b4fc);
+    color: #fff;
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.container button:hover {
+    background-color: white;
+    color: white;
+    border-color: white;
+}
+
+.container button.hidden{
+    background-color: transparent;
+    border-color: #fff;
+}
+
+.container form{
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+}
+
+.container input{
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+}
+
+.form-container{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.sign-in{
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.container.active .sign-in{
+    transform: translateX(100%);
+}
+
+.sign-up{
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.container.active .sign-up{
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: move 0.6s;
+}
+
+@keyframes move{
+    0%, 49.99%{
+        opacity: 0;
+        z-index: 1;
+    }
+    50%, 100%{
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.toggle-container{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 150px 0 0 100px;
+    z-index: 1000;
+}
+
+.container.active .toggle-container{
+    transform: translateX(-100%);
+    border-radius: 0 150px 100px 0;
+}
+
+.toggle{
+    height: 100%;
+    background-image: linear-gradient(#2b64c9, #64b4fc);
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.container.active .toggle{
+    transform: translateX(50%);
+}
+
+.toggle-panel{
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.toggle-left{
+    transform: translateX(-200%);
+}
+
+.container.active .toggle-left{
+    transform: translateX(0);
+}
+
+.toggle-right{
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.active .toggle-right{
+    transform: translateX(200%);
+}
+
+.connecter {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+}
+
+
+    </style>
+    <title>GreenGroveEmporium - Login</title>
+</head>
+
+<body>
+
+    <header>
+        <svg id="visual" viewBox="0 0 1920 300" width="100%" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><rect x="0" y="0" width="1920" height="300" fill="#001220"></rect><path d="M0 173L45.7 173.2C91.3 173.3 182.7 173.7 274.2 166.3C365.7 159 457.3 144 548.8 134.7C640.3 125.3 731.7 121.7 823 128.2C914.3 134.7 1005.7 151.3 1097 150.5C1188.3 149.7 1279.7 131.3 1371.2 131.8C1462.7 132.3 1554.3 151.7 1645.8 156.8C1737.3 162 1828.7 153 1874.3 148.5L1920 144L1920 0L1874.3 0C1828.7 0 1737.3 0 1645.8 0C1554.3 0 1462.7 0 1371.2 0C1279.7 0 1188.3 0 1097 0C1005.7 0 914.3 0 823 0C731.7 0 640.3 0 548.8 0C457.3 0 365.7 0 274.2 0C182.7 0 91.3 0 45.7 0L0 0Z" fill="#4facf7"></path><path d="M0 89L45.7 90C91.3 91 182.7 93 274.2 99C365.7 105 457.3 115 548.8 115.2C640.3 115.3 731.7 105.7 823 99C914.3 92.3 1005.7 88.7 1097 93.8C1188.3 99 1279.7 113 1371.2 113.2C1462.7 113.3 1554.3 99.7 1645.8 97.5C1737.3 95.3 1828.7 104.7 1874.3 109.3L1920 114L1920 0L1874.3 0C1828.7 0 1737.3 0 1645.8 0C1554.3 0 1462.7 0 1371.2 0C1279.7 0 1188.3 0 1097 0C1005.7 0 914.3 0 823 0C731.7 0 640.3 0 548.8 0C457.3 0 365.7 0 274.2 0C182.7 0 91.3 0 45.7 0L0 0Z" fill="#2b9dfc"></path><path d="M0 111L45.7 103.8C91.3 96.7 182.7 82.3 274.2 81.3C365.7 80.3 457.3 92.7 548.8 98.2C640.3 103.7 731.7 102.3 823 103.3C914.3 104.3 1005.7 107.7 1097 102C1188.3 96.3 1279.7 81.7 1371.2 81C1462.7 80.3 1554.3 93.7 1645.8 97.2C1737.3 100.7 1828.7 94.3 1874.3 91.2L1920 88L1920 0L1874.3 0C1828.7 0 1737.3 0 1645.8 0C1554.3 0 1462.7 0 1371.2 0C1279.7 0 1188.3 0 1097 0C1005.7 0 914.3 0 823 0C731.7 0 640.3 0 548.8 0C457.3 0 365.7 0 274.2 0C182.7 0 91.3 0 45.7 0L0 0Z" fill="#008cff"></path><path d="M0 70L45.7 67.2C91.3 64.3 182.7 58.7 274.2 54.2C365.7 49.7 457.3 46.3 548.8 51C640.3 55.7 731.7 68.3 823 71.7C914.3 75 1005.7 69 1097 67.7C1188.3 66.3 1279.7 69.7 1371.2 68.3C1462.7 67 1554.3 61 1645.8 59C1737.3 57 1828.7 59 1874.3 60L1920 61L1920 0L1874.3 0C1828.7 0 1737.3 0 1645.8 0C1554.3 0 1462.7 0 1371.2 0C1279.7 0 1188.3 0 1097 0C1005.7 0 914.3 0 823 0C731.7 0 640.3 0 548.8 0C457.3 0 365.7 0 274.2 0C182.7 0 91.3 0 45.7 0L0 0Z" fill="#007aff"></path><path d="M0 51L45.7 47.7C91.3 44.3 182.7 37.7 274.2 33C365.7 28.3 457.3 25.7 548.8 26.2C640.3 26.7 731.7 30.3 823 32.3C914.3 34.3 1005.7 34.7 1097 33C1188.3 31.3 1279.7 27.7 1371.2 25C1462.7 22.3 1554.3 20.7 1645.8 24.5C1737.3 28.3 1828.7 37.7 1874.3 42.3L1920 47L1920 0L1874.3 0C1828.7 0 1737.3 0 1645.8 0C1554.3 0 1462.7 0 1371.2 0C1279.7 0 1188.3 0 1097 0C1005.7 0 914.3 0 823 0C731.7 0 640.3 0 548.8 0C457.3 0 365.7 0 274.2 0C182.7 0 91.3 0 45.7 0L0 0Z" fill="#0066ff"></path></svg>
+    </svg>
+    <div class="shop-title">
+        <a class="titre" href="/greengroveemporium/index.html">GreenGroveEmporium</a>
+    </div>
+        <!--<div class="back">
+        <a href="index.html">
+            <button class="btn"><i class='bx bx-arrow-back'></i>Zurück zur Homepage</button>-->
+        </a>
+        </div>
+    </header>
+
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form>
+                <h1>Registieren</h1>
+                </i><input type="text" placeholder="Username" id="regusername">
+                <input type="email" placeholder="E-mail" id="regemail">
+                <input type="password" placeholder="Passwort" id="regpassword">
+                <button>Registieren</button>
+            </form>
+        </div>
+        <div class="form-container sign-in">
+            <div class="connecter">
+            <h1>Anmelden</h1>
+            <input type="text" placeholder="Username" id="username" required>
+            <input type="password" placeholder="Passwort" id="password" required>
+            <a href="panel.html"><button type="submit" id="submit">Anmelden</button></a>
+            </div>
+
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Willkommen zurück! </h1>
+                    <p>Melde dich an und geniesse deine Vorteile!</p>
+                    <button class="hidden" id="login">Anmelden</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Moin! </h1>
+                    <p>Registriere dich jetzt kostenlos bei uns GreenGroveEmporium und geniesse alle Vorteile!</p>
+                    <button class="hidden" id="register">Registieren</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<footer>
+    <svg id="visual" viewBox="0 0 1920 200" width="100%" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><rect x="0" y="0" width="1920" height="300" fill="#001220"></rect><path d="M0 125L45.7 124.8C91.3 124.7 182.7 124.3 274.2 131.7C365.7 139 457.3 154 548.8 163.3C640.3 172.7 731.7 176.3 823 169.8C914.3 163.3 1005.7 146.7 1097 147.5C1188.3 148.3 1279.7 166.7 1371.2 166.2C1462.7 165.7 1554.3 146.3 1645.8 141.2C1737.3 136 1828.7 145 1874.3 149.5L1920 154L1920 301L1874.3 301C1828.7 301 1737.3 301 1645.8 301C1554.3 301 1462.7 301 1371.2 301C1279.7 301 1188.3 301 1097 301C1005.7 301 914.3 301 823 301C731.7 301 640.3 301 548.8 301C457.3 301 365.7 301 274.2 301C182.7 301 91.3 301 45.7 301L0 301Z" fill="#4facf7"></path><path d="M0 250L45.7 255.2C91.3 260.3 182.7 270.7 274.2 272.3C365.7 274 457.3 267 548.8 259.8C640.3 252.7 731.7 245.3 823 244.3C914.3 243.3 1005.7 248.7 1097 249.5C1188.3 250.3 1279.7 247.7 1371.2 247.2C1462.7 246.7 1554.3 248.3 1645.8 250.2C1737.3 252 1828.7 254 1874.3 254.5L1920 255L1920 301L1874.3 301C1828.7 301 1737.3 301 1645.8 301C1554.3 301 1462.7 301 1371.2 301C1279.7 301 1188.3 301 1097 301C1005.7 301 914.3 301 823 301C731.7 301 640.3 301 548.8 301C457.3 301 365.7 301 274.2 301C182.7 301 91.3 301 45.7 301L0 301Z" fill="#2b9dfc"></path><path d="M0 152L45.7 152.3C91.3 152.7 182.7 153.3 274.2 155.7C365.7 158 457.3 162 548.8 168.3C640.3 174.7 731.7 183.3 823 183.2C914.3 183 1005.7 174 1097 168.5C1188.3 163 1279.7 161 1371.2 163C1462.7 165 1554.3 171 1645.8 172.2C1737.3 173.3 1828.7 169.7 1874.3 167.8L1920 166L1920 301L1874.3 301C1828.7 301 1737.3 301 1645.8 301C1554.3 301 1462.7 301 1371.2 301C1279.7 301 1188.3 301 1097 301C1005.7 301 914.3 301 823 301C731.7 301 640.3 301 548.8 301C457.3 301 365.7 301 274.2 301C182.7 301 91.3 301 45.7 301L0 301Z" fill="#008cff"></path><path d="M0 73L45.7 77.8C91.3 82.7 182.7 92.3 274.2 97.3C365.7 102.3 457.3 102.7 548.8 102.2C640.3 101.7 731.7 100.3 823 97.7C914.3 95 1005.7 91 1097 89.8C1188.3 88.7 1279.7 90.3 1371.2 91C1462.7 91.7 1554.3 91.3 1645.8 88.5C1737.3 85.7 1828.7 80.3 1874.3 77.8L1920 75L1920 301L1874.3 301C1828.7 301 1737.3 301 1645.8 301C1554.3 301 1462.7 301 1371.2 301C1279.7 301 1188.3 301 1097 301C1005.7 301 914.3 301 823 301C731.7 301 640.3 301 548.8 301C457.3 301 365.7 301 274.2 301C182.7 301 91.3 301 45.7 301L0 301Z" fill="#007aff"></path><path d="M0 145L45.7 147.3C91.3 149.7 182.7 154.3 274.2 156.7C365.7 159 457.3 159 548.8 157.7C640.3 156.3 731.7 153.7 823 153C914.3 152.3 1005.7 153.7 1097 151.7C1188.3 149.7 1279.7 144.3 1371.2 144.3C1462.7 144.3 1554.3 149.7 1645.8 152.2C1737.3 154.7 1828.7 154.3 1874.3 154.3L1920 154L1920 301L1874.3 301C1828.7 301 1737.3 301 1645.8 301C1554.3 301 1462.7 301 1371.2 301C1279.7 301 1188.3 301 1097 301C1005.7 301 914.3 301 823 301C731.7 301 640.3 301 548.8 301C457.3 301 365.7 301 274.2 301C182.7 301 91.3 301 45.7 301L0 301Z" fill="#0066ff"></path></svg>
+</footer>
+    <script src="script.js"></script>
+</body>
+
+</html>
