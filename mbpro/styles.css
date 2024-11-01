@@ -1,0 +1,400 @@
+::selection {
+	background-color: #ffffffa2;
+	color: black;
+}
+
+
+body {
+	background-color: #000;
+	color: #fff;
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+
+.hero {
+	text-align: center;
+	padding: 80px 20px;
+}
+
+.hero h1 {
+	font-size: 3rem;
+	margin-bottom: 10px;
+	color: #fff;
+	-webkit-text-stroke: 1px #fff;
+	text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+	font-weight: 900;
+}
+
+h2 {
+	text-align: center;
+}
+
+.hero p {
+	font-size: 1.2rem;
+}
+
+.cta-buttons {
+	margin-top: 30px;
+}
+
+.cta-button {
+	background-color: #fff;
+	color: #000;
+	padding: 12px 24px;
+	border: none;
+	border-radius: 30px;
+	font-size: 1rem;
+	margin: 0 10px;
+	cursor: pointer;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+.cta-button:hover {
+	background-color: #000;
+	color: #fff;
+	box-shadow: 0 0 10px #fff;
+}
+
+
+.benefits {
+	padding: 40px 20px;
+	text-align: center;
+}
+
+.benefit-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 30px;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+.benefit-item {
+	background-color: #111;
+	padding: 20px;
+	border-radius: 10px;
+	width: 250px;
+	box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+	transition: box-shadow 0.3s;
+	text-align: center;
+}
+
+.benefit-item:hover {
+	box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.icon {
+	width: 60px;
+	height: auto;
+	margin-bottom: 10px;
+}
+
+
+.table-compare {
+	width: 90%;
+	margin: 40px auto;
+	border-collapse: collapse;
+}
+
+.table-compare th, .table-compare td {
+	padding: 15px;
+	text-align: center;
+	border-bottom: 1px solid #444;
+}
+
+.table-compare th {
+	font-weight: bold;
+	color: #fff;
+}
+
+
+.cta {
+	text-align: center;
+	padding: 40px 20px;
+}
+
+.cta-button {
+  background-color: #fff;
+  color: #000;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  position: relative; 
+  overflow: hidden; 
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px; 
+  border: 2px solid transparent;
+  box-shadow: 0 0 10px 5px #e6e6e6; 
+  animation: borderMove 3s linear infinite; 
+  pointer-events: none; 
+}
+
+@keyframes borderMove {
+  0% {
+    transform: translateX(-100%) translateY(0);
+  }
+  25% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(0) translateY(100%);
+  }
+  75% {
+    transform: translateX(100%) translateY(100%);
+  }
+  100% {
+    transform: translateX(100%) translateY(0);
+  }
+}
+
+
+.cta-button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+
+.trade {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 60px 20px;
+	gap: 50px;
+	margin: 40px auto;
+	max-width: 1200px;
+	flex-wrap: wrap;
+}
+
+.trade-item {
+	background-color: #111;
+	padding: 20px;
+	border-radius: 15px;
+	width: 300px;
+	text-align: center;
+	box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+	transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.trade-item:hover {
+	transform: translateY(-10px);
+	box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.trade-image {
+	width: 100px;
+	height: auto;
+	margin-bottom: 15px;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.trade-arrow {
+	font-size: 3rem;
+	color: #fff;
+	transition: transform 0.5s ease-out;
+	opacity: 0; 
+	transform: rotate(0deg); 
+}
+
+.parallax-container {
+	margin: 40px 40px;
+	overflow: hidden;
+	border-radius: 20px;
+}
+
+.parallax {
+	height: 300px;
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: center;
+	transition: transform 0.5s ease-out;
+}
+
+
+.parallax1 {
+	background-image: url('pro_apps_software_development__eg0phbvwffwy_large_2x.jpg');
+}
+
+.parallax2 {
+	background-image: url('nano_texture__bstz9mj69cmu_large_2x.jpg');
+}
+
+
+.benefits {
+	padding: 40px 20px;
+	text-align: center;
+}
+
+.benefit-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 30px;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+.benefit-item {
+	background-color: #111;
+	padding: 20px;
+	border-radius: 15px;
+	width: 250px;
+	box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+	transition: box-shadow 0.3s;
+}
+
+.benefit-item:hover {
+	box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+
+.arguments {
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 20px;
+  margin: 60px auto;
+  max-width: 1200px;
+}
+
+.arguments h2 {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  color: #fff;
+}
+
+.arguments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  transform-style: preserve-3d;
+}
+
+.argument-item {
+  background-color: #111;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  transform: translateZ(0);
+}
+
+.argument-item:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.icon-container {
+  background-color: #222;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.icon {
+  width: 40px;
+  height: auto;
+}
+
+.argument-item h3 {
+  color: #fff;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.argument-item p {
+  color: #ccc;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .trade {
+    flex-direction: column; 
+    align-items: center;
+  }
+
+  .trade-item {
+    width: 90%; 
+    margin-bottom: 20px;
+  }
+
+  .trade-arrow {
+    font-size: 2rem;
+    margin: 10px 0;
+  }
+}
+
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .trade {
+    gap: 30px; 
+  }
+
+  .trade-item {
+    width: 45%; 
+  }
+}
+
+
+.hero-image {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 10px;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+}
+
+.scroll-video-section {
+	text-align: center;
+	padding: 40px 40px;
+}
+
+.scroll-video {
+	max-width: 100%;
+	height: auto;
+	border-radius: 10px; 
+}
+
+.fade-icon {
+	opacity: 0;
+	transform: translateY(20px);
+	transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+
+.fade-icon.in-view {
+	opacity: 1;
+	transform: translateY(0);
+}
