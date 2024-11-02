@@ -75,3 +75,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 	handleScroll();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const fills = document.querySelectorAll(".fill");
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("animate"); // Add the animation class
+        observer.unobserve(entry.target); // Stop observing once animated
+      }
+    });
+  }, { threshold: 0.5 }); // Adjust threshold as needed
+
+  fills.forEach(fill => observer.observe(fill));
+});

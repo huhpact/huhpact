@@ -439,3 +439,132 @@ h2 {
       height: auto; 
   }
 }
+
+.price-comparison-section {
+  padding: 40px 20px;
+  text-align: center;
+  background-color: #000000; /* Schwarzer Hintergrund */
+  color: #ffffff; /* Weiße Schriftfarbe */
+}
+
+.price-card-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 20px;
+}
+
+.price-card {
+  background-color: #111111; /* Dunkelschwarze Kartenfarbe */
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1); /* Weißer Schlagschatten */
+  width: 200px;
+  transition: transform 0.3s;
+  text-align: center;
+  color: #ffffff; /* Weiße Schriftfarbe */
+}
+
+.price-card:hover {
+  transform: translateY(-10px);
+}
+
+.price-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #ffffff; 
+  text-shadow: 0 0 5px #ffffff; 
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #ffffff; 
+  text-shadow: 0 0 5px #ffffff; 
+}
+
+.note {
+  font-size: 0.9rem;
+  color: #ffffff; 
+  text-shadow: 0 0 5px #ffffff; 
+}
+
+.performance-comparison {
+  text-align: center;
+  padding: 40px 20px;
+  color: #fff;
+}
+
+.comparison-bar {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.comparison-item {
+  width: 150px;
+  text-align: center;
+}
+
+.bar {
+  background-color: #333;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 25px;
+  position: relative;
+  width: 100%;
+}
+
+.fill {
+  height: 100%;
+  border-radius: 10px 0 0 10px;
+  background: linear-gradient(90deg, #4a90e2, #50e3c2);
+  position: relative;
+  width: 0; /* Initial width set to 0 */
+}
+
+.fill.animate {
+  animation: fill-animation 1s ease forwards;
+}
+
+.fill::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -25px;
+  left: 5px;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+@keyframes fill-animation {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--target-width);
+  }
+}
+
+.m2-cpu {
+  --target-width: 70%;
+  animation-delay: 0.5s;
+}
+
+.m2-gpu {
+  --target-width: 65%;
+  animation-delay: 1s;
+}
+
+.m4-cpu {
+  --target-width: 90%;
+  background: linear-gradient(90deg, #ff8a00, #ffc000);
+  animation-delay: 1.5s;
+}
+
+.m4-gpu {
+  --target-width: 95%;
+  background: linear-gradient(90deg, #ff4e50, #ff7f50);
+  animation-delay: 2s;
+}
