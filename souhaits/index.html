@@ -1,217 +1,52 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste de Souhaits</title>
+    <title>Wunschliste</title>
     <link rel="stylesheet" href="assets/styles.css">
-    <link rel="shortcut icon" href="/B420B3F0-5DD8-4CA3-9772-BACBC8F56A91_4_5005_c.jpeg" type="image/x-icon">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="device-warning-modal" id="deviceWarningModal">
-        <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
-            <h2>Zu kleines Gerät</h2>
-            <p>Bitte wechseln Sie auf ein Tablet oder PC für eine bessere Benutzererfahrung.</p>
-        </div>
-    </div>
     <header>
-        <h1>Liste de Souhaits</h1>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#self-buy">🛒 Acheter soi-même</a></li>
-                <li><a href="#wishlist">🎁 Souhait</a></li>
-                <li><a href="#waiting">🔄 En attente</a></li>
-            </ul>
-        </nav>
+        <h1>✨ Wunschliste</h1>
     </header>
     
     <main>
-        <!-- Selbst kaufen Section -->
-        <section id="self-buy">
-            <h2>🛒 Acheter soi-même</h2>
-            
-<div class="wishlist-item">
-                    <img src="assets/f0b4aba828542900b086b79d3864ebf1-img-apple-macbook-pro-m3-gray-front.avif" style="object-fit: contain;" alt="MacBook Pro">
-                    <div class="item-details">
-                        <h2>MacBook Pro M4 Pro</h2>
-                        <p>2.899 EUR</p>
-                        <div class="priority-level">
-                            <progress value="100" max="100"></progress>
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <a href="https://huhpact.dev/mbpro" target="_blank">
-                            <button class="button">
-                                <span class="button-content">En Savoir Plus</span>
-                            </button>
-                        </a>
-                        
-                    </div>
-        </section>
-
-        <!-- Wunsch Section -->
         <section id="wishlist">
-            <h2>🎁 Souhait</h2>
+            <!-- Beispiel-Wunsch-Element -->
             <div class="wishlist-item">
-                <img src="assets/shutterstock_274724687_cash_money-5bfc3a9b46e0fb005148e091.jpg" alt="Cash">
+                <div class="priority-circle medium"></div> <!-- Prioritäts-Indikator -->
+                <img src="assets/shutterstock_274724687_cash_money-5bfc3a9b46e0fb005148e091.jpg" alt="Geld" class="wishlist-image">
                 <div class="item-details">
-                    <h2>Argent</h2>
-                    <div class="priority-level">
-                        <progress value="70" max="100"></progress>
-                    </div>
-                </div>
-                <div class="item-actions">
-                    <a href="https://www.berliner-sparkasse.de/de/home.html" target="_blank"><button class="button">
-                        <span class="button-content">En Savoir Plus</span>
-                    </button></a>
+                    <h2>Geld</h2>
+                    <p class="price"></p> <!-- Preis ohne Box -->
+                    <a href="https://www.berliner-sparkasse.de/de/home/login-online-banking.html?stref=login&n=true" target="_blank" class="product-button">Zum Produkt</a>
                 </div>
             </div>
-
+            <!-- Weitere Beispielprodukte -->
             <div class="wishlist-item">
-                <img src="assets/WH7573_C31_24.avif" alt="Lacoste Survêtement">
+                <div class="priority-circle medium"></div>
+                <img src="assets/WH7573_C31_24.avif" alt="Lacoste Trainingsanzug" class="wishlist-image">
                 <div class="item-details">
-                    <h2>Lacoste - Survêtement</h2>
-                    <p>240 EUR</p>
-                    <div class="priority-level">
-                        <progress value="30" max="100"></progress>
-                    </div>
-                </div>
-                <div class="item-actions">
-                    <a href="https://www.lacoste.com/fr/lacoste/homme/vetements/survetements/ensembles-de-survetement/WH7573-00.html?color=C31" target="_blank"><button class="button">
-                        <span class="button-content">En Savoir Plus</span>
-                    </button></a>
+                    <h2>Lacoste Trainingsanzug</h2>
+                    <p class="price">240 EUR</p>
+                    <a href="https://www.lacoste.com/fr/lacoste/homme/vetements/survetements/ensembles-de-survetement/WH7573-00.html?color=C31" target="_blank" class="product-button">Zum Produkt</a>
                 </div>
             </div>
-
-                <div class="wishlist-item">
-                    <img src="assets/91CE5602-133E-4A51-B83F-DEDB6BACC53A_4_5005_c.jpeg" style="object-fit: contain;" alt="Lacoste Survêtement">
-                    <div class="item-details">
-                        <h2>Irgendwas Tolles </h2>
-                        <p></p>
-                        <div class="priority-level">
-                            <progress value="60" max="100"></progress>
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <a href="https://www.google.de" target="_blank"><button class="button">
-                            <span class="button-content">En Savoir Plus</span>
-                        </button></a>
-                    </div>
-                </div>
-
-                <div class="wishlist-item">
-                    <img src="assets/volkswagen_id4.webp" style="object-fit: contain;" alt="Volkswagen ID.4">
-                    <div class="item-details">
-                        <h2>Volkswagen ID.4</h2>
-                        <p>48.635 EUR</p>
-                        <div class="priority-level">
-                            <progress value="70" max="100"></progress>
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <a href="https://www.volkswagen.de/de/modelle/id4.html" target="_blank"><button class="button">
-                            <span class="button-content">En Savoir Plus</span>
-                        </button></a>
-                    </div>
-                </div>
-
-                
-                    
-                </div>
-
-                <div class="wishlist-item">
-                    <img src="assets/store-1710930582605-2264196852.webp" style="object-fit: contain;" alt="L'exposition Hoodie">
-                    <div class="item-details">
-                        <h2>L'exposition Hoodie (L)</h2>
-                        <p>$69.99 USD</p>
-                        <div class="priority-level">
-                            <progress value="60" max="100"></progress>
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <a href="https://organicstarboy.com/products/lexposition-hoodie?variant=48427025924397" target="_blank"><button class="button">
-                            <span class="button-content">En Savoir Plus</span>
-                        </button></a>
-                    </div>
-                </div>
-
-                </div>
-                
-                
-             <!-- Modal Box (initially hidden) -->
-            <div id="imageModal" class="modal">
-                <img class="modal-content" id="modalImage" alt="Large Image">
-            </div>
-
-                
-                
-                
-                
-        </section>
-
-        <!-- Wartend Section -->
-        <section id="waiting">
-            <h2>🔄 En attente</h2>
             <div class="wishlist-item">
-                <img src="assets/lan-splitter.jpg" alt="LAN Splitter">
+                <div class="priority-circle low"></div>
+                <img src="assets/91CE5602-133E-4A51-B83F-DEDB6BACC53A_4_5005_c.jpeg" alt="AirPods Pro" class="wishlist-image">
                 <div class="item-details">
-                    <h2>LAN Splitter</h2>
-                    <p>12,99 EUR</p>
-                    <div class="priority-level">
-                        <progress value="15" max="100"></progress>
-                    </div>
-                </div>
-                <div class="item-actions">
-                    <a href="https://www.amazon.de/dp/B08TBY2N1Y/?th=1" target="_blank"><button class="button" disabled>
-                        <span class="button-content">En Savoir Plus</span>
-                    </button></a>
+                    <h2>Irgendwas Tolles</h2>
+                    <p class="price"></p>
+                    <a href="https://www.google.de" target="_blank" class="product-button">Zum Produkt</a>
                 </div>
             </div>
 
-            <div class="wishlist-item">
-                <img src="assets/nintendo_switch_neon_rot_neon_blau_1.jpg" alt="LAN Splitter">
-                <div class="item-details">
-                    <h2>Nintendo Switch 2</h2>
-                    <p>399 EUR</p>
-                    <div class="priority-level">
-                        <progress value="35" max="100"></progress>
-                    </div>
-                </div>
-                <div class="item-actions">
-                    <a href="https://nintendo.fr" target="_blank"><button class="button" disabled>
-                        <span class="button-content">Disponible 2025</span>
-                    </button></a>
-                </div>
-            </div>
-
-            <div class="wishlist-item">
-                <img src="assets/MUF82.jpeg" alt="Adaptateur multiport">
-                <div class="item-details">
-                    <h2>Adaptateur multiport</h2>
-                    <p>79 EUR</p>
-                    <div class="priority-level">
-                        <progress value="15" max="100"></progress>
-                    </div>
-                </div>
-                <div class="item-actions">
-                    <a href="https://www.apple.com/fr/shop/product/MW5M3ZM/A/adaptateur-multiport-av-num%C3%A9rique-usb%E2%80%91c?" target="_blank"><button class="button" disabled>
-                        <span class="button-content">En Savoir Plus</span>
-                    </button></a>
-                </div>
-            </div>
-
-      
+            
         </section>
     </main>
-<hr>
-    <footer>
-        <div class="footer-content">
-            <p>Réalisé par </p>
-            <img src="/logo.png" alt="Logo">
-        </div>
-    </footer>
 
     <script src="assets/script.js"></script>
 </body>

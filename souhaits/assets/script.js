@@ -1,46 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
-	const items = document.querySelectorAll('.wishlist-item');
-	items.forEach((item, index) => {
-			item.style.setProperty('--delay', `${index * 0.2}s`);
-	});
+	const statusButtons = document.querySelectorAll('.status-button');
+	const modals = document.querySelectorAll('.modal');
+	const favoriteButtons = document.querySelectorAll('.favorite-button');
 
-	const observer = new IntersectionObserver((entries) => {
-			entries.forEach(entry => {
-					if (entry.isIntersecting) {
-							entry.target.classList.add('visible');
-					}
+	// Modal öffnen/schließen
+	document.querySelectorAll('.wishlist-image').forEach(image => {
+			image.addEventListener('click', () => {
+					const modalId = image.getAttribute('data-modal');
+					document.getElementById(modalId).style.display = 'flex';
 			});
-	}, {
-			threshold: 0.1
 	});
 
-	items.forEach(item => {
-			observer.observe(item);
+	modals.forEach(modal => {
+			modal.querySelector('.close').addEventListener('click', () => {
+					modal.style.display = 'none';
+			});
+	});
+
+	// Status ändern und Animation auslösen
+	statusButtons.forEach(button => {
+			button.addEventListener('click', () => {
+					button.innerText = button.innerText.includes("Offen") ? "Status: Erfüllt" : "Status: Offen";
+					button.classList.toggle('glow');
+			});
+	});
+
+	// Favoriten-Herz anklicken
+	favoriteButtons.forEach(button => {
+			button.addEventListener('click', () => {
+					button.classList.toggle('bxs-heart');
+					button.classList.toggle('bxs-heart-circle');
+					button.style.color = button.classList.contains('bxs-heart') ? '#ff4c72' : '#3fc1ff';
+			});
 	});
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-	// Überprüfe die Bildschirmgröße
-	if (window.innerWidth <= 600) {
-			document.body.classList.add("blur"); // Hintergrund unscharf
-			document.querySelector('.device-warning-modal').style.display = "flex"; // Modal anzeigen
-	}
-});
-
-
-    
-
-
-    document.getElementById('chevronMacBook').addEventListener('click', function() {
-        const reasons = document.getElementById('reasonsMacBook');
-        const chevron = document.getElementById('chevronMacBook');
-        if (reasons.style.display === 'none') {
-            reasons.style.display = 'block';
-            chevron.classList.replace('bx-chevron-down', 'bx-chevron-up');
-        } else {
-            reasons.style.display = 'none';
-            chevron.classList.replace('bx-chevron-up', 'bx-chevron-down');
-        }
-    });
-    
-    
