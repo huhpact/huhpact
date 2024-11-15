@@ -1,4 +1,10 @@
 /* Grundstil für Seite */
+
+::selection {
+	background: #00aaff;
+	color: #001325;
+}
+
 * {
 	margin: 0;
 	padding: 0;
