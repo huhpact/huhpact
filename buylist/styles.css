@@ -142,3 +142,12 @@ body {
 			max-width: 100%;
 	}
 }
+
+.total {
+	margin-top: 25px;
+
+}
+
+.highlight-total {
+	color:rgba(0, 230, 255, 0.6);
+}
