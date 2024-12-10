@@ -23,7 +23,7 @@ setInterval(createEmoji, 500);
 
 function downloadFile() {
   const link = document.createElement('a');
-  link.href = 'weihnachten.docx'; 
-  link.download = 'weihnachten.docx'; 
+  link.href = 'Weihnachten.pdf'; 
+  link.download = 'Weihnachten.pdf'; 
   link.click();
 }
