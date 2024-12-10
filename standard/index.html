@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUHPACT</title>
+    <style>
+        body {
+            background-color: black;
+            color: #AA00FF; 
+            font-family: "Courier New", Courier, monospace;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #AA00FF; 
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px; 
+            flex-wrap: wrap;
+        }
+
+        .header span {
+            flex: 1;
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        .ascii-container {
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 90%;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .ascii-art {
+            display: inline-block;
+            white-space: pre;
+            font-size: min(16px, 3vw); 
+            line-height: 1.5;
+            text-align: left;
+            color: #AA00FF; 
+            padding: 0 10px; 
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            99% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .ascii-art {
+            animation: none; 
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                text-align: left;
+                padding: 10px 15px;
+            }
+
+            .ascii-art {
+                font-size: 12px; 
+                animation: scroll 15s linear infinite; 
+            }
+
+            .footer {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .footer a {
+                margin: 5px 10px;
+            }
+        }
+
+        .footer {
+            border-top: 1px solid #AA00FF;
+            padding: 10px 0;
+            font-size: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer a {
+            color: #AA00FF;
+            text-decoration: none;
+            margin: 0 5px;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span style="text-align: left;">Dernière version : 1.0</span>
+        <span id="last-modified" style="text-align: right;">Modifié : </span>
+    </div>
+
+    <div class="ascii-container">
+        <div class="ascii-art">
+                                             
+    )           )                       )  
+ ( /(    (   ( /(            )       ( /(  
+ )\())  ))\  )\()) `  )   ( /(   (   )\()) 
+((\  /((_)((\  /(/(   )(_))  )\ (_))/  
+| |(_)(_))( | |(_)((\ ((_)_  ((_)| |_   
+| ' \ | || || ' \ | '_ \)/ _` |/ _| |  _|  
+|_||_| \_,_||_||_|| .__/ \__,_|\__|  \__|  
+                  |_|                      
+        </div>
+    </div>
+
+    <div class="footer">
+        <a href="index.html">HUHPACT</a> |
+        <a href="documentation.html">Documentation</a> |
+        <a href="actualites.html">Actualités</a> |
+        <a href="a-propos.html">À propos</a> |
+        <a href="captures.html">Captures d'écran</a> |
+        <a href="https://github.com/huhpact">GitHub</a> |
+        <a href="contact.html">Contact</a> |
+        <a href="pricing.html">Tarification</a>
+    </div>
+
+    <script>
+       
+        const lastModifiedSpan = document.getElementById('last-modified');
+        const currentDate = new Date().toLocaleDateString('fr-FR', {
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric'
+        });
+        lastModifiedSpan.textContent += currentDate;
+    </script>
+</body>
+</html>
