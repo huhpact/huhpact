@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch - huh(pact)</title>
+		<link rel="icon" href="Image_26-10-2024_à_22.54-removebg-preview.png" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #222;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            overflow: hidden;
+        }
+
+        .stopwatch {
+            font-size: 10vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        @keyframes flip {
+            0% { transform: rotateX(0); }
+            50% { transform: rotateX(90deg); }
+            100% { transform: rotateX(0); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stopwatch" onclick="toggleStopwatch()">00:00:00</div>
+
+    <script>
+        let stopwatchInterval;
+        let elapsedSeconds = 0;
+        let running = false;
+
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600).toString().padStart(2, '0');
+            const minutes = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            return `${hours}:${minutes}:${secs}`;
+        }
+
+        function toggleStopwatch() {
+            const display = document.querySelector('.stopwatch');
+
+            if (!running) {
+                running = true;
+                stopwatchInterval = setInterval(() => {
+                    elapsedSeconds++;
+                    display.textContent = formatTime(elapsedSeconds);
+                }, 1000);
+            } else {
+                running = false;
+                clearInterval(stopwatchInterval);
+            }
+        }
+
+        // Stop animation if user leaves page
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && running) {
+                clearInterval(stopwatchInterval);
+            } else if (!document.hidden && running) {
+                toggleStopwatch();
+                toggleStopwatch();
+            }
+        });
+    </script>
+</body>
+</html>
