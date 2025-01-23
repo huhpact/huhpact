@@ -1,53 +1,56 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wunschliste</title>
-    <link rel="stylesheet" href="assets/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <h1>Wunschliste</h1>
-    </header>
-    
-    <main>
-        <section id="wishlist">
-            <!-- Beispiel-Wunsch-Element -->
-            <div class="wishlist-item">
-                <div class="priority-circle medium"></div> <!-- Prioritäts-Indikator -->
-                <img src="assets/shutterstock_274724687_cash_money-5bfc3a9b46e0fb005148e091.jpg" alt="Geld" class="wishlist-image">
-                <div class="item-details">
-                    <h2>Geld</h2>
-                    <p class="price"></p> <!-- Preis ohne Box -->
-                    <a href="https://www.berliner-sparkasse.de/de/home/login-online-banking.html?stref=login&n=true" target="_blank" class="product-button">Zum Produkt</a>
-                </div>
-            </div>
-            <!-- Weitere Beispielprodukte -->
-            <div class="wishlist-item">
-                <div class="priority-circle medium"></div>
-                <img src="assets/WH7573_C31_24.avif" alt="Lacoste Trainingsanzug" class="wishlist-image">
-                <div class="item-details">
-                    <h2>Lacoste Trainingsanzug</h2>
-                    <p class="price">240 EUR</p>
-                    <a href="https://www.lacoste.com/fr/lacoste/homme/vetements/survetements/ensembles-de-survetement/WH7573-00.html?color=C31" target="_blank" class="product-button">Zum Produkt</a>
-                </div>
-            </div>
-            <div class="wishlist-item">
-                <div class="priority-circle low"></div>
-                <img src="assets/91CE5602-133E-4A51-B83F-DEDB6BACC53A_4_5005_c.jpeg" alt="AirPods Pro" class="wishlist-image">
-                <div class="item-details">
-                    <h2>Irgendwas Tolles</h2>
-                    <p class="price"></p>
-                    <a href="https://www.google.de" target="_blank" class="product-button">Zum Produkt</a>
-                </div>
-            </div>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Wishlist</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="parallax-wrapper">
+      <section class="section hero-section">
+        <div class="floating-shapes">
+          <div class="shape"></div>
+          <div class="shape"></div>
+          <div class="shape"></div>
+        </div>
+        <header>
+          <h1>My Wishlist</h1>
+          <p class="subtitle">Track your desired items</p>
+          <div class="total-value">Total Value: € <span id="total-price">0</span></div>
+        </header>
+      </section>
 
-            
-        </section>
-    </main>
+      <section class="section tech-section">
+        <div class="section-background">
+          <div class="circuit-lines"></div>
+        </div>
+        <div class="section-content">
+          <h2 class="section-title">Tech Essentials</h2>
+          <div class="section-items" id="tech-items"></div>
+        </div>
+      </section>
 
-    <script src="assets/script.js"></script>
-</body>
+      <section class="section gaming-section">
+        <div class="section-background">
+          <div class="gaming-particles"></div>
+        </div>
+        <div class="section-content">
+          <h2 class="section-title">Gaming Setup</h2>
+          <div class="section-items" id="gaming-items"></div>
+        </div>
+      </section>
+
+      <section class="section lifestyle-section">
+        <div class="section-background">
+          <div class="lifestyle-waves"></div>
+        </div>
+        <div class="section-content">
+          <h2 class="section-title">Lifestyle & Comfort</h2>
+          <div class="section-items" id="lifestyle-items"></div>
+        </div>
+      </section>
+    </div>
+    <script type="module" src="/assets/script.js"></script>
+  </body>
 </html>
