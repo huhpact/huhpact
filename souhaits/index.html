@@ -1,56 +1,98 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Wishlist</title>
-    <link rel="stylesheet" href="/assets/styles.css" />
-  </head>
-  <body>
-    <div class="parallax-wrapper">
-      <section class="section hero-section">
-        <div class="floating-shapes">
-          <div class="shape"></div>
-          <div class="shape"></div>
-          <div class="shape"></div>
-        </div>
-        <header>
-          <h1>My Wishlist</h1>
-          <p class="subtitle">Track your desired items</p>
-          <div class="total-value">Total Value: € <span id="total-price">0</span></div>
-        </header>
-      </section>
-
-      <section class="section tech-section">
-        <div class="section-background">
-          <div class="circuit-lines"></div>
-        </div>
-        <div class="section-content">
-          <h2 class="section-title">Tech Essentials</h2>
-          <div class="section-items" id="tech-items"></div>
-        </div>
-      </section>
-
-      <section class="section gaming-section">
-        <div class="section-background">
-          <div class="gaming-particles"></div>
-        </div>
-        <div class="section-content">
-          <h2 class="section-title">Gaming Setup</h2>
-          <div class="section-items" id="gaming-items"></div>
-        </div>
-      </section>
-
-      <section class="section lifestyle-section">
-        <div class="section-background">
-          <div class="lifestyle-waves"></div>
-        </div>
-        <div class="section-content">
-          <h2 class="section-title">Lifestyle & Comfort</h2>
-          <div class="section-items" id="lifestyle-items"></div>
-        </div>
-      </section>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist</title>
+    <link rel="stylesheet" href="/souhaits/assets/styles.css">
+</head>
+<body>
+    <div class="background">
+        <div class="gradient"></div>
+        <div class="dots"></div>
+        <div class="noise"></div>
     </div>
-    <script type="module" src="/assets/script.js"></script>
-  </body>
+
+    <div class="progress-bar">
+        <div class="progress"></div>
+        <div class="progress-numbers"></div>
+    </div>
+
+    <main>
+        <section class="wishlist-item" data-position="left">
+            <div class="image-container">
+                <div class="image-wrapper">
+                    <img src="/assets/nintendo-switch-2.jpeg" alt="Nintendo Switch 2">
+                </div>
+                <div class="image-overlay"></div>
+                <div class="floating-price">€ 400</div>
+            </div>
+            <div class="content">
+                <span class="category">Gaming</span>
+                <h2>Nintendo Switch 2</h2>
+                <div class="specs">
+                    <span>Tragbar</span>
+                    <span>OLED Display</span>
+                    <span>bessere Performance</span>
+                </div>
+                <p>Immersive 7.1 surround sound gaming headset with RGB lighting and premium build quality for the ultimate gaming experience.</p>
+                <div class="status available">In Stock</div>
+                <div class="actions">
+                    <a href="#" class="product-link">View Product</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="wishlist-item" data-position="right">
+            <div class="image-container">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&q=80" alt="Mechanical Keyboard">
+                </div>
+                <div class="image-overlay"></div>
+                <div class="floating-price">$199</div>
+            </div>
+            <div class="content">
+                <span class="category">Peripherals</span>
+                <h2>Mechanical Keyboard</h2>
+                <div class="specs">
+                    <span>Hot-Swappable</span>
+                    <span>PBT Keycaps</span>
+                    <span>RGB</span>
+                </div>
+                <p>Premium mechanical keyboard with hot-swappable switches, PBT keycaps, and customizable RGB lighting.</p>
+                <div class="status sold-out">Sold Out</div>
+                <div class="actions">
+                    <a href="#" class="product-link">Notify Me</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="wishlist-item" data-position="left">
+            <div class="image-container">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=800&q=80" alt="Gaming Mouse">
+                </div>
+                <div class="image-overlay"></div>
+                <div class="floating-price">$149</div>
+            </div>
+            <div class="content">
+                <span class="category">Gaming</span>
+                <h2>Pro Gaming Mouse</h2>
+                <div class="specs">
+                    <span>20K DPI</span>
+                    <span>Lightweight</span>
+                    <span>8 Buttons</span>
+                </div>
+                <p>Ultra-lightweight gaming mouse with 20K DPI sensor and customizable buttons for competitive gaming.</p>
+                <div class="status available">In Stock</div>
+                <div class="actions">
+                    <a href="#" class="product-link">View Product</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/souhaits/assets/script.js"></script>
+</body>
 </html>
