@@ -1,159 +1,249 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUHPACT</title>
-    <link rel="icon" href="sources/Image_26-10-2024_à_22.54-removebg-preview.png" type="image/x-icon">
-    <meta name="description" content="site web professionnel et officiel de huh(pact) - Webdesign & Webdevelopment">
-    <meta name="keywords" content="huhpact, webdesign, website, france">
-    <meta name="robots" content="index, follow">
-    <meta property="og:title" content="huh(pact) - site web officiel">
-    <meta property="og:description" content="Webdesign & Webdevelopment">
-    <meta property="og:image" content="sources/Image_26-10-2024_à_22.54-removebg-preview.png">
-    <meta http-equiv="Content-Language" content="fr">
-
-    <style>
-        body {
-            background-color: black;
-            color: #AA00FF; 
-            font-family: "Courier New", Courier, monospace;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        .header {
-            background-color: #AA00FF; 
-            color: white;
-            padding: 10px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 16px; 
-            flex-wrap: wrap;
-        }
-
-        .header span {
-            flex: 1;
-            text-align: center;
-            margin: 5px 0;
-        }
-
-        .ascii-container {
-            overflow: hidden;
-            white-space: nowrap;
-            max-width: 90%;
-            margin: 20px auto;
-            position: relative;
-        }
-
-        .ascii-art {
-            display: inline-block;
-            white-space: pre;
-            font-size: min(16px, 3vw); 
-            line-height: 1.5;
-            text-align: left;
-            color: #AA00FF; 
-            padding: 0 10px; 
-        }
-
-        @keyframes scroll {
-            0% { transform: translateX(100%); }
-            99% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .ascii-art {
-            animation: none; 
-        }
-
-        @media (max-width: 600px) {
-            .header {
-                flex-direction: column;
-                text-align: left;
-                padding: 10px 15px;
-            }
-
-            .ascii-art {
-                font-size: 12px; 
-                animation: scroll 15s linear infinite; 
-            }
-
-            .footer {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .footer a {
-                margin: 5px 10px;
-            }
-        }
-
-        .footer {
-            border-top: 1px solid #AA00FF;
-            padding: 10px 0;
-            font-size: 16px;
-            flex-wrap: wrap;
-        }
-
-        .footer a {
-            color: #AA00FF;
-            text-decoration: none;
-            margin: 0 5px;
-            font-weight: bold;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>huh(pact) - Design & Development</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
-<body>
-    <div class="header">
-        <span style="text-align: left;">Dernière version : 1.0</span>
-        <span id="last-modified" style="text-align: right;">Modifié : </span>
+<body class="loading">
+    <div class="language-selector">
+        <button class="lang-btn" data-lang="fr">FR</button>
+        <button class="lang-btn" data-lang="en">EN</button>
     </div>
 
-    <div class="ascii-container">
-        <div class="ascii-art">
-                                             
-    )           )                       )  
- ( /(    (   ( /(            )       ( /(  
- )\())  ))\  )\()) `  )   ( /(   (   )\()) 
-((\  /((_)((\  /(/(   )(_))  )\ (_))/  
-| |(_)(_))( | |(_)((\ ((_)_  ((_)| |_   
-| ' \ | || || ' \ | '_ \)/ _` |/ _| |  _|  
-|_||_| \_,_||_||_|| .__/ \__,_|\__|  \__|  
-                  |_|                      
+    <div class="cursor"></div>
+    
+    <aside class="floating-sidebar">
+        <div class="social-icons">
+            <a href="https://github.com/huhpact" class="social-icon"><i class="fab fa-github"></i></a>
+            <a href="#" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/paulchappuzeau/" class="social-icon"><i class="fab fa-linkedin"></i></a>
         </div>
-    </div>
+    </aside>
 
-    <div class="footer">
-        <a href="index.html">HUHPACT</a> |
-        <a href="documentation.html">Documentation</a> |
-        <a href="actualites.html">Actualités</a> |
-        <a href="a-propos.html">À propos</a> |
-        <a href="captures.html">Captures d'écran</a> |
-        <a href="https://github.com/huhpact">GitHub</a> |
-        <a href="contact.html">Contact</a> |
-        <a href="pricing.html">Tarification</a> |
-		<a href="copyright.html">Droits d'auteur</a> |
-		<a href="privacy.html">Confidentialité</a>
-    </div>
+    <main>
+        <section id="hero" class="section">
+            <div class="glass-card">
+                <h1 class="reveal-text">huh(pact)</h1>
+                <p class="reveal-text" data-i18n="hero.subtitle">Design de sites web sur mesure</p>
+                <div class="scroll-indicator">
+                    <div class="mouse"></div>
+                </div>
+            </div>
+        </section>
 
-    <script>
-       
-        const lastModifiedSpan = document.getElementById('last-modified');
-        const currentDate = new Date().toLocaleDateString('fr-FR', {
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric'
-        });
-        lastModifiedSpan.textContent += currentDate;
-    </script>
+        <section id="skills" class="section">
+            <h2 class="section-title reveal-text" data-i18n="skills.title">Compétences</h2>
+            <div class="skills-grid">
+                <div class="skill-card glass-effect">
+                    <i class="fas fa-paint-brush"></i>
+                    <h3 data-i18n="skills.design.title">Design UI/UX</h3>
+                    <p data-i18n="skills.design.desc">Création d'interfaces modernes et intuitives</p>
+                </div>
+                <div class="skill-card glass-effect">
+                    <i class="fas fa-code"></i>
+                    <h3 data-i18n="skills.code.title">Développement Frontend</h3>
+                    <p data-i18n="skills.code.desc">Code propre et performant</p>
+                </div>
+                <div class="skill-card glass-effect">
+                    <i class="fas fa-magic"></i>
+                    <h3 data-i18n="skills.animation.title">Animations Web</h3>
+                    <p data-i18n="skills.animation.desc">Animations fluides et interactives</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="section">
+            <h2 class="section-title reveal-text" data-i18n="pricing.title">Tarifs</h2>
+            <div class="pricing-grid">
+                <div class="price-card glass-effect" data-plan="starter">
+                    <div class="price-card-header">
+                        <h3 data-i18n="pricing.starter.title">Débutant</h3>
+                        <div class="price">499€</div>
+                    </div>
+                    <div class="price-features">
+                        <ul class="feature-list">
+                            <li data-i18n="pricing.starter.feature1">Design responsive</li>
+                            <li data-i18n="pricing.starter.feature2">1+ page complexe</li>
+                            <li data-i18n="pricing.starter.feature3">Support rapide</li>
+                        </ul>
+                        <a href="https://buy.stripe.com/6oEaGp3Asb1A848aEO" class="cta-button" data-i18n="pricing.button">Commander</a>
+                    </div>
+                </div>
+                <div class="price-card glass-effect" data-plan="pro">
+                    <div class="price-card-header">
+                        <h3 data-i18n="pricing.pro.title">Avancé</h3>
+                        <div class="price">999€</div>
+                    </div>
+                    <div class="price-features">
+                        <ul class="feature-list">
+                            <li data-i18n="pricing.pro.feature1">Design premium</li>
+                            <li data-i18n="pricing.pro.feature2">5+ pages</li>
+                            <li data-i18n="pricing.pro.feature3">Support prioritaire</li>
+                            <li data-i18n="pricing.pro.feature4">Animations avancées</li>
+                            <li data-i18n="pricing.business.feature5">SEO optimisé</li>
+                        </ul>
+                        <a href="https://buy.stripe.com/28o6q97QIglU704eV5" class="cta-button" data-i18n="pricing.button">Commander</a>
+                    </div>
+                </div>
+                <div class="price-card glass-effect" data-plan="business">
+                    <div class="price-card-header">
+                        <h3 data-i18n="pricing.business.title">Business</h3>
+                        <div class="price">1999€</div>
+                    </div>
+                    <div class="price-features">
+                        <ul class="feature-list">
+                            <li data-i18n="pricing.business.feature1">Design sur mesure</li>
+                            <li data-i18n="pricing.business.feature2">10+ pages</li>
+                            <li data-i18n="pricing.business.feature3">Support prioritaire</li>
+                            <li data-i18n="pricing.business.feature4">Animations avancés</li>
+                            <li data-i18n="pricing.business.feature5">SEO optimisé</li>
+                        </ul>
+                        <a href="https://buy.stripe.com/9AQaGp8UMglU7049AM" class="cta-button" data-i18n="pricing.button">Commander</a>
+                    </div>
+                </div>
+                <div class="price-card glass-effect" data-plan="enterprise">
+                    <div class="price-card-header">
+                        <h3 data-i18n="pricing.enterprise.title">Entreprise</h3>
+                        <div class="price">2999€</div>
+                    </div>
+                    <div class="price-features">
+                        <ul class="feature-list">
+                            <li data-i18n="pricing.enterprise.feature1">Design exclusif</li>
+                            <li data-i18n="pricing.enterprise.feature2">Pages illimitées</li>
+                            <li data-i18n="pricing.enterprise.feature3">Support dédié</li>
+                            <li data-i18n="pricing.enterprise.feature4">Animations complexes</li>
+                            <li data-i18n="pricing.enterprise.feature5">SEO avancé</li>
+                            <li data-i18n="pricing.enterprise.feature6">Maintenance frontend incluse</li>
+                        </ul>
+                        <a href="https://buy.stripe.com/9AQ6q9ef60mWgAE8wJ" class="cta-button" data-i18n="pricing.button">Commander</a>
+                    </div>
+                </div>
+                <div class="price-card glass-effect" data-plan="huhpact">
+                    <div class="price-card-header">
+                        <h3 data-i18n="pricing.huhpact.title">Avancé Premium</h3>
+                        <div class="price">4999€</div>
+                    </div>
+                    <div class="price-features">
+                        <ul class="feature-list">
+                            <li data-i18n="pricing.huhpact.feature1">Design signature huh(pact)</li>
+                            <li data-i18n="pricing.huhpact.feature2">Site complet</li>
+                            <li data-i18n="pricing.huhpact.feature3">Support VIP</li>
+                            <li data-i18n="pricing.huhpact.feature4">Animations exclusives</li>
+                            <li data-i18n="pricing.huhpact.feature5">SEO avancé</li>
+                            <li data-i18n="pricing.huhpact.feature6">Maintenance frontend prioritaire</li>
+                            <li data-i18n="pricing.huhpact.feature7">Design system complet</li>
+                        </ul>
+                        <a href="https://buy.stripe.com/eVaeWFgne2v41FK8wK" class="cta-button" data-i18n="pricing.button">Commander</a>
+                    </div>
+                </div>
+                <div class="price-card glass-effect" data-plan="custom">
+                    <div class="price-card-header">
+                        <h3 data-i18n="pricing.custom.title">Sur mesure</h3>
+                        <div class="price">Sur Devis</div>
+                    </div>
+                    <div class="price-features">
+                        <ul class="feature-list">
+                            <li data-i18n="pricing.custom.feature1">Projet complexe</li>
+                            <li data-i18n="pricing.custom.feature2">Besoins spécifiques</li>
+                            <li data-i18n="pricing.custom.feature3">Support prioritaire</li>
+                            <li data-i18n="pricing.custom.feature4">Solutions adaptées</li>
+                        </ul>
+                        <a href="#contact" class="cta-button" data-i18n="pricing.button">Contacter</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="section">
+            <h2 class="section-title reveal-text" data-i18n="gallery.title">Galerie</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item glass-effect">
+                    <img src="/images/mbpro.png" alt="Project 1">
+                    <div class="gallery-overlay">
+                        <h3 data-i18n="gallery.project1">MacBook Présentation</h3>
+                        <p data-i18n="gallery.project1Desc">Site e-commerce moderne</p>
+                    </div>
+                </div>
+                <div class="gallery-item glass-effect">
+                    <img src="/images/Waifuspin.png" alt="Project 2">
+                    <div class="gallery-overlay">
+                        <h3 data-i18n="gallery.project2">WaifuSpin</h3>
+                        <p data-i18n="gallery.project2Desc">Casino en ligne</p>
+                    </div>
+                </div>
+                <div class="gallery-item glass-effect">
+                    <img src="/images/Usp-hannover.png" alt="Project 3">
+                    <div class="gallery-overlay">
+                        <h3 data-i18n="gallery.project3">USP Hannover</h3>
+                        <p data-i18n="gallery.project3Desc">Site professionel</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <h2 class="section-title reveal-text" data-i18n="contact.title">Contact</h2>
+            <div class="contact-content glass-effect">
+                <div class="contact-info">
+                    <h3 data-i18n="contact.getInTouch">Contactez-nous</h3>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span data-i18n="contact.email">huhpact@outlook.fr</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span data-i18n="contact.location">Poitiers, France</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span data-i18n="contact.phone">+49 151 52 85 04 84</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-schedule">
+                    <h3 data-i18n="contact.availability">Disponibilité</h3>
+                    <div class="schedule-list">
+                        <div class="schedule-item">
+                            <span data-i18n="contact.monday">Lundi - Vendredi</span>
+                            <span>9:00 - 20:00</span>
+                        </div>
+                        <div class="schedule-item">
+                            <span data-i18n="contact.saturday">Samedi</span>
+                            <span>12:00 - 20:00</span>
+                        </div>
+                        <div class="schedule-item">
+                            <span data-i18n="contact.sunday">Dimanche</span>
+                            <span data-i18n="contact.closed">Fermé</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass-effect">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="/s/logo-huhpact.png" alt="huh(pact)">
+            </div>
+            <div class="footer-links">
+                <a href="#services" data-i18n="footer.services">Confidentalité</a>
+                <a href="#pricing" data-i18n="footer.pricing">Droits d'auteur</a>
+                <a href="#gallery" data-i18n="footer.gallery">Galerie</a>
+                <a href="#contact" data-i18n="footer.contact">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 huh(pact). <span data-i18n="footer.rights">Tous droits réservés</span></p>
+        </div>
+    </footer>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
