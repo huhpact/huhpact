@@ -1,0 +1,65 @@
+@font-face {
+    font-family: Founders Grotesk Mono Light;
+    src: url(../df-refresh/Fonts/FoundersGroteskMonoWeb-Light.woff2) format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Founders Grotesk Mono Medium;
+    src: url(../df-refresh/Fonts/FoundersGroteskMonoWeb-Medium.woff2) format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Founders Grotesk Mono Regular;
+    src: url(../df-refresh/Fonts/FoundersGroteskMonoWeb-Regular.woff2) format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Founders Grotesk Text Medium;
+    src: url(../df-refresh/Fonts/FoundersGroteskTextWeb-Medium.woff2) format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Founders Grotesk text Regular;
+    src: url(../df-refresh/Fonts/FoundersGroteskTextWeb-Regular.woff2) format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: LeJeuneDeck-Light;
+    src: url(../df-refresh/Fonts/LeJeuneDeck-Light-Web.woff2) format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: LeJeuneDeck-Regular;
+    src: url(../df-refresh/Fonts/LeJeuneDeck-Regular-Web.woff2) format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: LeJeuneDeck-Regular-Italic;
+    src: url(../df-refresh/Fonts/LeJeuneDeck-RegularItalic-Web.woff2) format("woff2");
+    font-display: swap
+}
+
+@font-face {
+    font-family: 'Northwell Alt';
+    src: url('../rl-fonts/Fonts/NorthwellAlt.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Northwell';
+    src: url('../rl-fonts/Fonts/Northwell.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Northwell Swash';
+    src: url('../rl-fonts/Fonts/NorthwellSwash.woff2') format('woff2');
+    font-display: swap;
+}

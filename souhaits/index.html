@@ -1,99 +1,20 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wunschliste</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="A modern wishlist showcasing items I'm dreaming about">
+    <meta name="theme-color" content="#0f0a1e">
     <link rel="stylesheet" href="/souhaits/assets/styles.css">
-    <link rel="shortcut icon" href="/B420B3F0-5DD8-4CA3-9772-BACBC8F56A91_4_5005_c.jpeg" type="image/x-icon">
-</head>
-<body>
-    <div class="background">
-        <div class="gradient"></div>
-        <div class="dots"></div>
-        <div class="noise"></div>
-    </div>
-
-    <div class="progress-bar">
-        <div class="progress"></div>
-        <div class="progress-numbers"></div>
-    </div>
-
-    <main>
-        <section class="wishlist-item" data-position="left">
-            <div class="image-container">
-                <div class="image-wrapper">
-                    <img src="/souhaits/assets/nintendo-switch-2.png" alt="Nintendo Switch 2">
-                </div>
-                <div class="image-overlay"></div>
-                <div class="floating-price">€ 400</div>
-            </div>
-            <div class="content">
-                <span class="category">Gaming</span>
-                <h2>Nintendo Switch 2</h2>
-                <div class="specs">
-                    <span>Tragbar</span>
-                    <span>OLED Display</span>
-                    <span>bessere Performance</span>
-                </div>
-                <p>Weiterentwicklung der Nintendo Switch und bessere Performance.</p>
-                <div class="status sold-out">Release: 2025</div>
-                <div class="actions">
-                    <a href="https://www.nintendo.com/successor/de-de/index.html" class="product-link">Produkt anzeigen</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="wishlist-item" data-position="right">
-            <div class="image-container">
-                <div class="image-wrapper">
-                    <img src="/souhaits/assets/gopro.png" alt="GoPro Hero 13 Black">
-                </div>
-                <div class="image-overlay"></div>
-                <div class="floating-price">€ 399.99</div>
-            </div>
-            <div class="content">
-                <span class="category">Peripherals</span>
-                <h2>GoPro Hero 13 Black</h2>
-                <div class="specs">
-                    <span>Actionkamera</span>
-                    <span>Videoaufnahme</span>
-                    <span>gute Kamera</span>
-                </div>
-                <p>Premium Actionkamera fuer Urlaub, Ausfluege, Dokumentation etc.</p>
-                <div class="status sold-out">Verfuegbar</div>
-                <div class="actions">
-                    <a href="https://gopro.com/de/de/shop/cameras/learn/hero13black/CHDHX-131-master.html" class="product-link">Produkt anzeigen</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="wishlist-item" data-position="left">
-            <div class="image-container">
-                <div class="image-wrapper">
-                    <img src="/souhaits/assets/beyerdynamic-dt-990-pro-perspective_transparent_1_1.webp" alt="Kopfhörer">
-                </div>
-                <div class="image-overlay"></div>
-                <div class="floating-price">€ 149.00</div>
-            </div>
-            <div class="content">
-                <span class="category">Sound</span>
-                <h2>DT 990 Pro</h2>
-                <div class="specs">
-                    <span>Ohrumschließender Kopfhörer</span>
-                    <span>Konfortabel</span>
-                    <span>Kabelgebunden</span>
-                </div>
-                <p>Guter Basssound mit Kabel (lossless) und transparenter Sound fuer Macbook, PC and alles mit Klinkenanschluss.</p>
-                <div class="status available">In Stock</div>
-                <div class="actions">
-                    <a href="https://www.beyerdynamic.de/p/dt-990-pro" class="product-link">Produkt anzeigen</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <script src="/souhaits/assets/script.js"></script>
-</body>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/souhaits/assets/script.js"></script>
+  </body>
 </html>
