@@ -50,6 +50,7 @@ const translations = {
 			'pricing.custom.feature3': 'Support prioritaire',
 			'pricing.custom.feature4': 'Solutions adaptées',
 			'pricing.button': 'Commander',
+			'pricing.custom.price': 'Sur Demande',
 			'gallery.title': 'Galerie',
 			'gallery.project1': 'MacBook Présentation',
 			'gallery.project1Desc': 'Site e-commerce moderne',
@@ -58,7 +59,6 @@ const translations = {
 			'gallery.project3': 'USP Hannover',
 			'gallery.project3Desc': 'Site professionel',
 			'contact.getInTouch': 'Contactez-nous',
-			'contact.phone': '+33 1 23 45 67 89',
 			'contact.availability': 'Disponibilité',
 			'contact.monday': 'Lundi - Vendredi',
 			'contact.saturday': 'Samedi',
@@ -121,6 +121,7 @@ const translations = {
 			'pricing.custom.feature3': 'Priority support',
 			'pricing.custom.feature4': 'Tailored solutions',
 			'pricing.button': 'Order Now',
+			'pricing.custom.price': 'On Demand',
 			'gallery.title': 'Gallery',
 			'gallery.project1': 'Macbook Presentation',
 			'gallery.project1Desc': 'Modern e-commerce site',
@@ -129,7 +130,6 @@ const translations = {
 			'gallery.project3': 'USP Hannover',
 			'gallery.project3Desc': 'Site professionel',
 			'contact.getInTouch': 'Get in Touch',
-			'contact.phone': '+49 151 52 85 04 84',
 			'contact.availability': 'Availability',
 			'contact.monday': 'Monday - Friday',
 			'contact.saturday': 'Saturday',
@@ -151,14 +151,14 @@ function setLanguage(lang) {
 					element.textContent = translations[lang][key];
 			}
 	});
-	localStorage.setItem('preferred-lang', lang);
+	localStorage.setItem('preferred__lang', lang);
 }
 
 const browserLang = navigator.language.split('-')[0];
-const savedLang = localStorage.getItem('preferred-lang');
+const savedLang = localStorage.getItem('preferred__lang');
 const defaultLang = browserLang === 'fr' ? 'fr' : 'en';
 setLanguage(savedLang || defaultLang);
 
-document.querySelectorAll('.lang-btn').forEach(btn => {
+document.querySelectorAll('.lang__btn').forEach(btn => {
 	btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
 });

@@ -6,7 +6,7 @@ const observer = new IntersectionObserver((entries) => {
 	});
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.reveal-text').forEach(el => observer.observe(el));
+document.querySelectorAll('.reveal__text').forEach(el => observer.observe(el));
 
 const cursor = document.querySelector('.cursor');
 document.addEventListener('mousemove', (e) => {
@@ -21,9 +21,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 	});
 });
 
-document.querySelectorAll('.price-card').forEach(card => {
+document.querySelectorAll('.price__card').forEach(card => {
 	card.addEventListener('click', () => {
-			document.querySelectorAll('.price-card').forEach(otherCard => {
+			document.querySelectorAll('.price__card').forEach(otherCard => {
 					if (otherCard !== card) {
 							otherCard.classList.remove('active');
 					}
