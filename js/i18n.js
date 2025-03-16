@@ -66,8 +66,8 @@ const translations = {
 			'contact.saturday': 'Samedi',
 			'contact.sunday': 'Dimanche',
 			'contact.closed': 'Fermé',
-			'footer.services': 'Confidentalité',
-			'footer.pricing': "Droits d'auteur",
+			'footer.services': 'Services',
+			'footer.pricing': "Tarifs",
 			'footer.gallery': 'Galerie',
 			'footer.contact': 'Contact',
 			'footer.rights': 'Tous droits réservés'
@@ -139,8 +139,8 @@ const translations = {
 			'contact.saturday': 'Saturday',
 			'contact.sunday': 'Sunday',
 			'contact.closed': 'Closed',
-			'footer.services': 'Privacy',
-			'footer.pricing': 'Copyright',
+			'footer.services': 'Services',
+			'footer.pricing': 'Pricing',
 			'footer.gallery': 'Gallery',
 			'footer.contact': 'Contact',
 			'footer.rights': 'All rights reserved'
