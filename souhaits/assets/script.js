@@ -119,6 +119,17 @@ const wishlistItems = [
     priority: "mittel",
     productUrl: "https://www.zara.com/de/de/leichte-steppweste-p04302536.html?v1=410570119&v2=2443335",
     dateAdded: "03.03.2025"
+  },
+  {
+   id: 12,
+  title: "Banente",
+  price: "18,99 EUR",
+  description: "Geisteskrank coole Bananen-Ente",
+  image: "https://i.otto.de/i/otto/69e6233b-d114-4fd1-af50-6d19545fbc61?h=1040&w=1102&qlt=40&unsharp=0,1,0.6,7&sm=clamp&upscale=true&fmt=auto",
+  tags: ["Otto", "Ente", "Banane"],
+  priority: "mittel",
+  productURL: "https://www.otto.de/p/nuodwell-babykissen-banana-duck-quirky-pluesch-kissen-kissen-spielzeug-S0Y7U00C/#ech=29067528&variationId=S0Y7U00CIYGW",
+  dataAdded: "07.04.2025"
   }
 ];
 
