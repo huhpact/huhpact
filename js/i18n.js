@@ -130,7 +130,7 @@ const translations = {
 			'gallery.project2': 'WaifuSpin',
 			'gallery.project2Desc': 'Online Casino Site',
 			'gallery.project3': 'USP Hannover',
-			'gallery.project3Desc': 'Site professionel',
+			'gallery.project3Desc': 'Professional business site',
 			'gallery.project4': 'SimpleTools',
 			'gallery.project4Desc': 'Simple but powerful tools',
 			'contact.getInTouch': 'Get in Touch',
