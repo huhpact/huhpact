@@ -1,57 +1,134 @@
 <!DOCTYPE html>
-<html lang="de-DE">
+<html lang="fr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Graduation Trip</title>
-    <link rel="stylesheet" href="/abi/styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destinations de Rêve | Voyage de Fin d'Études</title>
+  <link rel="stylesheet" href="/abi/css/animations.css">
+  <link rel="stylesheet" href="/abi/css/responsive.css">
+  <link rel="stylesheet" href="/abi/css/style.css">
+  <link rel="stylesheet" href="/abi/css/variables.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+	<link rel="icon" href="/icon.png" type="image/x-icon">
 </head>
 <body>
-    <div class="background">
-        <div class="blur__overlay"></div>
-    </div>
-    
-    <header>
-        <nav class="glass__nav">
-            <h1>GraduationTrip <span>Ziele</span></h1>
-        </nav>
-    </header>
+  <div class="loader">
+    <div class="loader-inner"></div>
+  </div>
 
-    <main>
-        <div class="destinations__grid" id="destinationsGrid"></div>
-    </main>
-
-    <div class="modal" id="destinationModal">
-        <div class="modal__content glass">
-            <button class="close__modal"><i class="fas fa-times"></i></button>
-            <div class="modal__header">
-                <h2 id="modalTitle"></h2>
-                <div class="rating" id="modalRating"></div>
-            </div>
-            <div class="modal__image">
-                <img id="modalImage" src="" alt="">
-            </div>
-            <div class="modal__details">
-                <p id="modalDescription"></p>
-                <div class="info__grid">
-                    <div class="info__item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span id="modalLocation"></span>
-                    </div>
-                    <div class="info__item">
-                        <i class="fas fa-clock"></i>
-                        <span id="modalDuration"></span>
-                    </div>
-                    <div class="info__item">
-                        <i class="fas fa-euro-sign"></i>
-                        <span id="modalPrice"></span>
-                    </div>
-                </div>
-            </div>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <h1>Voyage<span>Dreams</span></h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#home" data-i18n="nav.home">Accueil</a></li>
+          <li><a href="#destinations" data-i18n="nav.destinations">Destinations</a></li>
+          <li><a href="#about" data-i18n="nav.about">À propos</a></li>
+          <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-controls">
+        <div class="language-selector">
+          <button class="current-lang">FR</button>
+          <div class="language-dropdown">
+            <a href="#" data-lang="fr" class="active">FR</a>
+            <a href="#" data-lang="de">DE</a>
+          </div>
         </div>
+        <div class="theme-toggle">
+          <i class="fas fa-sun"></i>
+          <i class="fas fa-moon"></i>
+        </div>
+        <button class="mobile-menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <script type="module" src="/abi/script.js"></script>
+  <div class="mobile-menu">
+    <ul>
+      <li><a href="#home" data-i18n="nav.home">Accueil</a></li>
+      <li><a href="#destinations" data-i18n="nav.destinations">Destinations</a></li>
+    </ul>
+    <div class="mobile-lang">
+      <a href="#" data-lang="fr" class="active">FR</a>
+      <a href="#" data-lang="de">DE</a>
+    </div>
+  </div>
+
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1 class="animate-in" data-i18n="hero.title">Découvrez Votre Prochaine Aventure</h1>
+      <p class="animate-in" data-i18n="hero.subtitle">Explorez des destinations extraordinaires pour votre voyage de fin d'études</p>
+      <a href="#destinations" class="btn primary" data-i18n="hero.cta">Voir les destinations</a>
+    </div>
+    <div class="hero-overlay"></div>
+  </section>
+
+  <section id="destinations" class="destinations">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-i18n="destinations.title">Destinations</h2>
+        <p data-i18n="destinations.subtitle">Explorez ces lieux extraordinaires pour votre voyage</p>
+      </div>
+      
+      <div class="filter-controls">
+        <div class="search-box">
+          <input type="text" id="destination-search" data-i18n-placeholder="destinations.searchPlaceholder" placeholder="Rechercher une destination...">
+          <i class="fas fa-search"></i>
+        </div>
+        <div class="filter-dropdown">
+          <button class="filter-btn" data-i18n="destinations.filterBy">Filtrer par</button>
+          <div class="filter-options">
+            <a href="#" data-filter="all" class="active" data-i18n="destinations.all">Tous</a>
+            <a href="#" data-filter="europe" data-i18n="destinations.europe">Europe</a>
+            <a href="#" data-filter="asia" data-i18n="destinations.asia">Asie</a>
+            <a href="#" data-filter="americas" data-i18n="destinations.americas">Amériques</a>
+            <a href="#" data-filter="oceania" data-i18n="destinations.oceania">Océanie</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="destinations-grid" id="destinations-container">
+        <!-- Destinations will be loaded dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <section id="map" class="map-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-i18n="map.title">Carte Interactive</h2>
+        <p data-i18n="map.subtitle">Visualisez toutes les destinations sur la carte</p>
+      </div>
+      <div class="map-container" id="destinations-map">
+        <!-- Map will be loaded here -->
+      </div>
+    </div>
+  </section>
+  <div class="destination-modal" id="destination-modal">
+    <div class="modal-content">
+      <button class="close-modal">&times;</button>
+      <div class="modal-body">
+        <!-- Modal content will be loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="/abi/js/animations.js"></script>
+  <script src="/abi/js/destinations.js"></script>
+  <script src="/abi/js/i18n.js"></script>
+  <script src="/abi/js/main.js"></script>
+  <script src="/abi/js/map.js"></script>
 </body>
 </html>
