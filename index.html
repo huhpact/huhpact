@@ -1,286 +1,476 @@
 <!DOCTYPE html>
-<html lang="fr-FR">
+<html lang="fr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>huh(pact) - Design & Development</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="shortcut icon" href="/icon.png" type="image/x-icon">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="huhpact propose des solutions avancées de développement web et des produits numériques innovants pour les entreprises de toutes tailles.">
-    <meta name="keywords" content="développement web, développement logiciel, solutions numériques, logiciels sur mesure, huhpact">
-    <meta name="author" content="huh(pact)">
-    <meta property="og:title" content="huh(pact) - Design & Development">
-    <meta property="og:description" content="Découvrez les solutions numériques sur mesure de huh(pact) pour votre entreprise.">
-    <meta property="og:image" content="/s/logo-huhpact.png">
-    <meta property="og:url" content="https://huhpact.dev">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="huh(pact) - Design & Development">
-    <meta name="twitter:description" content="huh(pact) propose des solutions numériques innovantes pour les entreprises. Découvrez-en plus !">
-    <meta name="twitter:image" content="/s/logo-huhpact.png">
-    <link rel="canonical" href="https://huhpact.dev">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "huhpact",
-      "url": "https://huhpact.dev",
-      "description": "huh(pact) propose des solutions avancées de développement web pour les entreprises de toutes tailles.",
-      "publisher": {
-        "@type": "Organization",
-        "name": "huh(pact)",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "/icon.png"
-        }
-      }
-    }
-    </script>
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>huh(pact) - Développement Web Premium</title>
+    <meta name="description" content="Services de développement web premium : Design, Hébergement, Maintenance, Marketing & Branding">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="loading">
-    <div class="language__selector">
-        <button class="lang__btn" data-lang="fr">FR</button>
-        <button class="lang__btn" data-lang="en">EN</button>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor">
+        <div class="cursor-dot"></div>
+        <div class="cursor-outline"></div>
     </div>
 
-    <div class="cursor"></div>
-    
-    <aside class="floating__sidebar">
-        <div class="social__icons">
-            <a href="https://github.com/huhpact" class="social__icon"><i class="fab fa-github"></i></a>
-            <a href="#" class="social__icon"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://www.linkedin.com/in/paulchappuzeau/" class="social__icon"><i class="fab fa-linkedin"></i></a>
-        </div>
-    </aside>
-
-    <main>
-        <section id="hero" class="section">
-            <div class="glass__card">
-                <h1 class="reveal__text">huh(pact)</h1>
-                <p class="reveal__text" data-i18n="hero.subtitle">Design de sites web sur mesure</p>
-                <div class="scroll__indicator">
-                    <div class="mouse"></div>
-                </div>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand magnetic-element">
+                <span class="brand-text">huh(pact)</span>
             </div>
-        </section>
-
-        <section id="skills" class="section">
-            <h2 class="section__title reveal__text" data-i18n="skills.title">Compétences</h2>
-            <div class="skills__grid">
-                <div class="skill__card glass__effect">
-                    <i class="fas fa-paint-brush"></i>
-                    <h3 data-i18n="skills.design.title">Design UI/UX</h3>
-                    <p data-i18n="skills.design.desc">Création d'interfaces modernes et intuitives</p>
-                </div>
-                <div class="skill__card glass__effect">
-                    <i class="fas fa-code"></i>
-                    <h3 data-i18n="skills.code.title">Développement Frontend</h3>
-                    <p data-i18n="skills.code.desc">Code propre et performant</p>
-                </div>
-                <div class="skill__card glass__effect">
-                    <i class="fas fa-magic"></i>
-                    <h3 data-i18n="skills.animation.title">Animations Web</h3>
-                    <p data-i18n="skills.animation.desc">Animations fluides et interactives</p>
-                </div>
+            <div class="nav-menu">
+                <a href="#hero" class="nav-link magnetic-element" data-i18n="nav.home">Accueil</a>
+                <a href="#about" class="nav-link magnetic-element" data-i18n="nav.about">À propos</a>
+                <a href="#services" class="nav-link magnetic-element" data-i18n="nav.services">Services</a>
+                <a href="#pricing" class="nav-link magnetic-element" data-i18n="nav.pricing">Tarifs</a>
+                <a href="#gallery" class="nav-link magnetic-element" data-i18n="nav.gallery">Portfolio</a>
+                <a href="#contact" class="nav-link magnetic-element" data-i18n="nav.contact">Contact</a>
             </div>
-        </section>
-
-        <section id="pricing" class="section">
-            <h2 class="section__title reveal__text" data-i18n="pricing.title">Tarifs</h2>
-            <div class="pricing__grid">
-                <div class="price__card glass__effect" data-plan="starter">
-                    <div class="price__card__header">
-                        <h3 data-i18n="pricing.starter.title">Débutant</h3>
-                        <div class="price">499€</div>
-                    </div>
-                    <div class="price__features">
-                        <ul class="feature__list">
-                            <li data-i18n="pricing.starter.feature1">Design responsive</li>
-                            <li data-i18n="pricing.starter.feature2">1+ page complexe</li>
-                            <li data-i18n="pricing.starter.feature3">Support rapide</li>
-                        </ul>
-                        <a href="https://buy.stripe.com/6oEaGp3Asb1A848aEO" class="cta__button" data-i18n="pricing.button">Commander</a>
-                    </div>
+            <div class="nav-controls">
+                <button class="lang-toggle magnetic-element" id="langToggle">
+                    <span class="lang-text">FR</span>
+                </button>
+                <div class="nav-progress">
+                    <div class="nav-progress-bar" id="navProgressBar"></div>
                 </div>
-                <div class="price__card glass__effect" data-plan="pro">
-                    <div class="price__card__header">
-                        <h3 data-i18n="pricing.pro.title">Avancé</h3>
-                        <div class="price">999€</div>
-                    </div>
-                    <div class="price__features">
-                        <ul class="feature__list">
-                            <li data-i18n="pricing.pro.feature1">Design premium</li>
-                            <li data-i18n="pricing.pro.feature2">5+ pages</li>
-                            <li data-i18n="pricing.pro.feature3">Support prioritaire</li>
-                            <li data-i18n="pricing.pro.feature4">Animations avancées</li>
-                            <li data-i18n="pricing.business.feature5">SEO optimisé</li>
-                        </ul>
-                        <a href="https://buy.stripe.com/28o6q97QIglU704eV5" class="cta__button" data-i18n="pricing.button">Commander</a>
-                    </div>
-                </div>
-                <div class="price__card glass__effect" data-plan="business">
-                    <div class="price__card__header">
-                        <h3 data-i18n="pricing.business.title">Business</h3>
-                        <div class="price">1999€</div>
-                    </div>
-                    <div class="price__features">
-                        <ul class="feature__list">
-                            <li data-i18n="pricing.business.feature1">Design sur mesure</li>
-                            <li data-i18n="pricing.business.feature2">10+ pages</li>
-                            <li data-i18n="pricing.business.feature3">Support prioritaire</li>
-                            <li data-i18n="pricing.business.feature4">Animations avancés</li>
-                            <li data-i18n="pricing.business.feature5">SEO optimisé</li>
-                        </ul>
-                        <a href="https://buy.stripe.com/9AQaGp8UMglU7049AM" class="cta__button" data-i18n="pricing.button">Commander</a>
-                    </div>
-                </div>
-                <div class="price__card glass__effect" data-plan="enterprise">
-                    <div class="price__card__header">
-                        <h3 data-i18n="pricing.enterprise.title">Entreprise</h3>
-                        <div class="price">2999€</div>
-                    </div>
-                    <div class="price__features">
-                        <ul class="feature__list">
-                            <li data-i18n="pricing.enterprise.feature1">Design exclusif</li>
-                            <li data-i18n="pricing.enterprise.feature2">Pages illimitées</li>
-                            <li data-i18n="pricing.enterprise.feature3">Support dédié</li>
-                            <li data-i18n="pricing.enterprise.feature4">Animations complexes</li>
-                            <li data-i18n="pricing.enterprise.feature5">SEO avancé</li>
-                            <li data-i18n="pricing.enterprise.feature6">Maintenance frontend incluse</li>
-                        </ul>
-                        <a href="https://buy.stripe.com/9AQ6q9ef60mWgAE8wJ" class="cta__button" data-i18n="pricing.button">Commander</a>
-                    </div>
-                </div>
-                <div class="price__card glass__effect" data-plan="huhpact">
-                    <div class="price__card__header">
-                        <h3 data-i18n="pricing.huhpact.title">Avancé Premium</h3>
-                        <div class="price">4999€</div>
-                    </div>
-                    <div class="price__features">
-                        <ul class="feature__list">
-                            <li data-i18n="pricing.huhpact.feature1">Design signature huh(pact)</li>
-                            <li data-i18n="pricing.huhpact.feature2">Site complet</li>
-                            <li data-i18n="pricing.huhpact.feature3">Support VIP</li>
-                            <li data-i18n="pricing.huhpact.feature4">Animations exclusives</li>
-                            <li data-i18n="pricing.huhpact.feature5">SEO avancé</li>
-                            <li data-i18n="pricing.huhpact.feature6">Maintenance frontend prioritaire</li>
-                            <li data-i18n="pricing.huhpact.feature7">Design system complet</li>
-                        </ul>
-                        <a href="https://buy.stripe.com/eVaeWFgne2v41FK8wK" class="cta__button" data-i18n="pricing.button">Commander</a>
-                    </div>
-                </div>
-                <div class="price__card glass__effect" data-plan="custom">
-                    <div class="price__card__header">
-                        <h3 data-i18n="pricing.custom.title">Sur mesure</h3>
-                        <div class="price" data-i18n="pricing.custom.price">Sur Demande</div>
-                    </div>
-                    <div class="price__features">
-                        <ul class="feature__list">
-                            <li data-i18n="pricing.custom.feature1">Projet complexe</li>
-                            <li data-i18n="pricing.custom.feature2">Besoins spécifiques</li>
-                            <li data-i18n="pricing.custom.feature3">Support prioritaire</li>
-                            <li data-i18n="pricing.custom.feature4">Solutions adaptées</li>
-                        </ul>
-                        <a href="#contact" class="cta__button" data-i18n="pricing.button">Contacter</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="gallery" class="section">
-            <h2 class="section__title reveal__text" data-i18n="gallery.title">Galerie</h2>
-            <div class="gallery__grid">
-               <div class="gallery__item glass__effect">
-                    <img src="/images/mbpro.png" alt="MacBook Pro">
-                    <div class="gallery__overlay">
-                        <h3 data-i18n="gallery.project1">MacBook Présentation</h3>
-                        <p data-i18n="gallery.project1Desc">Site e-commerce moderne</p>
-                    </div>
-                </div>
-                <div class="gallery__item glass__effect">
-                    <img src="/images/Waifuspin.png" alt="WaifuSpin">
-                    <div class="gallery__overlay">
-                        <h3 data-i18n="gallery.project2">WaifuSpin</h3>
-                        <p data-i18n="gallery.project2Desc">Casino en ligne</p>
-                    </div>
-                </div>
-                <div class="gallery__item glass__effect">
-                    <img src="/images/Usp-hannover.png" alt="USP Hannover">
-                    <div class="gallery__overlay">
-                        <h3 data-i18n="gallery.project3">USP Hannover</h3>
-                        <p data-i18n="gallery.project3Desc">Site professionel</p>
-                    </div>
-                </div>
-                        <div class="gallery__item glass__effect">
-                    <img src="/images/simpletools.png" alt="SimpleTools">
-                    <div class="gallery__overlay">
-                        <h3 data-i18n="gallery.project4">SimpleTools</h3>
-                        <p data-i18n="gallery.project4Desc">Outils simples mais puissants</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="section">
-            <h2 class="section__title reveal__text" data-i18n="contact.title">Contact</h2>
-            <div class="contact__content glass__effect">
-                <div class="contact__info">
-                    <h3 data-i18n="contact.getInTouch">Contactez-nous</h3>
-                    <div class="contact__details">
-                        <div class="contact__item">
-                            <i class="fas fa-envelope"></i>
-                            <span data-i18n="contact.email">huhpact@outlook.fr</span>
-                        </div>
-                        <div class="contact__item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span data-i18n="contact.location">Poitiers, France</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="contact__schedule">
-                    <h3 data-i18n="contact.availability">Disponibilité</h3>
-                    <div class="schedule__list">
-                        <div class="schedule__item">
-                            <span data-i18n="contact.monday">Lundi - Vendredi</span>
-                            <span>9:00 - 20:00</span>
-                        </div>
-                        <div class="schedule__item">
-                            <span data-i18n="contact.saturday">Samedi</span>
-                            <span>12:00 - 20:00</span>
-                        </div>
-                        <div class="schedule__item">
-                            <span data-i18n="contact.sunday">Dimanche</span>
-                            <span data-i18n="contact.closed">Fermé</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="glass__effect">
-        <div class="footer__content">
-            <div class="footer__logo">
-                <img src="/s/logo-huhpact.png" alt="huh(pact)">
-            </div>
-            <div class="footer__links">
-                <a href="#services" data-i18n="footer.services">Services</a>
-                <a href="#pricing" data-i18n="footer.pricing">Tarifs</a>
-                <a href="#gallery" data-i18n="footer.gallery">Galerie</a>
-                <a href="#contact" data-i18n="footer.contact">Contact</a>
             </div>
         </div>
-        <div class="footer__bottom">
-            <p>&copy; 2025 huh(pact). <span data-i18n="footer.rights">Tous droits réservés</span></p>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <canvas id="heroCanvas"></canvas>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-line reveal-text" data-i18n="hero.title.line1">Développement Web</span>
+                    <span class="title-line reveal-text" data-i18n="hero.title.line2">Premium</span>
+                </h1>
+                <p class="hero-subtitle reveal-text" data-i18n="hero.subtitle">
+                    Design · Hébergement · Maintenance · Marketing · Branding
+                </p>
+                <div class="hero-buttons reveal-text">
+                    <button class="btn btn-primary magnetic-element" data-i18n="hero.cta.primary">Commencer un projet</button>
+                    <button class="btn btn-secondary magnetic-element" data-i18n="hero.cta.secondary">Découvrir nos services</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card card-1 parallax-element" data-speed="0.5"></div>
+                <div class="floating-card card-2 parallax-element" data-speed="0.8"></div>
+                <div class="floating-card card-3 parallax-element" data-speed="0.3"></div>
+                <div class="hero-orb"></div>
+            </div>
+        </div>
+        <div class="scroll-indicator magnetic-element">
+            <div class="scroll-arrow"></div>
+            <span class="scroll-text" data-i18n="hero.scroll">Découvrir</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title reveal-text" data-i18n="about.title">À propos de huh(pact)</h2>
+                <p class="section-subtitle reveal-text" data-i18n="about.subtitle">
+                    Une approche unique du développement web moderne
+                </p>
+            </div>
+            <div class="about-content">
+                <div class="about-visual">
+                    <div class="skill-orbit">
+                        <div class="skill-item" data-skill="React">
+                            <span>React</span>
+                        </div>
+                        <div class="skill-item" data-skill="Node.js">
+                            <span>Node.js</span>
+                        </div>
+                        <div class="skill-item" data-skill="TypeScript">
+                            <span>TypeScript</span>
+                        </div>
+                        <div class="skill-item" data-skill="Vue.js">
+                            <span>Vue.js</span>
+                        </div>
+                        <div class="skill-item" data-skill="Python">
+                            <span>Python</span>
+                        </div>
+                        <div class="skill-item" data-skill="MongoDB">
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="central-avatar">
+                            <div class="avatar-ring"></div>
+                            <div class="avatar-core">
+                                <span>huh</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-info">
+                    <div class="info-cards">
+                        <div class="info-card slide-in-right" data-delay="0.1">
+                            <div class="card-icon">🚀</div>
+                            <h3 data-i18n="about.expertise.title">Expertise Technique</h3>
+                            <p data-i18n="about.expertise.description">
+                                Spécialisé dans le développement web moderne avec une maîtrise complète des technologies front-end et back-end.
+                            </p>
+                        </div>
+                        <div class="info-card slide-in-right" data-delay="0.2">
+                            <div class="card-icon">💡</div>
+                            <h3 data-i18n="about.approach.title">Approche Personnalisée</h3>
+                            <p data-i18n="about.approach.description">
+                                Chaque projet est unique. Je travaille en étroite collaboration avec mes clients pour créer des solutions sur mesure.
+                            </p>
+                        </div>
+                        <div class="info-card slide-in-right" data-delay="0.3">
+                            <div class="card-icon">⚡</div>
+                            <h3 data-i18n="about.performance.title">Performance Optimale</h3>
+                            <p data-i18n="about.performance.description">
+                                Des solutions rapides, sécurisées et évolutives qui garantissent une expérience utilisateur exceptionnelle.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-item scale-in" data-delay="0.1">
+                            <div class="stat-number" data-count="50">0</div>
+                            <div class="stat-label" data-i18n="about.stats.projects">Projets Réalisés</div>
+                        </div>
+                        <div class="stat-item scale-in" data-delay="0.2">
+                            <div class="stat-number" data-count="5">0</div>
+                            <div class="stat-label" data-i18n="about.stats.years">Années d'Expérience</div>
+                        </div>
+                        <div class="stat-item scale-in" data-delay="0.3">
+                            <div class="stat-number" data-count="100">0</div>
+                            <div class="stat-label" data-i18n="about.stats.satisfaction">% Satisfaction</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title reveal-text" data-i18n="services.title">Nos Services</h2>
+                <p class="section-subtitle reveal-text" data-i18n="services.subtitle">
+                    Des solutions complètes pour votre présence en ligne
+                </p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card magnetic-element stagger-animation" data-delay="0.1">
+                    <div class="service-icon">🎨</div>
+                    <h3 data-i18n="services.design.title">Design & UX</h3>
+                    <p data-i18n="services.design.description">
+                        Création d'interfaces modernes et intuitives qui captivent vos utilisateurs
+                    </p>
+                    <div class="service-hover-effect"></div>
+                </div>
+                <div class="service-card magnetic-element stagger-animation" data-delay="0.2">
+                    <div class="service-icon">⚡</div>
+                    <h3 data-i18n="services.development.title">Développement</h3>
+                    <p data-i18n="services.development.description">
+                        Applications web performantes avec les dernières technologies
+                    </p>
+                    <div class="service-hover-effect"></div>
+                </div>
+                <div class="service-card magnetic-element stagger-animation" data-delay="0.3">
+                    <div class="service-icon">🚀</div>
+                    <h3 data-i18n="services.hosting.title">Hébergement</h3>
+                    <p data-i18n="services.hosting.description">
+                        Solutions d'hébergement fiables et sécurisées pour votre site
+                    </p>
+                    <div class="service-hover-effect"></div>
+                </div>
+                <div class="service-card magnetic-element stagger-animation" data-delay="0.4">
+                    <div class="service-icon">🔧</div>
+                    <h3 data-i18n="services.maintenance.title">Maintenance</h3>
+                    <p data-i18n="services.maintenance.description">
+                        Support technique continu et mises à jour régulières
+                    </p>
+                    <div class="service-hover-effect"></div>
+                </div>
+                <div class="service-card magnetic-element stagger-animation" data-delay="0.5">
+                    <div class="service-icon">📈</div>
+                    <h3 data-i18n="services.marketing.title">Marketing Digital</h3>
+                    <p data-i18n="services.marketing.description">
+                        Stratégies marketing pour augmenter votre visibilité en ligne
+                    </p>
+                    <div class="service-hover-effect"></div>
+                </div>
+                <div class="service-card magnetic-element stagger-animation" data-delay="0.6">
+                    <div class="service-icon">🎯</div>
+                    <h3 data-i18n="services.branding.title">Branding</h3>
+                    <p data-i18n="services.branding.description">
+                        Création d'identité visuelle forte et mémorable
+                    </p>
+                    <div class="service-hover-effect"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title reveal-text" data-i18n="pricing.title">Nos Tarifs</h2>
+                <p class="section-subtitle reveal-text" data-i18n="pricing.subtitle">
+                    Choisissez la formule qui correspond à vos besoins
+                </p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card magnetic-element scale-in" data-delay="0.1">
+                    <div class="pricing-header">
+                        <h3 data-i18n="pricing.starter.title">Starter</h3>
+                        <div class="price">
+                            <span class="currency">€</span>
+                            <span class="amount">999</span>
+                        </div>
+                        <p data-i18n="pricing.starter.description">Parfait pour les petites entreprises</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li data-i18n="pricing.starter.feature1">Site vitrine responsive</li>
+                        <li data-i18n="pricing.starter.feature2">Optimisation SEO de base</li>
+                        <li data-i18n="pricing.starter.feature3">Hébergement 1 an inclus</li>
+                        <li data-i18n="pricing.starter.feature4">Support par email</li>
+                    </ul>
+                    <button class="btn btn-outline magnetic-element" onclick="openPricingModal('starter')" data-i18n="pricing.cta">En savoir plus</button>
+                </div>
+                <div class="pricing-card featured magnetic-element scale-in" data-delay="0.2">
+                    <div class="featured-badge" data-i18n="pricing.popular">Plus Populaire</div>
+                    <div class="pricing-glow"></div>
+                    <div class="pricing-header">
+                        <h3 data-i18n="pricing.professional.title">Professional</h3>
+                        <div class="price">
+                            <span class="currency">€</span>
+                            <span class="amount">2499</span>
+                        </div>
+                        <p data-i18n="pricing.professional.description">Idéal pour les entreprises en croissance</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li data-i18n="pricing.professional.feature1">Application web complète</li>
+                        <li data-i18n="pricing.professional.feature2">Design personnalisé</li>
+                        <li data-i18n="pricing.professional.feature3">Intégrations avancées</li>
+                        <li data-i18n="pricing.professional.feature4">Support prioritaire</li>
+                        <li data-i18n="pricing.professional.feature5">Analytics et reporting</li>
+                    </ul>
+                    <button class="btn btn-primary magnetic-element" onclick="openPricingModal('professional')" data-i18n="pricing.cta">En savoir plus</button>
+                </div>
+                <div class="pricing-card magnetic-element scale-in" data-delay="0.3">
+                    <div class="pricing-header">
+                        <h3 data-i18n="pricing.enterprise.title">Enterprise</h3>
+                        <div class="price">
+                            <span class="currency">€</span>
+                            <span class="amount">4999</span>
+                        </div>
+                        <p data-i18n="pricing.enterprise.description">Solution complète pour grandes entreprises</p>
+                    </div>
+                    <ul class="pricing-features">
+                        <li data-i18n="pricing.enterprise.feature1">Plateforme sur mesure</li>
+                        <li data-i18n="pricing.enterprise.feature2">Architecture scalable</li>
+                        <li data-i18n="pricing.enterprise.feature3">Sécurité renforcée</li>
+                        <li data-i18n="pricing.enterprise.feature4">Support 24/7</li>
+                        <li data-i18n="pricing.enterprise.feature5">Formation équipe</li>
+                    </ul>
+                    <button class="btn btn-outline magnetic-element" onclick="openPricingModal('enterprise')" data-i18n="pricing.cta">En savoir plus</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title reveal-text" data-i18n="gallery.title">Portfolio</h2>
+                <p class="section-subtitle reveal-text" data-i18n="gallery.subtitle">
+                    Découvrez quelques-uns de nos projets récents
+                </p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item magnetic-element stagger-animation" data-delay="0.1" onclick="openGalleryModal('project1')">
+                    <img src="https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg" alt="Projet E-commerce" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3 data-i18n="gallery.project1.title">Boutique E-commerce</h3>
+                        <p data-i18n="gallery.project1.description">Plateforme de vente en ligne moderne</p>
+                        <div class="gallery-arrow">→</div>
+                    </div>
+                </div>
+                <div class="gallery-item magnetic-element stagger-animation" data-delay="0.2" onclick="openGalleryModal('project2')">
+                    <img src="https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg" alt="Application Web" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3 data-i18n="gallery.project2.title">Application SaaS</h3>
+                        <p data-i18n="gallery.project2.description">Outil de gestion d'entreprise</p>
+                        <div class="gallery-arrow">→</div>
+                    </div>
+                </div>
+                <div class="gallery-item magnetic-element stagger-animation" data-delay="0.3" onclick="openGalleryModal('project3')">
+                    <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg" alt="Site Vitrine" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3 data-i18n="gallery.project3.title">Site Corporate</h3>
+                        <p data-i18n="gallery.project3.description">Présentation d'entreprise élégante</p>
+                        <div class="gallery-arrow">→</div>
+                    </div>
+                </div>
+                <div class="gallery-item magnetic-element stagger-animation" data-delay="0.4" onclick="openGalleryModal('project4')">
+                    <img src="https://images.pexels.com/photos/590016/pexels-photo-590016.jpg" alt="Portfolio" loading="lazy">
+                    <div class="gallery-overlay">
+                        <h3 data-i18n="gallery.project4.title">Portfolio Créatif</h3>
+                        <p data-i18n="gallery.project4.description">Showcase artistique interactif</p>
+                        <div class="gallery-arrow">→</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vermögensverwalter Section -->
+    <section id="vermoegen" class="vermoegen">
+        <div class="container">
+            <div class="vermoegen-content">
+                <div class="vermoegen-text">
+                    <h2 class="section-title reveal-text" data-i18n="vermoegen.title">Vermögensverwalter</h2>
+                    <p class="reveal-text" data-i18n="vermoegen.subtitle">
+                        Notre société partenaire spécialisée dans la gestion de patrimoine
+                    </p>
+                    <p class="reveal-text" data-i18n="vermoegen.description">
+                        Vermögensverwalter offre des services de conseil financier personnalisés et de gestion de patrimoine 
+                        pour les particuliers et les entreprises. Avec une approche sur mesure et une expertise approfondie 
+                        des marchés financiers, nous vous accompagnons dans la réalisation de vos objectifs financiers.
+                    </p>
+                    <div class="vermoegen-features">
+                        <div class="feature-item slide-in-left" data-delay="0.1">
+                            <span class="feature-icon">📊</span>
+                            <span data-i18n="vermoegen.feature1">Gestion de portefeuille</span>
+                        </div>
+                        <div class="feature-item slide-in-left" data-delay="0.2">
+                            <span class="feature-icon">💼</span>
+                            <span data-i18n="vermoegen.feature2">Conseil en investissement</span>
+                        </div>
+                        <div class="feature-item slide-in-left" data-delay="0.3">
+                            <span class="feature-icon">🏦</span>
+                            <span data-i18n="vermoegen.feature3">Planification financière</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary magnetic-element reveal-text" data-i18n="vermoegen.cta">Découvrir Vermögensverwalter</button>
+                </div>
+                <div class="vermoegen-visual">
+                    <div class="chart-container">
+                        <canvas id="chartCanvas"></canvas>
+                        <div class="chart-overlay">
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: rgba(79, 70, 229, 0.8)"></div>
+                                    <span>Actions</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: rgba(147, 51, 234, 0.8)"></div>
+                                    <span>Obligations</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: rgba(16, 185, 129, 0.8)"></div>
+                                    <span>Immobilier</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title reveal-text" data-i18n="contact.title">Contactez-nous</h2>
+                <p class="section-subtitle reveal-text" data-i18n="contact.subtitle">
+                    Prêt à commencer votre projet ? Discutons-en !
+                </p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item magnetic-element slide-in-left" data-delay="0.1">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-details">
+                            <h3 data-i18n="contact.email.title">Email</h3>
+                            <p>contact@huhpact.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item magnetic-element slide-in-left" data-delay="0.2">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-details">
+                            <h3 data-i18n="contact.phone.title">Téléphone</h3>
+                            <p>+33 1 23 45 67 89</p>
+                        </div>
+                    </div>
+                    <div class="contact-item magnetic-element slide-in-left" data-delay="0.3">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-details">
+                            <h3 data-i18n="contact.location.title">Localisation</h3>
+                            <p data-i18n="contact.location.address">Paris, France</p>
+                        </div>
+                    </div>
+                    <div class="contact-item magnetic-element slide-in-left" data-delay="0.4">
+                        <div class="contact-icon">⏰</div>
+                        <div class="contact-details">
+                            <h3 data-i18n="contact.hours.title">Horaires</h3>
+                            <p data-i18n="contact.hours.schedule">Lun-Ven 9h-18h</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-visual">
+                    <div class="contact-card scale-in" data-delay="0.2">
+                        <h3 data-i18n="contact.card.title">Commençons votre projet</h3>
+                        <p data-i18n="contact.card.description">
+                            Chaque grand projet commence par une simple conversation. 
+                            N'hésitez pas à nous contacter pour discuter de vos besoins.
+                        </p>
+                        <div class="contact-buttons">
+                            <a href="mailto:contact@huhpact.com" class="btn btn-primary magnetic-element" data-i18n="contact.cta.email">Envoyer un email</a>
+                            <a href="tel:+33123456789" class="btn btn-outline magnetic-element" data-i18n="contact.cta.call">Appeler maintenant</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>huh(pact)</h3>
+                    <p data-i18n="footer.tagline">Développement web premium</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#about" class="magnetic-element" data-i18n="nav.about">À propos</a>
+                    <a href="#services" class="magnetic-element" data-i18n="nav.services">Services</a>
+                    <a href="#pricing" class="magnetic-element" data-i18n="nav.pricing">Tarifs</a>
+                    <a href="#contact" class="magnetic-element" data-i18n="nav.contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">© 2024 huh(pact). Tous droits réservés.</p>
+            </div>
         </div>
     </footer>
 
-    <script src="js/i18n.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/main.js"></script>
+    <!-- Modals -->
+    <div id="modalOverlay" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close magnetic-element" onclick="closeModal()">×</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
 </body>
 </html>
