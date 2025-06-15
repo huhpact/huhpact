@@ -7,146 +7,263 @@
     <meta name="description" content="Services de développement web premium : Design, Hébergement, Maintenance, Marketing & Branding">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Custom Cursor -->
-    <div class="cursor">
-        <div class="cursor-dot"></div>
-        <div class="cursor-outline"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <div class="mobile-brand">huh(pact)</div>
+                <button class="mobile-menu-close" id="mobileMenuClose">
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <nav class="mobile-nav">
+                <a href="#hero" class="mobile-nav-link" data-i18n="nav.home">Accueil</a>
+                <a href="#about" class="mobile-nav-link" data-i18n="nav.about">À propos</a>
+                <a href="#services" class="mobile-nav-link" data-i18n="nav.services">Services</a>
+                <a href="#pricing" class="mobile-nav-link" data-i18n="nav.pricing">Tarifs</a>
+                <a href="#portfolio" class="mobile-nav-link" data-i18n="nav.portfolio">Portfolio</a>
+                <a href="#contact" class="mobile-nav-link" data-i18n="nav.contact">Contact</a>
+            </nav>
+        </div>
     </div>
 
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="nav-brand magnetic-element">
+            <div class="nav-brand magnetic-hover">
                 <span class="brand-text">huh(pact)</span>
             </div>
             <div class="nav-menu">
-                <a href="#hero" class="nav-link magnetic-element" data-i18n="nav.home">Accueil</a>
-                <a href="#about" class="nav-link magnetic-element" data-i18n="nav.about">À propos</a>
-                <a href="#services" class="nav-link magnetic-element" data-i18n="nav.services">Services</a>
-                <a href="#pricing" class="nav-link magnetic-element" data-i18n="nav.pricing">Tarifs</a>
-                <a href="#gallery" class="nav-link magnetic-element" data-i18n="nav.gallery">Portfolio</a>
-                <a href="#contact" class="nav-link magnetic-element" data-i18n="nav.contact">Contact</a>
+                <a href="#hero" class="nav-link magnetic-hover" data-i18n="nav.home">Accueil</a>
+                <a href="#about" class="nav-link magnetic-hover" data-i18n="nav.about">À propos</a>
+                <a href="#services" class="nav-link magnetic-hover" data-i18n="nav.services">Services</a>
+                <a href="#pricing" class="nav-link magnetic-hover" data-i18n="nav.pricing">Tarifs</a>
+                <a href="#portfolio" class="nav-link magnetic-hover" data-i18n="nav.portfolio">Portfolio</a>
+                <a href="#contact" class="nav-link magnetic-hover" data-i18n="nav.contact">Contact</a>
             </div>
             <div class="nav-controls">
-                <button class="lang-toggle magnetic-element" id="langToggle">
+                <button class="lang-toggle magnetic-hover" id="langToggle">
                     <span class="lang-text">FR</span>
                 </button>
-                <div class="nav-progress">
-                    <div class="nav-progress-bar" id="navProgressBar"></div>
-                </div>
+                <button class="mobile-menu-trigger" id="mobileMenuTrigger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
+        </div>
+        <div class="nav-progress">
+            <div class="nav-progress-bar" id="navProgressBar"></div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="hero" class="hero">
-        <canvas id="heroCanvas"></canvas>
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1 class="hero-title">
-                    <span class="title-line reveal-text" data-i18n="hero.title.line1">Développement Web</span>
-                    <span class="title-line reveal-text" data-i18n="hero.title.line2">Premium</span>
-                </h1>
-                <p class="hero-subtitle reveal-text" data-i18n="hero.subtitle">
-                    Design · Hébergement · Maintenance · Marketing · Branding
-                </p>
-                <div class="hero-buttons reveal-text">
-                    <button class="btn btn-primary magnetic-element" data-i18n="hero.cta.primary">Commencer un projet</button>
-                    <button class="btn btn-secondary magnetic-element" data-i18n="hero.cta.secondary">Découvrir nos services</button>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="floating-card card-1 parallax-element" data-speed="0.5"></div>
-                <div class="floating-card card-2 parallax-element" data-speed="0.8"></div>
-                <div class="floating-card card-3 parallax-element" data-speed="0.3"></div>
-                <div class="hero-orb"></div>
+        <div class="hero-background">
+            <div class="floating-shapes">
+                <div class="shape shape-1" data-speed="0.8"></div>
+                <div class="shape shape-2" data-speed="0.5"></div>
+                <div class="shape shape-3" data-speed="0.3"></div>
+                <div class="shape shape-4" data-speed="0.6"></div>
+                <div class="shape shape-5" data-speed="0.4"></div>
             </div>
         </div>
-        <div class="scroll-indicator magnetic-element">
-            <div class="scroll-arrow"></div>
-            <span class="scroll-text" data-i18n="hero.scroll">Découvrir</span>
+        
+        <div class="hero-content">
+            <div class="hero-text reveal-up">
+                <div class="hero-badge magnetic-hover">
+                    <span class="badge-icon">✨</span>
+                    <span data-i18n="hero.badge">Solutions Web Premium</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-line" data-i18n="hero.title.line1">Développement Web</span>
+                    <span class="title-line title-gradient" data-i18n="hero.title.line2">Nouvelle Génération</span>
+                </h1>
+                <p class="hero-subtitle" data-i18n="hero.subtitle">
+                    Transformez vos idées en expériences digitales exceptionnelles avec notre expertise technique avancée
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="150">0</div>
+                        <div class="stat-label" data-i18n="hero.stats.projects">Projets</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="98">0</div>
+                        <div class="stat-label" data-i18n="hero.stats.satisfaction">% Satisfaction</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="7">0</div>
+                        <div class="stat-label" data-i18n="hero.stats.years">Ans d'Expertise</div>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary magnetic-hover ripple-effect" data-i18n="hero.cta.primary">
+                        <span>Démarrer un Projet</span>
+                        <div class="btn-bg"></div>
+                    </button>
+                    <button class="btn btn-secondary magnetic-hover" data-i18n="hero.cta.secondary">
+                        <span>Explorer nos Services</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="hero-visual reveal-up">
+                <div class="code-showcase">
+                    <div class="code-window">
+                        <div class="window-header">
+                            <div class="window-controls">
+                                <span class="control close"></span>
+                                <span class="control minimize"></span>
+                                <span class="control maximize"></span>
+                            </div>
+                            <div class="window-title">huh(pact).js</div>
+                        </div>
+                        <div class="code-content">
+                            <div class="line-numbers">
+                                <span>1</span>
+                                <span>2</span>
+                                <span>3</span>
+                                <span>4</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span>7</span>
+                                <span>8</span>
+                            </div>
+                            <div class="code-lines">
+                                <div class="code-line">
+                                    <span class="keyword">const</span> <span class="variable">innovation</span> <span class="operator">=</span> <span class="string">"huh(pact)"</span><span class="punctuation">;</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="keyword">function</span> <span class="function">createAmazingWebsite</span><span class="punctuation">() {</span>
+                                </div>
+                                <div class="code-line indent">
+                                    <span class="keyword">return</span> <span class="punctuation">{</span>
+                                </div>
+                                <div class="code-line indent2">
+                                    <span class="property">design</span><span class="punctuation">:</span> <span class="string">"stunning"</span><span class="punctuation">,</span>
+                                </div>
+                                <div class="code-line indent2">
+                                    <span class="property">performance</span><span class="punctuation">:</span> <span class="string">"blazing-fast"</span><span class="punctuation">,</span>
+                                </div>
+                                <div class="code-line indent2">
+                                    <span class="property">experience</span><span class="punctuation">:</span> <span class="string">"unforgettable"</span>
+                                </div>
+                                <div class="code-line indent">
+                                    <span class="punctuation">};</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="punctuation">}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="floating-elements">
+                        <div class="tech-badge" style="--delay: 0s">React</div>
+                        <div class="tech-badge" style="--delay: 0.5s">Node.js</div>
+                        <div class="tech-badge" style="--delay: 1s">TypeScript</div>
+                        <div class="tech-badge" style="--delay: 1.5s">Vue.js</div>
+                        <div class="tech-badge" style="--delay: 2s">Next.js</div>
+                        <div class="tech-badge" style="--delay: 2.5s">Python</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator magnetic-hover">
+            <div class="scroll-line"></div>
+            <div class="scroll-text" data-i18n="hero.scroll">Découvrir</div>
         </div>
     </section>
 
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title reveal-text" data-i18n="about.title">À propos de huh(pact)</h2>
-                <p class="section-subtitle reveal-text" data-i18n="about.subtitle">
-                    Une approche unique du développement web moderne
+            <div class="section-header text-center">
+                <div class="section-badge reveal-up magnetic-hover">
+                    <span data-i18n="about.badge">Qui sommes nous</span>
+                </div>
+                <h2 class="section-title reveal-up" data-i18n="about.title">Excellence & Innovation</h2>
+                <p class="section-subtitle reveal-up" data-i18n="about.subtitle">
+                    Une approche moderne du développement web avec une expertise technique approfondie
                 </p>
             </div>
-            <div class="about-content">
-                <div class="about-visual">
-                    <div class="skill-orbit">
-                        <div class="skill-item" data-skill="React">
-                            <span>React</span>
-                        </div>
-                        <div class="skill-item" data-skill="Node.js">
-                            <span>Node.js</span>
-                        </div>
-                        <div class="skill-item" data-skill="TypeScript">
-                            <span>TypeScript</span>
-                        </div>
-                        <div class="skill-item" data-skill="Vue.js">
-                            <span>Vue.js</span>
-                        </div>
-                        <div class="skill-item" data-skill="Python">
-                            <span>Python</span>
-                        </div>
-                        <div class="skill-item" data-skill="MongoDB">
-                            <span>MongoDB</span>
-                        </div>
-                        <div class="central-avatar">
-                            <div class="avatar-ring"></div>
-                            <div class="avatar-core">
-                                <span>huh</span>
-                            </div>
-                        </div>
+            
+            <div class="about-grid">
+                <div class="about-card reveal-left magnetic-hover">
+                    <div class="card-icon">
+                        <div class="icon-bg"></div>
+                        <span>🚀</span>
                     </div>
+                    <h3 data-i18n="about.performance.title">Performance Ultime</h3>
+                    <p data-i18n="about.performance.description">
+                        Applications web ultra-rapides optimisées pour tous les appareils avec des temps de chargement exceptionnels
+                    </p>
+                    <div class="card-hover-effect"></div>
                 </div>
-                <div class="about-info">
-                    <div class="info-cards">
-                        <div class="info-card slide-in-right" data-delay="0.1">
-                            <div class="card-icon">🚀</div>
-                            <h3 data-i18n="about.expertise.title">Expertise Technique</h3>
-                            <p data-i18n="about.expertise.description">
-                                Spécialisé dans le développement web moderne avec une maîtrise complète des technologies front-end et back-end.
-                            </p>
-                        </div>
-                        <div class="info-card slide-in-right" data-delay="0.2">
-                            <div class="card-icon">💡</div>
-                            <h3 data-i18n="about.approach.title">Approche Personnalisée</h3>
-                            <p data-i18n="about.approach.description">
-                                Chaque projet est unique. Je travaille en étroite collaboration avec mes clients pour créer des solutions sur mesure.
-                            </p>
-                        </div>
-                        <div class="info-card slide-in-right" data-delay="0.3">
-                            <div class="card-icon">⚡</div>
-                            <h3 data-i18n="about.performance.title">Performance Optimale</h3>
-                            <p data-i18n="about.performance.description">
-                                Des solutions rapides, sécurisées et évolutives qui garantissent une expérience utilisateur exceptionnelle.
-                            </p>
-                        </div>
+                
+                <div class="about-card reveal-up magnetic-hover" data-delay="0.1">
+                    <div class="card-icon">
+                        <div class="icon-bg"></div>
+                        <span>💡</span>
                     </div>
-                    <div class="about-stats">
-                        <div class="stat-item scale-in" data-delay="0.1">
-                            <div class="stat-number" data-count="50">0</div>
-                            <div class="stat-label" data-i18n="about.stats.projects">Projets Réalisés</div>
-                        </div>
-                        <div class="stat-item scale-in" data-delay="0.2">
-                            <div class="stat-number" data-count="5">0</div>
-                            <div class="stat-label" data-i18n="about.stats.years">Années d'Expérience</div>
-                        </div>
-                        <div class="stat-item scale-in" data-delay="0.3">
-                            <div class="stat-number" data-count="100">0</div>
-                            <div class="stat-label" data-i18n="about.stats.satisfaction">% Satisfaction</div>
-                        </div>
+                    <h3 data-i18n="about.innovation.title">Innovation Continue</h3>
+                    <p data-i18n="about.innovation.description">
+                        Utilisation des dernières technologies et frameworks pour créer des expériences utilisateur révolutionnaires
+                    </p>
+                    <div class="card-hover-effect"></div>
+                </div>
+                
+                <div class="about-card reveal-right magnetic-hover" data-delay="0.2">
+                    <div class="card-icon">
+                        <div class="icon-bg"></div>
+                        <span>⚡</span>
+                    </div>
+                    <h3 data-i18n="about.security.title">Sécurité Avancée</h3>
+                    <p data-i18n="about.security.description">
+                        Protection renforcée avec les meilleures pratiques de sécurité et conformité aux standards internationaux
+                    </p>
+                    <div class="card-hover-effect"></div>
+                </div>
+            </div>
+
+            <!-- Skills Showcase -->
+            <div class="skills-showcase reveal-up" data-delay="0.3">
+                <h3 class="skills-title" data-i18n="about.skills.title">Technologies Maîtrisées</h3>
+                <div class="skills-grid">
+                    <div class="skill-item magnetic-hover">
+                        <div class="skill-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="#ffffff" d="M0 32l34.9 395.8L191.5 480l157.6-52.2L384 32H0zm308.2 127.9H124.4l4.1 49.4h175.6l-13.6 148.4-97.9 27v.3h-1.1l-98.7-27.3-6-75.8h47.7L138 320l53.5 14.5 53.7-14.5 6-62.2H84.3L71.5 112.2h241.1l-4.4 47.7z"/></svg></div>
+                        <span>HTML5</span>
+                        <div class="skill-progress" data-progress="100"></div>
+                    </div>
+                    <div class="skill-item magnetic-hover">
+                        <div class="skill-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#ffffff" d="M480 32l-64 368-223.3 80L0 400l19.6-94.8h82l-8 40.6L210 390.2l134.1-44.4 18.8-97.1H29.5l16-82h333.7l10.5-52.7H56.3l16.3-82H480z"/></svg></div>
+                        <span>CSS3</span>
+                        <div class="skill-progress" data-progress="90"></div>
+                    </div>
+                    <div class="skill-item magnetic-hover">
+                        <div class="skill-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#ffffff" d="M0 32v448h448V32H0zm243.8 349.4c0 43.6-25.6 63.5-62.9 63.5-33.7 0-53.2-17.4-63.2-38.5l34.3-20.7c6.6 11.7 12.6 21.6 27.1 21.6 13.8 0 22.6-5.4 22.6-26.5V237.7h42.1v143.7zm99.6 63.5c-39.1 0-64.4-18.6-76.7-43l34.3-19.8c9 14.7 20.8 25.6 41.5 25.6 17.4 0 28.6-8.7 28.6-20.8 0-14.4-11.4-19.5-30.7-28l-10.5-4.5c-30.4-12.9-50.5-29.2-50.5-63.5 0-31.6 24.1-55.6 61.6-55.6 26.8 0 46 9.3 59.8 33.7L368 290c-7.2-12.9-15-18-27.1-18-12.3 0-20.1 7.8-20.1 18 0 12.6 7.8 17.7 25.9 25.6l10.5 4.5c35.8 15.3 55.9 31 55.9 66.2 0 37.8-29.8 58.6-69.7 58.6z"/></svg></div>
+                        <span>JavaScript</span>
+                        <div class="skill-progress" data-progress="88"></div>
+                    </div>
+                    <div class="skill-item magnetic-hover">
+                        <div class="skill-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="#ffffff" d="M277.7 312.9c9.8-6.7 23.4-12.5 23.4-12.5s-38.7 7-77.2 10.2c-47.1 3.9-97.7 4.7-123.1 1.3-60.1-8 33-30.1 33-30.1s-36.1-2.4-80.6 19c-52.5 25.4 130 37 224.5 12.1zm-85.4-32.1c-19-42.7-83.1-80.2 0-145.8C296 53.2 242.8 0 242.8 0c21.5 84.5-75.6 110.1-110.7 162.6-23.9 35.9 11.7 74.4 60.2 118.2zm114.6-176.2c.1 0-175.2 43.8-91.5 140.2 24.7 28.4-6.5 54-6.5 54s62.7-32.4 33.9-72.9c-26.9-37.8-47.5-56.6 64.1-121.3zm-6.1 270.5a12.2 12.2 0 0 1 -2 2.6c128.3-33.7 81.1-118.9 19.8-97.3a17.3 17.3 0 0 0 -8.2 6.3 70.5 70.5 0 0 1 11-3c31-6.5 75.5 41.5-20.6 91.4zM348 437.4s14.5 11.9-15.9 21.2c-57.9 17.5-240.8 22.8-291.6 .7-18.3-7.9 16-19 26.8-21.3 11.2-2.4 17.7-2 17.7-2-20.3-14.3-131.3 28.1-56.4 40.2C232.8 509.4 401 461.3 348 437.4zM124.4 396c-78.7 22 47.9 67.4 148.1 24.5a185.9 185.9 0 0 1 -28.2-13.8c-44.7 8.5-65.4 9.1-106 4.5-33.5-3.8-13.9-15.2-13.9-15.2zm179.8 97.2c-78.7 14.8-175.8 13.1-233.3 3.6 0-.1 11.8 9.7 72.4 13.6 92.2 5.9 233.8-3.3 237.1-46.9 0 0-6.4 16.5-76.2 29.7zM260.6 353c-59.2 11.4-93.5 11.1-136.8 6.6-33.5-3.5-11.6-19.7-11.6-19.7-86.8 28.8 48.2 61.4 169.5 25.9a60.4 60.4 0 0 1 -21.1-12.8z"/></svg></div>
+                        <span>Java</span>
+                        <div class="skill-progress" data-progress="85"></div>
+                    </div>
+                    <div class="skill-item magnetic-hover">
+                        <div class="skill-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#ffffff" d="M448 80l0 48c0 44.2-100.3 80-224 80S0 172.2 0 128L0 80C0 35.8 100.3 0 224 0S448 35.8 448 80zM393.2 214.7c20.8-7.4 39.9-16.9 54.8-28.6L448 288c0 44.2-100.3 80-224 80S0 332.2 0 288L0 186.1c14.9 11.8 34 21.2 54.8 28.6C99.7 230.7 159.5 240 224 240s124.3-9.3 169.2-25.3zM0 346.1c14.9 11.8 34 21.2 54.8 28.6C99.7 390.7 159.5 400 224 400s124.3-9.3 169.2-25.3c20.8-7.4 39.9-16.9 54.8-28.6l0 85.9c0 44.2-100.3 80-224 80S0 476.2 0 432l0-85.9z"/></svg></div>
+                        <span>Next.js</span>
+                        <div class="skill-progress" data-progress="92"></div>
                     </div>
                 </div>
             </div>
@@ -156,60 +273,112 @@
     <!-- Services Section -->
     <section id="services" class="services">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title reveal-text" data-i18n="services.title">Nos Services</h2>
-                <p class="section-subtitle reveal-text" data-i18n="services.subtitle">
-                    Des solutions complètes pour votre présence en ligne
+            <div class="section-header text-center">
+                <div class="section-badge reveal-up magnetic-hover">
+                    <span data-i18n="services.badge">Nos Services</span>
+                </div>
+                <h2 class="section-title reveal-up" data-i18n="services.title">Solutions Complètes</h2>
+                <p class="section-subtitle reveal-up" data-i18n="services.subtitle">
+                    De l'idée à la réalisation, nous couvrons tous les aspects de votre présence digitale
                 </p>
             </div>
-            <div class="services-grid">
-                <div class="service-card magnetic-element stagger-animation" data-delay="0.1">
-                    <div class="service-icon">🎨</div>
-                    <h3 data-i18n="services.design.title">Design & UX</h3>
-                    <p data-i18n="services.design.description">
-                        Création d'interfaces modernes et intuitives qui captivent vos utilisateurs
-                    </p>
-                    <div class="service-hover-effect"></div>
+            
+            <div class="services-showcase">
+                <div class="service-main reveal-up magnetic-hover">
+                    <div class="service-visual">
+                        <div class="visual-bg"></div>
+                        <div class="visual-content">
+                            <div class="code-preview">
+                                <div class="code-header">
+                                    <div class="code-dots">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                    <span>app.js</span>
+                                </div>
+                                <div class="code-body">
+                                    <div class="code-line">
+                                        <span class="code-keyword">const</span>
+                                        <span class="code-variable">App</span>
+                                        <span class="code-operator">=</span>
+                                        <span class="code-bracket">()</span>
+                                        <span class="code-operator">=></span>
+                                        <span class="code-bracket">{</span>
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="code-indent">  </span>
+                                        <span class="code-keyword">return</span>
+                                        <span class="code-bracket">(</span>
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="code-indent">    </span>
+                                        <span class="code-tag"></span>
+                                        <span class="code-attr">className</span>
+                                        <span class="code-operator">=</span>
+                                        <span class="code-string">"app"</span>
+                                        <span class="code-tag">></span>
+                                    </div>
+                                    <div class="code-line typing-animation">
+                                        <span class="code-indent">      </span>
+                                        <span class="code-tag"><h1></span>
+                                        <span class="code-text">Innovation</span>
+                                        <span class="code-tag"><h1></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-info">
+                        <h3 data-i18n="services.development.title">Développement Web</h3>
+                        <p data-i18n="services.development.description">
+                            Applications web modernes et performantes utilisant React, Vue.js, Node.js et les dernières technologies
+                        </p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">CSS3</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">JSON</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="service-card magnetic-element stagger-animation" data-delay="0.2">
-                    <div class="service-icon">⚡</div>
-                    <h3 data-i18n="services.development.title">Développement</h3>
-                    <p data-i18n="services.development.description">
-                        Applications web performantes avec les dernières technologies
-                    </p>
-                    <div class="service-hover-effect"></div>
-                </div>
-                <div class="service-card magnetic-element stagger-animation" data-delay="0.3">
-                    <div class="service-icon">🚀</div>
-                    <h3 data-i18n="services.hosting.title">Hébergement</h3>
-                    <p data-i18n="services.hosting.description">
-                        Solutions d'hébergement fiables et sécurisées pour votre site
-                    </p>
-                    <div class="service-hover-effect"></div>
-                </div>
-                <div class="service-card magnetic-element stagger-animation" data-delay="0.4">
-                    <div class="service-icon">🔧</div>
-                    <h3 data-i18n="services.maintenance.title">Maintenance</h3>
-                    <p data-i18n="services.maintenance.description">
-                        Support technique continu et mises à jour régulières
-                    </p>
-                    <div class="service-hover-effect"></div>
-                </div>
-                <div class="service-card magnetic-element stagger-animation" data-delay="0.5">
-                    <div class="service-icon">📈</div>
-                    <h3 data-i18n="services.marketing.title">Marketing Digital</h3>
-                    <p data-i18n="services.marketing.description">
-                        Stratégies marketing pour augmenter votre visibilité en ligne
-                    </p>
-                    <div class="service-hover-effect"></div>
-                </div>
-                <div class="service-card magnetic-element stagger-animation" data-delay="0.6">
-                    <div class="service-icon">🎯</div>
-                    <h3 data-i18n="services.branding.title">Branding</h3>
-                    <p data-i18n="services.branding.description">
-                        Création d'identité visuelle forte et mémorable
-                    </p>
-                    <div class="service-hover-effect"></div>
+                
+                <div class="services-grid">
+                    <div class="service-card reveal-up magnetic-hover">
+                        <div class="service-icon">
+                            <span>🎨</span>
+                            <div class="icon-glow"></div>
+                        </div>
+                        <h4 data-i18n="services.design.title">Design & UX</h4>
+                        <p data-i18n="services.design.description">Interfaces intuitives et expériences utilisateur exceptionnelles</p>
+                    </div>
+                    
+                    <div class="service-card reveal-up magnetic-hover" data-delay="0.1">
+                        <div class="service-icon">
+                            <span>🚀</span>
+                            <div class="icon-glow"></div>
+                        </div>
+                        <h4 data-i18n="services.hosting.title">Hébergement</h4>
+                        <p data-i18n="services.hosting.description">Solutions cloud sécurisées et haute performance</p>
+                    </div>
+                    
+                    <div class="service-card reveal-up magnetic-hover" data-delay="0.2">
+                        <div class="service-icon">
+                            <span>🔧</span>
+                            <div class="icon-glow"></div>
+                        </div>
+                        <h4 data-i18n="services.maintenance.title">Maintenance</h4>
+                        <p data-i18n="services.maintenance.description">Support technique 24/7 et mises à jour continues</p>
+                    </div>
+                    
+                    <div class="service-card reveal-up magnetic-hover" data-delay="0.3">
+                        <div class="service-icon">
+                            <span>📈</span>
+                            <div class="icon-glow"></div>
+                        </div>
+                        <h4 data-i18n="services.marketing.title">Marketing Digital</h4>
+                        <p data-i18n="services.marketing.description">Stratégies SEO et marketing pour maximiser votre visibilité</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -218,166 +387,198 @@
     <!-- Pricing Section -->
     <section id="pricing" class="pricing">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title reveal-text" data-i18n="pricing.title">Nos Tarifs</h2>
-                <p class="section-subtitle reveal-text" data-i18n="pricing.subtitle">
-                    Choisissez la formule qui correspond à vos besoins
+            <div class="section-header text-center">
+                <div class="section-badge reveal-up magnetic-hover">
+                    <span data-i18n="pricing.badge">Nos Tarifs</span>
+                </div>
+                <h2 class="section-title reveal-up" data-i18n="pricing.title">Formules Transparentes</h2>
+                <p class="section-subtitle reveal-up" data-i18n="pricing.subtitle">
+                    Des solutions adaptées à tous les budgets avec un rapport qualité-prix exceptionnel
                 </p>
             </div>
-            <div class="pricing-grid">
-                <div class="pricing-card magnetic-element scale-in" data-delay="0.1">
-                    <div class="pricing-header">
+            
+            <div class="pricing-cards">
+                <div class="pricing-card reveal-up magnetic-hover" onclick="openPricingModal('starter')">
+                    <div class="card-header">
                         <h3 data-i18n="pricing.starter.title">Starter</h3>
                         <div class="price">
                             <span class="currency">€</span>
-                            <span class="amount">999</span>
+                            <span class="amount">1599</span>
+                            <span class="period" data-i18n="pricing.period">/ projet</span>
                         </div>
-                        <p data-i18n="pricing.starter.description">Parfait pour les petites entreprises</p>
+                        <p data-i18n="pricing.starter.description">Parfait pour démarrer votre présence en ligne</p>
                     </div>
-                    <ul class="pricing-features">
-                        <li data-i18n="pricing.starter.feature1">Site vitrine responsive</li>
-                        <li data-i18n="pricing.starter.feature2">Optimisation SEO de base</li>
-                        <li data-i18n="pricing.starter.feature3">Hébergement 1 an inclus</li>
-                        <li data-i18n="pricing.starter.feature4">Support par email</li>
-                    </ul>
-                    <button class="btn btn-outline magnetic-element" onclick="openPricingModal('starter')" data-i18n="pricing.cta">En savoir plus</button>
+                    <div class="card-features">
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.starter.feature1">Site responsive moderne</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.starter.feature2">Optimisation SEO</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.starter.feature3">Hébergement 1 an</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.starter.feature4">Support email</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline magnetic-hover ripple-effect" data-i18n="pricing.cta">
+                        <span>Choisir Starter</span>
+                    </button>
                 </div>
-                <div class="pricing-card featured magnetic-element scale-in" data-delay="0.2">
+                
+                <div class="pricing-card featured reveal-up magnetic-hover" data-delay="0.1" onclick="openPricingModal('pro')">
                     <div class="featured-badge" data-i18n="pricing.popular">Plus Populaire</div>
-                    <div class="pricing-glow"></div>
-                    <div class="pricing-header">
-                        <h3 data-i18n="pricing.professional.title">Professional</h3>
+                    <div class="card-glow"></div>
+                    <div class="card-header">
+                        <h3 data-i18n="pricing.pro.title">Professional</h3>
                         <div class="price">
                             <span class="currency">€</span>
-                            <span class="amount">2499</span>
+                            <span class="amount">3499</span>
+                            <span class="period" data-i18n="pricing.period">/ projet</span>
                         </div>
-                        <p data-i18n="pricing.professional.description">Idéal pour les entreprises en croissance</p>
+                        <p data-i18n="pricing.pro.description">Solution complète pour entreprises ambitieuses</p>
                     </div>
-                    <ul class="pricing-features">
-                        <li data-i18n="pricing.professional.feature1">Application web complète</li>
-                        <li data-i18n="pricing.professional.feature2">Design personnalisé</li>
-                        <li data-i18n="pricing.professional.feature3">Intégrations avancées</li>
-                        <li data-i18n="pricing.professional.feature4">Support prioritaire</li>
-                        <li data-i18n="pricing.professional.feature5">Analytics et reporting</li>
-                    </ul>
-                    <button class="btn btn-primary magnetic-element" onclick="openPricingModal('professional')" data-i18n="pricing.cta">En savoir plus</button>
+                    <div class="card-features">
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.pro.feature1">Application web avancée</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.pro.feature2">Design sur mesure</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.pro.feature3">Intégrations API</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.pro.feature4">Support prioritaire</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.pro.feature5">Analytics avancés</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary magnetic-hover ripple-effect" data-i18n="pricing.cta">
+                        <span>Choisir Pro</span>
+                        <div class="btn-bg"></div>
+                    </button>
                 </div>
-                <div class="pricing-card magnetic-element scale-in" data-delay="0.3">
-                    <div class="pricing-header">
+                
+                <div class="pricing-card reveal-up magnetic-hover" data-delay="0.2" onclick="openPricingModal('enterprise')">
+                    <div class="card-header">
                         <h3 data-i18n="pricing.enterprise.title">Enterprise</h3>
                         <div class="price">
                             <span class="currency">€</span>
-                            <span class="amount">4999</span>
+                            <span class="amount">6999</span>
+                            <span class="period" data-i18n="pricing.period">/ projet</span>
                         </div>
-                        <p data-i18n="pricing.enterprise.description">Solution complète pour grandes entreprises</p>
+                        <p data-i18n="pricing.enterprise.description">Plateforme enterprise sur mesure</p>
                     </div>
-                    <ul class="pricing-features">
-                        <li data-i18n="pricing.enterprise.feature1">Plateforme sur mesure</li>
-                        <li data-i18n="pricing.enterprise.feature2">Architecture scalable</li>
-                        <li data-i18n="pricing.enterprise.feature3">Sécurité renforcée</li>
-                        <li data-i18n="pricing.enterprise.feature4">Support 24/7</li>
-                        <li data-i18n="pricing.enterprise.feature5">Formation équipe</li>
-                    </ul>
-                    <button class="btn btn-outline magnetic-element" onclick="openPricingModal('enterprise')" data-i18n="pricing.cta">En savoir plus</button>
+                    <div class="card-features">
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.enterprise.feature1">Architecture scalable</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.enterprise.feature2">Sécurité renforcée</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.enterprise.feature3">API personnalisées</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.enterprise.feature4">Support 24/7</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✓</span>
+                            <span data-i18n="pricing.enterprise.feature5">Formation équipe</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline magnetic-hover ripple-effect" data-i18n="pricing.cta">
+                        <span>Choisir Enterprise</span>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Gallery Section -->
-    <section id="gallery" class="gallery">
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title reveal-text" data-i18n="gallery.title">Portfolio</h2>
-                <p class="section-subtitle reveal-text" data-i18n="gallery.subtitle">
-                    Découvrez quelques-uns de nos projets récents
+            <div class="section-header text-center">
+                <div class="section-badge reveal-up magnetic-hover">
+                    <span data-i18n="portfolio.badge">Nos Réalisations</span>
+                </div>
+                <h2 class="section-title reveal-up" data-i18n="portfolio.title">Portfolio Créatif</h2>
+                <p class="section-subtitle reveal-up" data-i18n="portfolio.subtitle">
+                    Découvrez quelques-unes de nos créations les plus remarquables
                 </p>
             </div>
-            <div class="gallery-grid">
-                <div class="gallery-item magnetic-element stagger-animation" data-delay="0.1" onclick="openGalleryModal('project1')">
-                    <img src="https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg" alt="Projet E-commerce" loading="lazy">
-                    <div class="gallery-overlay">
-                        <h3 data-i18n="gallery.project1.title">Boutique E-commerce</h3>
-                        <p data-i18n="gallery.project1.description">Plateforme de vente en ligne moderne</p>
-                        <div class="gallery-arrow">→</div>
+            
+            <div class="portfolio-grid">
+                <div class="portfolio-item large reveal-up magnetic-hover" onclick="openPortfolioModal('ecommerce')">
+                    <div class="portfolio-image">
+                        <img src="/images/mbpro.png" alt="E-commerce Platform" loading="lazy">
+                        <div class="image-overlay"></div>
                     </div>
-                </div>
-                <div class="gallery-item magnetic-element stagger-animation" data-delay="0.2" onclick="openGalleryModal('project2')">
-                    <img src="https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg" alt="Application Web" loading="lazy">
-                    <div class="gallery-overlay">
-                        <h3 data-i18n="gallery.project2.title">Application SaaS</h3>
-                        <p data-i18n="gallery.project2.description">Outil de gestion d'entreprise</p>
-                        <div class="gallery-arrow">→</div>
-                    </div>
-                </div>
-                <div class="gallery-item magnetic-element stagger-animation" data-delay="0.3" onclick="openGalleryModal('project3')">
-                    <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg" alt="Site Vitrine" loading="lazy">
-                    <div class="gallery-overlay">
-                        <h3 data-i18n="gallery.project3.title">Site Corporate</h3>
-                        <p data-i18n="gallery.project3.description">Présentation d'entreprise élégante</p>
-                        <div class="gallery-arrow">→</div>
-                    </div>
-                </div>
-                <div class="gallery-item magnetic-element stagger-animation" data-delay="0.4" onclick="openGalleryModal('project4')">
-                    <img src="https://images.pexels.com/photos/590016/pexels-photo-590016.jpg" alt="Portfolio" loading="lazy">
-                    <div class="gallery-overlay">
-                        <h3 data-i18n="gallery.project4.title">Portfolio Créatif</h3>
-                        <p data-i18n="gallery.project4.description">Showcase artistique interactif</p>
-                        <div class="gallery-arrow">→</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Vermögensverwalter Section -->
-    <section id="vermoegen" class="vermoegen">
-        <div class="container">
-            <div class="vermoegen-content">
-                <div class="vermoegen-text">
-                    <h2 class="section-title reveal-text" data-i18n="vermoegen.title">Vermögensverwalter</h2>
-                    <p class="reveal-text" data-i18n="vermoegen.subtitle">
-                        Notre société partenaire spécialisée dans la gestion de patrimoine
-                    </p>
-                    <p class="reveal-text" data-i18n="vermoegen.description">
-                        Vermögensverwalter offre des services de conseil financier personnalisés et de gestion de patrimoine 
-                        pour les particuliers et les entreprises. Avec une approche sur mesure et une expertise approfondie 
-                        des marchés financiers, nous vous accompagnons dans la réalisation de vos objectifs financiers.
-                    </p>
-                    <div class="vermoegen-features">
-                        <div class="feature-item slide-in-left" data-delay="0.1">
-                            <span class="feature-icon">📊</span>
-                            <span data-i18n="vermoegen.feature1">Gestion de portefeuille</span>
+                    <div class="portfolio-content">
+                        <div class="portfolio-tags">
+                            <span class="tag">E-commerce</span>
+                            <span class="tag">Animated</span>
+                            <span class="tag">Parallax</span>
                         </div>
-                        <div class="feature-item slide-in-left" data-delay="0.2">
-                            <span class="feature-icon">💼</span>
-                            <span data-i18n="vermoegen.feature2">Conseil en investissement</span>
-                        </div>
-                        <div class="feature-item slide-in-left" data-delay="0.3">
-                            <span class="feature-icon">🏦</span>
-                            <span data-i18n="vermoegen.feature3">Planification financière</span>
+                        <h3 data-i18n="portfolio.project1.title">Plateforme E-commerce</h3>
+                        <p data-i18n="portfolio.project1.description">Solution complète avec paiements sécurisés et gestion avancée</p>
+                        <div class="portfolio-link">
+                            <span data-i18n="portfolio.view">Voir le projet</span>
+                            <div class="link-arrow">→</div>
                         </div>
                     </div>
-                    <button class="btn btn-primary magnetic-element reveal-text" data-i18n="vermoegen.cta">Découvrir Vermögensverwalter</button>
                 </div>
-                <div class="vermoegen-visual">
-                    <div class="chart-container">
-                        <canvas id="chartCanvas"></canvas>
-                        <div class="chart-overlay">
-                            <div class="chart-legend">
-                                <div class="legend-item">
-                                    <div class="legend-color" style="background: rgba(79, 70, 229, 0.8)"></div>
-                                    <span>Actions</span>
-                                </div>
-                                <div class="legend-item">
-                                    <div class="legend-color" style="background: rgba(147, 51, 234, 0.8)"></div>
-                                    <span>Obligations</span>
-                                </div>
-                                <div class="legend-item">
-                                    <div class="legend-color" style="background: rgba(16, 185, 129, 0.8)"></div>
-                                    <span>Immobilier</span>
-                                </div>
-                            </div>
+                
+                <div class="portfolio-item reveal-up magnetic-hover" data-delay="0.1" onclick="openPortfolioModal('saas')">
+                    <div class="portfolio-image">
+                        <img src="https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg" alt="SaaS Dashboard" loading="lazy">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="portfolio-content">
+                        <div class="portfolio-tags">
+                            <span class="tag">SaaS</span>
+                            <span class="tag">Vue.js</span>
+                        </div>
+                        <h3 data-i18n="portfolio.project2.title">Dashboard SaaS</h3>
+                        <p data-i18n="portfolio.project2.description">Interface de gestion avec analytics en temps réel</p>
+                        <div class="portfolio-link">
+                            <span data-i18n="portfolio.view">Voir le projet</span>
+                            <div class="link-arrow">→</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item reveal-up magnetic-hover" data-delay="0.2" onclick="openPortfolioModal('corporate')">
+                    <div class="portfolio-image">
+                        <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg" alt="Corporate Website" loading="lazy">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="portfolio-content">
+                        <div class="portfolio-tags">
+                            <span class="tag">Corporate</span>
+                            <span class="tag">Next.js</span>
+                        </div>
+                        <h3 data-i18n="portfolio.project3.title">Site Corporate</h3>
+                        <p data-i18n="portfolio.project3.description">Présentation élégante avec animations fluides</p>
+                        <div class="portfolio-link">
+                            <span data-i18n="portfolio.view">Voir le projet</span>
+                            <div class="link-arrow">→</div>
                         </div>
                     </div>
                 </div>
@@ -388,53 +589,66 @@
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title reveal-text" data-i18n="contact.title">Contactez-nous</h2>
-                <p class="section-subtitle reveal-text" data-i18n="contact.subtitle">
-                    Prêt à commencer votre projet ? Discutons-en !
+            <div class="section-header text-center">
+                <div class="section-badge reveal-up magnetic-hover">
+                    <span data-i18n="contact.badge">Contact</span>
+                </div>
+                <h2 class="section-title reveal-up" data-i18n="contact.title">Démarrons Ensemble</h2>
+                <p class="section-subtitle reveal-up" data-i18n="contact.subtitle">
+                    Prêt à transformer vos idées en réalité digitale ? Contactez-nous dès maintenant
                 </p>
             </div>
+            
             <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item magnetic-element slide-in-left" data-delay="0.1">
-                        <div class="contact-icon">📧</div>
+                <div class="contact-info reveal-left">
+                    <div class="contact-item magnetic-hover">
+                        <div class="contact-icon">
+                            <span>📧</span>
+                            <div class="icon-glow"></div>
+                        </div>
                         <div class="contact-details">
-                            <h3 data-i18n="contact.email.title">Email</h3>
+                            <h4 data-i18n="contact.email.title">Email</h4>
                             <p>contact@huhpact.com</p>
                         </div>
                     </div>
-                    <div class="contact-item magnetic-element slide-in-left" data-delay="0.2">
-                        <div class="contact-icon">📱</div>
+                    
+                    <div class="contact-item magnetic-hover">
+                        <div class="contact-icon">
+                            <span>📱</span>
+                            <div class="icon-glow"></div>
+                        </div>
                         <div class="contact-details">
-                            <h3 data-i18n="contact.phone.title">Téléphone</h3>
+                            <h4 data-i18n="contact.phone.title">Téléphone</h4>
                             <p>+33 1 23 45 67 89</p>
                         </div>
                     </div>
-                    <div class="contact-item magnetic-element slide-in-left" data-delay="0.3">
-                        <div class="contact-icon">📍</div>
+                    
+                    <div class="contact-item magnetic-hover">
+                        <div class="contact-icon">
+                            <span>📍</span>
+                            <div class="icon-glow"></div>
+                        </div>
                         <div class="contact-details">
-                            <h3 data-i18n="contact.location.title">Localisation</h3>
+                            <h4 data-i18n="contact.location.title">Localisation</h4>
                             <p data-i18n="contact.location.address">Paris, France</p>
                         </div>
                     </div>
-                    <div class="contact-item magnetic-element slide-in-left" data-delay="0.4">
-                        <div class="contact-icon">⏰</div>
-                        <div class="contact-details">
-                            <h3 data-i18n="contact.hours.title">Horaires</h3>
-                            <p data-i18n="contact.hours.schedule">Lun-Ven 9h-18h</p>
-                        </div>
-                    </div>
                 </div>
-                <div class="contact-visual">
-                    <div class="contact-card scale-in" data-delay="0.2">
-                        <h3 data-i18n="contact.card.title">Commençons votre projet</h3>
-                        <p data-i18n="contact.card.description">
-                            Chaque grand projet commence par une simple conversation. 
-                            N'hésitez pas à nous contacter pour discuter de vos besoins.
+                
+                <div class="contact-cta reveal-right">
+                    <div class="cta-card magnetic-hover">
+                        <h3 data-i18n="contact.cta.title">Prêt à commencer ?</h3>
+                        <p data-i18n="contact.cta.description">
+                            Transformons ensemble vos idées en réalité digitale. Contactez-nous pour discuter de votre projet.
                         </p>
-                        <div class="contact-buttons">
-                            <a href="mailto:contact@huhpact.com" class="btn btn-primary magnetic-element" data-i18n="contact.cta.email">Envoyer un email</a>
-                            <a href="tel:+33123456789" class="btn btn-outline magnetic-element" data-i18n="contact.cta.call">Appeler maintenant</a>
+                        <div class="cta-buttons">
+                            <a href="mailto:contact@huhpact.com" class="btn btn-primary magnetic-hover ripple-effect">
+                                <span data-i18n="contact.cta.email">Envoyer un email</span>
+                                <div class="btn-bg"></div>
+                            </a>
+                            <a href="tel:+33123456789" class="btn btn-secondary magnetic-hover" data-i18n="contact.cta.call">
+                                <span>Appeler maintenant</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -448,13 +662,32 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <h3>huh(pact)</h3>
-                    <p data-i18n="footer.tagline">Développement web premium</p>
+                    <p data-i18n="footer.tagline">Excellence en développement web</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link magnetic-hover" aria-label="LinkedIn">
+                            <span>in</span>
+                        </a>
+                        <a href="#" class="social-link magnetic-hover" aria-label="GitHub">
+                            <span>gh</span>
+                        </a>
+                        <a href="#" class="social-link magnetic-hover" aria-label="Twitter">
+                            <span>tw</span>
+                        </a>
+                    </div>
                 </div>
                 <div class="footer-links">
-                    <a href="#about" class="magnetic-element" data-i18n="nav.about">À propos</a>
-                    <a href="#services" class="magnetic-element" data-i18n="nav.services">Services</a>
-                    <a href="#pricing" class="magnetic-element" data-i18n="nav.pricing">Tarifs</a>
-                    <a href="#contact" class="magnetic-element" data-i18n="nav.contact">Contact</a>
+                    <div class="link-group">
+                        <h4 data-i18n="footer.services.title">Services</h4>
+                        <a href="#services" class="magnetic-hover" data-i18n="footer.services.development">Développement</a>
+                        <a href="#services" class="magnetic-hover" data-i18n="footer.services.design">Design</a>
+                        <a href="#services" class="magnetic-hover" data-i18n="footer.services.hosting">Hébergement</a>
+                    </div>
+                    <div class="link-group">
+                        <h4 data-i18n="footer.company.title">Entreprise</h4>
+                        <a href="#about" class="magnetic-hover" data-i18n="footer.company.about">À propos</a>
+                        <a href="#portfolio" class="magnetic-hover" data-i18n="footer.company.portfolio">Portfolio</a>
+                        <a href="#contact" class="magnetic-hover" data-i18n="footer.company.contact">Contact</a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -463,11 +696,25 @@
         </div>
     </footer>
 
-    <!-- Modals -->
-    <div id="modalOverlay" class="modal-overlay" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="modal-close magnetic-element" onclick="closeModal()">×</button>
-            <div id="modalBody"></div>
+    <!-- Back to Top -->
+    <button class="back-to-top magnetic-hover" id="backToTop" aria-label="Retour en haut">
+        <span>↑</span>
+        <div class="progress-ring">
+            <svg viewBox="0 0 50 50">
+                <circle cx="25" cy="25" r="22" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+                <circle cx="25" cy="25" r="22" fill="none" stroke="rgba(79,70,229,1)" stroke-width="2" 
+                        stroke-dasharray="138.23" stroke-dashoffset="138.23" id="progressCircle"/>
+            </svg>
+        </div>
+    </button>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close magnetic-hover" id="modalClose">×</button>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content will be inserted here -->
+            </div>
         </div>
     </div>
 
