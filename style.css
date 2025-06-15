@@ -1952,3 +1952,10 @@ section {
         --glass-border: rgba(255, 255, 255, 0.5);
     }
 }
+
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100vw;
+    }
+}
