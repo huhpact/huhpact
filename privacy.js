@@ -1,4 +1,3 @@
-// Modern Cookie Banner Management
 class CookieBanner {
     constructor() {
         this.banner = document.getElementById('cookieBanner');
@@ -7,26 +6,22 @@ class CookieBanner {
         this.declineBtn = document.getElementById('declineCookies');
         
         this.cookieName = 'huhpact_cookie_consent';
-        this.cookieExpiry = 365; // days
+        this.cookieExpiry = 365;
         
         this.init();
     }
     
     init() {
-        // Check if user has already made a choice
         if (!this.getCookie(this.cookieName)) {
-            // Show banner after page load with delay for better UX
             setTimeout(() => {
                 this.showBanner();
             }, 1500);
         }
-        
-        // Event listeners
+    
         this.acceptBtn?.addEventListener('click', () => this.acceptCookies());
         this.declineBtn?.addEventListener('click', () => this.declineCookies());
         this.overlay?.addEventListener('click', () => this.hideBanner());
-        
-        // Keyboard support
+     
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.banner?.classList.contains('show')) {
                 this.hideBanner();
@@ -37,11 +32,9 @@ class CookieBanner {
     showBanner() {
         this.overlay?.classList.add('show');
         this.banner?.classList.add('show');
-        
-        // Prevent body scroll when banner is shown
+
         document.body.style.overflow = 'hidden';
-        
-        // Focus management for accessibility
+   
         setTimeout(() => {
             this.acceptBtn?.focus();
         }, 300);
@@ -50,30 +43,25 @@ class CookieBanner {
     hideBanner() {
         this.overlay?.classList.remove('show');
         this.banner?.classList.remove('show');
-        
-        // Restore body scroll
+      
         document.body.style.overflow = '';
     }
     
     acceptCookies() {
         this.setCookie(this.cookieName, 'accepted', this.cookieExpiry);
         this.hideBanner();
-        
-        // Enable analytics/tracking here
+ 
         console.log('Cookies accepted - Analytics can be enabled');
         
-        // Show success notification
         this.showNotification('Cookies acceptés! Merci pour votre consentement.', 'success');
     }
     
     declineCookies() {
         this.setCookie(this.cookieName, 'declined', this.cookieExpiry);
         this.hideBanner();
-        
-        // Disable non-essential cookies/tracking
+  
         console.log('Cookies declined - Only essential cookies will be used');
-        
-        // Show info notification
+
         this.showNotification('Préférences enregistrées. Seuls les cookies essentiels seront utilisés.', 'info');
     }
     
@@ -95,7 +83,6 @@ class CookieBanner {
     }
     
     showNotification(message, type = 'info') {
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
         notification.innerHTML = `
@@ -126,13 +113,11 @@ class CookieBanner {
         });
         
         document.body.appendChild(notification);
-        
-        // Animate in
+
         setTimeout(() => {
             notification.style.transform = 'translateX(0)';
         }, 100);
-        
-        // Auto remove after 4 seconds
+
         setTimeout(() => {
             notification.style.transform = 'translateX(400px)';
             setTimeout(() => {
@@ -144,7 +129,6 @@ class CookieBanner {
     }
 }
 
-// Scroll Progress Bar
 class ScrollProgress {
     constructor() {
         this.progressBar = document.querySelector('.nav-progress-bar');
@@ -164,7 +148,6 @@ class ScrollProgress {
     }
 }
 
-// Navbar Scroll Effect
 class NavbarScroll {
     constructor() {
         this.navbar = document.querySelector('.navbar');
@@ -182,7 +165,6 @@ class NavbarScroll {
     }
 }
 
-// Reveal Animations on Scroll
 class RevealAnimations {
     constructor() {
         this.init();
@@ -199,15 +181,13 @@ class RevealAnimations {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         });
-        
-        // Observe all reveal elements
+   
         document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el => {
             observer.observe(el);
         });
     }
 }
 
-// Back to Top Button
 class BackToTop {
     constructor() {
         this.button = document.getElementById('backToTop');
@@ -222,15 +202,13 @@ class BackToTop {
             const scrollTop = window.pageYOffset;
             const docHeight = document.body.scrollHeight - window.innerHeight;
             const scrollPercent = scrollTop / docHeight;
-            
-            // Show/hide button
+    
             if (scrollTop > 300) {
                 this.button.classList.add('visible');
             } else {
                 this.button.classList.remove('visible');
             }
-            
-            // Update progress circle
+ 
             if (this.progressCircle) {
                 const circumference = 2 * Math.PI * 25;
                 const offset = circumference - (scrollPercent * circumference);
@@ -247,7 +225,6 @@ class BackToTop {
     }
 }
 
-// Enhanced Ripple Effect
 class RippleEffect {
     constructor() {
         this.init();
@@ -282,8 +259,7 @@ class RippleEffect {
                 }, 600);
             });
         });
-        
-        // Add ripple animation CSS
+
         const style = document.createElement('style');
         style.textContent = `
             @keyframes ripple {
@@ -297,14 +273,12 @@ class RippleEffect {
     }
 }
 
-// Smooth Page Transitions
 class PageTransitions {
     constructor() {
         this.init();
     }
     
     init() {
-        // Add page load animation
         document.body.style.opacity = '0';
         document.body.style.transform = 'translateY(20px)';
         
@@ -315,14 +289,12 @@ class PageTransitions {
                 document.body.style.transform = 'translateY(0)';
             }, 100);
         });
-        
-        // Enhanced link transitions
+
         document.querySelectorAll('a[href^="privacy.html"], a[href^="index.html"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const href = link.getAttribute('href');
-                
-                // Fade out animation
+
                 document.body.style.transition = 'opacity 0.3s ease';
                 document.body.style.opacity = '0';
                 
@@ -334,20 +306,16 @@ class PageTransitions {
     }
 }
 
-// Enhanced Accessibility
 class AccessibilityEnhancement {
     constructor() {
         this.init();
     }
     
     init() {
-        // Skip to content link
         this.createSkipLink();
-        
-        // Enhanced focus management
+
         this.enhanceFocusManagement();
-        
-        // Keyboard navigation
+
         this.setupKeyboardNavigation();
     }
     
@@ -384,7 +352,6 @@ class AccessibilityEnhancement {
     }
     
     enhanceFocusManagement() {
-        // Add focus indicators for keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
                 document.body.classList.add('keyboard-navigation');
@@ -394,8 +361,7 @@ class AccessibilityEnhancement {
         document.addEventListener('mousedown', () => {
             document.body.classList.remove('keyboard-navigation');
         });
-        
-        // Enhanced focus styles
+
         const style = document.createElement('style');
         style.textContent = `
             .keyboard-navigation *:focus {
@@ -408,7 +374,6 @@ class AccessibilityEnhancement {
     }
     
     setupKeyboardNavigation() {
-        // Enhanced keyboard support for interactive elements
         document.querySelectorAll('.info-card, .legal-card, .privacy-section').forEach(card => {
             card.setAttribute('tabindex', '0');
             card.setAttribute('role', 'article');
@@ -423,30 +388,25 @@ class AccessibilityEnhancement {
     }
 }
 
-// Performance Monitor
 class PerformanceMonitor {
     constructor() {
         this.init();
     }
     
     init() {
-        // Monitor page load performance
         window.addEventListener('load', () => {
             if ('performance' in window) {
                 const perfData = performance.timing;
                 const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
                 console.log(`Page load time: ${pageLoadTime}ms`);
                 
-                // Send analytics if cookies accepted
                 const cookieConsent = this.getCookie('huhpact_cookie_consent');
                 if (cookieConsent === 'accepted') {
-                    // Analytics code here
                     console.log('Analytics enabled - tracking page load time');
                 }
             }
         });
-        
-        // Monitor resource loading errors
+  
         window.addEventListener('error', (e) => {
             if (e.target !== window) {
                 console.warn('Resource failed to load:', e.target.src || e.target.href);
@@ -466,9 +426,7 @@ class PerformanceMonitor {
     }
 }
 
-// Initialize all components when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize all components
     new CookieBanner();
     new ScrollProgress();
     new NavbarScroll();
@@ -482,7 +440,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('huh(pact) website initialized successfully! 🚀');
 });
 
-// Global utility functions for testing/debugging
 window.huhpactUtils = {
     resetCookies: () => {
         document.cookie = 'huhpact_cookie_consent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
