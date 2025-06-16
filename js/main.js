@@ -1,4 +1,3 @@
-// Internationalization
 const translations = {
     fr: {
         "nav.home": "Accueil",
@@ -31,7 +30,7 @@ const translations = {
         "services.title": "Solutions Complètes",
         "services.subtitle": "De l'idée à la réalisation, nous couvrons tous les aspects de votre présence digitale",
         "services.development.title": "Développement Web",
-        "services.development.description": "Applications web modernes et performantes utilisant React, Vue.js, Node.js et les dernières technologies",
+        "services.development.description": " Applications web modernes et performantes utilisant HTML, CSS, JavaScript et les dernières technologies",
         "services.design.title": "Design & UX",
         "services.design.description": "Interfaces intuitives et expériences utilisateur exceptionnelles",
         "services.hosting.title": "Hébergement",
@@ -61,32 +60,31 @@ const translations = {
         "pricing.enterprise.title": "Enterprise",
         "pricing.enterprise.description": "Plateforme enterprise sur mesure",
         "pricing.enterprise.feature1": "Architecture scalable",
-        "pricing.enterprise.feature2": "Sécurité renforcée",
+        "pricing.enterprise.feature2": "10+ Pages",
         "pricing.enterprise.feature3": "API personnalisées",
         "pricing.enterprise.feature4": "Support 24/7",
-        "pricing.enterprise.feature5": "Formation équipe",
+        "pricing.enterprise.feature5": "Branding",
         "pricing.cta": "Choisir",
         "portfolio.badge": "Nos Réalisations",
         "portfolio.title": "Portfolio Créatif",
         "portfolio.subtitle": "Découvrez quelques-unes de nos créations les plus remarquables",
         "portfolio.project1.title": "Plateforme E-commerce",
-        "portfolio.project1.description": "Solution complète avec paiements sécurisés et gestion avancée",
-        "portfolio.project2.title": "Dashboard SaaS",
-        "portfolio.project2.description": "Interface de gestion avec analytics en temps réel",
-        "portfolio.project3.title": "Site Corporate",
-        "portfolio.project3.description": "Présentation élégante avec animations fluides",
+        "portfolio.project1.description": "Présentation complète d'un MacBook Pro",
+        "portfolio.project2.title": "USP Hannover",
+        "portfolio.project2.description": "Présentation de l'entreprise USP Hannover avec des animations modernes",
+        "portfolio.project3.title": "WaifuSpin",
+        "portfolio.project3.description": "Création d'une application casino complète avec des jeux de casino et des animations",
         "portfolio.view": "Voir le projet",
         "contact.badge": "Contact",
         "contact.title": "Démarrons Ensemble",
         "contact.subtitle": "Prêt à transformer vos idées en réalité digitale ? Contactez-nous dès maintenant",
         "contact.email.title": "Email",
-        "contact.phone.title": "Téléphone",
         "contact.location.title": "Localisation",
-        "contact.location.address": "Paris, France",
+        "contact.location.address": "Bordeaux, France",
+        "contact.location.address1": "Potsdam, Allemagne",
         "contact.cta.title": "Prêt à commencer ?",
         "contact.cta.description": "Transformons ensemble vos idées en réalité digitale. Contactez-nous pour discuter de votre projet.",
         "contact.cta.email": "Envoyer un email",
-        "contact.cta.call": "Appeler maintenant",
         "footer.tagline": "Excellence en développement web",
         "footer.services.title": "Services",
         "footer.services.development": "Développement",
@@ -95,8 +93,13 @@ const translations = {
         "footer.company.title": "Entreprise",
         "footer.company.about": "À propos",
         "footer.company.portfolio": "Portfolio",
-        "footer.company.contact": "Contact",
-        "footer.copyright": "© 2024 huh(pact). Tous droits réservés."
+        "footer.company.contact": "Confidentialité",
+        "footer.company.imprint": "Mentions légales",
+        "footer.copyright": "© 2025 huh(pact). Tous droits réservés.",
+        "cookie.1": "Nous utilisons des cookies",
+        "cookie.2": "Ce site utilise des cookies pour améliorer votre expérience de navigation et analyser l'utilisation du site. En continuant à naviguer, vous acceptez notre utilisation des cookies.",
+        "cookie.accept": "Accepter",
+        "cookie.decline": "Refuser"
     },
     en: {
         "nav.home": "Home",
@@ -129,7 +132,7 @@ const translations = {
         "services.title": "Complete Solutions",
         "services.subtitle": "From idea to implementation, we cover all aspects of your digital presence",
         "services.development.title": "Web Development",
-        "services.development.description": "Modern and performant web applications using React, Vue.js, Node.js and latest technologies",
+        "services.development.description": "Modern and performant web applications using HTML, CSS, JavaScript and latest technologies",
         "services.design.title": "Design & UX",
         "services.design.description": "Intuitive interfaces and exceptional user experiences",
         "services.hosting.title": "Hosting",
@@ -159,32 +162,31 @@ const translations = {
         "pricing.enterprise.title": "Enterprise",
         "pricing.enterprise.description": "Custom enterprise platform",
         "pricing.enterprise.feature1": "Scalable architecture",
-        "pricing.enterprise.feature2": "Enhanced security",
+        "pricing.enterprise.feature2": "10+ Pages",
         "pricing.enterprise.feature3": "Custom APIs",
         "pricing.enterprise.feature4": "24/7 support",
-        "pricing.enterprise.feature5": "Team training",
+        "pricing.enterprise.feature5": "Branding",
         "pricing.cta": "Choose",
         "portfolio.badge": "Our Work",
         "portfolio.title": "Creative Portfolio",
         "portfolio.subtitle": "Discover some of our most remarkable creations",
         "portfolio.project1.title": "E-commerce Platform",
-        "portfolio.project1.description": "Complete solution with secure payments and advanced management",
-        "portfolio.project2.title": "SaaS Dashboard",
-        "portfolio.project2.description": "Management interface with real-time analytics",
-        "portfolio.project3.title": "Corporate Website",
-        "portfolio.project3.description": "Elegant presentation with smooth animations",
+        "portfolio.project1.description": "Complete showcase of a MacBook Pro",
+        "portfolio.project2.title": "USP Hannover",
+        "portfolio.project2.description": "Company presentation with modern animations",
+        "portfolio.project3.title": "WaifuSpin",
+        "portfolio.project3.description": "Creation of a complete casino application with casino games and animations",
         "portfolio.view": "View project",
         "contact.badge": "Contact",
         "contact.title": "Let's Start Together",
         "contact.subtitle": "Ready to transform your ideas into digital reality? Contact us now",
         "contact.email.title": "Email",
-        "contact.phone.title": "Phone",
         "contact.location.title": "Location",
-        "contact.location.address": "Paris, France",
+        "contact.location.address": "Bordeaux, France",
+        "contact.location.address1": "Potsdam, Germany",
         "contact.cta.title": "Ready to start?",
         "contact.cta.description": "Let's transform your ideas into digital reality together. Contact us to discuss your project.",
         "contact.cta.email": "Send email",
-        "contact.cta.call": "Call now",
         "footer.tagline": "Excellence in web development",
         "footer.services.title": "Services",
         "footer.services.development": "Development",
@@ -193,17 +195,20 @@ const translations = {
         "footer.company.title": "Company",
         "footer.company.about": "About",
         "footer.company.portfolio": "Portfolio",
-        "footer.company.contact": "Contact",
-        "footer.copyright": "© 2024 huh(pact). All rights reserved."
+        "footer.company.contact": "Privacy Policy",
+        "footer.company.imprint": "Imprint",
+        "footer.copyright": "© 2025 huh(pact). All rights reserved.",
+        "cookie.1": "We use cookies",
+        "cookie.2": "This site uses cookies to enhance your browsing experience and analyze site usage. By continuing to browse, you agree to our use of cookies.",
+        "cookie.accept": "Accept",
+        "cookie.decline": "Decline"
     }
 };
 
-// Global variables
 let currentLanguage = 'fr';
 let cursorX = 0;
 let cursorY = 0;
 
-// Initialize application
 document.addEventListener('DOMContentLoaded', function() {
     detectLanguage();
     initializeCursor();
@@ -214,8 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeBackToTop();
     initializeSkillProgress();
     translatePage();
-    
-    // Smooth scrolling for navigation links
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -227,20 +231,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     top: elementPosition,
                     behavior: 'smooth'
                 });
-                
-                // Close mobile menu if open
+     
                 document.getElementById('mobileMenuOverlay').classList.remove('active');
             }
         });
     });
 });
 
-// Custom Cursor System
 function initializeCursor() {
     const cursor = document.querySelector('.cursor-dot');
     if (!cursor) return;
-    
-    // Hide cursor on mobile
+
     if (window.innerWidth <= 768) {
         cursor.style.display = 'none';
         return;
@@ -253,8 +254,7 @@ function initializeCursor() {
         cursor.style.left = cursorX + 'px';
         cursor.style.top = cursorY + 'px';
     });
-    
-    // Magnetic effect for hover elements
+
     document.querySelectorAll('.magnetic-hover').forEach(element => {
         element.addEventListener('mouseenter', () => {
             cursor.classList.add('magnetic');
@@ -269,7 +269,6 @@ function initializeCursor() {
     });
 }
 
-// Language Detection and Management
 function detectLanguage() {
     const browserLang = navigator.language || navigator.userLanguage;
     const langCode = browserLang.split('-')[0];
@@ -312,20 +311,17 @@ function translatePage() {
 
 document.getElementById('langToggle').addEventListener('click', toggleLanguage);
 
-// Navigation System
 function initializeNavigation() {
     const navbar = document.querySelector('.navbar');
     const progressBar = document.getElementById('navProgressBar');
     
     window.addEventListener('scroll', () => {
-        // Navigation background
         if (window.scrollY > 100) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
         
-        // Progress bar
         const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (winScroll / height) * 100;
@@ -333,7 +329,6 @@ function initializeNavigation() {
     });
 }
 
-// Mobile Menu System
 function initializeMobileMenu() {
     const mobileMenuTrigger = document.getElementById('mobileMenuTrigger');
     const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
@@ -355,8 +350,7 @@ function initializeMobileMenu() {
             document.body.style.overflow = 'auto';
         }
     });
-    
-    // Close menu on navigation
+
     document.querySelectorAll('.mobile-nav-link').forEach(link => {
         link.addEventListener('click', () => {
             mobileMenuOverlay.classList.remove('active');
@@ -365,7 +359,6 @@ function initializeMobileMenu() {
     });
 }
 
-// Scroll Animations System
 function initializeScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
@@ -383,13 +376,11 @@ function initializeScrollAnimations() {
             }
         });
     }, observerOptions);
-    
-    // Observe all animated elements
+
     document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el => {
         observer.observe(el);
     });
-    
-    // Parallax effect for floating shapes
+  
     window.addEventListener('scroll', () => {
         const scrolled = window.pageYOffset;
         document.querySelectorAll('.shape').forEach(shape => {
@@ -400,7 +391,6 @@ function initializeScrollAnimations() {
     });
 }
 
-// Counter Animation System
 function initializeCounters() {
     const counters = document.querySelectorAll('[data-count]');
     const observerOptions = {
@@ -433,7 +423,6 @@ function initializeCounters() {
     counters.forEach(counter => observer.observe(counter));
 }
 
-// Skill Progress Animation
 function initializeSkillProgress() {
     const skillItems = document.querySelectorAll('.skill-item');
     const observerOptions = {
@@ -451,7 +440,6 @@ function initializeSkillProgress() {
                     progressBar.style.setProperty('--progress', progress + '%');
                     progressBar.querySelector('::after') && (progressBar.querySelector('::after').style.width = progress + '%');
                     
-                    // Alternative method using CSS custom property
                     progressBar.style.background = `linear-gradient(to right, var(--gradient-primary) ${progress}%, rgba(255,255,255,0.1) ${progress}%)`;
                 }, 200);
                 
@@ -463,11 +451,10 @@ function initializeSkillProgress() {
     skillItems.forEach(item => observer.observe(item));
 }
 
-// Back to Top System
 function initializeBackToTop() {
     const backToTop = document.getElementById('backToTop');
     const progressCircle = document.getElementById('progressCircle');
-    const circumference = 2 * Math.PI * 22; // radius = 22
+    const circumference = 2 * Math.PI * 22; 
     
     progressCircle.style.strokeDasharray = circumference;
     progressCircle.style.strokeDashoffset = circumference;
@@ -476,15 +463,13 @@ function initializeBackToTop() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const scrollPercent = (scrollTop / docHeight) * 100;
-        
-        // Show/hide button
+
         if (scrollTop > 300) {
             backToTop.classList.add('visible');
         } else {
             backToTop.classList.remove('visible');
         }
-        
-        // Update progress circle
+
         const offset = circumference - (scrollPercent / 100) * circumference;
         progressCircle.style.strokeDashoffset = offset;
     });
@@ -497,12 +482,11 @@ function initializeBackToTop() {
     });
 }
 
-// Modal System
 function openPricingModal(plan) {
     const modalData = {
         starter: {
             title: currentLanguage === 'fr' ? 'Formule Starter' : 'Starter Plan',
-            price: '€1,299',
+            price: '€1,799',
             description: currentLanguage === 'fr' 
                 ? 'La formule parfaite pour démarrer votre présence en ligne avec un site web professionnel et moderne.'
                 : 'The perfect plan to start your online presence with a professional and modern website.',
@@ -525,11 +509,11 @@ function openPricingModal(plan) {
                     'Google Analytics integration',
                     'Content management training'
                 ],
-            paymentLink: 'https://buy.stripe.com/test_starter_plan'
+            paymentLink: 'https://book.stripe.com/3cIeVcdnebHm2md6x04wM0f'
         },
         pro: {
             title: currentLanguage === 'fr' ? 'Formule Professional' : 'Professional Plan',
-            price: '€2,899',
+            price: '€3,499',
             description: currentLanguage === 'fr' 
                 ? 'Solution complète pour les entreprises ambitieuses qui veulent se démarquer avec une application web avancée.'
                 : 'Complete solution for ambitious companies that want to stand out with an advanced web application.',
@@ -542,7 +526,7 @@ function openPricingModal(plan) {
                     'Analytics et reporting avancés',
                     'Optimisation SEO avancée',
                     'Maintenance incluse 6 mois',
-                    'Formation complète de l\'équipe'
+                    'Branding complète'
                 ]
                 : [
                     'Complete and advanced web application',
@@ -552,9 +536,9 @@ function openPricingModal(plan) {
                     'Advanced analytics and reporting',
                     'Advanced SEO optimization',
                     'Maintenance included 6 months',
-                    'Complete team training'
+                    'Complete Branding'
                 ],
-            paymentLink: 'https://buy.stripe.com/test_pro_plan'
+            paymentLink: 'https://book.stripe.com/6oU5kC1Ew26MaSJ7B44wM0g'
         },
         enterprise: {
             title: currentLanguage === 'fr' ? 'Formule Enterprise' : 'Enterprise Plan',
@@ -566,26 +550,26 @@ function openPricingModal(plan) {
                 ? [
                     'Plateforme entièrement personnalisée',
                     'Architecture scalable et haute performance',
-                    'Sécurité renforcée et conformité RGPD',
+                    '10+ Pages',
                     'API personnalisées et intégrations complexes',
                     'Support technique 24/7',
                     'Consultation stratégique incluse',
                     'Maintenance premium 12 mois',
-                    'Formation et accompagnement équipe',
+                    'Branding & Marketing avancé',
                     'Tests de charge et optimisation'
                 ]
                 : [
                     'Fully customized platform',
                     'Scalable and high-performance architecture',
-                    'Enhanced security and GDPR compliance',
+                    '10+ Pages',
                     'Custom APIs and complex integrations',
                     '24/7 technical support',
                     'Strategic consultation included',
                     'Premium maintenance 12 months',
-                    'Team training and support',
+                    'Branding & Advanced Marketing',
                     'Load testing and optimization'
                 ],
-            paymentLink: 'https://buy.stripe.com/test_enterprise_plan'
+            paymentLink: 'https://book.stripe.com/aFa00i5UMfXC5yp5sW4wM0h'
         }
     };
     
@@ -624,42 +608,42 @@ function openPortfolioModal(project) {
     const portfolioData = {
         ecommerce: {
             title: currentLanguage === 'fr' ? 'Plateforme E-commerce' : 'E-commerce Platform',
-            image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg',
+            image: '/images/mbpro.png',
             description: currentLanguage === 'fr' 
-                ? 'Une plateforme e-commerce moderne et performante développée pour une boutique de mode. Intégration complète avec les systèmes de paiement, gestion des stocks en temps réel, et interface administrative avancée.'
-                : 'A modern and high-performance e-commerce platform developed for a fashion store. Complete integration with payment systems, real-time inventory management, and advanced administrative interface.',
-            technologies: ['React', 'Node.js', 'MongoDB', 'Stripe', 'Redux'],
+                ? 'Une page de présentation inspirée par Apple pour le MacBook Pro, utilisant des animations modernes, des éléments et des transitions. Ce projet met en avant un design élégant et interactif, parfait pour présenter des produits ou services.'
+                : 'An Apple-inspired MacBook Pro Presentation page, using modern animations, elements and transitions. This project showcases a sleek and interactive design, perfect for showcasing products or services.',
+            technologies: ['HTML5', 'JavaScript', 'Boxicons', 'Google Fonts', 'Google Analytics', "CSS3"],
             features: currentLanguage === 'fr' 
-                ? ['Paiement sécurisé Stripe', 'Gestion des stocks en temps réel', 'Interface admin complète', 'SEO optimisé', 'Responsive design']
-                : ['Secure Stripe payment', 'Real-time inventory management', 'Complete admin interface', 'SEO optimized', 'Responsive design'],
-            liveUrl: 'https://demo-ecommerce.huhpact.com',
-            githubUrl: 'https://github.com/huhpact/ecommerce-demo'
+                ? ['Parallax Défilement', 'Intégration vidéo Stop-Go', 'Animations (In-Viewport)', 'SEO optimisé', 'Responsive design']
+                : ['Parallax Scrolling', 'Stop-Go Video Integration', 'Scroll Animations (In-Viewport)', 'SEO optimized', 'Responsive design'],
+            liveUrl: 'https://huhpact.dev/mbpro/',
+            githubUrl: 'https://github.com/huhpact/huhpact/blob/main/mbpro/index.html'
         },
         saas: {
-            title: currentLanguage === 'fr' ? 'Dashboard SaaS' : 'SaaS Dashboard',
-            image: 'https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg',
+            title: currentLanguage === 'fr' ? 'USP Hannover' : 'USP Hannover',
+            image: '/images/usp-hannover.png',
             description: currentLanguage === 'fr' 
-                ? 'Outil de gestion d\'entreprise complet avec tableau de bord analytique, gestion des équipes, et système de facturation automatisé. Interface intuitive et fonctionnalités avancées.'
-                : 'Complete business management tool with analytical dashboard, team management, and automated billing system. Intuitive interface and advanced features.',
-            technologies: ['Vue.js', 'Laravel', 'PostgreSQL', 'Redis', 'Docker'],
+                ? 'Site de présentation d\'entreprise utilisant des animations modernes, un contenu informatif et un design épuré. Ce projet met en avant l\'entreprise USP Hannover avec des animations modernes et une mise en page informative.'
+                : 'Complete business presentation site using modern animations, informative content, and a sleek design. This project highlights the company USP Hannover with modern animations and an informative layout.',
+            technologies: ['Font Awesome', 'HTML', 'CSS', 'JavaScript', 'Google Fonts', 'Google Analytics', 'Boxicons', 'GSAP'],
             features: currentLanguage === 'fr' 
-                ? ['Dashboard analytique en temps réel', 'Gestion des équipes', 'Facturation automatisée', 'API REST complète', 'Notifications push']
-                : ['Real-time analytics dashboard', 'Team management', 'Automated billing', 'Complete REST API', 'Push notifications'],
-            liveUrl: 'https://demo-saas.huhpact.com',
-            githubUrl: 'https://github.com/huhpact/saas-demo'
+                ? ['Parallaxe d’image', 'Éléments interactifs', 'Disposition psychologique', 'SEO complexe', 'Design convivial', 'Design responsive']
+                : ['Image Parallax', 'Interactive Elements', 'Psychological Layout', 'Complex SEO', 'User-Friendly Design', 'Responsive Design'],
+            liveUrl: 'https://www.usp-hannover.de/',
+            githubUrl: 'https://github.com/huhpact/USP-Hannover/blob/main/index.html'
         },
         corporate: {
-            title: currentLanguage === 'fr' ? 'Site Corporate' : 'Corporate Website',
-            image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg',
+            title: currentLanguage === 'fr' ? 'WaifuSpin' : 'WaifuSpin',
+            image: '/images/waifuspin2.jpg',
             description: currentLanguage === 'fr' 
-                ? 'Site web corporate élégant pour une entreprise de conseil. Design moderne, animations fluides, et optimisation SEO avancée pour une visibilité maximale.'
-                : 'Elegant corporate website for a consulting company. Modern design, smooth animations, and advanced SEO optimization for maximum visibility.',
-            technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vercel'],
+                ? 'Application casino moderne et complète avec des jeux, des informations et un design moderne, permettant aux utilisateurs de jouer et de profiter d\'une expérience de casino complète. Ce projet met en avant des animations avancées et un design élégant.'
+                : 'Complex modern casino application with games, information and modern design, allowing users to play and enjoy a complete casino experience. This project showcases advanced animations and a sleek design.',
+            technologies: ['GSAP', 'TypeScript', 'JavaScript', 'i18n', 'JSON', 'HTML5', 'CSS3', 'Boxicons', 'Google Fonts'],
             features: currentLanguage === 'fr' 
-                ? ['Design responsive premium', 'Animations Framer Motion', 'SEO avancé', 'Performance optimisée', 'CMS intégré']
-                : ['Premium responsive design', 'Framer Motion animations', 'Advanced SEO', 'Optimized performance', 'Integrated CMS'],
-            liveUrl: 'https://demo-corporate.huhpact.com',
-            githubUrl: 'https://github.com/huhpact/corporate-demo'
+                ? ['Intégration complète des paiements Stripe', 'Animations Framer Motion', 'SEO avancé', 'Performance optimisée', 'Design moderne et responsive']
+                : ['Full Integration of Stripe Payments', 'Framer Motion animations', 'Advanced SEO', 'Optimized performance', 'Modern responsive design'],
+            liveUrl: 'https://waifuspin.com/',
+            githubUrl: 'https://github.com/huhpact/WaifuSpin/blob/main/en/index/index.html'
         }
     };
     
@@ -714,7 +698,6 @@ function closeModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Modal close events
 document.getElementById('modalClose').addEventListener('click', closeModal);
 document.getElementById('modalOverlay').addEventListener('click', (e) => {
     if (e.target === document.getElementById('modalOverlay')) {
@@ -722,7 +705,6 @@ document.getElementById('modalOverlay').addEventListener('click', (e) => {
     }
 });
 
-// Performance monitoring
 const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
         if (entry.entryType === 'navigation') {
@@ -733,44 +715,34 @@ const observer = new PerformanceObserver((list) => {
 
 observer.observe({ entryTypes: ['navigation'] });
 
-// Cleanup
 window.addEventListener('beforeunload', function() {
-    // Cleanup any intervals or timeouts if needed
 });
 
-// Error handling
 window.addEventListener('error', function(e) {
     console.error('JavaScript Error:', e.error);
 });
 
-// Keyboard navigation
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-        // Close mobile menu and modal
         document.getElementById('mobileMenuOverlay').classList.remove('active');
         closeModal();
         document.body.style.overflow = 'auto';
     }
 });
 
-// Prevent right-click on images (optional)
 document.querySelectorAll('img').forEach(img => {
     img.addEventListener('contextmenu', e => e.preventDefault());
 });
 
-// Smooth scroll polyfill for older browsers
 if (!('scrollBehavior' in document.documentElement.style)) {
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js';
     document.head.appendChild(script);
 }
 
-// Initialize animations on page load
 window.addEventListener('load', () => {
-    // Add loaded class to body for CSS animations
     document.body.classList.add('loaded');
-    
-    // Trigger hero animations
+
     setTimeout(() => {
         document.querySelectorAll('.hero .reveal-up').forEach((el, index) => {
             setTimeout(() => {
