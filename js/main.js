@@ -617,8 +617,8 @@ function openPortfolioModal(project) {
                 ? ['Parallaxe d’image', 'Éléments interactifs', 'Disposition psychologique', 'SEO complexe', 'Design convivial', 'Design responsive']
                 : ['Image Parallax', 'Interactive Elements', 'Psychological Layout', 'Complex SEO', 'User-Friendly Design', 'Responsive Design'],
                
-            liveUrl: 'https://huhpact.dev/mbpro/',
-            githubUrl: 'https://github.com/huhpact/huhpact/blob/main/mbpro/index.html'
+            liveUrl: 'https://www.usp-hannover.de',
+            githubUrl: 'https://github.com/huhpact/USP-Hannover/blob/main/index.html'
         },
         saas: {
             title: currentLanguage === 'fr' ? 'Plateforme E-commerce' : 'E-commerce Platform',
@@ -630,8 +630,8 @@ function openPortfolioModal(project) {
             features: currentLanguage === 'fr' 
                 ? ['Parallax Défilement', 'Intégration vidéo Stop-Go', 'Animations (In-Viewport)', 'SEO optimisé', 'Responsive design']
                 : ['Parallax Scrolling', 'Stop-Go Video Integration', 'Scroll Animations (In-Viewport)', 'SEO optimized', 'Responsive design'],
-            liveUrl: 'https://www.usp-hannover.de/',
-            githubUrl: 'https://github.com/huhpact/USP-Hannover/blob/main/index.html'
+            liveUrl: 'https://huhpact.dev/mbpro/',
+            githubUrl: 'https://github.com/huhpact/huhpact/blob/main/mbpro/index.html'
         },
         corporate: {
             title: currentLanguage === 'fr' ? 'WaifuSpin' : 'WaifuSpin',
