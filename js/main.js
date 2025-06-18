@@ -70,8 +70,8 @@ const translations = {
         "portfolio.subtitle": "Découvrez quelques-unes de nos créations les plus remarquables",
         "portfolio.project1.title": "USP Hannover",
         "portfolio.project1.description": "Présentation de l'entreprise USP Hannover avec des animations modernes",
-        "portfolio.project2.title": "Plateforme E-commerce",
-        "portfolio.project2.description": "Présentation complète d'un MacBook Pro",
+        "portfolio.project2.title": "Platforme d'utiles dynamiques",
+        "portfolio.project2.description": "Application pour convertir des images et générer des mots de passe.",
         "portfolio.project3.title": "WaifuSpin",
         "portfolio.project3.description": "Création d'une application casino complète avec des jeux de casino et des animations",
         "portfolio.view": "Voir le projet",
@@ -172,8 +172,8 @@ const translations = {
         "portfolio.subtitle": "Discover some of our most remarkable creations",
         "portfolio.project1.title": "USP Hannover",
         "portfolio.project1.description": "Company presentation of USP Hannover with modern animations",
-        "portfolio.project2.title": "E-commerce Platform",
-        "portfolio.project2.description": "Complete showcase of a MacBook Pro",
+        "portfolio.project2.title": "Dynamic Utilities Platform",
+        "portfolio.project2.description": "Application for converting images and generating passwords.",
         "portfolio.project3.title": "WaifuSpin",
         "portfolio.project3.description": "Creation of a complete casino application with casino games and animations",
         "portfolio.view": "View project",
@@ -621,17 +621,17 @@ function openPortfolioModal(project) {
             githubUrl: 'https://github.com/huhpact/USP-Hannover/blob/main/index.html'
         },
         saas: {
-            title: currentLanguage === 'fr' ? 'Plateforme E-commerce' : 'E-commerce Platform',
-            image: '/images/mbpro.png',
+            title: currentLanguage === 'fr' ? 'Platforme d\'utiles dynamiques' : 'Dynamic Utilities Platform',
+            image: '/images/simpletools.png',
             description: currentLanguage === 'fr' 
-                ? 'Une page de présentation inspirée par Apple pour le MacBook Pro, utilisant des animations modernes, des éléments et des transitions. Ce projet met en avant un design élégant et interactif, parfait pour présenter des produits ou services.'
-                : 'A showcase page inspired by Apple for the MacBook Pro, using modern animations, elements, and transitions. This project features a sleek and interactive design, perfect for showcasing products or services.',
+                ? 'Une plateforme d\'utiles moderne et dynamique pour la conversation des images et des ressources, avec un design épuré et des fonctionnalités avancées. Ce projet met en avant une interface utilisateur intuitive et des animations fluides.'
+                : 'A modern and dynamic utilities platform for image and resource conversion, featuring a sleek design and advanced functionalities. This project showcases an intuitive user interface and smooth animations.',
             technologies: ['HTML', 'CSS', 'Javascript', 'Boxicons', 'Google Fonts', 'Google Analytics'],
             features: currentLanguage === 'fr' 
-                ? ['Parallax Défilement', 'Intégration vidéo Stop-Go', 'Animations (In-Viewport)', 'SEO optimisé', 'Responsive design']
-                : ['Parallax Scrolling', 'Stop-Go Video Integration', 'Scroll Animations (In-Viewport)', 'SEO optimized', 'Responsive design'],
-            liveUrl: 'https://huhpact.dev/mbpro/',
-            githubUrl: 'https://github.com/huhpact/huhpact/blob/main/mbpro/index.html'
+                ? ['Collection', 'Interactif', 'Utiles', 'SEO optimisé', 'Responsive design']
+                : ['Collection', 'Interactive', 'Useful Utilities', 'SEO optimized', 'Responsive design'],
+            liveUrl: 'https://simpletools.me/',
+            githubUrl: 'http://github.com/huhpact/simpletools/blob/main/convertImage/js/converter.js'
         },
         corporate: {
             title: currentLanguage === 'fr' ? 'WaifuSpin' : 'WaifuSpin',
