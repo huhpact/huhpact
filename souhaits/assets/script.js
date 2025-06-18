@@ -1,14 +1,14 @@
 const wishlistItems = [
   {
     id: 1,
-    title: "BeyerDynamic DT 990 Pro",
-    price: "159,00 EUR",
-    description: "Offener Over-Ear-Kopfhörer für professionelle Anwendungen. Ideal für Studio- und Monitoring-Anwendungen.",
-    image: "/souhaits/assets/beyerdynamic-dt-990-pro-perspective_transparent_1_1.webp",
-    tags: ["Kopfhörer", "Audio", "Studio"],
+    title: "Tom Ford Tobacco Vanille",
+    price: "273,00 EUR",
+    description: "Ein luxuriöser Duft von Tom Ford, der die Sinne mit Noten von Tabak und Vanille verführt.",
+    image: "/souhaits/assets/tf-tv.avif",
+    tags: ["Parfum", "Tom Ford", "Vanille"],
     priority: "gering",
-    productUrl: "https://www.beyerdynamic.de/p/dt-990-pro-80-ohm",
-    dateAdded: "03.03.2025"
+    productUrl: "https://www.douglas.de/de/p/3000073072?variant=997498",
+    dateAdded: "17.06.2025"
   },
   {
     id: 2,

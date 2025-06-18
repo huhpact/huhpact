@@ -1,133 +1,4 @@
-class CookieBanner {
-    constructor() {
-        this.banner = document.getElementById('cookieBanner');
-        this.overlay = document.getElementById('cookieOverlay');
-        this.acceptBtn = document.getElementById('acceptCookies');
-        this.declineBtn = document.getElementById('declineCookies');
-        
-        this.cookieName = 'huhpact_cookie_consent';
-        this.cookieExpiry = 365;
-        
-        this.init();
-    }
-    
-    init() {
-        if (!this.getCookie(this.cookieName)) {
-            setTimeout(() => {
-                this.showBanner();
-            }, 1500);
-        }
-    
-        this.acceptBtn?.addEventListener('click', () => this.acceptCookies());
-        this.declineBtn?.addEventListener('click', () => this.declineCookies());
-        this.overlay?.addEventListener('click', () => this.hideBanner());
-     
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.banner?.classList.contains('show')) {
-                this.hideBanner();
-            }
-        });
-    }
-    
-    showBanner() {
-        this.overlay?.classList.add('show');
-        this.banner?.classList.add('show');
 
-        document.body.style.overflow = 'hidden';
-   
-        setTimeout(() => {
-            this.acceptBtn?.focus();
-        }, 300);
-    }
-    
-    hideBanner() {
-        this.overlay?.classList.remove('show');
-        this.banner?.classList.remove('show');
-      
-        document.body.style.overflow = '';
-    }
-    
-    acceptCookies() {
-        this.setCookie(this.cookieName, 'accepted', this.cookieExpiry);
-        this.hideBanner();
- 
-        console.log('Cookies accepted - Analytics can be enabled');
-        
-        this.showNotification('Cookies acceptés! Merci pour votre consentement.', 'success');
-    }
-    
-    declineCookies() {
-        this.setCookie(this.cookieName, 'declined', this.cookieExpiry);
-        this.hideBanner();
-  
-        console.log('Cookies declined - Only essential cookies will be used');
-
-        this.showNotification('Préférences enregistrées. Seuls les cookies essentiels seront utilisés.', 'info');
-    }
-    
-    setCookie(name, value, days) {
-        const expires = new Date();
-        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-        document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Strict`;
-    }
-    
-    getCookie(name) {
-        const nameEQ = name + "=";
-        const ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-        }
-        return null;
-    }
-    
-    showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <span class="notification-icon">${type === 'success' ? '✓' : 'ℹ'}</span>
-                <span class="notification-message">${message}</span>
-            </div>
-        `;
-        
-        // Add styles
-        Object.assign(notification.style, {
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            background: type === 'success' ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #4f46e5, #7c3aed)',
-            color: 'white',
-            padding: '1rem 1.5rem',
-            borderRadius: '15px',
-            boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
-            zIndex: '10000',
-            transform: 'translateX(400px)',
-            transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            fontFamily: 'var(--font-family)',
-            fontSize: '0.9rem',
-            fontWeight: '500'
-        });
-        
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.style.transform = 'translateX(0)';
-        }, 100);
-
-        setTimeout(() => {
-            notification.style.transform = 'translateX(400px)';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 400);
-        }, 4000);
-    }
-}
 
 class ScrollProgress {
     constructor() {
@@ -388,73 +259,24 @@ class AccessibilityEnhancement {
     }
 }
 
-class PerformanceMonitor {
-    constructor() {
-        this.init();
-    }
-    
-    init() {
-        window.addEventListener('load', () => {
-            if ('performance' in window) {
-                const perfData = performance.timing;
-                const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-                console.log(`Page load time: ${pageLoadTime}ms`);
-                
-                const cookieConsent = this.getCookie('huhpact_cookie_consent');
-                if (cookieConsent === 'accepted') {
-                    console.log('Analytics enabled - tracking page load time');
-                }
-            }
-        });
-  
-        window.addEventListener('error', (e) => {
-            if (e.target !== window) {
-                console.warn('Resource failed to load:', e.target.src || e.target.href);
-            }
-        }, true);
-    }
-    
-    getCookie(name) {
-        const nameEQ = name + "=";
-        const ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-        }
-        return null;
-    }
-}
+
 
 document.addEventListener('DOMContentLoaded', () => {
-    new CookieBanner();
     new ScrollProgress();
     new NavbarScroll();
     new RevealAnimations();
     new BackToTop();
     new RippleEffect();
-    new PageTransitions();
-    new AccessibilityEnhancement();
-    new PerformanceMonitor();
-    
-    console.log('huh(pact) website initialized successfully! 🚀');
-});
-
-window.huhpactUtils = {
     resetCookies: () => {
-        document.cookie = 'huhpact_cookie_consent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.cookie.split(";").forEach(cookie => {
+            const eqPos = cookie.indexOf("=");
+            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name.trim() + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+            document.cookie = name.trim() + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=" + window.location.pathname + ";";
+        });
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
         location.reload();
     },
-    showCookieBanner: () => {
-        const banner = document.getElementById('cookieBanner');
-        const overlay = document.getElementById('cookieOverlay');
-        overlay?.classList.add('show');
-        banner?.classList.add('show');
-    },
-    testAnimations: () => {
-        document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el => {
-            el.classList.remove('visible');
-            setTimeout(() => el.classList.add('visible'), 100);
-        });
-    }
-};
+    console.log('huh(pact) website initialized successfully! 🚀');
+});

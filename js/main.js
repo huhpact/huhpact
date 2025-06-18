@@ -68,10 +68,10 @@ const translations = {
         "portfolio.badge": "Nos Réalisations",
         "portfolio.title": "Portfolio Créatif",
         "portfolio.subtitle": "Découvrez quelques-unes de nos créations les plus remarquables",
-        "portfolio.project1.title": "Plateforme E-commerce",
-        "portfolio.project1.description": "Présentation complète d'un MacBook Pro",
-        "portfolio.project2.title": "USP Hannover",
-        "portfolio.project2.description": "Présentation de l'entreprise USP Hannover avec des animations modernes",
+        "portfolio.project1.title": "USP Hannover",
+        "portfolio.project1.description": "Présentation de l'entreprise USP Hannover avec des animations modernes",
+        "portfolio.project2.title": "Plateforme E-commerce",
+        "portfolio.project2.description": "Présentation complète d'un MacBook Pro",
         "portfolio.project3.title": "WaifuSpin",
         "portfolio.project3.description": "Création d'une application casino complète avec des jeux de casino et des animations",
         "portfolio.view": "Voir le projet",
@@ -170,10 +170,10 @@ const translations = {
         "portfolio.badge": "Our Work",
         "portfolio.title": "Creative Portfolio",
         "portfolio.subtitle": "Discover some of our most remarkable creations",
-        "portfolio.project1.title": "E-commerce Platform",
-        "portfolio.project1.description": "Complete showcase of a MacBook Pro",
-        "portfolio.project2.title": "USP Hannover",
-        "portfolio.project2.description": "Company presentation with modern animations",
+        "portfolio.project1.title": "USP Hannover",
+        "portfolio.project1.description": "Company presentation of USP Hannover with modern animations",
+        "portfolio.project2.title": "E-commerce Platform",
+        "portfolio.project2.description": "Complete showcase of a MacBook Pro",
         "portfolio.project3.title": "WaifuSpin",
         "portfolio.project3.description": "Creation of a complete casino application with casino games and animations",
         "portfolio.view": "View project",
@@ -607,28 +607,29 @@ function openPricingModal(plan) {
 function openPortfolioModal(project) {
     const portfolioData = {
         ecommerce: {
-            title: currentLanguage === 'fr' ? 'Plateforme E-commerce' : 'E-commerce Platform',
-            image: '/images/mbpro.png',
+            title: currentLanguage === 'fr' ? 'USP Hannover' : 'USP Hannover',
+            image: '/images/usp-hannover.jpg',
             description: currentLanguage === 'fr' 
-                ? 'Une page de présentation inspirée par Apple pour le MacBook Pro, utilisant des animations modernes, des éléments et des transitions. Ce projet met en avant un design élégant et interactif, parfait pour présenter des produits ou services.'
-                : 'An Apple-inspired MacBook Pro Presentation page, using modern animations, elements and transitions. This project showcases a sleek and interactive design, perfect for showcasing products or services.',
-            technologies: ['HTML5', 'JavaScript', 'Boxicons', 'Google Fonts', 'Google Analytics', "CSS3"],
+                ? 'Site de présentation d\'entreprise utilisant des animations modernes, un contenu informatif et un design épuré. Ce projet met en avant l\'entreprise USP Hannover avec des animations modernes et une mise en page informative.'
+                : 'Complete business presentation site using modern animations, informative content, and a sleek design. This project highlights the company USP Hannover with modern animations and an informative layout.',
+            technologies: ['Font Awesome', 'HTML', 'CSS', 'JavaScript', 'Google Fonts', "Google Analytics", 'Boxicons', 'GSAP'],
             features: currentLanguage === 'fr' 
-                ? ['Parallax Défilement', 'Intégration vidéo Stop-Go', 'Animations (In-Viewport)', 'SEO optimisé', 'Responsive design']
-                : ['Parallax Scrolling', 'Stop-Go Video Integration', 'Scroll Animations (In-Viewport)', 'SEO optimized', 'Responsive design'],
+                ? ['Parallaxe d’image', 'Éléments interactifs', 'Disposition psychologique', 'SEO complexe', 'Design convivial', 'Design responsive']
+                : ['Image Parallax', 'Interactive Elements', 'Psychological Layout', 'Complex SEO', 'User-Friendly Design', 'Responsive Design'],
+               
             liveUrl: 'https://huhpact.dev/mbpro/',
             githubUrl: 'https://github.com/huhpact/huhpact/blob/main/mbpro/index.html'
         },
         saas: {
-            title: currentLanguage === 'fr' ? 'USP Hannover' : 'USP Hannover',
-            image: '/images/usp-hannover.png',
+            title: currentLanguage === 'fr' ? 'Plateforme E-commerce' : 'E-commerce Platform',
+            image: '/images/mbpro.png',
             description: currentLanguage === 'fr' 
-                ? 'Site de présentation d\'entreprise utilisant des animations modernes, un contenu informatif et un design épuré. Ce projet met en avant l\'entreprise USP Hannover avec des animations modernes et une mise en page informative.'
-                : 'Complete business presentation site using modern animations, informative content, and a sleek design. This project highlights the company USP Hannover with modern animations and an informative layout.',
-            technologies: ['Font Awesome', 'HTML', 'CSS', 'JavaScript', 'Google Fonts', 'Google Analytics', 'Boxicons', 'GSAP'],
+                ? 'Une page de présentation inspirée par Apple pour le MacBook Pro, utilisant des animations modernes, des éléments et des transitions. Ce projet met en avant un design élégant et interactif, parfait pour présenter des produits ou services.'
+                : 'A showcase page inspired by Apple for the MacBook Pro, using modern animations, elements, and transitions. This project features a sleek and interactive design, perfect for showcasing products or services.',
+            technologies: ['HTML', 'CSS', 'Javascript', 'Boxicons', 'Google Fonts', 'Google Analytics'],
             features: currentLanguage === 'fr' 
-                ? ['Parallaxe d’image', 'Éléments interactifs', 'Disposition psychologique', 'SEO complexe', 'Design convivial', 'Design responsive']
-                : ['Image Parallax', 'Interactive Elements', 'Psychological Layout', 'Complex SEO', 'User-Friendly Design', 'Responsive Design'],
+                ? ['Parallax Défilement', 'Intégration vidéo Stop-Go', 'Animations (In-Viewport)', 'SEO optimisé', 'Responsive design']
+                : ['Parallax Scrolling', 'Stop-Go Video Integration', 'Scroll Animations (In-Viewport)', 'SEO optimized', 'Responsive design'],
             liveUrl: 'https://www.usp-hannover.de/',
             githubUrl: 'https://github.com/huhpact/USP-Hannover/blob/main/index.html'
         },

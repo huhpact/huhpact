@@ -137,11 +137,13 @@ body {
     font-weight: 700;
 }
 
-.brand-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.brand-image {
+    height: 2.2rem;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+    max-height: 48px;
 }
 
 .nav-menu {
@@ -602,35 +604,84 @@ body {
 }
 
 .footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
 }
 
 .footer-brand h3 {
     font-size: 1.5rem;
     color: var(--text-primary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .footer-brand p {
     color: var(--text-secondary);
+    margin-bottom: 2rem;
 }
 
-.footer-links {
+.social-links {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
 }
 
-.footer-link {
+.social-link {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
     color: var(--text-secondary);
     text-decoration: none;
     transition: var(--transition);
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
-.footer-link:hover {
+.social-link svg {
+    width: 20px;
+    height: 20px;
+}
+
+.back-to-top svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+}
+
+.social-link:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.footer-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.link-group h4 {
+    font-size: 1.1rem;
     color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.link-group a {
+    display: block;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    transition: var(--transition);
+}
+
+.link-group a:hover {
+    color: var(--text-primary);
+    padding-left: 0.5rem;
 }
 
 .footer-bottom {
@@ -639,6 +690,7 @@ body {
     border-top: 1px solid var(--glass-border);
     color: var(--text-secondary);
 }
+
 
 .cookie-overlay {
     position: fixed;
