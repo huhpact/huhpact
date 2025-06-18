@@ -280,3 +280,33 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     console.log('huh(pact) website initialized successfully! 🚀');
 });
+
+function initializeMobileMenu() {
+    const mobileMenuTrigger = document.getElementById('mobileMenuTrigger');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    const mobileMenuClose = document.getElementById('mobileMenuClose');
+    
+    mobileMenuTrigger.addEventListener('click', () => {
+        mobileMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+    
+    mobileMenuClose.addEventListener('click', () => {
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    });
+    
+    mobileMenuOverlay.addEventListener('click', (e) => {
+        if (e.target === mobileMenuOverlay) {
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    });
+}
