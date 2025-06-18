@@ -622,7 +622,7 @@ function openPortfolioModal(project) {
         },
         saas: {
             title: currentLanguage === 'fr' ? 'Platforme d\'utiles dynamiques' : 'Dynamic Utilities Platform',
-            image: '/images/simpletools.png',
+            image: '/images/simpletools2.jpeg',
             description: currentLanguage === 'fr' 
                 ? 'Une plateforme d\'utiles moderne et dynamique pour la conversation des images et des ressources, avec un design épuré et des fonctionnalités avancées. Ce projet met en avant une interface utilisateur intuitive et des animations fluides.'
                 : 'A modern and dynamic utilities platform for image and resource conversion, featuring a sleek design and advanced functionalities. This project showcases an intuitive user interface and smooth animations.',
