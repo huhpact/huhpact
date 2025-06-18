@@ -635,7 +635,7 @@ function openPortfolioModal(project) {
         },
         corporate: {
             title: currentLanguage === 'fr' ? 'WaifuSpin' : 'WaifuSpin',
-            image: '/images/waifuspin2.jpg',
+            image: '/images/waifuspin2.jpeg',
             description: currentLanguage === 'fr' 
                 ? 'Application casino moderne et complète avec des jeux, des informations et un design moderne, permettant aux utilisateurs de jouer et de profiter d\'une expérience de casino complète. Ce projet met en avant des animations avancées et un design élégant.'
                 : 'Complex modern casino application with games, information and modern design, allowing users to play and enjoy a complete casino experience. This project showcases advanced animations and a sleek design.',
