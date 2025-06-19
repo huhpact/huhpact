@@ -202,7 +202,110 @@ const translations = {
         "cookie.2": "This site uses cookies to enhance your browsing experience and analyze site usage. By continuing to browse, you agree to our use of cookies.",
         "cookie.accept": "Accept",
         "cookie.decline": "Decline"
-    }
+    },
+    de: {
+    "nav.home": "Start",
+    "nav.about": "Über uns",
+    "nav.services": "Leistungen",
+    "nav.pricing": "Preise",
+    "nav.portfolio": "Portfolio",
+    "nav.contact": "Kontakt",
+    "hero.badge": "Premium-Weblösungen",
+    "hero.title.line1": "Webentwicklung",
+    "hero.title.line2": "der nächsten Generation",
+    "hero.subtitle": "Verwandle deine Ideen in außergewöhnliche digitale Erlebnisse mit unserer technischen Expertise",
+    "hero.stats.projects": "Projekte",
+    "hero.stats.satisfaction": "% Zufriedenheit",
+    "hero.stats.years": "Jahre Erfahrung",
+    "hero.cta.primary": "Projekt starten",
+    "hero.cta.secondary": "Leistungen ansehen",
+    "hero.scroll": "Entdecken",
+    "about.badge": "Über uns",
+    "about.title": "Exzellenz & Innovation",
+    "about.subtitle": "Ein moderner Ansatz für Webentwicklung mit tiefgehender technischer Expertise",
+    "about.performance.title": "Maximale Performance",
+    "about.performance.description": "Ultraschnelle Webanwendungen, optimiert für alle Geräte mit außergewöhnlichen Ladezeiten",
+    "about.innovation.title": "Ständige Innovation",
+    "about.innovation.description": "Einsatz neuester Technologien und Frameworks für revolutionäre Nutzererlebnisse",
+    "about.security.title": "Erweiterte Sicherheit",
+    "about.security.description": "Erhöhte Sicherheit durch Best Practices und Einhaltung internationaler Standards",
+    "about.skills.title": "Beherrschte Technologien",
+    "services.badge": "Unsere Leistungen",
+    "services.title": "Komplette Lösungen",
+    "services.subtitle": "Von der Idee bis zur Umsetzung – wir decken alle Aspekte Ihrer digitalen Präsenz ab",
+    "services.development.title": "Webentwicklung",
+    "services.development.description": "Moderne und leistungsstarke Webanwendungen mit HTML, CSS, JavaScript und neuesten Technologien",
+    "services.design.title": "Design & UX",
+    "services.design.description": "Intuitive Benutzeroberflächen und herausragende Nutzererlebnisse",
+    "services.hosting.title": "Hosting",
+    "services.hosting.description": "Sichere und leistungsstarke Cloud-Lösungen",
+    "services.maintenance.title": "Wartung",
+    "services.maintenance.description": "24/7 technischer Support und kontinuierliche Updates",
+    "services.marketing.title": "Digitales Marketing",
+    "services.marketing.description": "SEO- und Marketingstrategien zur Maximierung Ihrer Sichtbarkeit",
+    "pricing.badge": "Unsere Preise",
+    "pricing.title": "Transparente Angebote",
+    "pricing.subtitle": "Lösungen für jedes Budget mit herausragendem Preis-Leistungs-Verhältnis",
+    "pricing.period": "/ Projekt",
+    "pricing.popular": "Am beliebtesten",
+    "pricing.starter.title": "Starter",
+    "pricing.starter.description": "Ideal für den Einstieg in die Online-Welt",
+    "pricing.starter.feature1": "Modernes, responsives Design",
+    "pricing.starter.feature2": "SEO-Basisoptimierung",
+    "pricing.starter.feature3": "1 Jahr Hosting",
+    "pricing.starter.feature4": "E-Mail-Support",
+    "pricing.pro.title": "Professional",
+    "pricing.pro.description": "Komplettlösung für ambitionierte Unternehmen",
+    "pricing.pro.feature1": "Fortgeschrittene Webanwendung",
+    "pricing.pro.feature2": "Individuelles Design",
+    "pricing.pro.feature3": "API-Integrationen",
+    "pricing.pro.feature4": "Priorisierter Support",
+    "pricing.pro.feature5": "Erweiterte Analysen",
+    "pricing.enterprise.title": "Enterprise",
+    "pricing.enterprise.description": "Maßgeschneiderte Enterprise-Plattform",
+    "pricing.enterprise.feature1": "Skalierbare Architektur",
+    "pricing.enterprise.feature2": "10+ Seiten",
+    "pricing.enterprise.feature3": "Individuelle APIs",
+    "pricing.enterprise.feature4": "24/7 Support",
+    "pricing.enterprise.feature5": "Branding",
+    "pricing.cta": "Auswählen",
+    "portfolio.badge": "Unsere Projekte",
+    "portfolio.title": "Kreatives Portfolio",
+    "portfolio.subtitle": "Entdecken Sie einige unserer besten Arbeiten",
+    "portfolio.project1.title": "USP Hannover",
+    "portfolio.project1.description": "Unternehmenspräsentation von USP Hannover mit modernen Animationen",
+    "portfolio.project2.title": "Dynamische Tools-Plattform",
+    "portfolio.project2.description": "Anwendung zum Konvertieren von Bildern und Generieren von Passwörtern",
+    "portfolio.project3.title": "WaifuSpin",
+    "portfolio.project3.description": "Komplette Casino-Webanwendung mit Spielen und Animationen",
+    "portfolio.view": "Projekt ansehen",
+    "contact.badge": "Kontakt",
+    "contact.title": "Lass uns starten",
+    "contact.subtitle": "Bereit, deine Ideen digital zu verwirklichen? Kontaktiere uns jetzt",
+    "contact.email.title": "E-Mail",
+    "contact.location.title": "Standort",
+    "contact.location.address": "Bordeaux, Frankreich",
+    "contact.location.address1": "Potsdam, Deutschland",
+    "contact.cta.title": "Bereit zu starten?",
+    "contact.cta.description": "Lass uns gemeinsam deine Ideen in die Realität umsetzen. Kontaktiere uns für ein Projektgespräch.",
+    "contact.cta.email": "E-Mail senden",
+    "footer.tagline": "Exzellenz in der Webentwicklung",
+    "footer.services.title": "Leistungen",
+    "footer.services.development": "Entwicklung",
+    "footer.services.design": "Design",
+    "footer.services.hosting": "Hosting",
+    "footer.company.title": "Unternehmen",
+    "footer.company.about": "Über uns",
+    "footer.company.portfolio": "Portfolio",
+    "footer.company.contact": "Datenschutz",
+    "footer.company.imprint": "Impressum",
+    "footer.copyright": "© 2025 huh(pact). Alle Rechte vorbehalten.",
+    "cookie.1": "Wir verwenden Cookies",
+    "cookie.2": "Diese Website verwendet Cookies, um dein Surferlebnis zu verbessern und die Nutzung zu analysieren. Durch die weitere Nutzung der Website stimmst du der Verwendung von Cookies zu.",
+    "cookie.accept": "Akzeptieren",
+    "cookie.decline": "Ablehnen"
+}
+
 };
 
 let currentLanguage = 'fr';
@@ -272,8 +375,12 @@ function initializeCursor() {
 function detectLanguage() {
     const browserLang = navigator.language || navigator.userLanguage;
     const langCode = browserLang.split('-')[0];
-    
-    if (langCode === 'en') {
+
+    if (langCode === 'de') {
+        currentLanguage = 'de';
+        document.documentElement.lang = 'de';
+        document.getElementById('langToggle').querySelector('.lang-text').textContent = 'DE';
+    } else if (langCode === 'en') {
         currentLanguage = 'en';
         document.documentElement.lang = 'en';
         document.getElementById('langToggle').querySelector('.lang-text').textContent = 'EN';
@@ -285,11 +392,16 @@ function detectLanguage() {
 }
 
 function toggleLanguage() {
-    currentLanguage = currentLanguage === 'fr' ? 'en' : 'fr';
+    const supportedLanguages = ['fr', 'en', 'de'];
+    const currentIndex = supportedLanguages.indexOf(currentLanguage);
+    const nextIndex = (currentIndex + 1) % supportedLanguages.length;
+    currentLanguage = supportedLanguages[nextIndex];
+
     document.documentElement.lang = currentLanguage;
     document.getElementById('langToggle').querySelector('.lang-text').textContent = currentLanguage.toUpperCase();
     translatePage();
 }
+
 
 function translatePage() {
     const elements = document.querySelectorAll('[data-i18n]');
@@ -304,9 +416,19 @@ function translatePage() {
         }
     });
     
-    document.title = currentLanguage === 'fr' 
-        ? 'huh(pact) - Développement Web Premium'
-        : 'huh(pact) - Premium Web Development';
+    switch (currentLanguage) {
+        case 'fr':
+            document.title = 'huh(pact) - Développement Web Premium';
+            break;
+        case 'en':
+            document.title = 'huh(pact) - Premium Web Development';
+            break;
+        case 'de':
+            document.title = 'huh(pact) - Premium-Webentwicklung';
+            break;
+        default:
+            document.title = 'huh(pact)';
+    }
 }
 
 document.getElementById('langToggle').addEventListener('click', toggleLanguage);
@@ -485,13 +607,19 @@ function initializeBackToTop() {
 function openPricingModal(plan) {
     const modalData = {
         starter: {
-            title: currentLanguage === 'fr' ? 'Formule Starter' : 'Starter Plan',
+            title: {
+                fr: 'Formule Starter',
+                en: 'Starter Plan',
+                de: 'Starter-Paket'
+            },
             price: '€1,799',
-            description: currentLanguage === 'fr' 
-                ? 'La formule parfaite pour démarrer votre présence en ligne avec un site web professionnel et moderne.'
-                : 'The perfect plan to start your online presence with a professional and modern website.',
-            features: currentLanguage === 'fr' 
-                ? [
+            description: {
+                fr: 'La formule parfaite pour démarrer votre présence en ligne avec un site web professionnel et moderne.',
+                en: 'The perfect plan to start your online presence with a professional and modern website.',
+                de: 'Das perfekte Paket, um deine Online-Präsenz mit einer modernen Website zu starten.'
+            },
+            features: {
+                fr: [
                     'Site web responsive et moderne',
                     'Optimisation SEO de base',
                     'Hébergement sécurisé 1 an',
@@ -499,8 +627,8 @@ function openPricingModal(plan) {
                     'Certificat SSL inclus',
                     'Intégration Google Analytics',
                     'Formation à la gestion de contenu'
-                ]
-                : [
+                ],
+                en: [
                     'Modern responsive website',
                     'Basic SEO optimization',
                     'Secure hosting for 1 year',
@@ -509,16 +637,33 @@ function openPricingModal(plan) {
                     'Google Analytics integration',
                     'Content management training'
                 ],
+                de: [
+                    'Responsives und modernes Webdesign',
+                    'Basis-SEO-Optimierung',
+                    '1 Jahr sicheres Hosting',
+                    'Technischer Support per E-Mail',
+                    'SSL-Zertifikat inklusive',
+                    'Google Analytics Integration',
+                    'Einweisung in die Inhaltsverwaltung'
+                ]
+            },
             paymentLink: 'https://book.stripe.com/3cIeVcdnebHm2md6x04wM0f'
         },
+
         pro: {
-            title: currentLanguage === 'fr' ? 'Formule Professional' : 'Professional Plan',
+            title: {
+                fr: 'Formule Professional',
+                en: 'Professional Plan',
+                de: 'Professional-Paket'
+            },
             price: '€3,499',
-            description: currentLanguage === 'fr' 
-                ? 'Solution complète pour les entreprises ambitieuses qui veulent se démarquer avec une application web avancée.'
-                : 'Complete solution for ambitious companies that want to stand out with an advanced web application.',
-            features: currentLanguage === 'fr' 
-                ? [
+            description: {
+                fr: 'Solution complète pour les entreprises ambitieuses qui veulent se démarquer avec une application web avancée.',
+                en: 'Complete solution for ambitious companies that want to stand out with an advanced web application.',
+                de: 'Komplettlösung für ambitionierte Unternehmen mit fortschrittlicher Webanwendung.'
+            },
+            features: {
+                fr: [
                     'Application web complète et avancée',
                     'Design personnalisé et unique',
                     'Intégrations API tierces',
@@ -527,8 +672,8 @@ function openPricingModal(plan) {
                     'Optimisation SEO avancée',
                     'Maintenance incluse 6 mois',
                     'Branding complète'
-                ]
-                : [
+                ],
+                en: [
                     'Complete and advanced web application',
                     'Custom and unique design',
                     'Third-party API integrations',
@@ -538,16 +683,34 @@ function openPricingModal(plan) {
                     'Maintenance included 6 months',
                     'Complete Branding'
                 ],
+                de: [
+                    'Komplette, fortgeschrittene Webanwendung',
+                    'Individuelles Design',
+                    'Integration externer APIs',
+                    'Priorisierter Telefonsupport',
+                    'Erweiterte Analysen & Berichte',
+                    'Erweiterte SEO-Optimierung',
+                    '6 Monate Wartung inklusive',
+                    'Komplettes Branding'
+                ]
+            },
             paymentLink: 'https://book.stripe.com/6oU5kC1Ew26MaSJ7B44wM0g'
         },
+
         enterprise: {
-            title: currentLanguage === 'fr' ? 'Formule Enterprise' : 'Enterprise Plan',
+            title: {
+                fr: 'Formule Enterprise',
+                en: 'Enterprise Plan',
+                de: 'Enterprise-Paket'
+            },
             price: '€5,999',
-            description: currentLanguage === 'fr' 
-                ? 'Plateforme enterprise sur mesure avec architecture scalable et sécurité renforcée pour les grandes entreprises.'
-                : 'Custom enterprise platform with scalable architecture and enhanced security for large companies.',
-            features: currentLanguage === 'fr' 
-                ? [
+            description: {
+                fr: 'Plateforme enterprise sur mesure avec architecture scalable et sécurité renforcée pour les grandes entreprises.',
+                en: 'Custom enterprise platform with scalable architecture and enhanced security for large companies.',
+                de: 'Maßgeschneiderte Plattform mit skalierbarer Architektur und hoher Sicherheit für Großunternehmen.'
+            },
+            features: {
+                fr: [
                     'Plateforme entièrement personnalisée',
                     'Architecture scalable et haute performance',
                     '10+ Pages',
@@ -557,8 +720,8 @@ function openPricingModal(plan) {
                     'Maintenance premium 12 mois',
                     'Branding & Marketing avancé',
                     'Tests de charge et optimisation'
-                ]
-                : [
+                ],
+                en: [
                     'Fully customized platform',
                     'Scalable and high-performance architecture',
                     '10+ Pages',
@@ -569,107 +732,186 @@ function openPricingModal(plan) {
                     'Branding & Advanced Marketing',
                     'Load testing and optimization'
                 ],
+                de: [
+                    'Vollständig individuell entwickelte Plattform',
+                    'Skalierbare Hochleistungs-Architektur',
+                    '10+ Seiten',
+                    'Individuelle APIs & komplexe Integrationen',
+                    '24/7 technischer Support',
+                    'Strategische Beratung inklusive',
+                    '12 Monate Premium-Wartung',
+                    'Branding & erweitertes Marketing',
+                    'Lasttests & Performance-Optimierung'
+                ]
+            },
             paymentLink: 'https://book.stripe.com/aFa00i5UMfXC5yp5sW4wM0h'
         }
     };
-    
+
     const data = modalData[plan];
+
+    const translationsModal = {
+        fr: {
+            included: 'Inclus dans cette formule :',
+            order: 'Commander maintenant',
+            close: 'Fermer'
+        },
+        en: {
+            included: 'Included in this plan:',
+            order: 'Order now',
+            close: 'Close'
+        },
+        de: {
+            included: 'Enthalten in diesem Paket:',
+            order: 'Jetzt bestellen',
+            close: 'Schließen'
+        }
+    };
+
+    const lang = currentLanguage;
     const modalBody = document.getElementById('modalBody');
+
     modalBody.innerHTML = `
-        <h2>${data.title}</h2>
+        <h2>${data.title[lang]}</h2>
         <div style="text-align: center; margin: 2rem 0;">
             <div style="font-size: 3rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem;">${data.price}</div>
-            <p style="font-size: 1.1rem; color: var(--text-secondary);">${data.description}</p>
+            <p style="font-size: 1.1rem; color: var(--text-secondary);">${data.description[lang]}</p>
         </div>
-        
+
         <h3 style="margin: 2rem 0 1rem 0; color: var(--text-primary);">
-            ${currentLanguage === 'fr' ? 'Inclus dans cette formule :' : 'Included in this plan:'}
+            ${translationsModal[lang].included}
         </h3>
         <ul style="margin-bottom: 3rem;">
-            ${data.features.map(feature => `<li>${feature}</li>`).join('')}
+            ${data.features[lang].map(feature => `<li>${feature}</li>`).join('')}
         </ul>
-        
+
         <div class="modal-buttons">
             <a href="${data.paymentLink}" target="_blank" class="btn btn-primary magnetic-hover ripple-effect">
-                <span>${currentLanguage === 'fr' ? 'Commander maintenant' : 'Order now'}</span>
+                <span>${translationsModal[lang].order}</span>
                 <div class="btn-bg"></div>
             </a>
             <button class="btn btn-secondary magnetic-hover" onclick="closeModal()">
-                <span>${currentLanguage === 'fr' ? 'Fermer' : 'Close'}</span>
+                <span>${translationsModal[lang].close}</span>
             </button>
         </div>
     `;
-    
+
     document.getElementById('modalOverlay').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
 
+
 function openPortfolioModal(project) {
     const portfolioData = {
         ecommerce: {
-            title: currentLanguage === 'fr' ? 'USP Hannover' : 'USP Hannover',
+            title: {
+                fr: 'USP Hannover',
+                en: 'USP Hannover',
+                de: 'USP Hannover'
+            },
             image: '/images/usp-hannover.jpg',
-            description: currentLanguage === 'fr' 
-                ? 'Site de présentation d\'entreprise utilisant des animations modernes, un contenu informatif et un design épuré. Ce projet met en avant l\'entreprise USP Hannover avec des animations modernes et une mise en page informative.'
-                : 'Complete business presentation site using modern animations, informative content, and a sleek design. This project highlights the company USP Hannover with modern animations and an informative layout.',
-            technologies: ['Font Awesome', 'HTML', 'CSS', 'JavaScript', 'Google Fonts', "Google Analytics", 'Boxicons', 'GSAP'],
-            features: currentLanguage === 'fr' 
-                ? ['Parallaxe d’image', 'Éléments interactifs', 'Disposition psychologique', 'SEO complexe', 'Design convivial', 'Design responsive']
-                : ['Image Parallax', 'Interactive Elements', 'Psychological Layout', 'Complex SEO', 'User-Friendly Design', 'Responsive Design'],
-               
+            description: {
+                fr: 'Site de présentation d\'entreprise utilisant des animations modernes, un contenu informatif et un design épuré. Ce projet met en avant l\'entreprise USP Hannover avec des animations modernes et une mise en page informative.',
+                en: 'Complete business presentation site using modern animations, informative content, and a sleek design. This project highlights the company USP Hannover with modern animations and an informative layout.',
+                de: 'Firmenpräsentation mit modernen Animationen, informativen Inhalten und einem klaren Layout. Das Projekt stellt die Firma USP Hannover stilvoll dar.'
+            },
+            technologies: ['Font Awesome', 'HTML', 'CSS', 'JavaScript', 'Google Fonts', 'Google Analytics', 'Boxicons', 'GSAP'],
+            features: {
+                fr: ['Parallaxe d’image', 'Éléments interactifs', 'Disposition psychologique', 'SEO complexe', 'Design convivial', 'Design responsive'],
+                en: ['Image Parallax', 'Interactive Elements', 'Psychological Layout', 'Complex SEO', 'User-Friendly Design', 'Responsive Design'],
+                de: ['Parallax-Effekte', 'Interaktive Elemente', 'Psychologisches Layout', 'Komplexes SEO', 'Benutzerfreundliches Design', 'Responsives Design']
+            },
             liveUrl: 'https://www.usp-hannover.de',
             githubUrl: 'https://github.com/huhpact/USP-Hannover/blob/main/index.html'
         },
         saas: {
-            title: currentLanguage === 'fr' ? 'Platforme d\'utiles dynamiques' : 'Dynamic Utilities Platform',
+            title: {
+                fr: 'Plateforme d\'outils dynamiques',
+                en: 'Dynamic Utilities Platform',
+                de: 'Dynamische Tools-Plattform'
+            },
             image: '/images/simpletools2.jpeg',
-            description: currentLanguage === 'fr' 
-                ? 'Une plateforme d\'utiles moderne et dynamique pour la conversation des images et des ressources, avec un design épuré et des fonctionnalités avancées. Ce projet met en avant une interface utilisateur intuitive et des animations fluides.'
-                : 'A modern and dynamic utilities platform for image and resource conversion, featuring a sleek design and advanced functionalities. This project showcases an intuitive user interface and smooth animations.',
-            technologies: ['HTML', 'CSS', 'Javascript', 'Boxicons', 'Google Fonts', 'Google Analytics'],
-            features: currentLanguage === 'fr' 
-                ? ['Collection', 'Interactif', 'Utiles', 'SEO optimisé', 'Responsive design']
-                : ['Collection', 'Interactive', 'Useful Utilities', 'SEO optimized', 'Responsive design'],
+            description: {
+                fr: 'Une plateforme d\'outils moderne et dynamique pour la conversion d\'images et de ressources, avec un design épuré et des fonctionnalités avancées.',
+                en: 'A modern and dynamic utilities platform for image and resource conversion, featuring a sleek design and advanced functionalities.',
+                de: 'Moderne Plattform zur Konvertierung von Bildern und Daten – mit klarer Oberfläche und hilfreichen Funktionen.'
+            },
+            technologies: ['HTML', 'CSS', 'JavaScript', 'Boxicons', 'Google Fonts', 'Google Analytics'],
+            features: {
+                fr: ['Collection', 'Interactif', 'Utiles', 'SEO optimisé', 'Responsive design'],
+                en: ['Collection', 'Interactive', 'Useful Utilities', 'SEO optimized', 'Responsive design'],
+                de: ['Tool-Sammlung', 'Interaktive Nutzung', 'Nützliche Funktionen', 'SEO-optimiert', 'Responsives Design']
+            },
             liveUrl: 'https://simpletools.me/',
-            githubUrl: 'http://github.com/huhpact/simpletools/blob/main/convertImage/js/converter.js'
+            githubUrl: 'https://github.com/huhpact/simpletools/blob/main/convertImage/js/converter.js'
         },
         corporate: {
-            title: currentLanguage === 'fr' ? 'WaifuSpin' : 'WaifuSpin',
+            title: {
+                fr: 'WaifuSpin',
+                en: 'WaifuSpin',
+                de: 'WaifuSpin'
+            },
             image: '/images/waifuspin2.jpeg',
-            description: currentLanguage === 'fr' 
-                ? 'Application casino moderne et complète avec des jeux, des informations et un design moderne, permettant aux utilisateurs de jouer et de profiter d\'une expérience de casino complète. Ce projet met en avant des animations avancées et un design élégant.'
-                : 'Complex modern casino application with games, information and modern design, allowing users to play and enjoy a complete casino experience. This project showcases advanced animations and a sleek design.',
+            description: {
+                fr: 'Application casino moderne et complète avec des jeux, des informations et un design élégant, permettant aux utilisateurs de profiter d\'une expérience de casino complète.',
+                en: 'Complex modern casino application with games, information, and sleek design, allowing users to enjoy a complete casino experience.',
+                de: 'Komplexe Casino-App mit interaktiven Spielen, modernem Design und fortschrittlicher Animation – ein umfassendes digitales Spielerlebnis.'
+            },
             technologies: ['GSAP', 'TypeScript', 'JavaScript', 'i18n', 'JSON', 'HTML5', 'CSS3', 'Boxicons', 'Google Fonts'],
-            features: currentLanguage === 'fr' 
-                ? ['Intégration complète des paiements Stripe', 'Animations Framer Motion', 'SEO avancé', 'Performance optimisée', 'Design moderne et responsive']
-                : ['Full Integration of Stripe Payments', 'Framer Motion animations', 'Advanced SEO', 'Optimized performance', 'Modern responsive design'],
+            features: {
+                fr: ['Intégration complète des paiements Stripe', 'Animations Framer Motion', 'SEO avancé', 'Performance optimisée', 'Design moderne et responsive'],
+                en: ['Full Integration of Stripe Payments', 'Framer Motion animations', 'Advanced SEO', 'Optimized performance', 'Modern responsive design'],
+                de: ['Komplette Stripe-Zahlungsintegration', 'Framer Motion Animationen', 'Erweitertes SEO', 'Optimierte Performance', 'Modernes responsives Design']
+            },
             liveUrl: 'https://waifuspin.com/',
             githubUrl: 'https://github.com/huhpact/WaifuSpin/blob/main/en/index/index.html'
         }
     };
-    
+
+    const uiStrings = {
+        fr: {
+            features: 'Fonctionnalités clés :',
+            technologies: 'Technologies utilisées :',
+            live: 'Voir le site',
+            code: 'Code source',
+            close: 'Fermer'
+        },
+        en: {
+            features: 'Key features:',
+            technologies: 'Technologies used:',
+            live: 'View live site',
+            code: 'Source code',
+            close: 'Close'
+        },
+        de: {
+            features: 'Wichtige Funktionen:',
+            technologies: 'Verwendete Technologien:',
+            live: 'Website ansehen',
+            code: 'Quellcode',
+            close: 'Schließen'
+        }
+    };
+
     const data = portfolioData[project];
+    const lang = currentLanguage;
     const modalBody = document.getElementById('modalBody');
+
     modalBody.innerHTML = `
-        <img src="${data.image}" alt="${data.title}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 15px; margin-bottom: 2rem;">
+        <img src="${data.image}" alt="${data.title[lang]}" style="width: 100%; height: 250px; object-fit: cover; border-radius: 15px; margin-bottom: 2rem;">
         
-        <h2>${data.title}</h2>
-        <p style="margin-bottom: 2rem; line-height: 1.7;">${data.description}</p>
+        <h2>${data.title[lang]}</h2>
+        <p style="margin-bottom: 2rem; line-height: 1.7;">${data.description[lang]}</p>
         
-        <h3 style="margin: 2rem 0 1rem 0; color: var(--text-primary);">
-            ${currentLanguage ===  'fr' ? 'Fonctionnalités clés :' : 'Key features:'}
-        </h3>
+        <h3 style="margin: 2rem 0 1rem 0; color: var(--text-primary);">${uiStrings[lang].features}</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-            ${data.features.map(feature => `
+            ${data.features[lang].map(feature => `
                 <div style="background: var(--glass-bg); padding: 1rem; border-radius: 15px; text-align: center; border: 1px solid var(--glass-border);">
                     <span style="color: var(--text-primary); font-weight: 500;">${feature}</span>
                 </div>
             `).join('')}
         </div>
         
-        <h3 style="margin: 2rem 0 1rem 0; color: var(--text-primary);">
-            ${currentLanguage === 'fr' ? 'Technologies utilisées :' : 'Technologies used:'}
-        </h3>
+        <h3 style="margin: 2rem 0 1rem 0; color: var(--text-primary);">${uiStrings[lang].technologies}</h3>
         <div style="display: flex; gap: 0.8rem; margin-bottom: 3rem; flex-wrap: wrap;">
             ${data.technologies.map(tech => `
                 <span style="background: rgba(79, 70, 229, 0.3); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 500; color: var(--primary);">${tech}</span>
@@ -678,18 +920,18 @@ function openPortfolioModal(project) {
         
         <div class="modal-buttons">
             <a href="${data.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary magnetic-hover ripple-effect">
-                <span>${currentLanguage === 'fr' ? 'Voir le site' : 'View live site'}</span>
+                <span>${uiStrings[lang].live}</span>
                 <div class="btn-bg"></div>
             </a>
             <a href="${data.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary magnetic-hover">
-                <span>${currentLanguage === 'fr' ? 'Code source' : 'Source code'}</span>
+                <span>${uiStrings[lang].code}</span>
             </a>
             <button class="btn btn-outline magnetic-hover" onclick="closeModal()">
-                <span>${currentLanguage === 'fr' ? 'Fermer' : 'Close'}</span>
+                <span>${uiStrings[lang].close}</span>
             </button>
         </div>
     `;
-    
+
     document.getElementById('modalOverlay').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
