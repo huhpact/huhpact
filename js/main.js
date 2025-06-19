@@ -427,7 +427,7 @@ function translatePage() {
             document.title = 'huh(pact) - Premium-Webentwicklung';
             break;
         default:
-            document.title = 'huh(pact)';
+            document.title = 'huh(pact) - Développement Web Premium';
     }
 }
 

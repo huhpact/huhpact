@@ -518,16 +518,16 @@ function translatePage() {
     
     switch (currentLanguage) {
         case 'fr':
-            document.title = 'huh(pact) - Développement Web Premium';
+            document.title = 'huh(pact) - Déclaration de confidentialité';
             break;
         case 'en':
-            document.title = 'huh(pact) - Premium Web Development';
+            document.title = 'huh(pact) - Privacy Declaration';
             break;
         case 'de':
             document.title = 'huh(pact) - Premium-Webentwicklung';
             break;
         default:
-            document.title = 'huh(pact)';
+            document.title = 'huh(pact) - Déclaration de confidentialité';
     }
 }
 

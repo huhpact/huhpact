@@ -159,16 +159,16 @@ function translatePage() {
     
     switch (currentLanguage) {
         case 'fr':
-            document.title = 'huh(pact) - Développement Web Premium';
+            document.title = 'huh(pact) - Mentions légales';
             break;
         case 'en':
-            document.title = 'huh(pact) - Premium Web Development';
+            document.title = 'huh(pact) - Imprint';
             break;
         case 'de':
-            document.title = 'huh(pact) - Premium-Webentwicklung';
+            document.title = 'huh(pact) - Impressum';
             break;
         default:
-            document.title = 'huh(pact)';
+            document.title = 'huh(pact) - Mentions légales';
     }
 }
 
