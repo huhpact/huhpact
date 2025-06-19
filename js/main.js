@@ -256,7 +256,7 @@ const translations = {
     "pricing.starter.feature4": "E-Mail-Support",
     "pricing.pro.title": "Professional",
     "pricing.pro.description": "Komplettlösung für ambitionierte Unternehmen",
-    "pricing.pro.feature1": "Fortgeschrittene Webanwendung",
+    "pricing.pro.feature1": "Fortgeschrittene Webapp",
     "pricing.pro.feature2": "Individuelles Design",
     "pricing.pro.feature3": "API-Integrationen",
     "pricing.pro.feature4": "Priorisierter Support",
