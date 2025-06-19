@@ -1823,8 +1823,6 @@ section {
     .hero-stats {
         flex-direction: column;
         gap: 1rem;
-        align-items: center !important; 
-        justify-content: center !important;
     }
     
     .stat-divider {
@@ -1949,5 +1947,23 @@ section {
 @media (max-width: 768px) {
     .social-links {
         justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-stats {
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-stats {
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
