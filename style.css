@@ -1519,6 +1519,10 @@ section {
     height: 20px;
 }
 
+.trustpilot-widget {
+    margin-top: 2em;
+}
+
 .back-to-top svg {
     width: 24px;
     height: 24px;
