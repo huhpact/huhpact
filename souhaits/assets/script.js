@@ -6,53 +6,31 @@ const wishlistItems = [
     description: "Ein luxuriöser Duft von Tom Ford, der die Sinne mit Noten von Tabak und Vanille verführt.",
     image: "/souhaits/assets/tf-tv.avif",
     tags: ["Parfum", "Tom Ford", "Vanille"],
-    priority: "gering",
+    priority: "mittel",
     productUrl: "https://www.douglas.de/de/p/3000073072?variant=997498",
     dateAdded: "17.06.2025"
   },
   {
     id: 2,
-    title: "Nintendo Switch 2",
-    price: "450,00 EUR",
-    description: "Die nächste Generation der Nintendo Switch mit verbesserten Grafiken, Leistung und Spielen.",
-    image: "/souhaits/assets/nintendo-switch-2.jpeg",
-    tags: ["Konsole", "Gaming", "Nintendo"],
+    title: "iPhone 17 Pro Max",
+    price: "1.449,00 EUR",
+    description: "Die neue Generation der iPhones.",
+    image: "/souhaits/assets/iphone17.jpg",
+    tags: ["Handy", "Pro Max", "Apple"],
     priority: "hoch",
-    productUrl: "https://www.nintendo.com/successor/de-de/index.html",
-    dateAdded: "03.03.2025"
+    productUrl: "https://www.apple.com/iphone/",
+    dateAdded: "17.07.2025"
   },
   {
     id: 3,
-    title: "Baumwollpullover Ralph Lauren (Cream)",
-    price: "229,00 EUR",
-    description: "Ein klassischer Baumwollpullover von Ralph Lauren in Creme. Perfekt für den Alltag.",
-    image: "/souhaits/assets/cream-rl.avif",
-    tags: ["Ralph Lauren", "Pullover", "Kleidung"],
+    title: "iPad Pro 13'' (2026)",
+    price: "2.400,00 EUR",
+    description: "Grosses iPad perfekt für die digitale Arbeit → Design",
+    image: "/souhaits/assets/ipadpro.jpg",
+    tags: ["Tablet", "13 Zoll", "Apple"],
     priority: "mittel",
-    productUrl: "https://www.ralphlauren.de/de/baumwollpullover-mit-reissverschluss-607264.html?dwvar_607264_colorname=Andover%20Cream",
-    dateAdded: "03.03.2025"
-  },
-  {
-    id: 4,
-    title: "Baumwollpullover Ralph Lauren (Navy)",
-    price: "229,00 EUR",
-    description: "Ein klassischer Baumwollpullover von Ralph Lauren in Navy. Perfekt für den Alltag.",
-    image: "/souhaits/assets/baumwollpullover-rl-navy.avif",
-    tags: ["Ralph Lauren", "Pullover", "Kleidung"],
-    priority: "mittel",
-    productUrl: "https://www.ralphlauren.de/de/baumwollpullover-mit-reissverschluss-607264.html?dwvar_607264_mens_polo_purplelabel_rrl_apparel_primarysize=L&dwvar_607264_colorname=Hunter%20Navy",
-    dateAdded: "03.03.2025"
-  },
-  {
-    id: 5,
-    title: "Baumwollpullover Ralph Lauren (Hunter Navy)",
-    price: "199,00 EUR",
-    description: "Ein klassischer Baumwollpullover von Ralph Lauren in Hunter Navy. Perfekt für den Alltag.",
-    image: "/souhaits/assets/v2-rl.avif",
-    tags: ["Ralph Lauren", "Pullover", "Kleidung"],
-    priority: "mittel",
-    productUrl: "https://www.ralphlauren.de/de/baumwollpullover-mit-zopfmuster-515061.html?dwvar_515061_colorname=Hunter%20Navy",
-    dateAdded: "03.03.2025"
+    productUrl: "https://www.apple.com/ipad-pro/",
+    dateAdded: "17.07.2025"
   },
   {
     id: 6,
