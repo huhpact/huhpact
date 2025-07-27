@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96" />
+		<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+		<link rel="shortcut icon" href="/images/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+		<meta name="apple-mobile-web-app-title" content="huh(pact)" />
+		<link rel="manifest" href="/images/site.webmanifest" />
+		<link rel="icon" href="/images/logo.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - huh(pact)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/contact.css">
+  </head>
+  <body>
+    <div id="app">
+      <header class="header">
+        <div class="container">
+          <div class="header-content">
+             <a href="/index.html"><div class="logo">
+              <img src="/images/logo.png" alt="Logo">
+              <span class="logo-text">huh(pact)</span>
+           </div> </a>
+
+            <nav class="nav">
+              <a href="/features.html" class="nav-link">Features</a>
+              <a href="/success-stories.html" class="nav-link">Success Stories</a>
+              <a href="/pricing.html" class="nav-link">Pricing</a>
+              <a href="/experts.html" class="nav-link">Experts</a>
+            </nav>
+
+            <div class="header-cta">
+              <button class="btn btn-primary" onclick="window.location.href='/pricing.html'">Get Started</button>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuToggle">
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+        <nav class="mobile-menu-sidebar" id="mobileMenuSidebar">
+          <a href="/features.html" class="mobile-nav-link">Features</a>
+          <a href="/success-stories.html" class="mobile-nav-link">Success Stories</a>
+          <a href="/pricing.html" class="mobile-nav-link">Pricing</a>
+          <a href="/experts.html" class="mobile-nav-link">Experts</a>
+          <button class="mobile-cta-btn" onclick="window.location.href='/pricing.html'">Get Started</button>
+        </nav>
+      </header>
+
+      <section class="contact-hero">
+        <div class="container">
+          <div class="hero-content">
+            <h1 class="hero-title">
+              Get in <span class="highlight">Touch</span>
+            </h1>
+            <p class="hero-description">
+              Have questions about huh(pact)? Need help with your project? Our team is here to help you succeed.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-section">
+        <div class="container">
+          <div class="contact-grid">
+            
+            <div class="contact-form-container">
+              <div class="form-header">
+                <h2 class="form-title">Send us a message</h2>
+                <p class="form-description">Fill out the form below and we'll get back to you within 24 hours.</p>
+              </div>
+
+              <form class="contact-form" id="contactForm" action="https://formspree.io/f/xdkdgqeg" method="POST">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="firstName" class="form-label">First Name *</label>
+                    <input type="text" id="firstName" name="firstName" class="form-input" required>
+                    <div class="form-error" id="firstNameError"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="lastName" class="form-label">Last Name *</label>
+                    <input type="text" id="lastName" name="lastName" class="form-input" required>
+                    <div class="form-error" id="lastNameError"></div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="email" class="form-label">Email Address *</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                    <div class="form-error" id="emailError"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" class="form-input">
+                    <div class="form-error" id="phoneError"></div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="company" class="form-label">Company</label>
+                    <input type="text" id="company" name="company" class="form-input">
+                  </div>
+                  <div class="form-group">
+                    <label for="role" class="form-label">Your Role</label>
+                    <select id="role" name="role" class="form-select">
+                      <option value="">Select your role</option>
+                      <option value="developer">Developer</option>
+                      <option value="designer">Designer</option>
+                      <option value="product-manager">Product Manager</option>
+                      <option value="founder">Founder/CEO</option>
+                      <option value="student">Student</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inquiryType" class="form-label">What can we help you with? *</label>
+                  <select id="inquiryType" name="inquiryType" class="form-select" required>
+                    <option value="">Select inquiry type</option>
+                    <option value="general">General Questions</option>
+                    <option value="technical">Technical Support</option>
+                    <option value="sales">Sales & Pricing</option>
+                    <option value="partnership">Partnership Opportunities</option>
+                    <option value="experts">huh(pact) Experts</option>
+                    <option value="billing">Billing & Account</option>
+                    <option value="feature-request">Feature Request</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <div class="form-error" id="inquiryTypeError"></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="projectType" class="form-label">What type of site are you building?</label>
+                  <div class="checkbox-group">
+                    <label class="checkbox-label">
+                      <input type="checkbox" name="projectType" value="small" class="form-checkbox">
+                      <span class="checkbox-custom"></span>
+                      Small Website
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" name="projectType" value="medium" class="form-checkbox">
+                      <span class="checkbox-custom"></span>
+                      Medium Website
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" name="projectType" value="large" class="form-checkbox">
+                      <span class="checkbox-custom"></span>
+                      Large Website
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" name="projectType" value="enterprise" class="form-checkbox">
+                      <span class="checkbox-custom"></span>
+                      Enterprise Website
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="budget" class="form-label">Project Budget Range</label>
+                  <select id="budget" name="budget" class="form-select">
+                    <option value="">Select budget range</option>
+                    <option value="under-5k">Under $5,000</option>
+                    <option value="5k-15k">$5,000 - $15,000</option>
+                    <option value="15k-50k">$15,000 - $50,000</option>
+                    <option value="50k-100k">$50,000 - $100,000</option>
+                    <option value="over-100k">Over $100,000</option>
+                    <option value="not-sure">Not sure yet</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="timeline" class="form-label">Project Timeline</label>
+                  <select id="timeline" name="timeline" class="form-select">
+                    <option value="">Select timeline</option>
+                    <option value="asap">ASAP</option>
+                    <option value="1-month">Within 1 month</option>
+                    <option value="3-months">Within 3 months</option>
+                    <option value="6-months">Within 6 months</option>
+                    <option value="flexible">Flexible</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="message" class="form-label">Tell us more about your project *</label>
+                  <textarea id="message" name="message" rows="6" class="form-textarea" placeholder="Describe your project, goals, and any specific requirements..." required></textarea>
+                  <div class="form-error" id="messageError"></div>
+                  <div class="character-count">
+                    <span id="charCount">0</span>/1000 characters
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="attachments" class="form-label">Attachments (Optional)</label>
+                  <div class="file-upload-area" id="fileUploadArea">
+                    <input type="file" id="attachments" name="attachments" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" class="file-input">
+                    <div class="file-upload-content">
+                      <svg class="upload-icon" width="48" height="48" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <p class="upload-text">Drop files here or <span class="upload-link">browse</span></p>
+                      <p class="upload-hint">PDF, DOC, PNG, JPG up to 10MB each</p>
+                    </div>
+                    <div class="uploaded-files" id="uploadedFiles"></div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="checkbox-label newsletter-checkbox">
+                    <input type="checkbox" name="newsletter" value="yes" class="form-checkbox">
+                    <span class="checkbox-custom"></span>
+                    Subscribe to our newsletter for product updates and tips
+                  </label>
+                </div>
+
+                <div class="form-group">
+                  <label class="checkbox-label privacy-checkbox">
+                    <input type="checkbox" name="privacy" value="accepted" class="form-checkbox" required>
+                    <span class="checkbox-custom"></span>
+                    I agree to the <a href="/privacy.html" class="privacy-link">Privacy Policy</a> *
+                  </label>
+                  <div class="form-error" id="privacyError"></div>
+                </div>
+
+                <button type="submit" class="form-submit" id="submitBtn">
+                  <span class="submit-text">Send Message</span>
+                  <svg class="submit-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4.167 10h11.666m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="submit-loader" id="submitLoader">
+                    <div class="loader-spinner"></div>
+                  </div>
+                </button>
+              </form>
+            </div>
+
+            <div class="contact-info">
+              <div class="contact-card">
+                <div class="contact-card-header">
+                  <h3 class="contact-card-title">Get in Touch</h3>
+                  <p class="contact-card-description">We're here to help you build amazing sites</p>
+                </div>
+
+                <div class="contact-methods">
+                  <div class="contact-method">
+                    <div class="contact-icon">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2"/>
+                        <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </div>
+                    <div class="contact-details">
+                      <h4 class="contact-title">Email Us</h4>
+                      <p class="contact-text">huhpact@outlook.fr</p>
+                      <p class="contact-subtext">We'll respond within 24 hours</p>
+                    </div>
+                  </div>
+
+                  <div class="contact-method">
+                    <div class="contact-icon">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </div>
+                    <div class="contact-details">
+                      <h4 class="contact-title">Live Chat</h4>
+                      <p class="contact-text">Available 24/7</p>
+                      <button class="chat-button" id="liveChatBtn">
+                        Start Chat
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M3.333 8h9.334m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="social-links">
+                  <h4 class="social-title">Follow Us</h4>
+                  <div class="social-icons">
+                    <a href="https://x.com/huhpact" class="social-link" aria-label="Twitter">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </a>
+                    <a href="https://github.com/huhpact" class="social-link" aria-label="GitHub">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="response-time">
+                  <div class="response-indicator">
+                    <div class="status-dot"></div>
+                    <span class="status-text">Typically responds in 2-4 hours</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="success-modal" id="successModal">
+        <div class="success-modal-content">
+          <div class="success-icon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="32" fill="#10b981"/>
+              <path d="M20 32l8 8 16-16" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="success-title">Message Sent Successfully!</h3>
+          <p class="success-description">Thank you for reaching out. We'll get back to you within 24 hours.</p>
+          <button class="success-close" id="successClose">Close</button>
+        </div>
+      </div>
+    </div>
+
+     <footer class="footer">
+      <div class="container">
+        <div class="footer-graphic">
+          <div class="cube-container">
+            <div class="cube">
+              <div class="cube-face cube-top"></div>
+              <div class="cube-face cube-front"></div>
+              <div class="cube-face cube-right"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-content">
+          <div class="footer-left">
+            <div class="footer-logo">
+               <img src="/images/logo.png" alt="Logo">
+                <span class="footer-logo-text">huh(pact)</span>
+              </div>
+              <p class="footer-tagline">Build. Visually.</p>
+            
+            <div class="footer-social">
+              <a href="https://github.com/huhpact" class="social-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <a href="https://x.com/huhpact" class="social-link">
+
+
+          <svg role="img" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" height="20" width="20">
+            <path d="M15.750833333333334 0.9608333333333334h3.066666666666667l-6.699999999999999 7.658333333333333L20 19.038333333333334h-6.171666666666667l-4.833333333333333 -6.32 -5.531666666666667 6.32H0.395l7.166666666666667 -8.191666666666666L0 0.9616666666666667h6.328333333333334l4.3691666666666675 5.776666666666667ZM14.675 17.203333333333333h1.699166666666667L5.405 2.7H3.581666666666667Z" fill="#ffff" stroke-width="0.8333"></path>
+          </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-links">
+            <div class="footer-column">
+              <h4 class="footer-column-title">Product</h4>
+              <ul class="footer-column-links">
+                <li><a href="/features.html" class="footer-link">Features</a></li>
+                <li><a href="/pricing.html" class="footer-link">Pricing</a></li>
+                <li><a href="/experts.html" class="footer-link">Experts</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-column">
+              <h4 class="footer-column-title">Company</h4>
+              <ul class="footer-column-links">
+                <li><a href="/index.html" class="footer-link">About</a></li>
+                <li><a href="/imprint.html" class="footer-link">Imprint</a></li>
+                <li><a href="/privacy.html" class="footer-link">Privacy</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-column">
+              <h4 class="footer-column-title">Support</h4>
+              <ul class="footer-column-links">
+                <li><a href="/contact.html" class="footer-link">Contact</a></li>
+                <li><a href="/contact.html" class="footer-link">Resources</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+		<!-- Koalendar Popup Widget Start -->
+<script>window.Koalendar = window.Koalendar || function(){(Koalendar.props = Koalendar.props || []).push(arguments)};</script>
+<script async src="https://koalendar.com/assets/widget.js"></script>
+<script>
+  Koalendar('widget', {
+    "url": "https://koalendar.com/e/huhpact",
+    "text": "Schedule a meeting",
+    "shape": "rounded-full",
+    "backgroundColor": "#5145CD",
+    "textColor": "#FFFFFF",
+    "position": "bottom-right",
+    "icon": "calendar"
+  });
+</script>
+<!-- Koalendar Popup Widget End -->
+    <script src="./contact.js"></script>
+  </body>
+</html>

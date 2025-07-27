@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96" />
+		<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+		<link rel="shortcut icon" href="/images/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+		<meta name="apple-mobile-web-app-title" content="huh(pact)" />
+		<link rel="manifest" href="/images/site.webmanifest" />
+		<link rel="icon" href="/images/logo.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pricing - huh(pact)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/pricing.css">
+  </head>
+  <body>
+    <div id="app">
+      <header class="header">
+        <div class="container">
+          <div class="header-content">
+            <div class="logo" onclick="window.location.href='/index.html'">
+              <img src="/images/logo.png" alt="Logo">
+              <span class="logo-text">huh(pact)</span>
+            </div>
+            <nav class="nav">
+              <a href="/features.html" class="nav-link">Features</a>
+              <a href="/success-stories.html" class="nav-link">Success Stories</a>
+              <a href="/pricing.html" class="nav-link">Pricing</a>
+              <a href="/experts.html" class="nav-link">Experts</a>
+            </nav>
+
+            <div class="header-cta">
+              <button class="btn btn-primary" onclick="window.location.href='/pricing.html'">Get Started</button>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuToggle">
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+        <nav class="mobile-menu-sidebar" id="mobileMenuSidebar">
+          <a href="/features.html" class="mobile-nav-link">Features</a>
+          <a href="/success-stories.html" class="mobile-nav-link">Success Stories</a>
+          <a href="/pricing.html" class="mobile-nav-link">Pricing</a>
+          <a href="/experts.html" class="mobile-nav-link">Experts</a>
+          <button class="mobile-cta-btn" onclick="window.location.href='/pricing.html'">Get Started</button>
+        </nav>
+      </header>
+
+      <section class="pricing-hero">
+        <div class="container">
+          <div class="hero-content">
+            <h1 class="hero-title">
+              From idea to website-<br>
+              Pick a plan and <span class="highlight">start building</span>
+            </h1>
+            
+            <p class="hero-description">
+              Get started with your online journey, with the help of huh(pact)
+            </p>
+
+            <div class="billing-toggle">
+              <div class="toggle-container">
+                <span class="toggle-label monthly-label">One Time Purchase</span>
+                <div class="toggle-switch" id="billingToggle">
+                  <div class="toggle-slider"></div>
+                </div>
+                <span class="toggle-label annually-label">
+                  Monthly
+                  <span class="save-badge">Save 25%</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing-section">
+        <div class="container">
+          <div class="pricing-grid">
+            
+            <div class="pricing-card free-card">
+              <div class="card-header">
+                <h3 class="plan-name">Small Site</h3>
+                <p class="plan-description">Start with a One-Page Website</p>
+                <div class="price-container">
+                  <span class="price monthly-price">€1500</span>
+                  <span class="price annual-price" style="display: none;">€300</span>
+                  <span class="price-period annual-price" style="display: none;">/month</span>
+                </div>
+              </div>
+              
+              <button class="plan-button free-button monthly-price" onclick="location.href='https://buy.stripe.com/00w7sK5UM9ze0e5dZs4wM0i'">
+                Start now
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3.333 8h9.334m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="plan-button free-button annual-price" style="display: none;" onclick="location.href='https://buy.stripe.com/5kQ28q2IA3aQ7Gx3kO4wM0j'">
+                Start now
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3.333 8h9.334m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <div class="features-section">
+                <ul class="features-list">
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Simple design
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Simple SEO for online presence
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    2 Changes included
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Fast delivery
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Monthly statistics
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    DSGVO compliant
+                  </li>
+                  <li class="feature-item annual-price" style="display: none;">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    MAINTENANCE + UPDATES INCLUDED
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="pricing-card basic-card">
+              <div class="card-header">
+                <h3 class="plan-name">Basic Site</h3>
+                <p class="plan-description">Upgrade to take your website to another level</p>
+                <div class="price-container">
+                  <span class="price monthly-price">€1750</span>
+                  <span class="price annual-price" style="display: none;">€400</span>
+                  <span class="price-period annual-price" style="display: none;">/month</span>
+                </div>
+              </div>
+              
+              <button class="plan-button basic-button monthly-price" onclick="location.href='https://buy.stripe.com/dRmcN45UMdPud0Rf3w4wM0k'">
+                Start now
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3.333 8h9.334m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="plan-button basic-button annual-price" style="display: none;" onclick="location.href='https://buy.stripe.com/14A9ASdne26M0e53kO4wM0l'">
+                Start now
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3.333 8h9.334m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              
+
+              <div class="features-section">
+                <div class="features-header">EVERYTHING IN SMALL SITE, PLUS</div>
+                <ul class="features-list">
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Premium design
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                   Premium Support
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Premium SEO for better visibility
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Analytics integration
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    5 Changes included
+                  </li>
+                  <li class="feature-item annual-price" style="display: none;">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    MAINTENANCE + UPDATES INCLUDED
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="pricing-card pro-card featured">
+              <div class="card-header">
+                <h3 class="plan-name">Pro Site</h3>
+                <p class="plan-description">Unlock access to a big unique website</p>
+                <div class="price-container">
+                  <span class="price monthly-price">€2500</span>
+                  <span class="price annual-price" style="display: none;">€450</span>
+                  <span class="price-period annual-price" style="display: none;">/month</span>
+                </div>
+              </div>
+              
+              <button class="plan-button pro-button monthly-price" onclick="location.href='https://buy.stripe.com/14A14merifXCaSJcVo4wM0m'">
+                Start now
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3.333 8h9.334m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="plan-button pro-button annual-price" style="display: none;" onclick="location.href='https://buy.stripe.com/bJefZgeri4eU1i9dZs4wM0n'">
+                Start now
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3.333 8h9.334m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <div class="features-section">
+                <div class="features-header">EVERYTHING IN BASIC SITE, PLUS</div>
+                <ul class="features-list">
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    10+ Pages
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Custom Design
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Advanced SEO Features
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Full Analytics Suite
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    10 Changes included
+                  </li>
+                  <li class="feature-item annual-price" style="display: none;">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    MAINTENANCE + UPDATES INCLUDED
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="pricing-card team-card">
+              <div class="card-header">
+                <h3 class="plan-name">Complete</h3>
+                <p class="plan-description">Build a stunning, complex and huge website</p>
+                <div class="price-container">
+                  <span class="price monthly-price">€5000</span>
+                   <span class="price annual-price" style="display: none;">€650</span>
+                  <span class="price-period annual-price" style="display: none;">/month</span>
+                </div>
+              </div>
+              
+              <button class="plan-button team-button monthly-price" onclick="location.href='https://buy.stripe.com/7sYcN4gzq3aQ3qh8F84wM0o'">
+                Start now
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3.333 8h9.334m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="plan-button team-button annual-price" style="display: none;" onclick="location.href='https://buy.stripe.com/9B6cN4gzq4eUf8Z9Jc4wM0p'">
+                Start now
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3.333 8h9.334m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <div class="features-section">
+                <div class="features-header">EVERYTHING IN PRO, PLUS:</div>
+                <ul class="features-list">
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Unlimited Pages
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Custom Development
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Full Custom SEO Strategy
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Full Analytics and Reporting
+                  </li>
+                  <li class="feature-item">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Unlimited Changes
+                  </li>
+                  <li class="feature-item annual-price" style="display: none;">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    MAINTENANCE + UPDATES INCLUDED
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section class="comparison-table-section">
+        <div class="container">
+          <div class="comparison-table-wrapper">
+            <div class="comparison-table">
+              <div class="comparison-header">
+                <div class="feature-column-header"></div>
+                <div class="plan-column-header">Small</div>
+                <div class="plan-column-header">Basic</div>
+                <div class="plan-column-header">Pro</div>
+                <div class="plan-column-header">Complete</div>
+              </div>
+
+              <div class="comparison-row">
+                <div class="feature-cell">
+                  <div class="feature-title">Unique Design</div>
+                  <div class="feature-description">Unique design for your site</div>
+                </div>
+                <div class="plan-cell">
+                  <svg class="x-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="comparison-row">
+                <div class="feature-cell">
+                  <div class="feature-title">Analytics</div>
+                  <div class="feature-description">Analytics reports for your understanding</div>
+                </div>
+                <div class="plan-cell">
+                  <svg class="x-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="comparison-row">
+                <div class="feature-cell">
+                  <div class="feature-title">SEO Optimization</div>
+                  <div class="feature-description">For your online presence</div>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="comparison-row">
+                <div class="feature-cell">
+                  <div class="feature-title">Quantity of Sites</div>
+                  <div class="feature-description">How many sites do you have?</div>
+                </div>
+                <div class="plan-cell">
+                  <span class="plan-value">1</span>
+                </div>
+                <div class="plan-cell">
+                  <span class="plan-value">2</span>
+                </div>
+                <div class="plan-cell">
+                  <span class="plan-value">10</span>
+                </div>
+                <div class="plan-cell">
+                  <span class="plan-value">∞</span>
+                </div>
+              </div>
+
+              <div class="comparison-row">
+                <div class="feature-cell">
+                  <div class="feature-title">Changes</div>
+                  <div class="feature-description">Number of changes you have - free of charge</div>
+                </div>
+                <div class="plan-cell">
+                  <span class="plan-value">2</span>
+                </div>
+                <div class="plan-cell">
+                  <span class="plan-value">5</span>
+                </div>
+                <div class="plan-cell">
+                  <span class="plan-value">10</span>
+                </div>
+                <div class="plan-cell">
+                  <span class="plan-value">∞</span>
+                </div>
+              </div>
+
+              <div class="comparison-row">
+                <div class="feature-cell">
+                  <div class="feature-title">Fast delivery</div>
+                  <div class="feature-description">How fast will you have your site?</div>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+               <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+               <div class="plan-cell">
+                  <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="expandable-section" id="expandableFeatures">
+                <div class="comparison-row">
+                  <div class="feature-cell">
+                    <div class="feature-title">Fully Responsive</div>
+                    <div class="feature-description">Available on PC, iPhone, Tablet</div>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="x-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="comparison-row">
+                  <div class="feature-cell">
+                    <div class="feature-title">Updates & Maintenance</div>
+                    <div class="feature-description">Only available in Subscription Plan</div>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="comparison-row">
+                  <div class="feature-cell">
+                    <div class="feature-title">Hosting</div>
+                    <div class="feature-description">No stress - we do it</div>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                   <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="comparison-row">
+                  <div class="feature-cell">
+                    <div class="feature-title">Code editable</div>
+                    <div class="feature-description">Code changes possible?</div>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="x-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="x-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="plan-cell">
+                    <svg class="check-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-fade-overlay" id="tableFadeOverlay"></div>
+
+            <div class="expand-button-container">
+              <button class="expand-button" id="expandButton">
+                <span class="expand-text">View all features</span>
+                <svg class="expand-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq-section">
+        <div class="container">
+          <div class="faq-header">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+            <p class="faq-description">Everything you need to know about our pricing plans</p>
+          </div>
+          
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h3 class="faq-question">Can I change plans anytime?</h3>
+              <p class="faq-answer">Only if our team hasn't started to build your site.</p>
+            </div>
+            
+            <div class="faq-item">
+              <h3 class="faq-question">Do you offer refunds?</h3>
+              <p class="faq-answer">We offer a refund for all paid plans, if you changed your mind. If you're not satisfied, contact us within 30 days for a full refund.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+     <footer class="footer">
+      <div class="container">
+        <div class="footer-graphic">
+          <div class="cube-container">
+            <div class="cube">
+              <div class="cube-face cube-top"></div>
+              <div class="cube-face cube-front"></div>
+              <div class="cube-face cube-right"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-content">
+          <div class="footer-left">
+            <div class="footer-logo">
+               <img src="/images/logo.png" alt="Logo">
+                <span class="footer-logo-text">huh(pact)</span>
+              </div>
+              <p class="footer-tagline">Build. Visually.</p>
+            
+            <div class="footer-social">
+              <a href="https://github.com/huhpact" class="social-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <a href="https://x.com/huhpact" class="social-link">
+
+
+          <svg role="img" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" height="20" width="20">
+            <path d="M15.750833333333334 0.9608333333333334h3.066666666666667l-6.699999999999999 7.658333333333333L20 19.038333333333334h-6.171666666666667l-4.833333333333333 -6.32 -5.531666666666667 6.32H0.395l7.166666666666667 -8.191666666666666L0 0.9616666666666667h6.328333333333334l4.3691666666666675 5.776666666666667ZM14.675 17.203333333333333h1.699166666666667L5.405 2.7H3.581666666666667Z" fill="#ffff" stroke-width="0.8333"></path>
+          </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-links">
+            <div class="footer-column">
+              <h4 class="footer-column-title">Product</h4>
+              <ul class="footer-column-links">
+                <li><a href="/features.html" class="footer-link">Features</a></li>
+                <li><a href="/pricing.html" class="footer-link">Pricing</a></li>
+                <li><a href="/experts.html" class="footer-link">Experts</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-column">
+              <h4 class="footer-column-title">Company</h4>
+              <ul class="footer-column-links">
+                <li><a href="/index.html" class="footer-link">About</a></li>
+                <li><a href="/imprint.html" class="footer-link">Imprint</a></li>
+                <li><a href="/privacy.html" class="footer-link">Privacy</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-column">
+              <h4 class="footer-column-title">Support</h4>
+              <ul class="footer-column-links">
+                <li><a href="/contact.html" class="footer-link">Contact</a></li>
+                <li><a href="/contact.html" class="footer-link">Resources</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Koalendar Popup Widget Start -->
+<script>window.Koalendar = window.Koalendar || function(){(Koalendar.props = Koalendar.props || []).push(arguments)};</script>
+<script async src="https://koalendar.com/assets/widget.js"></script>
+<script>
+  Koalendar('widget', {
+    "url": "https://koalendar.com/e/huhpact",
+    "text": "Schedule a meeting",
+    "shape": "rounded-full",
+    "backgroundColor": "#5145CD",
+    "textColor": "#FFFFFF",
+    "position": "bottom-right",
+    "icon": "calendar"
+  });
+</script>
+<!-- Koalendar Popup Widget End -->
+
+    <script src="./pricing.js"></script>
+  </body>
+</html>
