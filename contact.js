@@ -1,4 +1,3 @@
-// Mobile menu functionality
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
@@ -20,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     if (mobileMenuBtn && mobileMenuOverlay && mobileMenuSidebar) {
-        // Toggle menu on button click
         mobileMenuBtn.addEventListener('click', function() {
             const isActive = mobileMenuBtn.classList.contains('menu-active');
             
@@ -31,10 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Close menu when clicking overlay
         mobileMenuOverlay.addEventListener('click', closeMobileMenu);
         
-        // Close menu when clicking on mobile nav links
         mobileMenuSidebar.querySelectorAll('.mobile-nav-link').forEach(link => {
             link.addEventListener('click', function() {
                 closeMobileMenu();
@@ -42,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -56,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Add scroll effect to header
     window.addEventListener('scroll', function() {
         const header = document.querySelector('.header');
         if (window.scrollY > 50) {
@@ -66,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Form functionality
     const contactForm = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
     const submitLoader = document.getElementById('submitLoader');
@@ -79,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const uploadedFiles = document.getElementById('uploadedFiles');
     const liveChatBtn = document.getElementById('liveChatBtn');
 
-    // Character counter for message textarea
     if (messageTextarea && charCount) {
         messageTextarea.addEventListener('input', function() {
             const count = this.value.length;
@@ -95,16 +87,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // File upload functionality
     let uploadedFilesList = [];
 
     if (fileUploadArea && fileInput) {
-        // Click to upload
         fileUploadArea.addEventListener('click', function() {
             fileInput.click();
         });
 
-        // Drag and drop
         fileUploadArea.addEventListener('dragover', function(e) {
             e.preventDefault();
             this.classList.add('dragover');
@@ -130,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function handleFiles(files) {
             files.forEach(file => {
-                if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                if (file.size > 10 * 1024 * 1024) { 
                     showError('File size must be less than 10MB');
                     return;
                 }
@@ -179,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Form validation
     function validateForm() {
         let isValid = true;
         const requiredFields = ['firstName', 'lastName', 'email', 'inquiryType', 'message'];
@@ -196,7 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Email validation
         const email = document.getElementById('email');
         const emailError = document.getElementById('emailError');
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -206,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
         }
 
-        // Privacy policy validation
         const privacyCheckbox = document.querySelector('input[name="privacy"]');
         const privacyError = document.getElementById('privacyError');
         
@@ -234,7 +220,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showError(message) {
-        // Create a temporary error notification
         const errorDiv = document.createElement('div');
         errorDiv.style.cssText = `
             position: fixed;
@@ -256,7 +241,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
 
-    // Form submission
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -265,41 +249,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Show loading state
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
-
-            // Simulate form submission (replace with actual API call)
-            setTimeout(() => {
-                // Hide loading state
-                submitBtn.classList.remove('loading');
-                submitBtn.disabled = false;
-
-                // Show success modal
-                successModal.classList.add('show');
-
-                // Reset form
-                contactForm.reset();
-                uploadedFilesList = [];
-                uploadedFiles.innerHTML = '';
-                charCount.textContent = '0';
-
-                // Log form data (replace with actual submission)
-                const formData = new FormData(contactForm);
-                console.log('Form submitted with data:', Object.fromEntries(formData));
-                console.log('Uploaded files:', uploadedFilesList);
-            }, 2000);
         });
     }
 
-    // Success modal close
     if (successClose) {
         successClose.addEventListener('click', function() {
             successModal.classList.remove('show');
         });
     }
 
-    // Close modal when clicking outside
     if (successModal) {
         successModal.addEventListener('click', function(e) {
             if (e.target === this) {
@@ -308,13 +268,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Live chat functionality
     if (liveChatBtn) {
         liveChatBtn.addEventListener('click', function() {
-            // Simulate opening live chat
             console.log('Opening live chat...');
             
-            // Add visual feedback
             const originalText = this.innerHTML;
             this.innerHTML = `
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -331,7 +288,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Animate elements on scroll
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -346,7 +302,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, observerOptions);
     
-    // Observe elements for animation
     document.querySelectorAll('.hero-content > *, .contact-form-container, .contact-card, .faq-quick-links').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
@@ -354,7 +309,6 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(el);
     });
 
-    // Button click animations
     document.querySelectorAll('.btn, .form-submit, .chat-button').forEach(button => {
         button.addEventListener('click', function(e) {
             if (this.disabled) return;
@@ -378,14 +332,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // FAQ link tracking
     document.querySelectorAll('.faq-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const question = this.querySelector('.faq-question').textContent;
             console.log(`FAQ clicked: ${question}`);
             
-            // Add visual feedback
             this.style.transform = 'translateX(8px)';
             setTimeout(() => {
                 this.style.transform = '';
@@ -393,7 +345,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Social link tracking
     document.querySelectorAll('.social-icons .social-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -403,7 +354,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Add ripple effect styles
 const style = document.createElement('style');
 style.textContent = `
     .btn, .form-submit, .chat-button {
