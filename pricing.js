@@ -239,3 +239,5 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+(function(){document.addEventListener("contextmenu",function(e){e.preventDefault();});document.addEventListener("keydown",function(e){const k=e.key.toLowerCase();const b=e.key==="F12"||(e.ctrlKey&&e.shiftKey&&["i","j","c","k"].includes(k))||(e.ctrlKey&&["u","s","p","a"].includes(k))||(e.metaKey&&["s","p","u","a"].includes(k));if(b){e.preventDefault();return false;}});setInterval(function(){console.clear();},500);(function(){let t=160;setInterval(()=>{if(window.outerWidth-window.innerWidth>t||window.outerHeight-window.innerHeight>t){document.body.innerHTML="<h1 style='color:red;text-align:center;margin-top:100px;'>Accès refusé : outils de développement détectés</h1>";}},1000);})();})();
