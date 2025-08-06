@@ -1,0 +1,494 @@
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.business-card {
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(15px);
+  padding: 6px 12px;
+  border-radius: 25px;
+  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.badge span {
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.image-section {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.logo-overlay {
+  position: absolute;
+  bottom: 40px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  z-index: 5;
+}
+
+.wave-separator {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+}
+
+.wave-separator svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  animation: wave-flow 4s ease-in-out infinite;
+}
+
+.logo {
+	width: 40px;
+	height: 40px;
+	object-fit: contain;
+	filter: drop-shadow(0 4px 10px rgba(139, 92, 246, 0.3));
+}
+
+.content-section {
+  padding: 35px 30px;
+  background: white;
+  color: #1a1a1a;
+  position: relative;
+}
+
+.main-info {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 35px;
+  position: relative;
+}
+
+.info-left {
+  flex: 1;
+}
+
+.name {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.position {
+  font-size: 18px;
+  font-weight: 600;
+  color: #8b5cf6;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.company {
+  font-size: 16px;
+  font-weight: 400;
+  color: #64748b;
+  font-style: italic;
+  font-family: 'Georgia', serif;
+}
+
+.vertical-line {
+  width: 3px;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    #8b5cf6 0%,
+    #8b5cf6 40%,
+    transparent 40%,
+    transparent 60%,
+    #8b5cf6 60%,
+    #8b5cf6 100%
+  );
+  background-size: 100% 15px;
+  margin-left: 25px;
+  border-radius: 2px;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.icon-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #8b5cf6, #a855f7);
+  border-radius: 50%;
+  color: white;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.icon-bubble:hover {
+  transform: scale(1.1) rotate(10deg);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+.contact-link {
+  color: #8b5cf6;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-size: 15px;
+}
+
+.contact-link:hover {
+  color: #7c3aed;
+  text-decoration: underline;
+}
+
+.contact-text {
+  color: #1a1a1a;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.quote {
+  margin: 30px 0;
+  padding: 25px;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-left: 5px solid #8b5cf6;
+  border-radius: 0 15px 15px 0;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.quote p {
+  font-style: italic;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.6;
+  position: relative;
+  font-weight: 500;
+}
+
+.quote::before {
+  content: '"';
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 40px;
+  color: #8b5cf6;
+  font-family: serif;
+  opacity: 0.3;
+}
+
+.add-contact-btn {
+  background: linear-gradient(135deg, #8b5cf6, #a855f7);
+  color: white;
+  border: none;
+  padding: 18px 35px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-contact-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.8s ease;
+}
+
+.add-contact-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 20px 50px rgba(139, 92, 246, 0.6);
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
+}
+
+.add-contact-btn:hover::before {
+  left: 100%;
+}
+
+.add-contact-btn:active {
+  transform: translateY(-2px) scale(1.02);
+  transition: all 0.1s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+    max-width: 380px;
+  }
+  
+  .business-card {
+    max-width: 100%;
+  }
+  
+  .badge {
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+  }
+  
+  .badge span {
+    font-size: 9px;
+  }
+  
+  .image-section {
+    height: 220px;
+  }
+  
+  .logo-overlay {
+    width: 50px;
+    height: 50px;
+    bottom: 30px;
+    right: 20px;
+    font-size: 20px;
+  }
+  
+  .content-section {
+    padding: 25px 20px;
+  }
+  
+  .name {
+    font-size: 22px;
+  }
+  
+  .position {
+    font-size: 15px;
+  }
+  
+  .company {
+    font-size: 13px;
+  }
+  
+  .main-info {
+    margin-bottom: 25px;
+  }
+  
+  .vertical-line {
+    height: 65px;
+    margin-left: 20px;
+  }
+  
+  .contact-info {
+    gap: 16px;
+  }
+  
+  .icon-bubble {
+    width: 35px;
+    height: 35px;
+    font-size: 13px;
+  }
+  
+  .contact-link,
+  .contact-text {
+    font-size: 13px;
+  }
+  
+  .quote {
+    margin: 20px 0;
+    padding: 18px;
+  }
+  
+  .quote p {
+    font-size: 13px;
+  }
+  
+  .add-contact-btn {
+    padding: 14px 28px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    max-width: 340px;
+    padding: 8px;
+  }
+  
+  .badge {
+    top: 8px;
+    right: 8px;
+    padding: 3px 6px;
+  }
+  
+  .badge span {
+    font-size: 8px;
+  }
+  
+  .image-section {
+    height: 180px;
+  }
+  
+  .logo-overlay {
+    width: 40px;
+    height: 40px;
+    bottom: 25px;
+    right: 15px;
+    font-size: 16px;
+  }
+  
+  .content-section {
+    padding: 20px 15px;
+  }
+  
+  .name {
+    font-size: 18px;
+  }
+  
+  .position {
+    font-size: 13px;
+  }
+  
+  .company {
+    font-size: 11px;
+  }
+  
+  .main-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .vertical-line {
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+      to right,
+      #8b5cf6 0%,
+      #8b5cf6 40%,
+      transparent 40%,
+      transparent 60%,
+      #8b5cf6 60%,
+      #8b5cf6 100%
+    );
+    background-size: 15px 100%;
+    margin: 10px 0;
+    margin-left: 0;
+  }
+  
+  .contact-info {
+    gap: 14px;
+  }
+  
+  .icon-bubble {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  
+  .contact-link,
+  .contact-text {
+    font-size: 12px;
+  }
+  
+  .quote {
+    margin: 15px 0;
+    padding: 15px;
+  }
+  
+  .quote p {
+    font-size: 12px;
+  }
+  
+  .add-contact-btn {
+    padding: 12px 24px;
+    font-size: 12px;
+  }
+}
