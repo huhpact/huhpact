@@ -11,37 +11,15 @@ const wishlistItems = [
     dateAdded: "17.06.2025"
   },
   {
-    id: 2,
-    title: "iPhone 17 Pro Max",
-    price: "1.449,00 EUR",
-    description: "Die neue Generation der iPhones.",
-    image: "/souhaits/assets/iphone17.jpg",
-    tags: ["Handy", "Pro Max", "Apple"],
-    priority: "hoch",
-    productUrl: "https://www.apple.com/iphone/",
-    dateAdded: "17.07.2025"
-  },
-  {
-    id: 3,
-    title: "iPad Pro 13'' (2026)",
-    price: "2.400,00 EUR",
-    description: "Grosses iPad perfekt für die digitale Arbeit → Design",
-    image: "/souhaits/assets/ipadpro.jpg",
-    tags: ["Tablet", "13 Zoll", "Apple"],
-    priority: "mittel",
-    productUrl: "https://www.apple.com/ipad-pro/",
-    dateAdded: "17.07.2025"
-  },
-  {
     id: 6,
-    title: "Poloshirt Ralph Lauren (Schwarz)",
-    price: "125,00 EUR",
-    description: "Ein klassisches Poloshirt von Ralph Lauren in Schwarz. Perfekt für den Alltag.",
-    image: "/souhaits/assets/polo-rl.avif",
-    tags: ["Ralph Lauren", "Poloshirt", "Kleidung"],
-    priority: "mittel",
-    productUrl: "https://www.ralphlauren.de/de/das-legendare-pique-poloshirt-401481.html",
-    dateAdded: "03.03.2025"
+    title: "Ferragamo Card Holder",
+    price: "195,00 EUR",
+    description: "Ein stilvoller Kartenhalter von Ferragamo aus Leder mit Monogramm-Muster. Perfekt für den Alltag.",
+    image: "/souhaits/assets/ch.webp",
+    tags: ["Card Holder", "Ferragamo", "Edel"],
+    priority: "hoch",
+    productUrl: "https://www.farfetch.com/fr/shopping/men/ferragamo-fentes-pour-cartes-a-motif-monogramme-item-27660989.aspx",
+    dateAdded: "05.10.2025"
   },
   {
     id: 7,
