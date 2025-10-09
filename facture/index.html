@@ -1,143 +1,285 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice Creator</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="app-container">
-        <header class="app-header">
-            <div class="header-content">
-                <h1 class="app-title">Invoice Creator</h1>
-                <div class="header-actions">
-                    <select id="languageSelect" class="language-select">
-                        <option value="en">English</option>
-                        <option value="fr">Français</option>
-                        <option value="de">Deutsch</option>
-                    </select>
-                    <button id="generatePdfBtn" class="btn btn-primary">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                        <span data-i18n="generatePDF">Generate PDF</span>
-                    </button>
-                </div>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>huh(pact) Factures</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/facture/styles.css">
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <div class="header-content">
+          <h1 class="app-title" data-i18n="app.title">huh(pact)</h1>
+          <div class="header-actions">
+            <select id="languageSelect" class="language-select" aria-label="Language">
+              <option value="en">English</option>
+              <option value="de">Deutsch</option>
+              <option value="fr">Français</option>
+            </select>
+            <button id="helpBtn" class="btn btn-secondary" data-i18n="app.help">Help</button>
+            <button id="saveBtn" class="btn btn-primary" data-i18n="app.save">Save</button>
+            <button id="exportBtn" class="btn btn-primary" data-i18n="app.export">Export</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="toolbar">
+        <div class="toolbar-group">
+          <button id="newBtn" class="btn btn-secondary" data-i18n="app.new">New Invoice</button>
+          <button id="loadBtn" class="btn btn-secondary" data-i18n="app.load">Load</button>
+          <button id="importBtn" class="btn btn-secondary" data-i18n="actions.importJson">Import JSON</button>
+        </div>
+        <div class="toolbar-group">
+          <button id="generatePdfBtn" class="btn btn-success" data-i18n="app.generatePdf">Generate PDF</button>
+          <button id="printBtn" class="btn btn-success" data-i18n="app.print">Print</button>
+        </div>
+      </div>
+
+      <main class="main-content">
+        <aside class="editor-panel">
+          <div class="panel-header">
+            <h2 data-i18n="invoice.title">Invoice</h2>
+          </div>
+
+          <div class="editor-section">
+            <h3 data-i18n="invoice.seller">From</h3>
+            <div class="form-row">
+              <label>
+                <span data-i18n="fields.companyName">Company Name</span>
+                <input type="text" id="sellerCompany" class="form-input" />
+              </label>
             </div>
-        </header>
-
-        <main class="main-content">
-            <div class="invoice-container" id="invoiceContent">
-                <div class="invoice-paper">
-                    <div class="invoice-header">
-                        <div class="company-info">
-                            <h2 contenteditable="true" class="editable company-name" data-placeholder="Your Company Name">Your Company Name</h2>
-                            <p contenteditable="true" class="editable" data-placeholder="Address Line 1">123 Business Street</p>
-                            <p contenteditable="true" class="editable" data-placeholder="Address Line 2">City, State 12345</p>
-                            <p contenteditable="true" class="editable" data-placeholder="Email">email@company.com</p>
-                            <p contenteditable="true" class="editable" data-placeholder="Phone">+1 (555) 123-4567</p>
-                        </div>
-                        <div class="invoice-title-section">
-                            <h1 class="invoice-title" data-i18n="invoice">INVOICE</h1>
-                            <div class="invoice-meta">
-                                <div class="meta-row">
-                                    <span class="meta-label" data-i18n="invoiceNumber">Invoice #:</span>
-                                    <span contenteditable="true" class="editable meta-value" data-placeholder="INV-001">INV-001</span>
-                                </div>
-                                <div class="meta-row">
-                                    <span class="meta-label" data-i18n="date">Date:</span>
-                                    <input type="date" class="date-input meta-value" id="invoiceDate">
-                                </div>
-                                <div class="meta-row">
-                                    <span class="meta-label" data-i18n="dueDate">Due Date:</span>
-                                    <input type="date" class="date-input meta-value" id="dueDate">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="invoice-body">
-                        <div class="bill-to-section">
-                            <h3 class="section-title" data-i18n="billTo">Bill To:</h3>
-                            <div class="bill-to-content">
-                                <p contenteditable="true" class="editable client-name" data-placeholder="Client Name">Client Name</p>
-                                <p contenteditable="true" class="editable" data-placeholder="Client Address">456 Client Avenue</p>
-                                <p contenteditable="true" class="editable" data-placeholder="City, State">City, State 67890</p>
-                                <p contenteditable="true" class="editable" data-placeholder="Client Email">client@email.com</p>
-                            </div>
-                        </div>
-
-                        <div class="items-section">
-                            <table class="items-table">
-                                <thead>
-                                    <tr>
-                                        <th data-i18n="description">Description</th>
-                                        <th data-i18n="quantity">Qty</th>
-                                        <th data-i18n="unitPrice">Unit Price</th>
-                                        <th data-i18n="amount">Amount</th>
-                                        <th class="action-col"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="itemsTableBody">
-                                    <tr class="item-row">
-                                        <td contenteditable="true" class="editable" data-placeholder="Item description">Web Design Services</td>
-                                        <td contenteditable="true" class="editable quantity-cell" data-placeholder="1">1</td>
-                                        <td contenteditable="true" class="editable price-cell" data-placeholder="0.00">1000.00</td>
-                                        <td class="amount-cell">$1,000.00</td>
-                                        <td class="action-col">
-                                            <button class="btn-icon delete-row" title="Delete row">
-                                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                </svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button id="addItemBtn" class="btn btn-secondary">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                </svg>
-                                <span data-i18n="addItem">Add Item</span>
-                            </button>
-                        </div>
-
-                        <div class="totals-section">
-                            <div class="totals-grid">
-                                <div class="total-row">
-                                    <span class="total-label" data-i18n="subtotal">Subtotal:</span>
-                                    <span class="total-value" id="subtotalValue">$1,000.00</span>
-                                </div>
-                                <div class="total-row">
-                                    <span class="total-label">
-                                        <span data-i18n="tax">Tax</span>
-                                        <span> (</span><span contenteditable="true" class="editable-inline" id="taxRate">10</span><span>%):</span>
-                                    </span>
-                                    <span class="total-value" id="taxValue">$100.00</span>
-                                </div>
-                                <div class="total-row total-final">
-                                    <span class="total-label" data-i18n="total">Total:</span>
-                                    <span class="total-value" id="totalValue">$1,100.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="notes-section">
-                            <h3 class="section-title" data-i18n="notes">Notes:</h3>
-                            <p contenteditable="true" class="editable notes-content" data-placeholder="Add any additional notes or payment terms here">Thank you for your business!</p>
-                        </div>
-                    </div>
-
-                    <div class="invoice-footer">
-                        <p contenteditable="true" class="editable" data-placeholder="Footer text">Payment is due within 30 days. Please make checks payable to Your Company Name.</p>
-                    </div>
-                </div>
+            <div class="form-row">
+              <label>
+                <span data-i18n="fields.contactName">Contact Name</span>
+                <input type="text" id="sellerContact" class="form-input" />
+              </label>
             </div>
-        </main>
+            <div class="form-row">
+              <label>
+                <span data-i18n="fields.street">Street</span>
+                <input type="text" id="sellerStreet" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row form-row-2">
+              <label>
+                <span data-i18n="fields.postalCode">Postal Code</span>
+                <input type="text" id="sellerPostalCode" class="form-input" />
+              </label>
+              <label>
+                <span data-i18n="fields.city">City</span>
+                <input type="text" id="sellerCity" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                <span data-i18n="fields.country">Country</span>
+                <input type="text" id="sellerCountry" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row form-row-2">
+              <label>
+                <span data-i18n="fields.email">Email</span>
+                <input type="email" id="sellerEmail" class="form-input" />
+              </label>
+              <label>
+                <span data-i18n="fields.phone">Phone</span>
+                <input type="tel" id="sellerPhone" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row form-row-2">
+              <label>
+                <span data-i18n="fields.taxNumber">Tax Number</span>
+                <input type="text" id="sellerTaxNumber" class="form-input" />
+              </label>
+              <label>
+                <span data-i18n="fields.vatId">VAT ID</span>
+                <input type="text" id="sellerVatId" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                <span data-i18n="fields.uploadLogo">Upload Logo</span>
+                <input type="file" id="logoUpload" accept="image/*" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                <span data-i18n="fields.logoPosition">Logo Position</span>
+                <select id="logoPosition" class="form-input">
+                  <option value="left" data-i18n="position.left">Left</option>
+                  <option value="center" data-i18n="position.center">Center</option>
+                  <option value="right" data-i18n="position.right">Right</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="editor-section">
+            <h3 data-i18n="invoice.buyer">Bill To</h3>
+            <div class="form-row">
+              <label>
+                <span data-i18n="fields.companyName">Company Name</span>
+                <input type="text" id="buyerCompany" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                <span data-i18n="fields.contactName">Contact Name</span>
+                <input type="text" id="buyerContact" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                <span data-i18n="fields.street">Street</span>
+                <input type="text" id="buyerStreet" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row form-row-2">
+              <label>
+                <span data-i18n="fields.postalCode">Postal Code</span>
+                <input type="text" id="buyerPostalCode" class="form-input" />
+              </label>
+              <label>
+                <span data-i18n="fields.city">City</span>
+                <input type="text" id="buyerCity" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                <span data-i18n="fields.country">Country</span>
+                <input type="text" id="buyerCountry" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row form-row-2">
+              <label>
+                <span data-i18n="fields.email">Email</span>
+                <input type="email" id="buyerEmail" class="form-input" />
+              </label>
+              <label>
+                <span data-i18n="fields.phone">Phone</span>
+                <input type="tel" id="buyerPhone" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row form-row-2">
+              <label>
+                <span data-i18n="fields.taxNumber">Tax Number</span>
+                <input type="text" id="buyerTaxNumber" class="form-input" />
+              </label>
+              <label>
+                <span data-i18n="fields.vatId">VAT ID</span>
+                <input type="text" id="buyerVatId" class="form-input" />
+              </label>
+            </div>
+          </div>
+
+          <div class="editor-section">
+            <h3 data-i18n="invoice.title">Invoice Details</h3>
+            <div class="form-row form-row-2">
+              <label>
+                <span data-i18n="invoice.number">Invoice No.</span>
+                <input type="text" id="invoiceNumber" class="form-input" />
+              </label>
+              <label>
+                <span data-i18n="invoice.date">Date</span>
+                <input type="date" id="invoiceDate" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row form-row-2">
+              <label>
+                <span data-i18n="invoice.dueDate">Due Date</span>
+                <input type="date" id="invoiceDueDate" class="form-input" />
+              </label>
+              <label>
+                <span data-i18n="invoice.deliveryDate">Delivery Date</span>
+                <input type="date" id="invoiceDeliveryDate" class="form-input" />
+              </label>
+            </div>
+            <div class="form-row">
+              <label class="checkbox-label">
+                <input type="checkbox" id="kleinunternehmer" />
+                <span data-i18n="german.kleinunternehmer">Small Business (§19 UStG)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="editor-section">
+            <div class="section-header">
+              <h3>Line Items</h3>
+              <button id="addItemBtn" class="btn btn-small btn-primary" data-i18n="actions.addItem">Add Item</button>
+            </div>
+            <div id="lineItemsContainer" class="line-items-container">
+            </div>
+          </div>
+
+          <div class="editor-section">
+            <h3 data-i18n="invoice.notes">Notes</h3>
+            <textarea id="notes" class="form-textarea" rows="3"></textarea>
+          </div>
+
+          <div class="editor-section">
+            <h3 data-i18n="invoice.paymentTerms">Payment Terms</h3>
+            <textarea id="paymentTerms" class="form-textarea" rows="2"></textarea>
+          </div>
+        </aside>
+
+        <div class="preview-panel">
+          <div class="preview-header">
+            <h2>Preview</h2>
+          </div>
+          <div id="invoicePreview" class="invoice-preview">
+          </div>
+        </div>
+      </main>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="app.js"></script>
-</body>
+    <div id="helpModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 data-i18n="help.title">Help & Compliance</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <section class="help-section">
+            <h3 data-i18n="help.germanLegal">German Legal Requirements</h3>
+            <p data-i18n="help.germanLegalText">When creating German invoices, ensure all required fields per §14 UStG are filled.</p>
+          </section>
+          <section class="help-section">
+            <h3 data-i18n="help.kleinunternehmerHelp">Kleinunternehmer Help</h3>
+            <p data-i18n="help.kleinunternehmerHelp">If you qualify as a 'Kleinunternehmer' (small business) under §19 UStG, enable this option.</p>
+          </section>
+          <section class="help-section">
+            <h3 data-i18n="help.archivingHelp">Archiving Help</h3>
+            <p data-i18n="help.archivingHelp">The GoBD requires proper archiving of electronic invoices.</p>
+          </section>
+          <section class="help-section">
+            <h3 data-i18n="help.references">Official References</h3>
+            <ul class="reference-list">
+              <li><a href="https://www.gesetze-im-internet.de/ustg_1980/__14.html" target="_blank" rel="noopener">§14 UStG - Invoice Requirements</a></li>
+              <li><a href="https://www.gesetze-im-internet.de/ustg_1980/__19.html" target="_blank" rel="noopener">§19 UStG - Small Business Rules</a></li>
+              <li><a href="https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Weitere_Steuerthemen/Abgabenordnung/2019-11-28-GoBD.html" target="_blank" rel="noopener">BMF GoBD - E-Invoice & Archiving</a></li>
+            </ul>
+          </section>
+          <section class="help-section disclaimer">
+            <h3 data-i18n="german.legalDisclaimer">Legal Disclaimer</h3>
+            <p data-i18n="german.disclaimerText">This tool helps create legally-structured invoices, but it does not replace tax advice.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <input type="file" id="importFileInput" accept=".json" style="display: none;" />
+
+    <script src="/facture/js/i18n.js"></script>
+    <script src="/facture/js/formatters.js"></script>
+    <script src="/facture/js/state.js"></script>
+    <script src="/facture/js/storage.js"></script>
+    <script src="/facture/js/ui.js"></script>
+    <script src="/facture/js/app.js"></script>
+  </body>
 </html>

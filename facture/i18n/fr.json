@@ -1,0 +1,122 @@
+{
+  "app": {
+    "title": "huh(pact)",
+    "language": "Langue",
+    "save": "Enregistrer",
+    "load": "Charger",
+    "export": "Exporter",
+    "import": "Importer",
+    "new": "Nouvelle facture",
+    "generatePdf": "Générer PDF",
+    "downloadPdf": "Télécharger PDF",
+    "print": "Imprimer",
+    "help": "Aide",
+    "settings": "Paramètres",
+    "theme": "Thème",
+    "undo": "Annuler",
+    "redo": "Refaire"
+  },
+  "invoice": {
+    "title": "Facture",
+    "number": "N° de facture",
+    "date": "Date",
+    "dueDate": "Date d'échéance",
+    "deliveryDate": "Date de livraison",
+    "seller": "Émetteur",
+    "buyer": "Destinataire",
+    "description": "Description",
+    "quantity": "Qté",
+    "unit": "Unité",
+    "unitPrice": "Prix unitaire",
+    "discount": "Remise",
+    "taxRate": "Taux TVA",
+    "net": "HT",
+    "tax": "TVA",
+    "gross": "TTC",
+    "subtotal": "Sous-total",
+    "total": "Total",
+    "totalNet": "Total HT",
+    "totalTax": "Total TVA",
+    "totalGross": "Montant total",
+    "taxBreakdown": "Détail TVA",
+    "page": "Page",
+    "of": "sur",
+    "notes": "Notes",
+    "paymentTerms": "Conditions de paiement",
+    "bankDetails": "Coordonnées bancaires"
+  },
+  "fields": {
+    "companyName": "Nom de l'entreprise",
+    "contactName": "Nom du contact",
+    "street": "Rue",
+    "city": "Ville",
+    "postalCode": "Code postal",
+    "country": "Pays",
+    "email": "Email",
+    "phone": "Téléphone",
+    "website": "Site web",
+    "taxNumber": "Numéro fiscal",
+    "vatId": "N° TVA",
+    "logo": "Logo",
+    "uploadLogo": "Télécharger le logo",
+    "logoPosition": "Position du logo"
+  },
+  "actions": {
+    "addItem": "Ajouter une ligne",
+    "removeItem": "Supprimer la ligne",
+    "duplicateItem": "Dupliquer la ligne",
+    "moveUp": "Monter",
+    "moveDown": "Descendre",
+    "clear": "Effacer",
+    "duplicate": "Dupliquer la facture",
+    "createCreditNote": "Créer un avoir",
+    "exportJson": "Exporter JSON",
+    "exportCsv": "Exporter CSV",
+    "importJson": "Importer JSON"
+  },
+  "german": {
+    "kleinunternehmer": "Petite entreprise (§19 UStG)",
+    "kleinunternehmerNote": "Aucune TVA facturée conformément au §19 UStG (réglementation allemande des petites entreprises).",
+    "complianceHelp": "Aide à la conformité",
+    "legalDisclaimer": "Avertissement légal",
+    "disclaimerText": "Cet outil aide à créer des factures structurées légalement, mais il ne remplace pas les conseils fiscaux. Pour une conformité complète, veuillez consulter un conseiller fiscal ou les directives officielles.",
+    "requiredFields": "Champs obligatoires (§14 UStG)",
+    "gobdNote": "Archivage des e-factures et préparation aux audits (GoBD)"
+  },
+  "validation": {
+    "required": "Ce champ est obligatoire",
+    "invalidNumber": "Veuillez saisir un nombre valide",
+    "invalidEmail": "Veuillez saisir une adresse e-mail valide",
+    "missingFields": "Champs obligatoires manquants pour les factures allemandes"
+  },
+  "messages": {
+    "saved": "Facture enregistrée avec succès",
+    "loaded": "Facture chargée avec succès",
+    "exported": "Facture exportée avec succès",
+    "imported": "Facture importée avec succès",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette ligne ?",
+    "confirmClear": "Êtes-vous sûr de vouloir effacer toutes les données ?",
+    "noInvoiceToLoad": "Aucune facture enregistrée trouvée"
+  },
+  "help": {
+    "title": "Aide & Conformité",
+    "germanLegal": "Exigences légales allemandes",
+    "germanLegalText": "Lors de la création de factures allemandes, assurez-vous que tous les champs requis par le §14 UStG sont remplis. Cela inclut les adresses complètes du vendeur et de l'acheteur, le numéro de facture unique, la date, la description des biens/services, les quantités, les taux de taxe et les totaux.",
+    "kleinunternehmerHelp": "Si vous êtes qualifié comme 'Kleinunternehmer' (petite entreprise) selon le §19 UStG, activez cette option pour omettre la TVA et inclure la note requise.",
+    "archivingHelp": "Le GoBD exige un archivage approprié des factures électroniques. Exportez à la fois le PDF et le JSON pour des pistes d'audit complètes.",
+    "references": "Références officielles",
+    "ustg14": "§14 UStG - Exigences de facturation",
+    "ustg19": "§19 UStG - Règles des petites entreprises",
+    "gobd": "BMF GoBD - E-facture & Archivage"
+  },
+  "templates": {
+    "minimal": "Minimal",
+    "modern": "Moderne",
+    "classic": "Classique"
+  },
+  "position": {
+    "left": "Gauche",
+    "center": "Centre",
+    "right": "Droite"
+  }
+}

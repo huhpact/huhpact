@@ -1,0 +1,122 @@
+{
+  "app": {
+    "title": "huh(pact)",
+    "language": "Language",
+    "save": "Save",
+    "load": "Load",
+    "export": "Export",
+    "import": "Import",
+    "new": "New Invoice",
+    "generatePdf": "Generate PDF",
+    "downloadPdf": "Download PDF",
+    "print": "Print",
+    "help": "Help",
+    "settings": "Settings",
+    "theme": "Theme",
+    "undo": "Undo",
+    "redo": "Redo"
+  },
+  "invoice": {
+    "title": "Invoice",
+    "number": "Invoice No.",
+    "date": "Date",
+    "dueDate": "Due Date",
+    "deliveryDate": "Delivery Date",
+    "seller": "From",
+    "buyer": "Bill To",
+    "description": "Description",
+    "quantity": "Qty",
+    "unit": "Unit",
+    "unitPrice": "Unit Price",
+    "discount": "Discount",
+    "taxRate": "Tax Rate",
+    "net": "Net",
+    "tax": "Tax",
+    "gross": "Gross",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "totalNet": "Total Net",
+    "totalTax": "Total Tax",
+    "totalGross": "Total Amount",
+    "taxBreakdown": "Tax Breakdown",
+    "page": "Page",
+    "of": "of",
+    "notes": "Notes",
+    "paymentTerms": "Payment Terms",
+    "bankDetails": "Bank Details"
+  },
+  "fields": {
+    "companyName": "Company Name",
+    "contactName": "Contact Name",
+    "street": "Street",
+    "city": "City",
+    "postalCode": "Postal Code",
+    "country": "Country",
+    "email": "Email",
+    "phone": "Phone",
+    "website": "Website",
+    "taxNumber": "Tax Number",
+    "vatId": "VAT ID",
+    "logo": "Logo",
+    "uploadLogo": "Upload Logo",
+    "logoPosition": "Logo Position"
+  },
+  "actions": {
+    "addItem": "Add Item",
+    "removeItem": "Remove Item",
+    "duplicateItem": "Duplicate Item",
+    "moveUp": "Move Up",
+    "moveDown": "Move Down",
+    "clear": "Clear",
+    "duplicate": "Duplicate Invoice",
+    "createCreditNote": "Create Credit Note",
+    "exportJson": "Export JSON",
+    "exportCsv": "Export CSV",
+    "importJson": "Import JSON"
+  },
+  "german": {
+    "kleinunternehmer": "Small Business (§19 UStG)",
+    "kleinunternehmerNote": "No VAT charged according to §19 UStG (German small business regulation).",
+    "complianceHelp": "Compliance Help",
+    "legalDisclaimer": "Legal Disclaimer",
+    "disclaimerText": "This tool helps create legally-structured invoices, but it does not replace tax advice. For full compliance please consult a tax advisor or the official guidance.",
+    "requiredFields": "Required Fields (§14 UStG)",
+    "gobdNote": "E-invoice archiving and audit readiness (GoBD)"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidNumber": "Please enter a valid number",
+    "invalidEmail": "Please enter a valid email",
+    "missingFields": "Missing required fields for German invoices"
+  },
+  "messages": {
+    "saved": "Invoice saved successfully",
+    "loaded": "Invoice loaded successfully",
+    "exported": "Invoice exported successfully",
+    "imported": "Invoice imported successfully",
+    "confirmDelete": "Are you sure you want to delete this item?",
+    "confirmClear": "Are you sure you want to clear all data?",
+    "noInvoiceToLoad": "No saved invoice found"
+  },
+  "help": {
+    "title": "Help & Compliance",
+    "germanLegal": "German Legal Requirements",
+    "germanLegalText": "When creating German invoices, ensure all required fields per §14 UStG are filled. This includes seller and buyer complete addresses, unique invoice number, date, description of goods/services, quantities, tax rates, and totals.",
+    "kleinunternehmerHelp": "If you qualify as a 'Kleinunternehmer' (small business) under §19 UStG, enable this option to omit VAT and include the required note.",
+    "archivingHelp": "The GoBD requires proper archiving of electronic invoices. Export both PDF and JSON for complete audit trails.",
+    "references": "Official References",
+    "ustg14": "§14 UStG - Invoice Requirements",
+    "ustg19": "§19 UStG - Small Business Rules",
+    "gobd": "BMF GoBD - E-Invoice & Archiving"
+  },
+  "templates": {
+    "minimal": "Minimal",
+    "modern": "Modern",
+    "classic": "Classic"
+  },
+  "position": {
+    "left": "Left",
+    "center": "Center",
+    "right": "Right"
+  }
+}

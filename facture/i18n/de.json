@@ -1,0 +1,122 @@
+{
+  "app": {
+    "title": "huh(pact)",
+    "language": "Sprache",
+    "save": "Speichern",
+    "load": "Laden",
+    "export": "Exportieren",
+    "import": "Importieren",
+    "new": "Neue Rechnung",
+    "generatePdf": "PDF erstellen",
+    "downloadPdf": "PDF herunterladen",
+    "print": "Drucken",
+    "help": "Hilfe",
+    "settings": "Einstellungen",
+    "theme": "Thema",
+    "undo": "Rückgängig",
+    "redo": "Wiederholen"
+  },
+  "invoice": {
+    "title": "Rechnung",
+    "number": "Rechnungsnummer",
+    "date": "Datum",
+    "dueDate": "Fälligkeitsdatum",
+    "deliveryDate": "Lieferdatum",
+    "seller": "Absender",
+    "buyer": "Rechnung an",
+    "description": "Beschreibung",
+    "quantity": "Menge",
+    "unit": "Einheit",
+    "unitPrice": "Einzelpreis",
+    "discount": "Rabatt",
+    "taxRate": "MwSt.-Satz",
+    "net": "Netto",
+    "tax": "MwSt.",
+    "gross": "Brutto",
+    "subtotal": "Zwischensumme",
+    "total": "Gesamt",
+    "totalNet": "Gesamtnetto",
+    "totalTax": "Gesamte MwSt.",
+    "totalGross": "Gesamtbetrag",
+    "taxBreakdown": "MwSt.-Aufschlüsselung",
+    "page": "Seite",
+    "of": "von",
+    "notes": "Anmerkungen",
+    "paymentTerms": "Zahlungsbedingungen",
+    "bankDetails": "Bankverbindung"
+  },
+  "fields": {
+    "companyName": "Firmenname",
+    "contactName": "Ansprechpartner",
+    "street": "Straße",
+    "city": "Stadt",
+    "postalCode": "Postleitzahl",
+    "country": "Land",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "website": "Webseite",
+    "taxNumber": "Steuernummer",
+    "vatId": "USt-IdNr.",
+    "logo": "Logo",
+    "uploadLogo": "Logo hochladen",
+    "logoPosition": "Logo-Position"
+  },
+  "actions": {
+    "addItem": "Position hinzufügen",
+    "removeItem": "Position entfernen",
+    "duplicateItem": "Position duplizieren",
+    "moveUp": "Nach oben",
+    "moveDown": "Nach unten",
+    "clear": "Löschen",
+    "duplicate": "Rechnung duplizieren",
+    "createCreditNote": "Gutschrift erstellen",
+    "exportJson": "JSON exportieren",
+    "exportCsv": "CSV exportieren",
+    "importJson": "JSON importieren"
+  },
+  "german": {
+    "kleinunternehmer": "Kleinunternehmer (§19 UStG)",
+    "kleinunternehmerNote": "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.",
+    "complianceHelp": "Compliance-Hilfe",
+    "legalDisclaimer": "Rechtlicher Hinweis",
+    "disclaimerText": "Dieses Tool hilft beim Erstellen rechtlich strukturierter Rechnungen, ersetzt jedoch keine Steuerberatung. Für vollständige Compliance konsultieren Sie bitte einen Steuerberater oder die offizielle Anleitung.",
+    "requiredFields": "Pflichtfelder (§14 UStG)",
+    "gobdNote": "E-Rechnungs-Archivierung und Prüfungssicherheit (GoBD)"
+  },
+  "validation": {
+    "required": "Dieses Feld ist erforderlich",
+    "invalidNumber": "Bitte geben Sie eine gültige Zahl ein",
+    "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "missingFields": "Fehlende Pflichtfelder für deutsche Rechnungen"
+  },
+  "messages": {
+    "saved": "Rechnung erfolgreich gespeichert",
+    "loaded": "Rechnung erfolgreich geladen",
+    "exported": "Rechnung erfolgreich exportiert",
+    "imported": "Rechnung erfolgreich importiert",
+    "confirmDelete": "Möchten Sie diese Position wirklich löschen?",
+    "confirmClear": "Möchten Sie wirklich alle Daten löschen?",
+    "noInvoiceToLoad": "Keine gespeicherte Rechnung gefunden"
+  },
+  "help": {
+    "title": "Hilfe & Compliance",
+    "germanLegal": "Deutsche rechtliche Anforderungen",
+    "germanLegalText": "Bei der Erstellung deutscher Rechnungen müssen alle nach §14 UStG erforderlichen Felder ausgefüllt werden. Dazu gehören vollständige Adressen von Verkäufer und Käufer, eindeutige Rechnungsnummer, Datum, Beschreibung der Waren/Dienstleistungen, Mengen, Steuersätze und Summen.",
+    "kleinunternehmerHelp": "Wenn Sie als Kleinunternehmer nach §19 UStG qualifiziert sind, aktivieren Sie diese Option, um die MwSt. wegzulassen und den erforderlichen Hinweis einzufügen.",
+    "archivingHelp": "Die GoBD erfordert eine ordnungsgemäße Archivierung elektronischer Rechnungen. Exportieren Sie sowohl PDF als auch JSON für vollständige Prüfungspfade.",
+    "references": "Offizielle Referenzen",
+    "ustg14": "§14 UStG - Rechnungsanforderungen",
+    "ustg19": "§19 UStG - Kleinunternehmerregelung",
+    "gobd": "BMF GoBD - E-Rechnung & Archivierung"
+  },
+  "templates": {
+    "minimal": "Minimal",
+    "modern": "Modern",
+    "klassisch": "Klassisch"
+  },
+  "position": {
+    "left": "Links",
+    "center": "Mitte",
+    "right": "Rechts"
+  }
+}
