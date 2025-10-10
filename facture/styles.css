@@ -1,8 +1,8 @@
 :root {
-  --color-primary: #3b82f6;
-  --color-primary-hover: #2563eb;
-  --color-primary-rgb: 59, 130, 246;
-  --color-secondary: #8b5cf6;
+  --color-primary: #4b5563;
+  --color-primary-hover: #374151;
+  --color-primary-rgb: 75, 85, 99;
+  --color-secondary: #6b7280;
   --color-success: #10b981;
   --color-success-hover: #059669;
   --color-danger: #ef4444;
@@ -663,14 +663,14 @@ body::before {
 }
 
 .invoice-title-main {
-  font-size: 32pt;
+  font-size: 24pt;
   font-weight: 700;
-  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #4b5563 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 8px;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
 }
 
 .invoice-number {
@@ -682,22 +682,22 @@ body::before {
 .invoice-parties {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  margin-bottom: 32px;
+  gap: 32px;
+  margin-bottom: 24px;
 }
 
 .party-block h3 {
-  font-size: 9pt;
-  font-weight: 700;
+  font-size: 8pt;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: #3b82f6;
-  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  color: #4b5563;
+  margin-bottom: 8px;
 }
 
 .party-info {
-  font-size: 10pt;
-  line-height: 1.6;
+  font-size: 8pt;
+  line-height: 1.5;
   color: #475569;
 }
 
@@ -1245,11 +1245,12 @@ body::before {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 20mm;
+    margin: 15mm;
   }
 
   body {
     background: white;
+    font-size: 9pt;
   }
 
   .app-header,
@@ -1280,13 +1281,14 @@ body::before {
 
   .invoice-preview {
     box-shadow: none;
-    padding: 15mm;
+    padding: 0;
     margin: 0;
     max-width: 100%;
     width: 100%;
     min-height: 0;
     border-radius: 0;
     transform: none !important;
+    font-size: 8pt;
   }
 
   .invoice-preview:hover {
@@ -1307,7 +1309,8 @@ body::before {
   }
 
   .party-block h3 {
-    color: #3b82f6 !important;
+    color: #1e293b !important;
+    font-size: 7pt !important;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
@@ -1358,6 +1361,15 @@ body::before {
 
   .invoice-parties {
     page-break-inside: avoid;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .party-info {
+    font-size: 7pt !important;
+    line-height: 1.4 !important;
   }
 
   .tax-breakdown,
@@ -1366,8 +1378,64 @@ body::before {
     page-break-inside: avoid;
   }
 
+  .invoice-title-main {
+    font-size: 18pt !important;
+  }
+
+  .invoice-number {
+    font-size: 8pt !important;
+  }
+
+  .invoice-table {
+    margin-bottom: 12px !important;
+    font-size: 7pt !important;
+  }
+
+  .invoice-table thead {
+    background: white !important;
+    border-bottom: 2px solid #1e293b !important;
+  }
+
+  .invoice-table th {
+    padding: 8px 10px !important;
+    font-size: 6pt !important;
+    color: #1e293b !important;
+  }
+
+  .invoice-table td {
+    padding: 8px 10px !important;
+    font-size: 7pt !important;
+  }
+
+  .meta-label {
+    font-size: 6pt !important;
+  }
+
+  .meta-value {
+    font-size: 7pt !important;
+  }
+
+  .invoice-meta {
+    gap: 16px !important;
+    padding: 12px !important;
+    margin-bottom: 12px !important;
+    background-color: white !important;
+    border: 1px solid #e5e7eb !important;
+  }
+
+  .totals-label,
+  .totals-value {
+    font-size: 8pt !important;
+  }
+
+  .totals-row.total .totals-label,
+  .totals-row.total .totals-value {
+    font-size: 9pt !important;
+    font-weight: 700 !important;
+  }
+
   .totals-row.total {
-    border-top-color: #3b82f6 !important;
+    border-top: 2px solid #1e293b !important;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
