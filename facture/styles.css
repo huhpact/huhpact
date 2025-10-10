@@ -1248,9 +1248,32 @@ body::before {
     margin: 15mm;
   }
 
+  @page {
+    margin-top: 15mm;
+    margin-bottom: 15mm;
+  }
+
+  html {
+    margin: 0 !important;
+  }
+
   body {
     background: white;
     font-size: 9pt;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .invoice-meta {
+    border-radius: 0 !important;
+  }
+
+  .invoice-table {
+    border-radius: 0 !important;
   }
 
   .app-header,
@@ -1343,7 +1366,8 @@ body::before {
 
   .invoice-table {
     page-break-inside: auto;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
   }
 
   .invoice-table tr {

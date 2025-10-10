@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>huh(pact) Factures</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +14,7 @@
     <div id="app">
       <header class="app-header">
         <div class="header-content">
-          <h1 class="app-title" data-i18n="app.title">huh(pact)</h1>
+          <h1 class="app-title" data-i18n="app.title">Invoice Editor</h1>
           <div class="header-actions">
             <select id="languageSelect" class="language-select" aria-label="Language">
               <option value="en">English</option>
@@ -275,6 +275,7 @@
 
     <input type="file" id="importFileInput" accept=".json" style="display: none;" />
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="/facture/js/i18n.js"></script>
     <script src="/facture/js/formatters.js"></script>
     <script src="/facture/js/state.js"></script>
