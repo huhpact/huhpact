@@ -627,6 +627,8 @@ body::before {
   padding-bottom: 20px;
   border-bottom: 3px solid #e2e8f0;
   position: relative;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .invoice-header::after {
@@ -684,6 +686,8 @@ body::before {
   grid-template-columns: 1fr 1fr;
   gap: 32px;
   margin-bottom: 24px;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .party-block h3 {
@@ -748,6 +752,7 @@ body::before {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  page-break-inside: auto;
 }
 
 .invoice-table thead {
@@ -808,6 +813,8 @@ body::before {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 40px;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .totals-table {

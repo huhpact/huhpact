@@ -166,26 +166,50 @@ class InvoiceApp {
     const element = document.getElementById('invoicePreview');
     const invoiceNumber = this.state.data.invoice.number;
 
+    const clonedElement = element.cloneNode(true);
+    clonedElement.style.width = '170mm';
+    clonedElement.style.padding = '10mm';
+    clonedElement.style.backgroundColor = 'white';
+    clonedElement.style.color = '#000';
+    clonedElement.style.fontSize = '9pt';
+    clonedElement.style.boxSizing = 'border-box';
+    clonedElement.style.position = 'absolute';
+    clonedElement.style.left = '-9999px';
+    clonedElement.style.top = '0';
+
+    document.body.appendChild(clonedElement);
+
     const opt = {
-      margin: 15,
+      margin: [15, 15, 15, 15],
       filename: `invoice_${invoiceNumber}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
+      image: { type: 'jpeg', quality: 0.95 },
       html2canvas: {
-        scale: 2,
+        scale: 3,
         useCORS: true,
-        letterRendering: true
+        letterRendering: true,
+        logging: false,
+        backgroundColor: '#ffffff'
       },
       jsPDF: {
         unit: 'mm',
         format: 'a4',
-        orientation: 'portrait'
+        orientation: 'portrait',
+        compress: true
+      },
+      pagebreak: {
+        mode: ['avoid-all', 'css', 'legacy'],
+        avoid: ['.invoice-parties', '.invoice-header', '.invoice-table', '.invoice-totals', '.tax-breakdown', '.party-block']
       }
     };
 
     try {
-      await html2pdf().set(opt).from(element).save();
+      await html2pdf().set(opt).from(clonedElement).save();
+      document.body.removeChild(clonedElement);
     } catch (error) {
       console.error('PDF generation failed:', error);
+      if (document.body.contains(clonedElement)) {
+        document.body.removeChild(clonedElement);
+      }
       alert('Failed to generate PDF. Please try using the Print button instead.');
     }
   }
