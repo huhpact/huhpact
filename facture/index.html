@@ -9,8 +9,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/facture/styles.css">
+    <link rel="stylesheet" href="/facture/pw.css">
   </head>
   <body>
+<div class="site-wrap" id="siteWrap"></div>
+  <div class="pw-overlay" id="pwOverlay">
+<div class="pw-card" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
+<h2 id="pwTitle">🛡️ Accès sécurisé</h2>
+<p>Veuillez entrer le mot de passe pour continuer</p>
+<input id="pwInput" class="pw-input" type="password" placeholder="Mot de passe" autocomplete="off">
+<div class="pw-row">
+<button class="btn btn-primary" id="pwSubmit">Entrer</button>
+</div>
+<div class="hint">
+<label><input type="checkbox" id="rememberCb"> Mémoriser l'accès</label>
+</div>
+<div id="message" aria-live="polite"></div>
+</div>
+</div>
     <div id="app">
       <header class="app-header">
         <div class="header-content">
@@ -282,5 +298,82 @@
     <script src="/facture/js/storage.js"></script>
     <script src="/facture/js/ui.js"></script>
     <script src="/facture/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+const FIXED_PASSWORD = 'Paul0911';
+const KEY_UNLOCK = 'site_unlocked';
+
+
+const overlay = document.getElementById('pwOverlay');
+const siteWrap = document.getElementById('siteWrap');
+const pwInput = document.getElementById('pwInput');
+const submitBtn = document.getElementById('pwSubmit');
+const message = document.getElementById('message');
+const rememberCb = document.getElementById('rememberCb');
+
+
+if (!overlay || !siteWrap || !pwInput || !submitBtn || !message) {
+console.error('Erreur: un ou plusieurs éléments du DOM sont introuvables');
+return;
+}
+
+
+function showOverlay() {
+overlay.style.display = 'flex';
+siteWrap.classList.add('blurred');
+pwInput.focus();
+}
+
+
+function hideOverlay() {
+overlay.classList.add('fade-out');
+siteWrap.classList.remove('blurred');
+setTimeout(function() {
+overlay.style.display = 'none';
+overlay.classList.remove('fade-out');
+}, 500);
+}
+
+
+function showMessage(text, color = '#ff5555') {
+message.textContent = text;
+message.style.color = color;
+}
+
+
+if (localStorage.getItem(KEY_UNLOCK) === '1') {
+hideOverlay();
+} else {
+showOverlay();
+}
+
+
+submitBtn.addEventListener('click', function() {
+const val = pwInput.value.trim();
+if (!val) {
+showMessage('⚠️ Veuillez entrer un mot de passe.');
+return;
+}
+if (val === FIXED_PASSWORD) {
+showMessage('✅ Accès autorisé', '#58a6ff');
+if (rememberCb.checked) localStorage.setItem(KEY_UNLOCK, '1');
+setTimeout(function() {
+hideOverlay();
+pwInput.value = '';
+}, 300);
+} else {
+showMessage('❌ Mot de passe incorrect.');
+pwInput.value = '';
+pwInput.focus();
+}
+});
+
+
+pwInput.addEventListener('keydown', function(e) {
+if (e.key === 'Enter') submitBtn.click();
+});
+});
+</script>
+
   </body>
 </html>
