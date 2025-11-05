@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chess Trainer</title>
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="/chess/style.css">
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <h1>Chess Trainer</h1>
+
+        <div class="main-content">
+          <div class="board-section">
+            <div id="board" class="chess-board"></div>
+
+            <div class="controls">
+              <button id="flipBtn" class="btn">Flip Board</button>
+              <button id="resetBtn" class="btn">Reset Board</button>
+              <button id="clearBtn" class="btn">Clear Board</button>
+            </div>
+
+            <div class="turn-selector">
+              <label>Side to Move:</label>
+              <button id="whiteBtn" class="btn turn-btn active">White</button>
+              <button id="blackBtn" class="btn turn-btn">Black</button>
+            </div>
+          </div>
+
+          <div class="analysis-section">
+            <div class="spare-pieces">
+              <h3>Add Pieces (Drag to Board)</h3>
+              <div id="sparePiecesWhite" class="spare-container"></div>
+              <div id="sparePiecesBlack" class="spare-container"></div>
+            </div>
+
+            <div class="engine-controls">
+              <h3>Stockfish Analysis</h3>
+              <div class="elo-selector">
+                <label>Stockfish ELO:</label>
+                <select id="eloSelect" class="select">
+                  <option value="300">300</option>
+                  <option value="500">500</option>
+                  <option value="700">700</option>
+                  <option value="900">900</option>
+                  <option value="1200">1200</option>
+                  <option value="1500" selected>1500</option>
+                </select>
+              </div>
+              <button id="analyzeBtn" class="btn btn-primary">Calculate Position</button>
+              <div id="engineStatus" class="status">Ready</div>
+            </div>
+
+            <div class="moves-list">
+              <h3>Best Moves (9 = Best, 1 = Worst)</h3>
+              <div id="movesList" class="moves-container">
+                <p class="placeholder">Click "Calculate Position" to analyze</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+    <script src="/chess/main.js"></script>
+  </body>
+</html>
