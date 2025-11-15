@@ -11,17 +11,7 @@ const wishlistItems = [
         priorite: "Moyenne",
         disponibilite: "Disponible"
     },
-    {
-        id: 2,
-        titre: "Ferragamo Porte-cartes Monogram",
-        prix: 195,
-        lien: "https://www.ferragamo.com/shop/eu/de/men/man-wallets-small-leather-goods/card-case-key-holders/monogram-780321--24",
-        image: "/souhaits/assets/ferragamo.webp",
-        description: "Porte-cartes en cuir de veau avec le motif Monogram emblématique de Ferragamo.",
-        categorie: "Mode",
-        priorite: "Haute",
-        disponibilite: "Disponible"
-    },
+    
     {
         id: 3,
         titre: "Coque couleur Argent pour iPhone 17 Pro Max",
@@ -54,17 +44,6 @@ const wishlistItems = [
         categorie: "Sport & Loisirs",
         priorite: "Haute",
         disponibilite: "Disponible"
-    },
-    {
-        id: 6,
-        titre: "Tricot torsad - 1/4 zip Polo Ralph Lauren",
-        prix: 200,
-        lien: "https://www.amazon.de/Polo-Ralph-Lauren-Zopfmuster-4-Rei%C3%9Fverschluss/dp/B01MUGD92J",
-        image: "/souhaits/assets/rl-zip.jpg",
-        description: "Pull en laine avec col zippé, parfait pour un style décontracté et élégant.",
-        categorie: "Mode",
-        priorite: "Moyenne",
-        disponibilite: "Rupture de stock"
     }
 ];
 
