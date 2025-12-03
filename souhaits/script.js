@@ -44,6 +44,61 @@ const wishlistItems = [
         categorie: "Sport & Loisirs",
         priorite: "Haute",
         disponibilite: "Disponible"
+    },
+    {
+        id: 6,
+        titre: "Datejust 36 Oyster",
+        prix: 9450,
+        lien: "https://www.rolex.com/fr/watches/datejust/m126234-0017",
+        image: "/souhaits/assets/datejust.avif",
+        description: "Montre Rolex Datejust 36 avec boîtier Oyster en acier inoxydable et or blanc, cadran blanc.",
+        categorie: "Montres & Bijoux",
+        priorite: "Moyenne",
+        disponibilite: "Disponible"
+    },
+     {
+        id: 7,
+        titre: "Ralph Lauren Bear Sweater",
+        prix: 225,
+        lien: "https://www.ralphlauren.de/en/polo-bear-fleece-sweatshirt-100055525.html?cgid=men-clothing-hoodies-sweatshirts#start=1&cgid=men-clothing-hoodies-sweatshirts",
+        image: "/souhaits/assets/rlbear.webp",
+        description: "Pull en molleton avec le célèbre Polo Bear brodé, style décontracté Ralph Lauren.",
+        categorie: "Mode",
+        priorite: "Moyenne",
+        disponibilite: "Disponible"
+    },
+     {
+        id: 8,
+        titre: "Peso Fingerprint Zip",
+        prix: 94.90,
+        lien: "https://pesoclo.com/products/fingerprint-zip?variant=9398789472520",
+        image: "/souhaits/assets/peso.webp",
+        description: "Zip Hoodie de Peso avec fermeture éclair et design unique.",
+        categorie: "Mode",
+        priorite: "Moyenne",
+        disponibilite: "Rupture de stock"
+    },
+     {
+        id: 9,
+        titre: "Jordan 4 Retro",
+        prix: 220,
+        lien: "https://stockx.com/de-de/air-jordan-4-retro-white-cement-2025",
+        image: "/souhaits/assets/j4.avif",
+        description: "Sneakers Air Jordan 4 Retro White Cement, édition 2025, style classique et confortable.",
+        categorie: "Mode",
+        priorite: "Moyenne",
+        disponibilite: "Disponible"
+    },
+      {
+        id: 9,
+        titre: "Apple Vision Pro",
+        prix: 3699,
+        lien: "https://www.apple.com/de/shop/buy-vision/apple-vision-pro",
+        image: "/souhaits/assets/avp.jpg",
+        description: "Apple Vision Pro, un appareil de réalité mixte révolutionnaire offrant des expériences immersives.",
+        categorie: "Électronique",
+        priorite: "Moyenne",
+        disponibilite: "Disponible"
     }
 ];
 
