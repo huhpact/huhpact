@@ -90,7 +90,7 @@ const wishlistItems = [
         disponibilite: "Disponible"
     },
       {
-        id: 9,
+        id: 10,
         titre: "Apple Vision Pro",
         prix: 3699,
         lien: "https://www.apple.com/de/shop/buy-vision/apple-vision-pro",
