@@ -1,6 +1,6 @@
 ### Copyright Notice
 
-© 2025 huh(pact). All rights reserved.
+© 2026 huh(pact). All rights reserved.
 
 This website and all its contents, including but not limited to text, graphics, images, logos, and software (the “Content”), are the exclusive property of huh(pact). Unauthorized copying, reproduction, distribution, modification, display, performance, or transmission of any Content on this site is strictly prohibited.
 
