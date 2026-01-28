@@ -2,27 +2,16 @@
 const wishlistItems = [
     {
         id: 1,
-        titre: "Tom Ford Tobacco Vanille",
-        prix: 273,
-        lien: "https://www.douglas.de/de/p/3000073072?variant=997498",
+        titre: "Tom Ford Oud Wood",
+        prix: 355,
+        lien: "https://www.douglas.de/de/p/3000073069?variant=780161",
         image: "/souhaits/assets/tf.avif",
-        description: "Un parfum luxueux et chaleureux avec des notes de tabac, vanille et épices.",
+        description: "Parfum Tom Ford Oud Wood, une fragrance boisée et exotique avec des notes d'oud, de vanille et d'épices rares.",
         categorie: "Beauté & Soins",
         priorite: "Moyenne",
         disponibilite: "Disponible"
     },
     
-    {
-        id: 3,
-        titre: "Coque couleur Argent pour iPhone 17 Pro Max",
-        prix: 165,
-        lien: "https://www.rimowa.com/de/de/accessories/lifestyle/iphone-cases/huelle-silber-fuer-iphone-17-pro-max/95190005.html#start=1",
-        image: "/souhaits/assets/rimowa.avif",
-        description: "Coque de protection élégante en aluminium pour iPhone 17 Pro Max, couleur Argent.",
-        categorie: "Électronique",
-        priorite: "Haute",
-        disponibilite: "Rupture de stock"
-    },
     {
         id: 4,
         titre: "USA Sweater Ralph Lauren",
@@ -35,17 +24,6 @@ const wishlistItems = [
         disponibilite: "Disponible"
     },
     {
-        id: 5,
-        titre: "D'argent",
-        prix: 5000,
-        lien: "https://www.berliner-sparkasse.de/de/home.html",
-        image: "/souhaits/assets/cash.jpg",
-        description: "Un montant en espèces pour diverses utilisations personnelles ou investissements.",
-        categorie: "Sport & Loisirs",
-        priorite: "Haute",
-        disponibilite: "Disponible"
-    },
-    {
         id: 6,
         titre: "Datejust 36 Oyster",
         prix: 9450,
@@ -53,17 +31,6 @@ const wishlistItems = [
         image: "/souhaits/assets/datejust.avif",
         description: "Montre Rolex Datejust 36 avec boîtier Oyster en acier inoxydable et or blanc, cadran blanc.",
         categorie: "Montres & Bijoux",
-        priorite: "Moyenne",
-        disponibilite: "Disponible"
-    },
-     {
-        id: 7,
-        titre: "Ralph Lauren Bear Sweater",
-        prix: 225,
-        lien: "https://www.ralphlauren.de/en/polo-bear-fleece-sweatshirt-100055525.html?cgid=men-clothing-hoodies-sweatshirts#start=1&cgid=men-clothing-hoodies-sweatshirts",
-        image: "/souhaits/assets/rlbear.webp",
-        description: "Pull en molleton avec le célèbre Polo Bear brodé, style décontracté Ralph Lauren.",
-        categorie: "Mode",
         priorite: "Moyenne",
         disponibilite: "Disponible"
     },
@@ -98,6 +65,17 @@ const wishlistItems = [
         description: "Apple Vision Pro, un appareil de réalité mixte révolutionnaire offrant des expériences immersives.",
         categorie: "Électronique",
         priorite: "Moyenne",
+        disponibilite: "Disponible"
+    },
+      {
+        id: 11,
+        titre: "Gepolsterte Strickjacke mit Reißverschluss",
+        prix: 800,
+        lien: "https://www.moncler.com/de-de/herren/ready-to-wear/pullover-und-cardigans/gepolsterte-strickjacke-mit-reissverschluss-navyblau-K20919B50700A9341777.html",
+        image: "/souhaits/assets/mc.avif",
+        description: "Cardigan matelassé avec fermeture éclair de Moncler, alliant confort et style haut de gamme.",
+        categorie: "Mode",
+        priorite: "Haute",
         disponibilite: "Disponible"
     }
 ];
