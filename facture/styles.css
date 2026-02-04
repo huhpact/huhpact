@@ -638,7 +638,7 @@ body::before {
   left: 0;
   width: 80px;
   height: 3px;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(90deg, #bdbdbd, #070707);
   border-radius: 3px;
 }
 
@@ -840,7 +840,7 @@ body::before {
 }
 
 .totals-row.total {
-  border-top: 2px solid #3b82f6;
+  border-top: 2px solid #142136;
   padding-top: 16px;
   margin-top: 12px;
   font-size: 14pt;
@@ -893,7 +893,7 @@ body::before {
   padding: 16px;
   background-color: #f8fafc;
   border-radius: 8px;
-  border-left: 3px solid #3b82f6;
+  border-left: 3px solid #0b1524;
 }
 
 .invoice-notes h4,
@@ -914,12 +914,12 @@ body::before {
 
 .kleinunternehmer-note {
   padding: 16px;
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-left: 4px solid #f59e0b;
+  background: linear-gradient(135deg, #bfbfbf 0%, #d2d2d2 100%);
+  border-left: 4px solid #696969;
   border-radius: 8px;
   margin-bottom: 32px;
   font-size: 9pt;
-  color: #92400e;
+  color: #000000;
   line-height: 1.6;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
