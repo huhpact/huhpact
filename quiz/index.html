@@ -5,26 +5,27 @@
     <title>FlagQuiz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
 </head>
 <body>
 
 <div class="container">
 
     <header class="main-header">
-        <h1 class="neon-text">FlagQuiz</h1>
-        <p class="subtitle">Wie gut kennst du die Flaggen der Welt?</p>
+        <h1 class="neon-text">Quizzes</h1>
+        <p class="subtitle">How well are you informed?</p>
     </header>
 
     <main class="quiz-grid">
 
-        <a href="quiz-setup.html" style="text-decoration: none; color: inherit;">
+        
 
-            <div class="quiz-card">
+            <div class="quiz-card" onclick="location.href='/quiz/quiz-setup.html'">
 
                 <div style="display:flex; justify-content:center; margin-bottom:2rem;">
                     <img
                         src="/quiz/flags/Flag_of_the_United_Nations.png"
-                        alt="Flaggen"
+                        alt="Flags"
                         style="
                             max-width: 220px;
                             border-radius: 12px;
@@ -34,14 +35,69 @@
                     >
                 </div>
 
-                <h2>Start Quiz</h2>
+                <h2>Flag Quiz</h2>
 
                 <p>
-                    Errate Länder anhand ihrer Flaggen.<br>
+                    Guess countries by their flags.<br>
                 </p>
 
                 <div class="card-footer">
-                    <span class="badge">Jetzt starten</span>
+                    <span class="badge">Start now</span>
+                    <span class="arrow">→</span>
+                </div>
+
+            </div>
+             <div class="quiz-card" onclick="location.href='/quiz/quiz-tld-setup.html'">
+
+                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
+                    <img
+                        src="/quiz/country-tld.webp"
+                        alt="Country TLD"
+                        style="
+                            max-width: 220px;
+                            border-radius: 12px;
+                            border: 2px solid var(--neon-blue);
+                            box-shadow: 0 0 25px var(--neon-blue-glow);
+                        "
+                    >
+                </div>
+
+                <h2>Country Domain Quiz</h2>
+
+                <p>
+                    Guess countries by their Domain.<br>
+                </p>
+
+                <div class="card-footer">
+                    <span class="badge">Start now</span>
+                    <span class="arrow">→</span>
+                </div>
+
+            </div>
+
+             <div class="quiz-card" onclick="location.href='/quiz/plates/quiz-plates-setup.html'">
+
+                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
+                    <img
+                        src="/quiz/License-plates.webp"
+                        alt="Country TLD"
+                        style="
+                            max-width: 220px;
+                            border-radius: 12px;
+                            border: 2px solid var(--neon-blue);
+                            box-shadow: 0 0 25px var(--neon-blue-glow);
+                        "
+                    >
+                </div>
+
+                <h2>License Plate Quiz</h2>
+
+                <p>
+                    Guess countries by their License Plates.<br>
+                </p>
+
+                <div class="card-footer">
+                    <span class="badge">Start now</span>
                     <span class="arrow">→</span>
                 </div>
 
@@ -52,7 +108,7 @@
     </main>
 
     <footer class="main-footer">
-        <p>© 2026 FlagQuiz</p>
+        <p>&copy; 2026 HUH(PACT)</p>
     </footer>
 
 </div>
