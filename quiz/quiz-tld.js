@@ -8,7 +8,6 @@ let isAnswered = false;
 document.addEventListener('DOMContentLoaded', () => {
     totalQuestions = parseInt(sessionStorage.getItem('tldQuizQuestions')) || 10;
     selectedRegion = sessionStorage.getItem('tldQuizRegion') || 'all';
-
     initializeQuiz();
 });
 
@@ -19,7 +18,7 @@ function initializeQuiz() {
         availableCountries = countriesTLD.filter(c => c.region === selectedRegion);
     }
 
-    if (availableCountries.length < 4) {
+    if (availableCountries.length < 2) {
         alert('Not enough countries in this region. Redirecting to setup.');
         window.location.href = 'quiz-tld-setup.html';
         return;
@@ -32,9 +31,9 @@ function initializeQuiz() {
 
     loadQuestion();
 
-    const answerBtns = document.querySelectorAll('.answer-btn');
-    answerBtns.forEach(btn => {
-        btn.addEventListener('click', () => handleAnswer(btn));
+    document.getElementById('answer-submit').addEventListener('click', submitAnswer);
+    document.getElementById('answer-input').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submitAnswer();
     });
 }
 
@@ -50,67 +49,87 @@ function loadQuestion() {
     document.getElementById('tld-display').textContent = currentQuestion.tld;
     document.getElementById('current-question').textContent = currentQuestionIndex + 1;
 
-    const wrongAnswers = getRandomWrongAnswers(currentQuestion);
-    const allAnswers = [currentQuestion, ...wrongAnswers].sort(() => Math.random() - 0.5);
+    const input = document.getElementById('answer-input');
+    const feedback = document.getElementById('answer-feedback');
+    const submitBtn = document.getElementById('answer-submit');
 
-    const answerBtns = document.querySelectorAll('.answer-btn');
-    answerBtns.forEach((btn, index) => {
-        btn.querySelector('.answer-text').textContent = allAnswers[index].name;
-        btn.dataset.correct = allAnswers[index].name === currentQuestion.name;
-        btn.classList.remove('correct', 'incorrect', 'disabled');
-        btn.disabled = false;
-    });
+    input.value = '';
+    input.disabled = false;
+    input.classList.remove('input-correct', 'input-incorrect');
+    feedback.textContent = '';
+    feedback.className = 'answer-feedback';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit';
+
+    setTimeout(() => input.focus(), 80);
 }
 
-function getRandomWrongAnswers(correctCountry) {
-    let availableCountries = countriesTLD.filter(c => c.name !== correctCountry.name);
+/* Build the full list of accepted answers for a country (case-insensitive) */
+function getAcceptedAnswers(country) {
+    const norm = s => s.trim().toLowerCase();
+    const accepted = [
+        norm(country.name),
+        norm(country.de || ''),
+        ...(country.aliases || []).map(norm),
+    ].filter(Boolean);
+    // Deduplicate
+    return [...new Set(accepted)];
+}
 
-    if (selectedRegion !== 'all') {
-        const sameRegion = availableCountries.filter(c => c.region === selectedRegion);
-        if (sameRegion.length >= 3) {
-            availableCountries = sameRegion;
-        }
+function isCorrectAnswer(typed, country) {
+    if (!typed.trim()) return false;
+    const t = typed.trim().toLowerCase();
+    return getAcceptedAnswers(country).includes(t);
+}
+
+function submitAnswer() {
+    if (isAnswered) {
+        currentQuestionIndex++;
+        loadQuestion();
+        return;
     }
 
-    const shuffled = availableCountries.sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 3);
-}
+    const input = document.getElementById('answer-input');
+    const typed = input.value;
 
-function handleAnswer(selectedBtn) {
-    if (isAnswered) return;
+    if (!typed.trim()) return;
 
     isAnswered = true;
-    const isCorrect = selectedBtn.dataset.correct === 'true';
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+    const correct = isCorrectAnswer(typed, currentQuestion);
 
-    const answerBtns = document.querySelectorAll('.answer-btn');
-    answerBtns.forEach(btn => {
-        btn.disabled = true;
-        if (btn.dataset.correct === 'true') {
-            btn.classList.add('correct');
-        } else if (btn === selectedBtn && !isCorrect) {
-            btn.classList.add('incorrect');
-        }
-        btn.classList.add('disabled');
-    });
+    const feedback = document.getElementById('answer-feedback');
+    const submitBtn = document.getElementById('answer-submit');
 
-    if (isCorrect) {
+    input.disabled = true;
+    submitBtn.textContent = 'Next →';
+
+    if (correct) {
         score++;
         document.getElementById('score').textContent = score;
+        input.classList.add('input-correct');
+        feedback.textContent = '✓ Correct!';
+        feedback.classList.add('feedback-correct');
+    } else {
+        input.classList.add('input-incorrect');
+        const deNote = currentQuestion.de && currentQuestion.de !== currentQuestion.name
+            ? ` (${currentQuestion.de})`
+            : '';
+        feedback.textContent = `✗  ${currentQuestion.name}${deNote}`;
+        feedback.classList.add('feedback-incorrect');
     }
 
     setTimeout(() => {
         currentQuestionIndex++;
         loadQuestion();
-    }, 1500);
+    }, 1800);
 }
 
 function showResults() {
     const percentage = Math.round((score / quizQuestions.length) * 100);
-
     document.getElementById('final-score').textContent = score;
     document.getElementById('final-total').textContent = quizQuestions.length;
     document.getElementById('final-percentage').textContent = percentage + '%';
-
     document.getElementById('results-modal').classList.remove('hidden');
 }
 

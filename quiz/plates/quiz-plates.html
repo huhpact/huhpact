@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>License Plate Quiz</title>
     <link rel="stylesheet" href="/quiz/style.css">
-		 <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <style>
         .plate-stage {
             background: var(--bg-card);
@@ -24,7 +24,7 @@
             overflow: hidden;
         }
 
-        /* Subtle asphalt texture */
+        /* Subtle background texture */
         .plate-stage::before {
             content: '';
             position: absolute;
@@ -44,26 +44,105 @@
             position: relative;
         }
 
-        /* SVG plate wrapper: scale down on small screens */
+        /* ── Image plate container ── */
         #plate-render {
             position: relative;
-            max-width: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .plate-images-grid {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 16px;
+            width: 100%;
         }
 
-        #plate-render svg.plate-svg,
-        #plate-render div svg {
-            max-width: 100%;
-            height: auto;
+        /* When there are multiple variants, show them in a row if space permits */
+        .plate-images-multi {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .plate-image-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
             animation: plateIn 0.42s cubic-bezier(0.34, 1.4, 0.64, 1) both;
         }
+
+        /* Stagger animation for multiple plates */
+        .plate-images-multi .plate-image-wrapper:nth-child(2) { animation-delay: 0.07s; }
+        .plate-images-multi .plate-image-wrapper:nth-child(3) { animation-delay: 0.14s; }
+        .plate-images-multi .plate-image-wrapper:nth-child(4) { animation-delay: 0.21s; }
 
         @keyframes plateIn {
             from { opacity: 0; transform: perspective(600px) rotateX(18deg) scale(0.82); }
             to   { opacity: 1; transform: perspective(600px) rotateX(0deg) scale(1); }
+        }
+
+        .plate-image {
+            max-width: 320px;
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            filter: drop-shadow(0 5px 18px rgba(0,0,0,0.32));
+            display: block;
+            /* Ensure pixel-perfect rendering */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        /* For multi-variant, shrink each plate a bit */
+        .plate-images-multi .plate-image {
+            max-width: 240px;
+        }
+
+        /* For 3–4 variants, shrink further */
+        .plate-images-multi:has(.plate-image-wrapper:nth-child(3)) .plate-image {
+            max-width: 200px;
+        }
+
+        .plate-variant-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 8px;
+        }
+
+        .plate-error-msg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            min-width: 200px;
+            min-height: 60px;
+        }
+
+        /* Responsive: on very small screens, force single column */
+        @media (max-width: 500px) {
+            .plate-images-multi {
+                flex-direction: column;
+                align-items: center;
+            }
+            .plate-images-multi .plate-image {
+                max-width: 280px;
+            }
         }
 
         .answer-btn { text-align: center; }

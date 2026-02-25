@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domain Quiz - In Progress</title>
+    <title>Domain Quiz</title>
     <link rel="stylesheet" href="style.css">
-		 <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <style>
         .tld-display {
             display: flex;
@@ -39,6 +39,111 @@
             letter-spacing: 2px;
             text-transform: uppercase;
         }
+
+        /* ── Answer input area ── */
+        .answer-input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .answer-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        #answer-input {
+            flex: 1;
+            padding: 0.85rem 1.2rem;
+            font-size: 1.15rem;
+            font-family: inherit;
+            border-radius: 10px;
+            border: 2px solid var(--border, #333);
+            background: #ffffff;
+            color: #000000;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        #answer-input::placeholder {
+            color: #999;
+        }
+
+        #answer-input:focus {
+            border-color: var(--neon-blue, #00d9ff);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.15);
+        }
+
+        #answer-input.input-correct {
+            border-color: #22c55e;
+            background: #f0fdf4;
+            color: #000000;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+        }
+
+        #answer-input.input-incorrect {
+            border-color: #ef4444;
+            background: #fff5f5;
+            color: #000000;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+        }
+
+        #answer-input:disabled {
+            opacity: 0.85;
+            cursor: not-allowed;
+        }
+
+        #answer-submit {
+            padding: 0.85rem 1.4rem;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            border-radius: 10px;
+            border: 2px solid var(--neon-blue, #00d9ff);
+            background: transparent;
+            color: var(--neon-blue, #00d9ff);
+            cursor: pointer;
+            letter-spacing: 0.05em;
+            transition: background 0.18s, color 0.18s, opacity 0.18s;
+            white-space: nowrap;
+        }
+
+        #answer-submit:hover:not(:disabled) {
+            background: var(--neon-blue, #00d9ff);
+            color: #000;
+        }
+
+        #answer-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .answer-feedback {
+            min-height: 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.03em;
+            transition: opacity 0.2s;
+        }
+
+        .feedback-correct {
+            color: #22c55e;
+        }
+
+        .feedback-incorrect {
+            color: #ef4444;
+        }
+
+        .answer-hint {
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--text-muted, #666);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -60,19 +165,21 @@
                 <span class="tld-text" id="tld-display">.de</span>
             </div>
 
-            <div class="answers-container">
-                <button class="answer-btn" data-answer="0">
-                    <span class="answer-text">Country Name 1</span>
-                </button>
-                <button class="answer-btn" data-answer="1">
-                    <span class="answer-text">Country Name 2</span>
-                </button>
-                <button class="answer-btn" data-answer="2">
-                    <span class="answer-text">Country Name 3</span>
-                </button>
-                <button class="answer-btn" data-answer="3">
-                    <span class="answer-text">Country Name 4</span>
-                </button>
+            <div class="answer-input-area">
+                <div class="answer-input-row">
+                    <input
+                        type="text"
+                        id="answer-input"
+                        placeholder="Type a country name or abbreviation…"
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                    />
+                    <button id="answer-submit">Submit</button>
+                </div>
+                <div class="answer-feedback" id="answer-feedback"></div>
+                <p class="answer-hint">English, German or abbreviation (USA, UAE, UK…) · case doesn't matter · Enter to submit</p>
             </div>
         </main>
     </div>
