@@ -1,0 +1,15 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 74 48" style="enable-background:new 0 0 74 48;" xml:space="preserve">
+ <style type="text/css">
+  .st0{fill-rule:evenodd;clip-rule:evenodd;fill:#C8102E;}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#041E42;}
+ </style>
+ <g>
+  <path class="st0" d="M37,36.1h37V11.9H37V36.1z">
+  </path>
+  <path class="st1" d="M0,36.1h37V12H0L0,36.1z">
+  </path>
+  <path class="st2" d="M0,12h74V0H0V12z M0,48h74V36H0V48z">
+  </path>
+ </g>
+</svg>

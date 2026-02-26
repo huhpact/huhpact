@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Outline Quiz</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <style>
+        .outline-stage {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem 2rem;
+            margin-bottom: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 260px;
+            box-shadow: var(--shadow-md);
+            gap: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .outline-stage::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(232,100,58,0.03) 0%, transparent 60%),
+                radial-gradient(circle at 80% 50%, rgba(0,51,153,0.03) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .outline-mode-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            position: relative;
+        }
+
+        #outline-render {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 180px;
+        }
+
+        .outline-image-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: outlineIn 0.42s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+        }
+
+        @keyframes outlineIn {
+            from { opacity: 0; transform: scale(0.8) rotate(-4deg); }
+            to   { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        .outline-image {
+            max-width: 280px;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 18px rgba(0,0,0,0.32));
+            display: block;
+        }
+
+        .outline-error-msg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            min-width: 200px;
+            min-height: 60px;
+        }
+
+        .answer-btn { text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-top-bar">
+            <div class="score-display">
+                <span class="score-label">Score:</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="progress-display">
+                <span id="current-question">1</span> / <span id="total-questions">10</span>
+            </div>
+        </div>
+
+        <main class="quiz-container">
+            <div class="outline-stage">
+                <p class="outline-mode-label">Which country has this outline?</p>
+                <div id="outline-render"></div>
+            </div>
+
+            <div class="answers-container">
+                <button class="answer-btn" data-answer="0"><span class="answer-text"></span></button>
+                <button class="answer-btn" data-answer="1"><span class="answer-text"></span></button>
+                <button class="answer-btn" data-answer="2"><span class="answer-text"></span></button>
+                <button class="answer-btn" data-answer="3"><span class="answer-text"></span></button>
+            </div>
+        </main>
+    </div>
+
+    <div id="results-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="neon-text">Quiz Complete!</h2>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="final-score">0</span>
+                    <span class="stat-label">Correct</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-total">10</span>
+                    <span class="stat-label">Total</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-percentage">0%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="restartQuiz()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Try Again
+                </button>
+                <button class="modal-btn secondary" onclick="window.location.href='index.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="countries-outlines.js"></script>
+    <script src="quiz-outlines.js"></script>
+</body>
+</html>

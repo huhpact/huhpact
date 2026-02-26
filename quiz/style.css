@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
 
 * {
@@ -460,13 +461,13 @@ body::before {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 280px;
+    min-height: clamp(240px, 35vw, 380px);
     box-shadow: var(--shadow-md);
 }
 
 .flag-image {
-    max-width: 100%;
-    max-height: 220px;
+    max-width: 92%;
+    max-height: clamp(180px, 26vw, 300px);
     width: auto;
     height: auto;
     border-radius: var(--radius-sm);
@@ -722,8 +723,8 @@ body::before {
         padding: 1rem;
     }
 
-    .flag-container { padding: 2rem; min-height: 200px; }
-    .flag-image { max-height: 160px; }
+    .flag-container { padding: 2rem; min-height: clamp(180px, 40vw, 260px); }
+    .flag-image { max-height: clamp(140px, 30vw, 200px); }
 
     .answers-container {
         grid-template-columns: 1fr;
@@ -741,8 +742,79 @@ body::before {
     .options-grid { gap: 0.5rem; }
     .option-btn { padding: 0.75rem; font-size: 1rem; }
     .region-grid { grid-template-columns: 1fr; }
-    .flag-container { min-height: 160px; padding: 1.5rem; }
-    .flag-image { max-height: 130px; }
+    .flag-container { min-height: clamp(140px, 42vw, 200px); padding: 1.5rem; }
+    .flag-image { max-height: clamp(110px, 32vw, 150px); }
     .stat-value { font-size: 1.8rem; }
     .tld-text { letter-spacing: -1px; }
+}
+/* ─── Plates Quiz ─── */
+.plate-stage {
+    min-height: clamp(220px, 32vw, 360px) !important;
+}
+
+.plate-image {
+    max-width: clamp(260px, 46vw, 480px) !important;
+}
+
+.plate-images-multi .plate-image {
+    max-width: clamp(180px, 30vw, 300px) !important;
+}
+
+.plate-images-multi:has(.plate-image-wrapper:nth-child(3)) .plate-image {
+    max-width: clamp(150px, 24vw, 240px) !important;
+}
+
+/* ─── Outlines Quiz ─── */
+.outline-stage {
+    min-height: clamp(220px, 32vw, 360px) !important;
+}
+
+.outline-image {
+    max-width: clamp(220px, 38vw, 400px) !important;
+    max-height: clamp(180px, 28vw, 320px) !important;
+}
+
+/* ─── Brands Quiz ─── */
+.brand-stage {
+    min-height: clamp(220px, 32vw, 360px) !important;
+}
+
+.brand-image {
+    max-width: clamp(180px, 32vw, 340px) !important;
+    max-height: clamp(140px, 22vw, 260px) !important;
+}
+
+/* ─── Responsive overrides for image quizzes ─── */
+@media (max-width: 768px) {
+    .plate-image {
+        max-width: clamp(240px, 72vw, 380px) !important;
+    }
+    .plate-images-multi .plate-image {
+        max-width: clamp(160px, 44vw, 260px) !important;
+    }
+    .outline-image {
+        max-width: clamp(200px, 66vw, 340px) !important;
+        max-height: clamp(160px, 46vw, 280px) !important;
+    }
+    .brand-image {
+        max-width: clamp(160px, 60vw, 300px) !important;
+        max-height: clamp(120px, 40vw, 220px) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .plate-image {
+        max-width: clamp(220px, 82vw, 340px) !important;
+    }
+    .plate-images-multi .plate-image {
+        max-width: clamp(140px, 56vw, 220px) !important;
+    }
+    .outline-image {
+        max-width: clamp(180px, 78vw, 300px) !important;
+        max-height: clamp(140px, 54vw, 240px) !important;
+    }
+    .brand-image {
+        max-width: clamp(140px, 72vw, 260px) !important;
+        max-height: clamp(100px, 48vw, 180px) !important;
+    }
 }
