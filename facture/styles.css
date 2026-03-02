@@ -1356,7 +1356,7 @@ body::before {
   }
 
   .kleinunternehmer-note {
-    background: #fef3c7 !important;
+    background: #c3c3c3 !important;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
