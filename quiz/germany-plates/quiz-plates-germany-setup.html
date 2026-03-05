@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Germany Plate Quiz – Setup</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+</head>
+<body>
+    <div class="container">
+        <header class="quiz-header">
+            <button class="back-btn" onclick="window.location.href='/quiz/index.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back
+            </button>
+            <h1 class="neon-text">Germany Plates</h1>
+        </header>
+        <main class="setup-container">
+            <div class="setup-card">
+                <div class="setup-section">
+                    <h2>Number of Questions</h2>
+                    <div class="options-grid">
+                        <button class="option-btn active" data-questions="10">10</button>
+                        <button class="option-btn" data-questions="20">20</button>
+                        <button class="option-btn" data-questions="30">30</button>
+                        <button class="option-btn" data-questions="50">50</button>
+                    </div>
+                </div>
+                <div class="setup-section">
+                    <h2>Select Region</h2>
+                    <div class="region-grid">
+                        <button class="region-btn active" data-region="all">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            <span>All Regions</span>
+                        </button>
+                        <button class="region-btn" data-region="Baden-Württemberg">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Baden-Württemberg</span>
+                        </button>
+                        <button class="region-btn" data-region="Bayern">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Bayern</span>
+                        </button>
+                        <button class="region-btn" data-region="Berlin">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Berlin</span>
+                        </button>
+                        <button class="region-btn" data-region="Brandenburg">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Brandenburg</span>
+                        </button>
+                        <button class="region-btn" data-region="Bremen">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Bremen</span>
+                        </button>
+                        <button class="region-btn" data-region="Hamburg">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Hamburg</span>
+                        </button>
+                        <button class="region-btn" data-region="Hessen">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Hessen</span>
+                        </button>
+                        <button class="region-btn" data-region="Mecklenburg-Vorpommern">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Mecklenburg-Vorpommern</span>
+                        </button>
+                        <button class="region-btn" data-region="Niedersachsen">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Niedersachsen</span>
+                        </button>
+                        <button class="region-btn" data-region="Nordrhein-Westfalen">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Nordrhein-Westfalen</span>
+                        </button>
+                        <button class="region-btn" data-region="Rheinland-Pfalz">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Rheinland-Pfalz</span>
+                        </button>
+                        <button class="region-btn" data-region="Saarland">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Saarland</span>
+                        </button>
+                        <button class="region-btn" data-region="Sachsen">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Sachsen</span>
+                        </button>
+                        <button class="region-btn" data-region="Sachsen-Anhalt">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Sachsen-Anhalt</span>
+                        </button>
+                        <button class="region-btn" data-region="Schleswig-Holstein">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Schleswig-Holstein</span>
+                        </button>
+                        <button class="region-btn" data-region="Thüringen">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Thüringen</span>
+                        </button>
+                    </div>
+                </div>
+                <button class="start-btn" onclick="startQuiz()">
+                    Start Quiz
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </button>
+            </div>
+        </main>
+    </div>
+    <script>
+        var selectedQuestions = 10;
+        var selectedRegion = 'all';
+
+        document.querySelectorAll('.option-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.option-btn').forEach(function(b){ b.classList.remove('active'); });
+                btn.classList.add('active');
+                selectedQuestions = parseInt(btn.dataset.questions);
+            });
+        });
+
+        document.querySelectorAll('.region-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.region-btn').forEach(function(b){ b.classList.remove('active'); });
+                btn.classList.add('active');
+                selectedRegion = btn.dataset.region;
+            });
+        });
+
+        function startQuiz() {
+            sessionStorage.setItem('germanyPlatesQuestions', selectedQuestions);
+            sessionStorage.setItem('germanyPlatesRegion', selectedRegion);
+            window.location.href = 'quiz-germany-plates.html';
+        }
+    </script>
+</body>
+</html>
