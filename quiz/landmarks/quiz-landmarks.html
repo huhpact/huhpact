@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wahrzeichen-Quiz</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <style>
+
+        /* ── Progress bar ── */
+        .progress-bar-wrap {
+            height: 3px;
+            background: var(--bg-subtle);
+            border-radius: 100px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #f0a080);
+            border-radius: 100px;
+            transition: width 0.4s ease;
+        }
+
+        /* ── Landmark image stage ── */
+        .landmark-stage {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .landmark-image-wrap {
+            position: relative;
+            width: 100%;
+            padding-top: 56%;
+            background: var(--bg-subtle);
+            overflow: hidden;
+        }
+        .landmark-image-wrap img {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: opacity 0.3s ease;
+        }
+        .landmark-image-wrap img.hidden { opacity: 0; }
+        .landmark-image-wrap.loading {
+            background: linear-gradient(90deg, var(--bg-subtle) 25%, var(--bg-card) 50%, var(--bg-subtle) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.2s infinite;
+        }
+        @keyframes shimmer {
+            0%   { background-position:  200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        @keyframes imgIn {
+            from { opacity: 0; transform: scale(1.04); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .landmark-image-wrap img:not(.hidden) { animation: imgIn 0.38s ease both; }
+
+        /* landmark name badge top-left */
+        .landmark-name-badge {
+            position: absolute;
+            bottom: 12px; left: 12px;
+            background: rgba(28,25,23,0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #f0ede8;
+            padding: 0.3rem 0.8rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 2;
+        }
+        /* continent badge top-right */
+        .continent-badge {
+            position: absolute;
+            top: 12px; right: 12px;
+            background: rgba(28,25,23,0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: rgba(240,237,232,0.85);
+            padding: 0.26rem 0.68rem;
+            border-radius: 100px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.08);
+            z-index: 2;
+        }
+
+        /* label strip below image */
+        .landmark-stage-label {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            background: var(--bg-subtle);
+        }
+
+        /* ── Hint box ── */
+        .hint-box {
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.1rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            font-size: 0.84rem;
+            color: var(--text-secondary);
+            animation: fadeUp 0.22s ease both;
+        }
+        .hint-box.visible { display: flex; }
+        .hint-box .hint-icon { font-size: 1rem; flex-shrink: 0; }
+        .hint-box strong { color: var(--text-primary); }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Input area ── */
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .city-input-wrap {
+            position: relative;
+        }
+
+        .city-input {
+            width: 100%;
+            padding: 1rem 3.5rem 1rem 1.4rem;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1.15rem;
+            font-weight: 600;
+            font-family: 'Sora', sans-serif;
+            outline: none;
+            transition: var(--transition);
+            letter-spacing: -0.01em;
+        }
+        .city-input::placeholder { color: var(--text-muted); font-weight: 400; }
+        .city-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+        .city-input.correct-pulse {
+            border-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(45,138,94,0.15);
+            animation: correctPulse 0.4s ease;
+        }
+        .city-input.wrong-shake {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(192,57,43,0.12);
+            animation: shake 0.35s ease;
+        }
+        @keyframes correctPulse {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.012); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            20%     { transform: translateX(-6px); }
+            60%     { transform: translateX(6px); }
+        }
+
+        /* submit icon button inside input */
+        .input-submit-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent);
+            border: none;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        .input-submit-btn:hover { background: var(--accent-hover); }
+        .input-submit-btn svg { width: 16px; height: 16px; }
+
+        /* skip button */
+        .skip-btn {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-md);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Sora', sans-serif;
+            display: flex; align-items: center; gap: 0.4rem;
+            align-self: flex-start;
+        }
+        .skip-btn:hover { border-color: var(--text-muted); color: var(--text-secondary); }
+
+        /* ── Feedback bar ── */
+        .feedback-bar {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            animation: fadeUp 0.2s ease both;
+        }
+        .feedback-bar.visible   { display: flex; }
+        .feedback-bar.correct   {
+            background: var(--success-light);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+        .feedback-bar.incorrect {
+            background: var(--error-light);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+        .feedback-bar .fb-answer { color: inherit; font-weight: 700; }
+
+        /* ── Attempts dots ── */
+        .attempt-dots {
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+        }
+        .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--border-strong);
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+        }
+        .dot.used   { background: var(--error); }
+        .dot.ok     { background: var(--success); }
+
+        /* ── Streak badge ── */
+        .streak-badge {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            background: var(--accent-light); color: var(--accent);
+            border: 1px solid rgba(232,100,58,0.25);
+            padding: 0.28rem 0.65rem; border-radius: 100px;
+            font-size: 0.78rem; font-weight: 700;
+        }
+        .streak-badge.hidden { display: none; }
+
+        @media (max-width: 540px) {
+            .city-input { font-size: 1rem; padding: 0.9rem 3.2rem 0.9rem 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Top bar -->
+    <div class="quiz-top-bar">
+        <div class="score-display">
+            <span class="score-label">Punkte:</span>
+            <span class="score-value" id="score">0</span>
+            <span class="streak-badge hidden" id="streak-badge">🔥 <span id="streak-count">0</span></span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div class="attempt-dots" id="attempt-dots">
+                <span class="dot" id="dot-1"></span>
+                <span class="dot" id="dot-2"></span>
+                <span class="dot" id="dot-3"></span>
+            </div>
+            <div class="progress-display">
+                <span id="current-question">1</span>&thinsp;/&thinsp;<span id="total-questions">20</span>
+            </div>
+        </div>
+    </div>
+
+    <main class="quiz-container">
+
+        <div class="progress-bar-wrap">
+            <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+        </div>
+
+        <!-- Image -->
+        <div class="landmark-stage">
+            <div class="landmark-image-wrap loading" id="img-wrap">
+                <img id="landmark-img" src="" alt="Wahrzeichen" class="hidden">
+                <span class="continent-badge" id="continent-badge"></span>
+                <span class="landmark-name-badge" id="landmark-name"></span>
+            </div>
+            <div class="landmark-stage-label">In welcher Stadt befindet sich dieses Wahrzeichen?</div>
+        </div>
+
+        <!-- Hint box -->
+        <div class="hint-box" id="hint-box">
+            <span class="hint-icon">💡</span>
+            <span>Hinweis: <strong id="hint-text"></strong></span>
+        </div>
+
+        <!-- Input area -->
+        <div class="input-area">
+            <div class="city-input-wrap">
+                <input
+                    type="text"
+                    id="city-input"
+                    class="city-input"
+                    placeholder="Stadtname eingeben…"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+                <button class="input-submit-btn" id="submit-btn" title="Antwort bestätigen">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="feedback-bar" id="feedback-bar">
+                <span id="feedback-text"></span>
+            </div>
+
+            <button class="skip-btn" id="skip-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="13 17 18 12 13 7"/>
+                    <polyline points="6 17 11 12 6 7"/>
+                </svg>
+                Überspringen
+            </button>
+        </div>
+
+    </main>
+</div>
+
+<!-- Results modal -->
+<div id="results-modal" class="modal hidden">
+    <div class="modal-content">
+        <h2 class="neon-text" id="result-emoji" style="font-size:1.6rem;margin-bottom:0.3rem;"></h2>
+        <h2 class="neon-text" id="result-title" style="font-size:2rem;margin-bottom:1.5rem;"></h2>
+        <div class="results-stats">
+            <div class="stat-item">
+                <span class="stat-value" id="final-score">0</span>
+                <span class="stat-label">Richtig</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="final-total">20</span>
+                <span class="stat-label">Gesamt</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="final-pct">0%</span>
+                <span class="stat-label">Quote</span>
+            </div>
+        </div>
+        <p id="result-msg" style="color:var(--text-secondary);margin-bottom:1.75rem;font-size:0.92rem;line-height:1.6;"></p>
+        <div class="modal-actions">
+            <button class="modal-btn" onclick="restartQuiz()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                </svg>
+                Nochmal
+            </button>
+            <button class="modal-btn secondary" onclick="window.location.href='setup-landmarks.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Einstellungen
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="landmarks.js"></script>
+<script>
+	/* ── quiz-landmarks.js ──────────────────────────────────────────
+   Wahrzeichen-Quiz Logik
+   - Bild oben, Freitexteingabe unten
+   - Fuzzy-Matching (Tipp-Fehler tolerant, Alias-Erkennung)
+   - 3 Versuche pro Frage (Punkte abhängig vom Versuch)
+   - Hinweis-System je nach Schwierigkeitsgrad
+   - Streak-Badge ab 3 richtigen in Folge
+────────────────────────────────────────────────────────────── */
+
+/* ── State ── */
+let questions    = [];
+let qIndex       = 0;
+let score        = 0;
+let streak       = 0;
+let bestStreak   = 0;
+let attempts     = 0;          // Versuche bei aktueller Frage (0–3)
+let isAnswered   = false;
+let difficulty   = 'medium';   // 'easy' | 'medium' | 'hard'
+const MAX_ATTEMPTS = 3;
+
+/* Punkte je nach Versuch: 1. Versuch = 3, 2. = 2, 3. = 1 */
+const POINTS = [3, 2, 1];
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', () => {
+    const count       = parseInt(sessionStorage.getItem('landmarksCount')) || 20;
+    difficulty        = sessionStorage.getItem('landmarksDiff') || 'medium';
+    const contsRaw    = sessionStorage.getItem('landmarksContinents');
+    const conts       = contsRaw ? new Set(JSON.parse(contsRaw)) : new Set(['all']);
+
+    // Pool zusammenstellen
+    let pool = conts.has('all')
+        ? [...LANDMARKS]
+        : LANDMARKS.filter(l => conts.has(l.continent));
+    if (pool.length < 1) pool = [...LANDMARKS];
+
+    shuffle(pool);
+    const n = (count >= 9999) ? pool.length : Math.min(count, pool.length);
+    questions = pool.slice(0, n);
+
+    document.getElementById('total-questions').textContent = questions.length;
+    document.getElementById('score').textContent = '0';
+
+    // Inputs
+    document.getElementById('submit-btn').addEventListener('click', submitAnswer);
+    document.getElementById('skip-btn').addEventListener('click', skipQuestion);
+    document.getElementById('city-input').addEventListener('keydown', e => {
+        if (e.key === 'Enter') submitAnswer();
+    });
+
+    loadQuestion();
+});
+
+/* ══════════════════════════════════════════════════════════
+   QUESTION LOADING
+══════════════════════════════════════════════════════════ */
+function loadQuestion() {
+    if (qIndex >= questions.length) { showResults(); return; }
+
+    isAnswered = false;
+    attempts   = 0;
+    const q    = questions[qIndex];
+
+    // UI aktualisieren
+    document.getElementById('current-question').textContent = qIndex + 1;
+    document.getElementById('progress-bar').style.width     = (qIndex / questions.length * 100) + '%';
+
+    // Input zurücksetzen
+    const input = document.getElementById('city-input');
+    input.value = '';
+    input.disabled = false;
+    input.classList.remove('correct-pulse', 'wrong-shake');
+    input.focus();
+
+    // Feedback ausblenden
+    hideFeedback();
+    document.getElementById('hint-box').classList.remove('visible');
+    document.getElementById('skip-btn').style.display = '';
+
+    // Hinweis sofort anzeigen wenn Schwierigkeit = leicht
+    if (difficulty === 'easy') showHint(q.hint);
+
+    // Attempt-Dots zurücksetzen
+    updateDots(0, false);
+
+    // Streak
+    updateStreak();
+
+    // Bild laden
+    const wrap = document.getElementById('img-wrap');
+    const img  = document.getElementById('landmark-img');
+    wrap.classList.add('loading');
+    img.classList.add('hidden');
+    img.onload = () => { wrap.classList.remove('loading'); img.classList.remove('hidden'); };
+    img.onerror = () => {
+        wrap.classList.remove('loading');
+        img.src = makePlaceholder(q);
+        img.classList.remove('hidden');
+    };
+    img.src = q.img;
+
+    document.getElementById('continent-badge').textContent = q.continent;
+    document.getElementById('landmark-name').textContent   = q.landmark;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ANSWER HANDLING
+══════════════════════════════════════════════════════════ */
+function submitAnswer() {
+    if (isAnswered) return;
+    const input = document.getElementById('city-input');
+    const raw   = input.value.trim();
+    if (!raw) { input.focus(); return; }
+
+    const q        = questions[qIndex];
+    const correct  = isCorrect(raw, q);
+
+    if (correct) {
+        handleCorrect(q);
+    } else {
+        attempts++;
+        updateDots(attempts, false);
+
+        if (attempts >= MAX_ATTEMPTS) {
+            handleFailed(q);
+        } else {
+            // Falsch aber noch Versuche übrig
+            input.classList.remove('wrong-shake');
+            void input.offsetWidth;   // reflow zum neu-triggern
+            input.classList.add('wrong-shake');
+            input.value = '';
+            setTimeout(() => input.classList.remove('wrong-shake'), 400);
+
+            showFeedback(false, `Falsch – noch ${MAX_ATTEMPTS - attempts} Versuch${MAX_ATTEMPTS - attempts === 1 ? '' : 'e'}`);
+
+            // Hinweis nach 2 Versuchen bei Schwierigkeit = mittel
+            if (difficulty === 'medium' && attempts >= 2) showHint(q.hint);
+        }
+    }
+}
+
+function handleCorrect(q) {
+    isAnswered = true;
+    const pts = POINTS[Math.min(attempts, POINTS.length - 1)];
+    score += pts;
+    streak++;
+    if (streak > bestStreak) bestStreak = streak;
+
+    document.getElementById('score').textContent = score;
+    updateDots(attempts, true);
+    updateStreak();
+
+    const input = document.getElementById('city-input');
+    input.value    = q.city;
+    input.disabled = true;
+    input.classList.add('correct-pulse');
+    setTimeout(() => input.classList.remove('correct-pulse'), 500);
+
+    const ptsText = pts === 3 ? ' (+3 Punkte 🎯)' : pts === 2 ? ' (+2 Punkte)' : ' (+1 Punkt)';
+    showFeedback(true, `${q.city}, ${q.country}${ptsText}`);
+    document.getElementById('skip-btn').style.display = 'none';
+
+    setTimeout(() => { qIndex++; loadQuestion(); }, 1600);
+}
+
+function handleFailed(q) {
+    isAnswered = true;
+    streak = 0;
+    updateStreak();
+    updateDots(MAX_ATTEMPTS, false);
+
+    const input    = document.getElementById('city-input');
+    input.value    = q.city;
+    input.disabled = true;
+
+    showFeedback(false, `Richtige Antwort: ${q.city}, ${q.country}`);
+    document.getElementById('skip-btn').style.display = 'none';
+
+    setTimeout(() => { qIndex++; loadQuestion(); }, 2200);
+}
+
+function skipQuestion() {
+    if (isAnswered) return;
+    const q = questions[qIndex];
+    isAnswered = true;
+    streak = 0;
+    updateStreak();
+    updateDots(MAX_ATTEMPTS, false);
+
+    const input    = document.getElementById('city-input');
+    input.value    = q.city;
+    input.disabled = true;
+
+    showFeedback(false, `Übersprungen – Antwort: ${q.city}, ${q.country}`);
+    document.getElementById('skip-btn').style.display = 'none';
+
+    setTimeout(() => { qIndex++; loadQuestion(); }, 1800);
+}
+
+/* ══════════════════════════════════════════════════════════
+   MATCHING  (Fuzzy + Alias)
+══════════════════════════════════════════════════════════ */
+function isCorrect(input, q) {
+    const norm = s => s.toLowerCase().trim()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')   // Umlaute/Akzente normalisieren
+        .replace(/[^a-z0-9\s]/g, '')                         // Sonderzeichen entfernen
+        .replace(/\s+/g, ' ');
+
+    const inp  = norm(input);
+    const city = norm(q.city);
+
+    // Exakter Treffer auf normalisiertem Namen
+    if (inp === city) return true;
+
+    // Alias-Treffer
+    if (q.aliases && q.aliases.some(a => norm(a) === inp)) return true;
+
+    // Levenshtein-Toleranz: bei kurzen Namen 1 Fehler, bei langen 2 Fehler
+    const threshold = city.length <= 5 ? 1 : 2;
+    if (levenshtein(inp, city) <= threshold) return true;
+
+    // Alias mit Levenshtein
+    if (q.aliases && q.aliases.some(a => levenshtein(norm(a), inp) <= threshold)) return true;
+
+    return false;
+}
+
+/* Levenshtein-Distanz */
+function levenshtein(a, b) {
+    const m = a.length, n = b.length;
+    const dp = Array.from({length: m + 1}, (_, i) =>
+        Array.from({length: n + 1}, (_, j) => i === 0 ? j : j === 0 ? i : 0)
+    );
+    for (let i = 1; i <= m; i++)
+        for (let j = 1; j <= n; j++)
+            dp[i][j] = a[i-1] === b[j-1]
+                ? dp[i-1][j-1]
+                : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+    return dp[m][n];
+}
+
+/* ══════════════════════════════════════════════════════════
+   UI HELPERS
+══════════════════════════════════════════════════════════ */
+function showHint(text) {
+    document.getElementById('hint-text').textContent = text;
+    document.getElementById('hint-box').classList.add('visible');
+}
+
+function showFeedback(correct, text) {
+    const bar = document.getElementById('feedback-bar');
+    bar.className = 'feedback-bar visible ' + (correct ? 'correct' : 'incorrect');
+    document.getElementById('feedback-text').textContent = text;
+}
+function hideFeedback() {
+    document.getElementById('feedback-bar').className = 'feedback-bar';
+}
+
+function updateDots(usedCount, lastCorrect) {
+    for (let i = 1; i <= 3; i++) {
+        const dot = document.getElementById('dot-' + i);
+        dot.className = 'dot';
+        if (i <= usedCount) {
+            dot.classList.add(lastCorrect && i === usedCount ? 'ok' : 'used');
+        }
+    }
+}
+
+function updateStreak() {
+    const badge = document.getElementById('streak-badge');
+    if (streak >= 3) {
+        badge.classList.remove('hidden');
+        document.getElementById('streak-count').textContent = streak;
+    } else {
+        badge.classList.add('hidden');
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESULTS
+══════════════════════════════════════════════════════════ */
+function showResults() {
+    const total    = questions.length;
+    const maxPts   = total * 3;
+    const pct      = Math.round(score / maxPts * 100);
+
+    document.getElementById('final-score').textContent = score;
+    document.getElementById('final-total').textContent = total;
+    document.getElementById('final-pct').textContent   = pct + '%';
+    document.getElementById('progress-bar').style.width = '100%';
+
+    // Result tier based on % of max points
+    const tiers = [
+        [85, '🏆', 'Weltenbummler!'],
+        [65, '🌍', 'Geo-Profi!'],
+        [45, '👍', 'Gut gemacht!'],
+        [ 0, '📚', 'Weiter üben!'],
+    ];
+    const [, emoji, title] = tiers.find(([t]) => pct >= t);
+    document.getElementById('result-emoji').textContent = emoji;
+    document.getElementById('result-title').textContent = title;
+    document.getElementById('result-msg').textContent   =
+        `${score} von max. ${maxPts} Punkten (${total} Fragen). ` +
+        `Beste Serie: ${bestStreak} richtig in Folge.`;
+
+    document.getElementById('results-modal').classList.remove('hidden');
+}
+
+function restartQuiz() {
+    window.location.href = 'setup-landmarks.html';
+}
+
+/* ══════════════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════════════ */
+function makePlaceholder(q) {
+    const l = encodeURIComponent(q.landmark);
+    const c = encodeURIComponent(q.country);
+    return `data:image/svg+xml,` +
+        `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'>` +
+        `<rect width='800' height='450' fill='%23ede9e3'/>` +
+        `<text x='400' y='195' text-anchor='middle' font-family='sans-serif' font-size='15' fill='%23a8a29e'>Bild nicht vorhanden</text>` +
+        `<text x='400' y='235' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='22' fill='%231c1917'>${l}</text>` +
+        `<text x='400' y='268' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%2378716c'>${c}</text>` +
+        `</svg>`;
+}
+
+function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+</script>
+</body>
+</html>

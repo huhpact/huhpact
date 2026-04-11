@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wahrzeichen-Quiz – Setup</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <style>
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.6rem;
+        }
+        .option-btn {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.85rem 0.5rem;
+            border-radius: var(--radius-md);
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Sora', sans-serif;
+            text-align: center;
+        }
+        .option-btn:hover  { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+        .option-btn.active { background: var(--text-primary); border-color: var(--text-primary); color: white; }
+
+        /* Difficulty */
+        .diff-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+        }
+        .diff-btn {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.9rem 0.5rem;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Sora', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .diff-btn .diff-icon { font-size: 1.4rem; line-height: 1; }
+        .diff-btn .diff-label { font-size: 0.82rem; font-weight: 700; }
+        .diff-btn .diff-desc  { font-size: 0.72rem; font-weight: 400; color: var(--text-muted); }
+        .diff-btn:hover  { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+        .diff-btn:hover .diff-desc { color: var(--accent); }
+        .diff-btn.active { background: var(--text-primary); border-color: var(--text-primary); color: white; }
+        .diff-btn.active .diff-desc { color: rgba(255,255,255,0.65); }
+
+        /* Continent filter */
+        .continent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.6rem;
+        }
+        .continent-btn {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.65rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.83rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Sora', sans-serif;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        .continent-btn:hover  { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+        .continent-btn.active { background: var(--text-primary); border-color: var(--text-primary); color: white; }
+        .continent-btn.all-btn {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            color: var(--accent);
+            grid-column: 1 / -1;
+            font-size: 0.88rem;
+            padding: 0.65rem;
+            font-weight: 700;
+        }
+        .continent-btn.all-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+        @media (max-width: 540px) {
+            .options-grid     { grid-template-columns: repeat(3, 1fr); }
+            .diff-grid        { grid-template-columns: 1fr 1fr 1fr; }
+            .continent-grid   { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header class="quiz-header">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Zurück
+        </button>
+        <h1 class="neon-text">Wahrzeichen<span style="color:var(--accent)">Quiz</span></h1>
+    </header>
+
+    <main class="setup-container">
+        <div class="setup-card">
+
+            <!-- Anzahl Fragen -->
+            <div class="setup-section">
+                <h2>Anzahl der Fragen</h2>
+                <div class="options-grid" id="count-grid">
+                    <button class="option-btn" data-count="10">10</button>
+                    <button class="option-btn active" data-count="20">20</button>
+                    <button class="option-btn" data-count="30">30</button>
+                    <button class="option-btn" data-count="50">50</button>
+                    <button class="option-btn" data-count="9999">Alle</button>
+                </div>
+            </div>
+
+            <!-- Schwierigkeitsgrad -->
+            <div class="setup-section">
+                <h2>Schwierigkeit</h2>
+                <div class="diff-grid" id="diff-grid">
+                    <button class="diff-btn" data-diff="easy">
+                        <span class="diff-icon">🟢</span>
+                        <span class="diff-label">Leicht</span>
+                        <span class="diff-desc">Hinweis sofort</span>
+                    </button>
+                    <button class="diff-btn active" data-diff="medium">
+                        <span class="diff-icon">🟡</span>
+                        <span class="diff-label">Mittel</span>
+                        <span class="diff-desc">Hinweis nach 2 Versuchen</span>
+                    </button>
+                    <button class="diff-btn" data-diff="hard">
+                        <span class="diff-icon">🔴</span>
+                        <span class="diff-label">Schwer</span>
+                        <span class="diff-desc">Kein Hinweis</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kontinente -->
+            <div class="setup-section">
+                <h2>Kontinente</h2>
+                <div class="continent-grid" id="continent-grid">
+                    <button class="continent-btn all-btn active" data-continent="all">✦ Alle Kontinente</button>
+                    <!-- dynamisch befüllt -->
+                </div>
+            </div>
+
+            <button class="start-btn" onclick="startQuiz()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                Quiz starten
+            </button>
+
+        </div>
+    </main>
+</div>
+
+<script src="landmarks.js"></script>
+<script>
+	/* ── setup-landmarks.js ────────────────────────────────────────
+   Liest LANDMARKS aus landmarks.js, baut Kontinent-Buttons auf
+   und speichert Einstellungen in sessionStorage.
+────────────────────────────────────────────────────────────── */
+
+let selectedCount      = 20;
+let selectedDiff       = 'medium';
+let selectedContinents = new Set(['all']);
+
+document.addEventListener('DOMContentLoaded', () => {
+    initCountButtons();
+    initDiffButtons();
+    buildContinentGrid();
+});
+
+function initCountButtons() {
+    document.querySelectorAll('#count-grid .option-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#count-grid .option-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedCount = parseInt(btn.dataset.count);
+        });
+    });
+}
+
+function initDiffButtons() {
+    document.querySelectorAll('#diff-grid .diff-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#diff-grid .diff-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedDiff = btn.dataset.diff;
+        });
+    });
+}
+
+/* Kontinente aus Daten lesen und Buttons erstellen */
+function buildContinentGrid() {
+    const EMOJI = {
+        'Europa': '🇪🇺', 'Asien': '🌏', 'Nordamerika': '🌎',
+        'Südamerika': '🌎', 'Afrika': '🌍', 'Ozeanien': '🌊',
+    };
+    const continents = [...new Set(LANDMARKS.map(l => l.continent))].sort();
+    const grid = document.getElementById('continent-grid');
+    grid.querySelector('.all-btn').addEventListener('click', selectAll);
+
+    continents.forEach(cont => {
+        const btn = document.createElement('button');
+        btn.className = 'continent-btn';
+        btn.dataset.continent = cont;
+        btn.innerHTML = `<span>${EMOJI[cont] || '🌐'}</span><span>${cont}</span>`;
+        btn.addEventListener('click', () => toggleContinent(cont, btn));
+        grid.appendChild(btn);
+    });
+}
+
+function selectAll() {
+    selectedContinents = new Set(['all']);
+    document.querySelectorAll('.continent-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.all-btn').classList.add('active');
+}
+
+function toggleContinent(cont, btn) {
+    selectedContinents.delete('all');
+    document.querySelector('.all-btn').classList.remove('active');
+    if (selectedContinents.has(cont)) {
+        selectedContinents.delete(cont);
+        btn.classList.remove('active');
+        if (selectedContinents.size === 0) selectAll();
+    } else {
+        selectedContinents.add(cont);
+        btn.classList.add('active');
+    }
+}
+
+function startQuiz() {
+    sessionStorage.setItem('landmarksCount',      selectedCount);
+    sessionStorage.setItem('landmarksDiff',        selectedDiff);
+    sessionStorage.setItem('landmarksContinents',  JSON.stringify([...selectedContinents]));
+    window.location.href = 'quiz-landmarks.html';
+}
+</script>
+</body>
+</html>
