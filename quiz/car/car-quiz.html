@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Quiz</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <style>
+        /* ── Progress bar ── */
+        .progress-bar-wrap {
+            height: 3px;
+            background: var(--bg-subtle);
+            border-radius: 100px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #f0a080);
+            border-radius: 100px;
+            transition: width 0.4s var(--transition);
+        }
+
+        /* ── Car image stage ── */
+        .car-stage {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .car-image-wrap {
+            position: relative;
+            width: 100%;
+            padding-top: 50%;          /* 2:1 aspect ratio */
+            background: var(--bg-subtle);
+            overflow: hidden;
+        }
+
+        .car-image-wrap img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .car-image-wrap img.hidden { opacity: 0; }
+
+        /* loading shimmer */
+        .car-image-wrap.loading {
+            background: linear-gradient(
+                90deg,
+                var(--bg-subtle) 25%,
+                var(--bg-card)   50%,
+                var(--bg-subtle) 75%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.2s infinite;
+        }
+        @keyframes shimmer {
+            0%   { background-position:  200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* slide-in animation when new image loads */
+        @keyframes imgIn {
+            from { opacity: 0; transform: scale(1.04); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .car-image-wrap img:not(.hidden) { animation: imgIn 0.38s ease both; }
+
+        /* category + year badge overlaid on image */
+        .car-meta-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(28, 25, 23, 0.68);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #f0ede8;
+            padding: 0.28rem 0.72rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 2;
+        }
+
+        /* label strip below image */
+        .car-stage-label {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            background: var(--bg-subtle);
+        }
+
+        /* ── Answer buttons ── */
+        .answers-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+        }
+
+        .answer-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.18rem;
+            padding: 1.05rem 1.3rem;
+            text-align: left;
+        }
+
+        /* Two-line layout: brand (small) above model (large) */
+        .answer-btn .car-brand {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            line-height: 1;
+        }
+        .answer-btn .car-model {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .answer-btn:hover:not(.disabled) .car-brand,
+        .answer-btn:hover:not(.disabled) .car-model { color: var(--accent); }
+
+        .answer-btn.correct .car-brand,
+        .answer-btn.correct .car-model { color: var(--success); }
+        .answer-btn.correct .car-brand { opacity: 0.75; }
+
+        .answer-btn.incorrect .car-brand,
+        .answer-btn.incorrect .car-model { color: var(--error); }
+        .answer-btn.incorrect .car-brand { opacity: 0.75; }
+
+        /* ── "Richtig wäre…" reveal ── */
+        .answer-reveal {
+            display: none;
+            margin-top: 0.75rem;
+            padding: 0.7rem 1.1rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.83rem;
+            color: var(--text-secondary);
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .answer-reveal.visible {
+            display: flex;
+            animation: fadeUp 0.22s ease both;
+        }
+        .answer-reveal strong { color: var(--text-primary); }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Streak badge ── */
+        .streak-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--accent-light);
+            color: var(--accent);
+            border: 1px solid rgba(232, 100, 58, 0.25);
+            padding: 0.28rem 0.65rem;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+        .streak-badge.hidden { display: none; }
+
+        /* ── Responsive ── */
+        @media (max-width: 540px) {
+            .answers-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Top bar: Score + Progress -->
+        <div class="quiz-top-bar">
+            <div class="score-display">
+                <span class="score-label">Punkte:</span>
+                <span class="score-value" id="score">0</span>
+                <span class="streak-badge hidden" id="streak-badge">
+                    🔥 <span id="streak-count">0</span>
+                </span>
+            </div>
+            <div class="progress-display">
+                <span id="current-question">1</span>&thinsp;/&thinsp;<span id="total-questions">20</span>
+            </div>
+        </div>
+
+        <main class="quiz-container">
+
+            <!-- Progress bar -->
+            <div class="progress-bar-wrap">
+                <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+            </div>
+
+            <!-- Car image -->
+            <div class="car-stage">
+                <div class="car-image-wrap loading" id="img-wrap">
+                    <img id="car-img" src="" alt="Auto" class="hidden">
+                </div>
+                <div class="car-stage-label">Welches Modell ist das?</div>
+            </div>
+
+            <!-- Reveal bar (shown after wrong answer) -->
+            <div class="answer-reveal" id="answer-reveal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                Richtig wäre: <strong id="reveal-text"></strong>
+            </div>
+
+            <!-- 4 answer buttons -->
+            <div class="answers-container" id="answers">
+                <button class="answer-btn" data-answer="0">
+                    <span class="car-brand"></span>
+                    <span class="car-model"></span>
+                </button>
+                <button class="answer-btn" data-answer="1">
+                    <span class="car-brand"></span>
+                    <span class="car-model"></span>
+                </button>
+                <button class="answer-btn" data-answer="2">
+                    <span class="car-brand"></span>
+                    <span class="car-model"></span>
+                </button>
+                <button class="answer-btn" data-answer="3">
+                    <span class="car-brand"></span>
+                    <span class="car-model"></span>
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Results modal -->
+    <div id="results-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="neon-text" id="result-emoji" style="font-size:1.6rem; margin-bottom:0.3rem;"></h2>
+            <h2 class="neon-text" id="result-title" style="font-size:2rem; margin-bottom:1.5rem;"></h2>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="final-score">0</span>
+                    <span class="stat-label">Richtig</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-total">20</span>
+                    <span class="stat-label">Gesamt</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-percentage">0%</span>
+                    <span class="stat-label">Quote</span>
+                </div>
+            </div>
+            <p id="result-msg"
+               style="color:var(--text-secondary); margin-bottom:1.75rem;
+                      font-size:0.92rem; line-height:1.6;"></p>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="restartQuiz()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                    </svg>
+                    Nochmal
+                </button>
+                <button class="modal-btn secondary" onclick="window.location.href='setup-cars.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Einstellungen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/quiz/car/cars.js"></script>
+    <script>
+      /* ── quiz-cars.js ───────────────────────────────────────────
+   Quiz-Logik für das Auto-Quiz.
+   Liest Einstellungen aus sessionStorage (gesetzt von setup-cars.js)
+   und steuert: Bildan zeige, Antwortbuttons, Wertung, Modal.
+────────────────────────────────────────────────────────── */
+
+/* ── State ── */
+let quizQuestions = [];
+let currentIndex  = 0;
+let score         = 0;
+let streak        = 0;
+let bestStreak    = 0;
+let isAnswered    = false;
+let totalQuestions = 20;
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', () => {
+    totalQuestions = parseInt(sessionStorage.getItem('carsQuizCount')) || 20;
+    const brandsRaw = sessionStorage.getItem('carsQuizBrands');
+    const brands = brandsRaw ? new Set(JSON.parse(brandsRaw)) : new Set(['all']);
+
+    // Build pool
+    let pool = brands.has('all')
+        ? [...CARS]
+        : CARS.filter(c => brands.has(c.brand));
+
+    if (pool.length < 4) pool = [...CARS];   // fallback: zu wenig Autos in Marke → alle
+
+    shuffle(pool);
+    const n = (totalQuestions >= 9999) ? pool.length : Math.min(totalQuestions, pool.length);
+    quizQuestions = pool.slice(0, n);
+
+    document.getElementById('total-questions').textContent = quizQuestions.length;
+    document.getElementById('score').textContent = '0';
+
+    // Wire answer buttons
+    document.querySelectorAll('.answer-btn').forEach(btn =>
+        btn.addEventListener('click', () => handleAnswer(btn))
+    );
+
+    loadQuestion();
+});
+
+/* ══════════════════════════════════════════════════════════
+   QUESTION LOADING
+══════════════════════════════════════════════════════════ */
+function loadQuestion() {
+    if (currentIndex >= quizQuestions.length) { showResults(); return; }
+
+    isAnswered = false;
+    const q = quizQuestions[currentIndex];
+
+    // Progress indicators
+    document.getElementById('current-question').textContent = currentIndex + 1;
+    const pct = (currentIndex / quizQuestions.length) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+
+    // Hide reveal bar
+    document.getElementById('answer-reveal').classList.remove('visible');
+
+    // ── Load image ──
+    const wrap = document.getElementById('img-wrap');
+    const img  = document.getElementById('car-img');
+    wrap.classList.add('loading');
+    img.classList.add('hidden');
+
+    img.onload = () => {
+        wrap.classList.remove('loading');
+        img.classList.remove('hidden');
+    };
+    img.onerror = () => {
+        wrap.classList.remove('loading');
+        img.src = makePlaceholder(q);
+        img.classList.remove('hidden');
+    };
+    img.src = q.img;
+
+    
+    // ── Build 4 answer options ──
+    const wrongs  = getWrongOptions(q);
+    const options = shuffle([q, ...wrongs]);
+
+    document.querySelectorAll('.answer-btn').forEach((btn, i) => {
+        const opt = options[i];
+        btn.dataset.correct = String(opt === q);
+        btn.querySelector('.car-brand').textContent = opt.brand;
+        btn.querySelector('.car-model').textContent = opt.model;
+        btn.classList.remove('correct', 'incorrect', 'disabled');
+        btn.disabled = false;
+    });
+}
+
+/* ── Get 3 wrong options (prefer same category for difficulty) ── */
+function getWrongOptions(correct) {
+    const pool = shuffle([...CARS.filter(c => c !== correct)]);
+    const seen = new Set([correct.model]);
+    const wrongs = [];
+
+    // 1st pass: same category, different brand
+    for (const c of pool) {
+        if (c.cat === correct.cat && !seen.has(c.model)) {
+            seen.add(c.model); wrongs.push(c);
+        }
+        if (wrongs.length === 3) return wrongs;
+    }
+    // 2nd pass: any remaining
+    for (const c of pool) {
+        if (!seen.has(c.model)) {
+            seen.add(c.model); wrongs.push(c);
+        }
+        if (wrongs.length === 3) return wrongs;
+    }
+    return wrongs;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ANSWER HANDLING
+══════════════════════════════════════════════════════════ */
+function handleAnswer(btn) {
+    if (isAnswered) return;
+    isAnswered = true;
+
+    const isCorrect = btn.dataset.correct === 'true';
+
+    // Disable all buttons
+    document.querySelectorAll('.answer-btn').forEach(b => {
+        b.disabled = true;
+        b.classList.add('disabled');
+        if (b.dataset.correct === 'true') b.classList.add('correct');
+    });
+
+    if (isCorrect) {
+        btn.classList.add('correct');
+        score++;
+        streak++;
+        if (streak > bestStreak) bestStreak = streak;
+        document.getElementById('score').textContent = score;
+    } else {
+        btn.classList.add('incorrect');
+        streak = 0;
+        // Show "Richtig wäre…"
+        const correctModel = document.querySelector('.answer-btn[data-correct="true"] .car-model').textContent;
+        const correctBrand = document.querySelector('.answer-btn[data-correct="true"] .car-brand').textContent;
+        document.getElementById('reveal-text').textContent = correctBrand + ' ' + correctModel;
+        document.getElementById('answer-reveal').classList.add('visible');
+    }
+
+    // Streak badge
+    const badge = document.getElementById('streak-badge');
+    if (streak >= 3) {
+        badge.classList.remove('hidden');
+        document.getElementById('streak-count').textContent = streak;
+    } else {
+        badge.classList.add('hidden');
+    }
+
+    // Auto-advance
+    setTimeout(() => { currentIndex++; loadQuestion(); }, isCorrect ? 1100 : 1750);
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESULTS
+══════════════════════════════════════════════════════════ */
+function showResults() {
+    const total = quizQuestions.length;
+    const pct   = Math.round(score / total * 100);
+
+    document.getElementById('final-score').textContent      = score;
+    document.getElementById('final-total').textContent      = total;
+    document.getElementById('final-percentage').textContent = pct + '%';
+    document.getElementById('progress-bar').style.width     = '100%';
+
+    const tiers = [
+        [90, '🏆', 'Meister!'],
+        [75, '🎯', 'Sehr gut!'],
+        [55, '👍', 'Gut gemacht!'],
+        [ 0, '📚', 'Weiter üben!'],
+    ];
+    const [, emoji, title] = tiers.find(([t]) => pct >= t);
+    document.getElementById('result-emoji').textContent = emoji;
+    document.getElementById('result-title').textContent = title;
+    document.getElementById('result-msg').textContent   =
+        `Du hast ${score} von ${total} Modellen korrekt erkannt. ` +
+        `Beste Serie: ${bestStreak} richtig in Folge.`;
+
+    document.getElementById('results-modal').classList.remove('hidden');
+}
+
+function restartQuiz() {
+    window.location.href = 'setup-cars.html';
+}
+
+/* ══════════════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════════════ */
+
+/* SVG placeholder when image file is missing */
+function makePlaceholder(q) {
+    const b = encodeURIComponent(q.brand);
+    const m = encodeURIComponent(q.model);
+    const y = encodeURIComponent(q.year);
+    return `data:image/svg+xml,` +
+        `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='400'>` +
+        `<rect width='800' height='400' fill='%23ede9e3'/>` +
+        `<text x='400' y='165' text-anchor='middle' font-family='sans-serif' font-size='15' fill='%23a8a29e'>Bild nicht vorhanden</text>` +
+        `<text x='400' y='205' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='26' fill='%231c1917'>${b}</text>` +
+        `<text x='400' y='242' text-anchor='middle' font-family='sans-serif' font-size='20' fill='%2378716c'>${m}</text>` +
+        `<text x='400' y='275' text-anchor='middle' font-family='sans-serif' font-size='14' fill='%23a8a29e'>${y}</text>` +
+        `</svg>`;
+}
+
+/* Fisher-Yates shuffle (in-place, returns array) */
+function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+    </script>
+</body>
+</html>
