@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wissens-Quiz – Einstellungen</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+		<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <style>
+        /* ── Category toggle grid ── */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.65rem;
+        }
+
+        .cat-btn {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.9rem 0.6rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Sora', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.45rem;
+            letter-spacing: 0.01em;
+        }
+
+        .cat-btn .cat-icon {
+            font-size: 1.45rem;
+            line-height: 1;
+            display: block;
+        }
+
+        .cat-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .cat-btn.active {
+            background: var(--text-primary);
+            border-color: var(--text-primary);
+            color: white;
+        }
+
+        .cat-btn.active .cat-icon { filter: brightness(0) invert(1); }
+
+        .cat-btn.all-cat-btn {
+            grid-column: 1 / -1;
+            flex-direction: row;
+            justify-content: center;
+            gap: 0.55rem;
+            background: var(--accent-light);
+            border-color: var(--accent);
+            color: var(--accent);
+            padding: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .cat-btn.all-cat-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* ── Difficulty selection ── */
+        .diff-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.65rem;
+        }
+
+        .diff-btn {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.85rem 0.5rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Sora', sans-serif;
+            text-align: center;
+        }
+
+        .diff-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .diff-btn.active {
+            background: var(--text-primary);
+            border-color: var(--text-primary);
+            color: white;
+        }
+
+        /* ── Question count ── */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.65rem;
+        }
+
+        /* ── Question type preview ── */
+        .type-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .type-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .type-tag .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+        }
+
+        /* ── Stats bar at bottom of card ── */
+        .setup-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1.25rem 0 0;
+            border-top: 1px solid var(--border);
+            margin-top: 0.5rem;
+        }
+
+        .setup-stat {
+            text-align: center;
+        }
+
+        .setup-stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .setup-stat-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        /* ── Section divider ── */
+        .setup-section + .setup-section {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 560px) {
+            .options-grid  { grid-template-columns: repeat(3, 1fr); }
+            .diff-grid     { grid-template-columns: repeat(2, 1fr); }
+            .cat-grid      { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .setup-stats   { gap: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <header class="quiz-header">
+            <button class="back-btn" onclick="window.location.href='index.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Zurück
+            </button>
+            <h1 class="neon-text">Wissens<span style="color:var(--accent)">Quiz</span></h1>
+        </header>
+
+        <main class="setup-container">
+            <div class="setup-card">
+
+                <!-- ── Anzahl Fragen ── -->
+                <div class="setup-section">
+                    <h2>Anzahl der Fragen</h2>
+                    <div class="options-grid" id="count-grid">
+                        <button class="option-btn" data-count="5">5</button>
+                        <button class="option-btn active" data-count="10">10</button>
+                        <button class="option-btn" data-count="20">20</button>
+                        <button class="option-btn" data-count="30">30</button>
+												<button class="option-btn" data-count="50">50</button>
+                        <button class="option-btn" data-count="9999">Alle</button>
+                    </div>
+                </div>
+
+                <!-- ── Schwierigkeit ── -->
+                <div class="setup-section">
+                    <h2>Schwierigkeit</h2>
+                    <div class="diff-grid" id="diff-grid">
+                        <button class="diff-btn active" data-diff="all">Alle</button>
+                        <button class="diff-btn" data-diff="leicht">🟢 Leicht</button>
+                        <button class="diff-btn" data-diff="mittel">🟡 Mittel</button>
+                        <button class="diff-btn" data-diff="schwer">🔴 Schwer</button>
+                    </div>
+                </div>
+
+                <!-- ── Kategorien ── -->
+                <div class="setup-section">
+                    <h2>Kategorien</h2>
+                    <div class="cat-grid" id="cat-grid">
+                        <button class="cat-btn all-cat-btn active" data-cat="all">
+                            ✦ Alle Kategorien
+                        </button>
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- ── Fragetypen-Legende ── -->
+                <div class="setup-section">
+                    <h2>Enthaltene Fragetypen</h2>
+                    <div class="type-legend">
+                        <span class="type-tag"><span class="dot"></span>Multiple Choice</span>
+                        <span class="type-tag"><span class="dot" style="background:#2d8a5e"></span>Freitexteingabe</span>
+                        <span class="type-tag"><span class="dot" style="background:#7c6bde"></span>Reihenfolge</span>
+                        <span class="type-tag"><span class="dot" style="background:#e8a23a"></span>Bildfragen</span>
+                        <span class="type-tag"><span class="dot" style="background:#c0392b"></span>Wahr / Falsch</span>
+                    </div>
+                </div>
+
+                <!-- ── Available Questions Counter ── -->
+                <div class="setup-stats">
+                    <div class="setup-stat">
+                        <div class="setup-stat-value" id="available-count">—</div>
+                        <div class="setup-stat-label">Verfügbare Fragen</div>
+                    </div>
+                    <div class="setup-stat">
+                        <div class="setup-stat-value" id="selected-count">—</div>
+                        <div class="setup-stat-label">Ausgewählt</div>
+                    </div>
+                </div>
+
+                <button class="start-btn" id="start-btn" onclick="startQuiz()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Quiz starten
+                </button>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="wissen-questions.js"></script>
+    <script>
+    /* ── State ── */
+    let selectedCount  = 10;
+    let selectedDiff   = 'all';
+    let selectedCats   = new Set(['all']);
+
+    /* ── Category icons map ── */
+    const CAT_ICONS = {
+        'Geographie':  '🌍',
+        'Geschichte':  '📜',
+        'Wissenschaft':'🔬',
+        'Kultur':      '🎨',
+        'Sport':       '⚽',
+        'Natur':       '🌿',
+        'Musik':       '🎵',
+        'Film & TV':   '🎬',
+        'Politik':     '🏛️',
+        'Technik':     '⚙️',
+        'Literatur':   '📚',
+        'Essen':       '🍽️',
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        buildCatGrid();
+        initCountButtons();
+        initDiffButtons();
+        updateStats();
+    });
+
+    /* ── Count buttons ── */
+    function initCountButtons() {
+        document.querySelectorAll('#count-grid .option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#count-grid .option-btn')
+                        .forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedCount = parseInt(btn.dataset.count);
+                updateStats();
+            });
+        });
+    }
+
+    /* ── Difficulty buttons ── */
+    function initDiffButtons() {
+        document.querySelectorAll('#diff-grid .diff-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#diff-grid .diff-btn')
+                        .forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedDiff = btn.dataset.diff;
+                updateStats();
+            });
+        });
+    }
+
+    /* ── Build category grid from question data ── */
+    function buildCatGrid() {
+        const cats = [...new Set(QUESTIONS.map(q => q.category))].sort();
+        const grid = document.getElementById('cat-grid');
+
+        grid.querySelector('.all-cat-btn').addEventListener('click', selectAllCats);
+
+        cats.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className    = 'cat-btn';
+            btn.dataset.cat  = cat;
+
+            const icon = CAT_ICONS[cat] || '❓';
+            btn.innerHTML = `<span class="cat-icon">${icon}</span>${cat}`;
+            btn.addEventListener('click', () => toggleCat(cat, btn));
+            grid.appendChild(btn);
+        });
+    }
+
+    function selectAllCats() {
+        selectedCats = new Set(['all']);
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.all-cat-btn').classList.add('active');
+        updateStats();
+    }
+
+    function toggleCat(cat, btn) {
+        selectedCats.delete('all');
+        document.querySelector('.all-cat-btn').classList.remove('active');
+
+        if (selectedCats.has(cat)) {
+            selectedCats.delete(cat);
+            btn.classList.remove('active');
+            if (selectedCats.size === 0) selectAllCats();
+        } else {
+            selectedCats.add(cat);
+            btn.classList.add('active');
+        }
+        updateStats();
+    }
+
+    /* ── Compute how many questions are available with current filters ── */
+    function getFilteredPool() {
+        return QUESTIONS.filter(q => {
+            const catOk  = selectedCats.has('all') || selectedCats.has(q.category);
+            const diffOk = selectedDiff === 'all'  || q.difficulty === selectedDiff;
+            return catOk && diffOk;
+        });
+    }
+
+    function updateStats() {
+        const pool   = getFilteredPool();
+        const avail  = pool.length;
+        const chosen = selectedCount >= 9999 ? avail : Math.min(selectedCount, avail);
+
+        document.getElementById('available-count').textContent = avail;
+        document.getElementById('selected-count').textContent  = chosen;
+
+        const startBtn = document.getElementById('start-btn');
+        startBtn.disabled = avail === 0;
+        startBtn.style.opacity = avail === 0 ? '0.45' : '1';
+    }
+
+    /* ── Save settings & start quiz ── */
+    function startQuiz() {
+        const pool = getFilteredPool();
+        if (pool.length === 0) return;
+
+        sessionStorage.setItem('wissenCount',      selectedCount);
+        sessionStorage.setItem('wissenDifficulty', selectedDiff);
+        sessionStorage.setItem('wissenCategories', JSON.stringify([...selectedCats]));
+
+        window.location.href = 'wissen-quiz.html';
+    }
+    </script>
+</body>
+</html>
