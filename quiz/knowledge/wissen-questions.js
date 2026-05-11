@@ -2203,6 +2203,3047 @@ const QUESTIONS = [
     options: ['Wirtschaftswachstum von unter 1%', 'Zwei aufeinanderfolgende Quartale mit negativem BIP-Wachstum', 'Staatsbankrott', 'Hohe Inflation'],
     correct: 'Zwei aufeinanderfolgende Quartale mit negativem BIP-Wachstum',
     funFact: 'Die technische Definition einer Rezession sind zwei aufeinanderfolgende Quartale mit negativem BIP-Wachstum. Eine "Depression" ist eine tiefere, längere Rezession – wie die Große Depression der 1930er Jahre, die über ein Jahrzehnt andauerte.'
+  },
+  /* ══════════════════════════════════════════════════════════
+   wissen-questions-new-types.js
+   250 neue Fragen in den fünf neuen Fragetypen:
+     audio       – Audiodatei anhören, dann antworten
+     image       – Bild betrachten, dann antworten
+     slider      – Zahl/Wert schätzen
+     multiselect – Mehrere richtige Antworten auswählen
+     memory      – Kartenpaare merken und zuordnen
+
+   Bildpfade (image) und Audiodateien (audio) sind als
+   Platzhalter eingetragen und werden später ersetzt.
+
+   KATEGORIEN: Geographie, Geschichte, Wissenschaft, Natur,
+   Biologie, Astronomie, Musik, Film, Kunst, Sport, Technik,
+   Mathematik, Tiere, Essen & Trinken, Wirtschaft, Sprache,
+   Popkultur, Allgemeinwissen, Medizin, Literatur, Politik
+══════════════════════════════════════════════════════════ */
+
+  /* ════════════════════════════════════════════════════════
+     🎵  AUDIO  (50 Fragen)
+     Format:
+       type: 'audio'
+       audio: 'pfad/zur/datei.mp3'   ← Platzhalter
+       audioLabel: 'was zu hören ist'
+       question: Frage nach dem Clip
+       options: [4 Antworten]
+       correct: richtige Antwort
+  ════════════════════════════════════════════════════════ */
+  {
+    id: 5001,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'leicht',
+    audio: '/quiz/knowledge/src/beethoven.mp3',
+    audioLabel: 'Klassisches Musikstück',
+    question: 'Von welchem Komponisten stammt dieses weltberühmte Orchesterwerk?',
+    options: ['Wolfgang Amadeus Mozart', 'Ludwig van Beethoven', 'Franz Schubert', 'Johannes Brahms'],
+    correct: 'Ludwig van Beethoven',
+    funFact: 'Beethovens 5. Sinfonie beginnt mit dem berühmtesten Motiv der Musikgeschichte: drei kurze und ein langer Ton – „ta-ta-ta-TAA". Beethoven komponierte sie zwischen 1804 und 1808, obwohl er zu dieser Zeit bereits fast taub war.'
+  },
+  {
+    id: 5002,
+    type: 'audio',
+    category: 'Natur',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/wolf.mp3',
+    audioLabel: 'Tiergeräusch',
+    question: 'Welches Tier ist in diesem Audioclip zu hören?',
+    options: ['Kojote', 'Wolf', 'Hyäne', 'Hund'],
+    correct: 'Wolf',
+    funFact: 'Wölfe heulen hauptsächlich zur Kommunikation innerhalb des Rudels – um Kontakt zu halten, Territorien zu markieren oder sich zu koordinieren. Jeder Wolf hat eine individuelle Heulfrequenz, an der Rudelmitglieder ihn erkennen können.'
+  },
+  {
+    id: 5003,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/lamarseillaise.mp3',
+    audioLabel: 'Nationalhymne',
+    question: 'Die Nationalhymne welchen Landes ist in diesem Clip zu hören?',
+    options: ['Belgien', 'Schweiz', 'Frankreich', 'Kanada'],
+    correct: 'Frankreich',
+    funFact: 'La Marseillaise wurde 1792 von Claude Joseph Rouget de Lisle in einer einzigen Nacht komponiert. Sie ist eine der leidenschaftlichsten Nationalhymnen der Welt – und eine der wenigen, die explizit zum bewaffneten Kampf aufruft.'
+  },
+  {
+    id: 5004,
+    type: 'audio',
+    category: 'Tiere',
+    difficulty: 'leicht',
+    audio: '/quiz/knowledge/src/kuckuck.mp3',
+    audioLabel: 'Vogelruf',
+    question: 'Welcher Vogel ist an seinem charakteristischen Ruf zu erkennen?',
+    options: ['Kuckuck', 'Wiedehopf', 'Pirol', 'Nachtigall'],
+    correct: 'Kuckuck',
+    funFact: 'Der Kuckuck legt seine Eier in fremde Nester und überlässt die Aufzucht anderen Vögeln. Das Kuckucksküken wirft die anderen Eier aus dem Nest und wächst allein auf – oft viel größer als seine Pflegeeltern.'
+  },
+  {
+    id: 5005,
+    type: 'audio',
+    category: 'Film',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/imperial-march.mp3',
+    audioLabel: 'Filmmusik',
+    question: 'Aus welchem Filmfranchise stammt dieses berühmte musikalische Thema?',
+    options: ['Indiana Jones', 'Star Wars', 'Der Herr der Ringe', 'Jurassic Park'],
+    correct: 'Star Wars',
+    funFact: 'Der "Imperial March" (Darth Vaders Thema) wurde von John Williams für "Das Imperium schlägt zurück" (1980) komponiert. Williams hat mehr Oscar-Nominierungen als jeder andere lebende Mensch und revolutionierte die Filmmusik.'
+  },
+  {
+    id: 5006,
+    type: 'audio',
+    category: 'Natur',
+    difficulty: 'schwer',
+    audio: '/quiz/knowledge/src/delfin-klick.mp3',
+    audioLabel: 'Meerestier-Kommunikation',
+    question: 'Welches Meerestier kommuniziert mit diesen Klick- und Pfeiflauten?',
+    options: ['Walhai', 'Delfin', 'Tintenfisch', 'Robbe'],
+    correct: 'Delfin',
+    funFact: 'Delfine haben ein individuelles "Unterschriften-Pfeifen" – eine Art Namen, die sie lebenslang benutzen und die andere Delfine imitieren können. Delfine sind neben Menschen und einigen Affen die einzigen Tiere, die sich so individuell benennen.'
+  },
+  {
+    id: 5007,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'schwer',
+    audio: '/quiz/knowledge/src/bach-toccata.mp3',
+    audioLabel: 'Orgelmusik',
+    question: 'Welches Instrument ist in diesem Stück von Johann Sebastian Bach zu hören?',
+    options: ['Klavier', 'Cembalo', 'Orgel', 'Harmonium'],
+    correct: 'Orgel',
+    funFact: 'Bachs Toccata und Fuge in d-Moll (BWV 565) ist eines der bekanntesten Orgelwerke aller Zeiten. Bach war zu Lebzeiten vor allem als brillanter Organist bekannt – seine Kompositionskunst wurde erst nach seinem Tod voll gewürdigt.'
+  },
+  {
+    id: 5008,
+    type: 'audio',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/cicaden.mp3',
+    audioLabel: 'Insektengeräusch',
+    question: 'Welche Insekten erzeugen dieses typische Sommergeräusch?',
+    options: ['Grillen', 'Zikaden', 'Heuschrecken', 'Mücken'],
+    correct: 'Zikaden',
+    funFact: 'Zikaden erzeugen ihre Laute nicht durch Reiben der Beine, sondern durch spezielle Trommelfelle (Tymbalorgane) am Hinterleib. Manche Zikadenarten sind mit bis zu 120 Dezibel die lautesten Insekten der Welt.'
+  },
+  {
+    id: 5009,
+    type: 'audio',
+    category: 'Geschichte',
+    difficulty: 'schwer',
+    audio: '/quiz/knowledge/src/morse-sos.mp3',
+    audioLabel: 'Morse-Signal',
+    question: 'Was bedeutet dieses Morse-Signal?',
+    options: ['Hilfe', 'SOS', 'Alarm', 'Feuer'],
+    correct: 'SOS',
+    funFact: 'SOS (· · · — — — · · ·) ist das internationale Notsignal im Morsecode. Es bedeutet nichts wörtlich – die drei Buchstaben wurden gewählt, weil sie einfach zu übertragen und kaum zu verwechseln sind. Die verbreiteten Abkürzungen "Save Our Souls" oder "Save Our Ship" sind spätere Erfindungen.'
+  },
+  {
+    id: 5010,
+    type: 'audio',
+    category: 'Natur',
+    difficulty: 'leicht',
+    audio: '/quiz/knowledge/src/donner.mp3',
+    audioLabel: 'Naturgeräusch',
+    question: 'Welches Naturphänomen ist in diesem Clip zu hören?',
+    options: ['Erdbeben', 'Vulkanausbruch', 'Donner', 'Wasserfall'],
+    correct: 'Donner',
+    funFact: 'Donner entsteht, wenn Blitze die Luft auf bis zu 30.000 °C erhitzen – fünfmal heißer als die Sonnenoberfläche. Die Luft dehnt sich explosionsartig aus und erzeugt eine Schallwelle. Licht reist schneller als Schall: Pro 3 Sekunden Verzögerung ist das Gewitter etwa 1 km entfernt.'
+  },
+  {
+    id: 5011,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'leicht',
+    audio: '/quiz/knowledge/src/marimba-ringtone.mp3',
+    audioLabel: 'Bekannter Klingelton',
+    question: 'Als Standard-Klingelton welches Smartphone-Betriebssystems ist dieser Sound bekannt?',
+    options: ['Android', 'iOS (iPhone)', 'Windows Phone', 'BlackBerry'],
+    correct: 'iOS (iPhone)',
+    funFact: 'Der "Marimba"-Klingelton war der Standard-Klingelton des ersten iPhones (2007) und ist bis heute in iOS enthalten. Er wurde von Apple-Mitarbeiter Scott Craighead erstellt und ist einer der meistgehörten Sounds der Welt.'
+  },
+  {
+    id: 5012,
+    type: 'audio',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/bat.mp3',
+    audioLabel: 'Tierlaut (verlangsamt)',
+    question: 'Dieses Tier nutzt Ultraschall zur Orientierung. Welches ist es?',
+    options: ['Maus', 'Fledermaus', 'Eule', 'Maulwurf'],
+    correct: 'Fledermaus',
+    funFact: 'Fledermäuse stoßen Ultraschallrufe aus (bis zu 130 kHz) und orientieren sich anhand der Echos. Dieses Echoortungs-System ist so präzise, dass sie im Dunkeln Insekten von der Größe eines Stecknadelkopfs fangen können.'
+  },
+  {
+    id: 5013,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'schwer',
+    audio: '/quiz/knowledge/src/alphorn.mp3',
+    audioLabel: 'Traditionelles Instrument',
+    question: 'Aus welchem Land stammt dieses traditionelle Holzblasinstrument?',
+    options: ['Österreich', 'Schweiz', 'Norwegen', 'Bayern'],
+    correct: 'Schweiz',
+    funFact: 'Das Alphorn ist ein über 3 Meter langes Naturinstrument aus Holz. Ursprünglich benutzten Schweizer Hirten es zur Kommunikation über große Bergdistanzen. Es kann nur Naturtöne erzeugen, da es keine Klappen oder Ventile hat.'
+  },
+  {
+    id: 5014,
+    type: 'audio',
+    category: 'Wissenschaft',
+    difficulty: 'schwer',
+    audio: '/quiz/knowledge/src/geigerzaehler.mp3',
+    audioLabel: 'Wissenschaftliches Messgerät',
+    question: 'Welches Gerät ist in diesem Audioclip zu hören?',
+    options: ['Seismograph', 'Axel', 'Geigerzähler', 'Radar'],
+    correct: 'Geigerzähler',
+    funFact: 'Der Geigerzähler (erfunden 1908 von Hans Geiger) misst ionisierende Strahlung. Jeder Klick entspricht einem detektierten radioaktiven Teilchen. In Tschernobyl und Fukushima wurden Geigerzähler zum Symbol nuklearer Katastrophen.'
+  },
+  {
+    id: 5015,
+    type: 'audio',
+    category: 'Film',
+    difficulty: 'leicht',
+    audio: '/quiz/knowledge/src/jaws-theme.mp3',
+    audioLabel: 'Filmmusik',
+    question: 'In welchem berühmten Spielberg-Film ist dieses Thema zu hören?',
+    options: ['E.T.', 'Der weiße Hai', 'Schindlers Liste', 'Unheimliche Begegnung der dritten Art'],
+    correct: 'Der weiße Hai',
+    funFact: 'John Williams komponierte das zweitönige "Jaws"-Thema so einfach, dass Steven Spielberg zunächst dachte, es sei ein Witz. Williams überredete ihn, es im Film zu verwenden – und das Thema wurde zu einem der einflussreichsten in der Filmgeschichte. Der Film erfand das Konzept des "Sommerblockbusters".'
+  },
+  {
+    id: 5016,
+    type: 'audio',
+    category: 'Natur',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/walgesang.mp3',
+    audioLabel: 'Gesang eines Meeressäugetiers',
+    question: 'Welches Meeressäugetier ist für diesen komplexen Gesang bekannt?',
+    options: ['Delfin', 'Blauwal', 'Buckelwal', 'Narwal'],
+    correct: 'Buckelwal',
+    funFact: 'Buckelwal-Gesänge sind echte Lieder: strukturierte Sequenzen, die über Stunden andauern können. Alle Buckelwalmännchen einer Region singen dieselbe Version, die sich aber jedes Jahr schrittweise verändert. Die Lieder breiten sich wie musikalische Moden im Ozean aus.'
+  },
+  {
+    id: 5017,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/didgeridoo.mp3',
+    audioLabel: 'Traditionelles Instrument',
+    question: 'Welche Bevölkerungsgruppe entwickelte dieses traditionelle Instrument?',
+    options: ['Maori (Neuseeland)', 'Aborigines (Australien)', 'Inuit (Kanada)', 'Sami (Skandinavien)'],
+    correct: 'Aborigines (Australien)',
+    funFact: 'Das Didgeridoo ist eines der ältesten Blasinstrumente der Welt – mindestens 1.500 Jahre alt, möglicherweise über 40.000. Virtuose Spieler nutzen "Zirkuläratmung": gleichzeitig durch die Nase ein- und durch den Mund ausatmen.'
+  },
+  {
+    id: 5018,
+    type: 'audio',
+    category: 'Tiere',
+    difficulty: 'schwer',
+    audio: '/quiz/knowledge/src/schnurren-katze.mp3',
+    audioLabel: 'Katzengeräusch',
+    question: 'Mit welcher Frequenz schnurren Hauskatzen ungefähr?',
+    options: ['5–10 Hz', '25–50 Hz', '100–150 Hz', '200–300 Hz'],
+    correct: '25–50 Hz',
+    funFact: 'Katzengeschnurr liegt im Bereich 25–50 Hz – genau der Frequenz, die erwiesenermaßen die Knochenheilung und das Muskelwachstum beim Menschen fördert. Katzen schnurren nicht nur wenn sie glücklich sind, sondern auch wenn sie gestresst, krank oder im Sterben liegen – es ist ein Selbstberuhigungsmechanismus.'
+  },
+  {
+    id: 5019,
+    type: 'audio',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/glocken-friedenslauten.mp3',
+    audioLabel: 'Kirchenglocken',
+    question: 'In Deutschland läuten die Kirchenglocken traditionell zum Gedenken an welches Datum?',
+    options: ['1. September – Beginn des 2. Weltkriegs', '8. Mai – Ende des 2. Weltkriegs', '3. Oktober – Deutsche Einheit', '9. November – Mauerfall'],
+    correct: '8. Mai – Ende des 2. Weltkriegs',
+    funFact: 'Am 8. Mai 1945 kapitulierte Deutschland bedingungslos. Seit 1985 läuten in Deutschland die Kirchenglocken als Zeichen der Erinnerung und Mahnung. Das Datum wurde in Deutschland lange kontrovers diskutiert – als Tag der Niederlage oder als Tag der Befreiung.'
+  },
+  {
+    id: 5020,
+    type: 'audio',
+    category: 'Natur',
+    difficulty: 'leicht',
+    audio: '/quiz/knowledge/src/regen-wald.mp3',
+    audioLabel: 'Naturgeräusch',
+    question: 'In welchem Biom erklingt dieses Geräusch am typischsten?',
+    options: ['Wüste', 'Tundra', 'Regenwald', 'Steppe'],
+    correct: 'Regenwald',
+    funFact: 'Tropische Regenwälder bedecken nur etwa 6 % der Landoberfläche, beherbergen aber über 50 % aller Tier- und Pflanzenarten. Ein Hektar Amazonas-Regenwald kann mehr Baumarten haben als ganz Nordamerika.'
+  },
+  {
+    id: 5021,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/bagpipe.mp3',
+    audioLabel: 'Folkloristisches Instrument',
+    question: 'Mit welchem Land werden Dudelsäcke (Bagpipes) am stärksten assoziiert?',
+    options: ['Irland', 'Schottland', 'Wales', 'England'],
+    correct: 'Schottland',
+    funFact: 'Der Dudelsack (Great Highland Bagpipe) ist das Nationalinstrument Schottlands. Britische Militärkapellen nutzen ihn seit dem 17. Jahrhundert. Historisch wurden Dudelsäcke als so einschüchternd eingestuft, dass sie nach dem Jakobitischen Aufstand 1746 als Kriegswaffe klassifiziert wurden.'
+  },
+  {
+    id: 5023,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'schwer',
+    audio: '/quiz/knowledge/src/theremin.mp3',
+    audioLabel: 'Elektronisches Instrument',
+    question: 'Welches berührungslose Instrument ist in diesem Clip zu hören?',
+    options: ['Ondes Martenot', 'Theremin', 'Moog-Synthesizer', 'Mellotron'],
+    correct: 'Theremin',
+    funFact: 'Das Theremin (erfunden 1920 von Lev Theremin) ist das einzige Instrument, das ohne Berührung gespielt wird. Der Musiker bewegt die Hände in zwei elektromagnetischen Feldern: eines steuert die Tonhöhe, das andere die Lautstärke. Katharina Ivanoff und Leon Theremin waren Pioniere dieses Klangs.'
+  },
+  {
+    id: 5024,
+    type: 'audio',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/eule-rufen.mp3',
+    audioLabel: 'Vogelruf bei Nacht',
+    question: 'Welcher Vogel ist mit diesem nächtlichen Ruf zu hören?',
+    options: ['Waldohreule', 'Uhu', 'Schleiereule', 'Waldkauz'],
+    correct: 'Waldkauz',
+    funFact: 'Der Waldkauz ist die häufigste Eule Europas. Sein zweiteiliger Ruf – das "Hu-Huhuhuhu" – ist der klassische "Eulenruf" in Filmen und Horrorgeschichten. Eulen drehen den Kopf bis zu 270 Grad, weil ihre Augen nicht beweglich sind.'
+  },
+  {
+    id: 5026,
+    type: 'audio',
+    category: 'Natur',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/bienenschwarm.mp3',
+    audioLabel: 'Insektengeräusch',
+    question: 'Wie heißt das Phänomen, wenn Bienen in einem Schwarm ihren Stock verlassen?',
+    options: ['Bienenflug', 'Schwarmen', 'Schwärmen', 'Ausschwärmen'],
+    correct: 'Schwärmen',
+    funFact: 'Beim Schwärmen verlässt die alte Königin mit etwa der Hälfte der Bienen den Stock, um eine neue Kolonie zu gründen. Der Schwarm hängt sich zeitweise zusammen (z.B. an einem Ast) und Kundschafterinnen suchen unterdessen einen neuen Neststandort – in einer echten Schwarmdemo-kratie.'
+  },
+  {
+    id: 5027,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'leicht',
+    audio: '/quiz/knowledge/src/ode-an-die-freude.mp3',
+    audioLabel: 'Berühmte Melodie',
+    question: 'Diese Melodie ist die Hymne welcher Organisation?',
+    options: ['Vereinte Nationen', 'Europäische Union', 'NATO', 'Weltbank'],
+    correct: 'Europäische Union',
+    funFact: 'Beethovens "Ode an die Freude" (aus der 9. Sinfonie) ist seit 1985 die offizielle Hymne der EU. Der Text von Friedrich Schiller besingt die Brüderlichkeit der Menschen. Beethovens 9. Sinfonie ist besonders bemerkenswert, weil er sie komponierte, als er völlig taub war.'
+  },
+  {
+    id: 5028,
+    type: 'audio',
+    category: 'Technik',
+    difficulty: 'mittel',
+    audio: '/quiz/knowledge/src/56k-modem.mp3',
+    audioLabel: 'Nostalgie-Technikgeräusch',
+    question: 'Was verbindet sich in diesem historischen Geräusch mit dem Internet?',
+    options: ['ISDN-Verbindung', '56k-Einwahlmodem', 'DSL-Router', 'Fax-Gerät'],
+    correct: '56k-Einwahlmodem',
+    funFact: 'Das charakteristische Quietschen und Rauschen eines Einwahl-Modems ist das Geräusch zweier Modems, die sich "vorstellen" und eine gemeinsame Verbindungssprache aushandeln. Mitte der 1990er war eine 56k-Verbindung modernste Technologie. Das Herunterladen eines heutigen HD-Films hätte damals etwa 30 Stunden gedauert.'
+  },
+  /*
+  {
+    id: 5029,
+    type: 'audio',
+    category: 'Tiere',
+    difficulty: 'schwer',
+    audio: '/audio/mantis-garnele-knall.mp3',
+    audioLabel: 'Unterwassergeräusch',
+    question: 'Welches Tier erzeugt diesen Unterwasser-Knall, der so laut ist wie ein Gewehrschuss?',
+    options: ['Pistolengarnele', 'Zitterwels', 'Hammerkopfhai', 'Zitteraal'],
+    correct: 'Pistolengarnele',
+    funFact: 'Die Pistolengarnele schnappt ihre Schere so schnell zu, dass eine Kavitationsblase entsteht, die beim Kollabieren einen Knall von bis zu 218 Dezibel erzeugt – kurzzeitig heißer als die Sonnenoberfläche (4.700 °C). Damit betäubt oder tötet sie Beute.'
+  },
+  {
+    id: 5030,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'mittel',
+    audio: '/audio/tabla-indien.mp3',
+    audioLabel: 'Indisches Schlaginstrument',
+    question: 'Wie heißt dieses klassische Schlaginstrument der indischen Musik?',
+    options: ['Sitar', 'Tabla', 'Dhol', 'Mridangam'],
+    correct: 'Tabla',
+    funFact: 'Die Tabla besteht aus zwei unterschiedlich gestimmten Trommeln und ist das wichtigste Begleitinstrument in der nordindischen Klassik. Tabla-Spieler lernen Rhythmusmuster in einer Lautsprache (Bol) – vergleichbar mit dem "Solfège" in der westlichen Musik.'
+  },
+  {
+    id: 5031,
+    type: 'audio',
+    category: 'Allgemeinwissen',
+    difficulty: 'leicht',
+    audio: '/audio/gong.mp3',
+    audioLabel: 'Percussion',
+    question: 'In welchem Kulturkreis ist der Gong ein traditionelles Musikinstrument?',
+    options: ['Arabischer Kulturraum', 'Ostasien/Südostasien', 'Subsahara-Afrika', 'Andenregion Südamerikas'],
+    correct: 'Ostasien/Südostasien',
+    funFact: 'Gongs werden seit mindestens 3.500 Jahren in Südostasien und China verwendet. In buddhistischen Tempeln markieren sie Gebetszeiten. Das Wort "Gong" stammt aus dem Malaiischen.'
+  },
+  {
+    id: 5032,
+    type: 'audio',
+    category: 'Wissenschaft',
+    difficulty: 'schwer',
+    audio: '/audio/gravitationswellen-sonifikation.mp3',
+    audioLabel: 'Wissenschaftliche Daten (hörbar gemacht)',
+    question: 'Dieses Geräusch ist eine Sonifikation welcher Entdeckung aus dem Jahr 2015?',
+    options: ['Erster Nachweis von Gravitationswellen', 'Schwarzes Loch im Zentrum der Milchstraße', 'Magnetfeld der Erde', 'Kosmische Hintergrundstrahlung'],
+    correct: 'Erster Nachweis von Gravitationswellen',
+    funFact: 'Im September 2015 detektierte LIGO erstmals Gravitationswellen – Kräuselungen in der Raumzeit, die Einstein 1916 vorhergesagt hatte. Die Signatur war das "Zwitschern" zweier verschmelzender Schwarzer Löcher. Das Ereignis fand 1,3 Milliarden Lichtjahre entfernt statt.'
+  },
+  {
+    id: 5033,
+    type: 'audio',
+    category: 'Natur',
+    difficulty: 'mittel',
+    audio: '/audio/vulkan-grollen.mp3',
+    audioLabel: 'Naturgeräusch',
+    question: 'Welche vulkanische Aktivität ist an diesen tiefen Grummelgeräuschen hörbar?',
+    options: ['Lavafluss im Meer', 'Tektonische Bewegung', 'Magmabewegung unter der Erde', 'Ascheausbruch'],
+    correct: 'Magmabewegung unter der Erde',
+    funFact: 'Vulkane "sprechen" – Seismologen analysieren Geräusche und Erschütterungen unterhalb von Vulkanen, um Ausbrüche vorherzusagen. Vor dem Ausbruch des Mt. St. Helens (1980) warnten Wissenschaftler anhand von Schwarmbeben – tausende von Miniaturerd beben täglich.'
+  },
+  {
+    id: 5034,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'mittel',
+    audio: '/audio/flamenco-gitarre.mp3',
+    audioLabel: 'Gitarrenstil',
+    question: 'Welchem musikalischen Stil aus welchem Land gehört diese Gitarrentechnik an?',
+    options: ['Samba – Brasilien', 'Flamenco – Spanien', 'Fado – Portugal', 'Tango – Argentinien'],
+    correct: 'Flamenco – Spanien',
+    funFact: 'Flamenco ist eine Kunstform aus Andalusien (Südspanien), die Gesang (Cante), Tanz (Baile) und Gitarrenspiel (Toque) vereint. Er entstand aus dem Zusammentreffen andalusischer, zigeunerischer, maurischer und jüdischer Musiktraditionen. Seit 2010 steht Flamenco auf der UNESCO-Liste des immateriellen Kulturerbes.'
+  },
+  {
+    id: 5035,
+    type: 'audio',
+    category: 'Film',
+    difficulty: 'mittel',
+    audio: '/audio/inception-bwaaah.mp3',
+    audioLabel: 'Filmmusik-Effekt',
+    question: 'Der tiefe, dröhnende Klang ("BWAAAH") ist charakteristisch für die Musik von Hans Zimmer in welchem Film?',
+    options: ['Interstellar', 'Inception', 'The Dark Knight', 'Dunkirk'],
+    correct: 'Inception',
+    funFact: 'Hans Zimmer verlangsamte die Edith-Piaf-Melodie "Non, je ne regrette rien" so stark, dass daraus das dröhnende Trompetenthema von "Inception" entstand – eine versteckte Anspielung auf den im Film beschriebenen Zeitverlangsamungseffekt. Das Geräusch wird inzwischen im Englischen als "Braaam" bezeichnet.'
+  },
+  {
+    id: 5036,
+    type: 'audio',
+    category: 'Tiere',
+    difficulty: 'leicht',
+    audio: '/audio/hahn-morgenruf.mp3',
+    audioLabel: 'Tiergeräusch',
+    question: 'Zu welcher Tageszeit kräht ein Hahn normalerweise zum ersten Mal?',
+    options: ['Mitternacht', 'Kurz vor der Morgendämmerung', 'Genau bei Sonnenaufgang', 'Eine Stunde nach Sonnenaufgang'],
+    correct: 'Kurz vor der Morgendämmerung',
+    funFact: 'Hähne krähen nicht nach dem Sonnenaufgang, sondern bereits davor – ihre innere Uhr bereitet sie darauf vor. Studien zeigen, dass Hähne eine interne circadiane Uhr nutzen und auf Licht reagieren. Dominante Hähne krähen als erste im Rudel.'
+  },
+  {
+    id: 5037,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'schwer',
+    audio: '/audio/sitar-raga.mp3',
+    audioLabel: 'Indisches Saiteninstrument',
+    question: 'Wer machte die Sitar im Westen berühmt, unter anderem als Einfluss auf The Beatles?',
+    options: ['Ali Akbar Khan', 'Ravi Shankar', 'Zakir Hussain', 'Hariprasad Chaurasia'],
+    correct: 'Ravi Shankar',
+    funFact: 'Ravi Shankar unterrichtete George Harrison in der Sitar und beeinflusste damit maßgeblich den Psychedelic-Rock. "Norwegian Wood" (1965) war das erste westliche Pop-Lied mit Sitar. Shankar ist auch der Vater von Norah Jones.'
+  },
+  {
+    id: 5038,
+    type: 'audio',
+    category: 'Allgemeinwissen',
+    difficulty: 'mittel',
+    audio: '/audio/big-ben.mp3',
+    audioLabel: 'Berühmte Glocke',
+    question: 'In welcher Stadt hängt "Big Ben" – die Glocke, die dieses Läuten erzeugt?',
+    options: ['Edinburgh', 'Dublin', 'London', 'Liverpool'],
+    correct: 'London',
+    funFact: 'Streng genommen ist "Big Ben" nur der Name der größten Glocke im Elizabeth Tower (früher: Clock Tower) des Westminster Palace in London. Der Turm selbst heißt seit 2012 "Elizabeth Tower" – benannt nach Königin Elizabeth II. anlässlich ihres 60-jährigen Thronjubiläums.'
+  },
+  {
+    id: 5039,
+    type: 'audio',
+    category: 'Tiere',
+    difficulty: 'schwer',
+    audio: '/audio/leierschwanz-imitation.mp3',
+    audioLabel: 'Vogelstimme',
+    question: 'Welcher australische Vogel ist bekannt dafür, Motorsägen, Kameraverschlüsse und andere Vögel perfekt zu imitieren?',
+    options: ['Kakadu', 'Leierschwanz', 'Kookaburra', 'Bowerbird'],
+    correct: 'Leierschwanz',
+    funFact: 'Der australische Leierschwanz (Superb Lyrebird) ist einer der weltbesten Vokalimitatoren. Er imitiert Motorsägen, Autolärm, Kameraverschlüsse und Dutzende anderer Vogelarten mit verblüffender Präzision. Sein Schwanz sieht wie eine Leier aus.'
+  },
+  {
+    id: 5040,
+    type: 'audio',
+    category: 'Film',
+    difficulty: 'mittel',
+    audio: '/audio/mario-theme.mp3',
+    audioLabel: 'Videospielmusik',
+    question: 'Wer komponierte die ikonische Musik dieses Videospiel-Franchise?',
+    options: ['Nobuo Uematsu', 'Koji Kondo', 'Yasunori Mitsuda', 'Yoko Shimomura'],
+    correct: 'Koji Kondo',
+    funFact: 'Koji Kondo komponierte die Super-Mario-Musik 1985 unter extremen technischen Einschränkungen: Nur 3 Töne gleichzeitig, 8-Bit-Klang. Das "Underground Theme" und das "Overworld Theme" gehören zu den bekanntesten Musikstücken der Welt – trotz ihrer technischen Simplizität.'
+  },
+  {
+    id: 5041,
+    type: 'audio',
+    category: 'Natur',
+    difficulty: 'mittel',
+    audio: '/audio/eisbrechen.mp3',
+    audioLabel: 'Naturgeräusch',
+    question: 'Welches Phänomen ist in diesem Clip zu hören?',
+    options: ['Gletscherspalte öffnet sich', 'Eisdecke eines Sees bricht', 'Eisberg kalbt vom Gletscher', 'Schneelavine'],
+    correct: 'Eisberg kalbt vom Gletscher',
+    funFact: 'Das "Kalben" eines Gletschers – wenn riesige Eisblöcke ins Meer stürzen – ist eines der lautesten natürlichen Ereignisse. Große Kalbungsereignisse können Geräusche von über 180 Dezibel erzeugen, hörbar auf Hunderte von Kilometern. Klimawandel beschleunigt diesen Prozess dramatisch.'
+  },
+  {
+    id: 5042,
+    type: 'audio',
+    category: 'Geschichte',
+    difficulty: 'schwer',
+    audio: '/audio/schreibmaschine.mp3',
+    audioLabel: 'Historisches Bürogerät',
+    question: 'Welches Gerät erzeugt dieses charakteristische Klackern?',
+    options: ['Lochkartenmaschine', 'Schreibmaschine', 'Fernschreiber', 'Rechenmaschine'],
+    correct: 'Schreibmaschine',
+    funFact: 'Die erste kommerziell erfolgreiche Schreibmaschine wurde 1868 von Christopher Latham Sholes erfunden. Die QWERTY-Tastatur, die er entwickelte, ist so angeordnet, dass die häufigsten Buchstabenpaare nicht nebeneinander liegen – um Verhakungen der mechanischen Typenhebel zu vermeiden.'
+  },
+  {
+    id: 5043,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'leicht',
+    audio: '/audio/haensel-gretel.mp3',
+    audioLabel: 'Kinderoper-Melodie',
+    question: 'Von welchem deutschen Komponisten stammt die Oper "Hänsel und Gretel"?',
+    options: ['Richard Wagner', 'Engelbert Humperdinck', 'Carl Maria von Weber', 'Hans Pfitzner'],
+    correct: 'Engelbert Humperdinck',
+    funFact: 'Engelbert Humperdinck komponierte "Hänsel und Gretel" (1893) ursprünglich als einfaches Singspiel für Kinder auf Bitten seiner Schwester – und weitete es zur vollständigen Oper aus. Sie wird traditionell am Heiligabend aufgeführt und ist die meistgespielte deutschsprachige Oper weltweit.'
+  },
+  {
+    id: 5044,
+    type: 'audio',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    audio: '/audio/elefant-trompeten.mp3',
+    audioLabel: 'Tiergeräusch',
+    question: 'In welchen Situationen trompeten Elefanten typischerweise?',
+    options: ['Ausschließlich bei Gefahr', 'Beim Trinken', 'Bei Aufregung, Bedrohung oder zur Begrüßung', 'Nur zur Paarungszeit'],
+    correct: 'Bei Aufregung, Bedrohung oder zur Begrüßung',
+    funFact: 'Elefanten kommunizieren auf viele Arten: Sie trompeten, grummeln, brummen und – für Menschen unhörbar – in Infraschall (<20 Hz), der sich über Dutzende Kilometer ausbreitet. Elefanten erkennen sich gegenseitig an der Stimme und behalten verstorbene Artgenossen offenbar in Erinnerung.'
+  },
+  {
+    id: 5045,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'mittel',
+    audio: '/audio/beatbox.mp3',
+    audioLabel: 'Gesangsstil',
+    question: 'Wie nennt man die Technik, Schlagzeuggeräusche ausschließlich mit Mund, Lippen und Stimme zu imitieren?',
+    options: ['Scat', 'Beatboxing', 'Vocalese', 'Overtone Singing'],
+    correct: 'Beatboxing',
+    funFact: 'Beatboxing entstand in den frühen 1980ern als Teil der Hip-Hop-Kultur. Profis wie Rahzel oder Kenny Muhammad können gleichzeitig Rap-Texte vortragen und Schlagzeugbeats imitieren. Doug E. Fresh gilt als einer der Begründer des modernen Beatboxing.'
+  },
+  {
+    id: 5046,
+    type: 'audio',
+    category: 'Wissenschaft',
+    difficulty: 'mittel',
+    audio: '/audio/sonar-ping.mp3',
+    audioLabel: 'Technisches Geräusch',
+    question: 'Wofür nutzen U-Boote diesen charakteristischen "Ping"-Ton?',
+    options: ['Kommunikation mit der Besatzung', 'Ortung von Objekten unter Wasser', 'Antriebssystem', 'Warnung vor Feindkontakt'],
+    correct: 'Ortung von Objekten unter Wasser',
+    funFact: 'Aktives Sonar sendet Schallimpulse aus und analysiert die Echos, um Entfernung und Position von Objekten zu bestimmen. Wale navigieren auf ähnliche Weise mit biologischem Echolot. Der "Ping" im Film "Das Boot" ist eines der bekanntesten Filmgeräusche überhaupt.'
+  },
+  {
+    id: 5047,
+    type: 'audio',
+    category: 'Film',
+    difficulty: 'schwer',
+    audio: '/audio/psycho-streicher.mp3',
+    audioLabel: 'Horrorfilm-Musik',
+    question: 'Der berühmte Streicher-Schock aus welchem Alfred-Hitchcock-Film ist hier zu hören?',
+    options: ['Die Vögel', 'Vertigo', 'Psycho', 'Das Fenster zum Hof'],
+    correct: 'Psycho',
+    funFact: 'Bernard Herrmanns Streichermuster für die Duschszene in "Psycho" (1960) – nur hohe Streicher, keine anderen Instrumente – wurde durch das menschliche Schreien inspiriert. Hitchcock wollte die Szene ursprünglich ohne Musik. Herrmanns Idee rettete sie. Der Film verwendete Schokoladensauce als Blut, da er schwarzweiß war.'
+  },
+  {
+    id: 5048,
+    type: 'audio',
+    category: 'Natur',
+    difficulty: 'schwer',
+    audio: '/audio/frosch-quaken.mp3',
+    audioLabel: 'Amphibiengeräusch',
+    question: 'Was quakende Frösche fast ausschließlich tun ist ...',
+    options: ['Feinde warnen', 'Reviere markieren', 'Weibchen anlocken', 'Artgenossen alarmieren'],
+    correct: 'Weibchen anlocken',
+    funFact: 'Fast ausschließlich Froschmännchen quaken – und zwar als Balzruf für Weibchen. Weibchen wählen Partner nach Lautstärke und Regelmäßigkeit des Quakens. Manche Froscharten quaken im Chor und synchronisieren ihre Rufe, um noch auffälliger zu sein.'
+  },
+  {
+    id: 5049,
+    type: 'audio',
+    category: 'Technik',
+    difficulty: 'mittel',
+    audio: '/audio/tesla-spule.mp3',
+    audioLabel: 'Elektrisches Phänomen',
+    question: 'Welches elektrische Phänomen erzeugt dieses Knistern und Prasseln?',
+    options: ['Blitzschlag', 'Elektrostatische Entladung', 'Funkenentladung einer Tesla-Spule', 'Kurzschluss'],
+    correct: 'Funkenentladung einer Tesla-Spule',
+    funFact: 'Nikola Teslas Resonanztransformator (1891) erzeugt hochfrequente Hochspannungsströme, die spektakuläre Funken erzeugen können. Tesla spielte mit Blitzen in seinen Händen und entwickelte Konzepte für drahtlose Energieübertragung – 100 Jahre vor modernem Wireless Charging.'
+  },
+  {
+    id: 5050,
+    type: 'audio',
+    category: 'Musik',
+    difficulty: 'leicht',
+    audio: '/audio/happy-birthday.mp3',
+    audioLabel: 'Lied',
+    question: 'Bis zu welchem Jahr war das Lied "Happy Birthday to You" urheberrechtlich geschützt?',
+    options: ['1998', '2007', '2015', '2030'],
+    correct: '2015',
+    funFact: 'Das Lied aus dem Jahr 1893 war bis 2015 unter Urheberrechtsschutz – was bedeutete, dass Filmproduzenten Lizenzgebühren zahlen mussten, wenn es in einem Film zu hören war. Ein US-Bundesgericht entschied 2015, dass das Copyright ungültig war. Seitdem ist das Lied public domain.'
+  },
+
+  /* ════════════════════════════════════════════════════════
+     🖼️  IMAGE  (50 Fragen)
+     Format:
+       type: 'image'
+       image: 'pfad/zum/bild.jpg'    ← Platzhalter
+       imageAlt: Bildbeschreibung
+       question: Frage zum Bild
+       options: [4 Antworten]
+       correct: richtige Antwort
+  ════════════════════════════════════════════════════════ */
+  {
+    id: 6001,
+    type: 'image',
+    category: 'Kunst',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/mona-lisa.webp',
+    imageAlt: 'Ein berühmtes Renaissance-Gemälde einer lächelnden Frau',
+    question: 'Wie heißt dieses berühmte Gemälde, das in Paris im Louvre hängt?',
+    options: ['Mädchen mit dem Perlenohrring', 'Die Mona Lisa', 'Venus von Botticelli', 'Die Dame mit dem Hermelin'],
+    correct: 'Die Mona Lisa',
+    funFact: 'Die Mona Lisa (ca. 1503–1519) von Leonardo da Vinci ist mit 860 Millionen US-Dollar die am höchsten versicherte Gemälde der Welt. Sie ist kleiner als die meisten Besucher erwarten: nur 77 × 53 cm. Das rätselhafte Lächeln entsteht durch Leonardos Sfumato-Technik.'
+  },
+  {
+    id: 6002,
+    type: 'image',
+    category: 'Geographie',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/eiffelturm.jpg',
+    imageAlt: 'Ein bekanntes Eisengitterwerk-Bauwerk in einer Großstadt',
+    question: 'In welcher Stadt steht dieses weltbekannte Bauwerk?',
+    options: ['London', 'Berlin', 'Paris', 'Brüssel'],
+    correct: 'Paris',
+    funFact: 'Der Eiffelturm wurde 1889 als temporäres Ausstellungsgebäude für die Weltausstellung gebaut und sollte nach 20 Jahren abgerissen werden. Gustave Eiffel rettete ihn, indem er einen Funkturm am Gipfel installieren ließ. Im Sommer ist er um bis zu 15 cm höher als im Winter (Wärmeausdehnung des Metalls).'
+  },
+  {
+    id: 6003,
+    type: 'image',
+    category: 'Biologie',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/dna-helix.jpg',
+    imageAlt: 'Eine blau-rote Doppelwendel-Struktur auf schwarzem Hintergrund',
+    question: 'Was stellt diese molekulare Struktur dar?',
+    options: ['Proteinstruktur', 'RNA-Strang', 'DNA-Doppelhelix', 'Chromosom'],
+    correct: 'DNA-Doppelhelix',
+    funFact: 'Die Doppelhelix-Struktur der DNA wurde 1953 von Watson und Crick entdeckt – basierend maßgeblich auf den Röntgenaufnahmen von Rosalind Franklin ("Foto 51"). DNA ist so dünn, dass die gesamte DNA eines Menschen aufgewickelt in einem Strang 2 Meter lang, zusammengerollt aber nur 6 Mikrometer klein ist.'
+  },
+  {
+    id: 6004,
+    type: 'image',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/machu-picchu.webp',
+    imageAlt: 'Alte Steinruinen auf einem grünen Berggipfel in Südamerika',
+    question: 'Welche Inka-Ruinenstadt ist auf diesem Foto zu sehen?',
+    options: ['Tikal', 'Chan Chan', 'Machu Picchu', 'Chichén Itzá'],
+    correct: 'Machu Picchu',
+    funFact: 'Machu Picchu (ca. 1450 n. Chr.) liegt auf 2.430 Metern Höhe in den peruanischen Anden. Der amerikanische Historiker Hiram Bingham machte die Anlage 1911 der Welt bekannt – die lokale Bevölkerung wusste natürlich schon davon. Die Inka hinterließen keine Schriften, weshalb vieles über ihre Hochkultur rätselhaft bleibt.'
+  },
+  {
+    id: 6005,
+    type: 'image',
+    category: 'Wissenschaft',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/schwarzes-loch-foto.jpg',
+    imageAlt: 'Ein leuchtendes orangen Ring um eine dunkle Mitte im Weltall',
+    question: 'Was ist auf dem ersten je aufgenommenen Foto eines schwarzen Loches zu sehen?',
+    options: ['Neutronenstern mit Akkretionsscheibe', 'Das Schwarze Loch M87* mit Akkretionsscheibe', 'Eine Supernova-Explosion', 'Sagittarius A* im Zentrum der Milchstraße'],
+    correct: 'Das Schwarze Loch M87* mit Akkretionsscheibe',
+    funFact: 'Das erste Foto eines schwarzen Loches wurde 2019 vom Event Horizon Telescope aufgenommen. M87* liegt 55 Millionen Lichtjahre entfernt und ist 6,5 Milliarden Mal schwerer als die Sonne. Das Bild erforderte 8 synchronisierte Radioteleskope weltweit und Petabytes an Daten.'
+  },
+  {
+    id: 6006,
+    type: 'image',
+    category: 'Tiere',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/axolotl.webp',
+    imageAlt: 'Ein rosa-weißes Wasser-Tier mit buschigen Kiemen an einem bunten Aquarium',
+    question: 'Wie heißt dieses faszinierende Amphibium aus Mexiko?',
+    options: ['Molch', 'Axolotl', 'Mudpuppy', 'Seemonster-Frosch'],
+    correct: 'Axolotl',
+    funFact: 'Der Axolotl (Ambystoma mexicanum) behält lebenslang seine Larvenform (Neotenie) und kann verlorene Körperteile – sogar Teile des Herzens und Gehirns – vollständig regenerieren. In der Wildnis ist er vom Aussterben bedroht; sein natürlicher Lebensraum ist auf den Xochimilco-See bei Mexiko-Stadt beschränkt.'
+  },
+  {
+    id: 6007,
+    type: 'image',
+    category: 'Kunst',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/guernica-picasso.jpg',
+    imageAlt: 'Ein schwarz-weißes, kubistisches Großgemälde mit verzerrten Figuren',
+    question: 'Von welchem Künstler stammt dieses anti-Kriegs-Gemälde namens "Guernica"?',
+    options: ['Salvador Dalí', 'Pablo Picasso', 'Joan Miró', 'Georges Braque'],
+    correct: 'Pablo Picasso',
+    funFact: 'Picasso schuf "Guernica" (1937) als Reaktion auf die Bombardierung der baskischen Stadt Guernica durch Nazi-Deutschland und faschistische Italien. Das Gemälde (776 × 349 cm) ist eines der mächtigsten politischen Kunstwerke aller Zeiten. Als ein Nazi-Offizier fragte: "Haben Sie das gemacht?" antwortete Picasso: "Nein, Sie."'
+  },
+  {
+    id: 6008,
+    type: 'image',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/aurora-borealis.jpg',
+    imageAlt: 'Grüne und lila Lichtbänder am nächtlichen Sternenhimmel',
+    question: 'Wie heißt dieses atmosphärische Phänomen?',
+    options: ['Zodikallicht', 'Polarlicht (Aurora borealis)', 'Nachtleuchten', 'Kugelblitz'],
+    correct: 'Polarlicht (Aurora borealis)',
+    funFact: 'Polarlichter entstehen, wenn geladene Teilchen des Sonnenwinds mit Sauerstoff- und Stickstoffatomen in der oberen Atmosphäre kollidieren. Grünes Licht entsteht bei ca. 100 km Höhe (Sauerstoff), rotes bei über 200 km. Der beste Zeitraum zur Beobachtung ist die Äquinoktialperiode (März und September).'
+  },
+  {
+    id: 6009,
+    type: 'image',
+    category: 'Essen & Trinken',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/sushi-moriawase.jpg',
+    imageAlt: 'Verschiedene Reisbällchen mit rohem Fisch auf einem Holzbrett',
+    question: 'Welche japanische Spezialität ist auf diesem Bild zu sehen?',
+    options: ['Onigiri', 'Sushi (Nigiri)', 'Temaki', 'Ramen'],
+    correct: 'Sushi (Nigiri)',
+    funFact: 'Nigiri-Sushi (Handform-Sushi) entstand im frühen 19. Jahrhundert in Edo (heute Tokio) als Street Food. Ursprünglich war Sushi eine Konservierungsmethode: Fisch wurde in fermentiertem Reis eingelegt. Echter Sushi-Reis wird mit einer speziellen Mischung aus Reisessig, Zucker und Salz gewürzt.'
+  },
+  {
+    id: 6010,
+    type: 'image',
+    category: 'Wissenschaft',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/lhc-tunnel.jpg',
+    imageAlt: 'Ein langer blau beleuchteter Tunnel mit riesigen Magneten',
+    question: 'Was ist in diesem Bild zu sehen?',
+    options: ['Internationales Raumschiff-Dock', 'Teilchenbeschleuniger (LHC) am CERN', 'Unterirdisches Datenzentrum', 'Fusionsreaktor ITER'],
+    correct: 'Teilchenbeschleuniger (LHC) am CERN',
+    funFact: 'Der Large Hadron Collider (LHC) am CERN ist mit 27 km Umfang die größte Maschine der Welt. Er liegt 100 m unter der Erde, quer durch die Grenze Schweiz-Frankreich. 2012 wurde dort das Higgs-Boson nachgewiesen – das "Gottesteilchen", das Materie Masse verleiht.'
+  },
+  {
+    id: 6011,
+    type: 'image',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/tintenfisch-chromatophoren.jpg',
+    imageAlt: 'Ein Meerestier wechselt in Echtzeit Farbe und Muster auf seiner Haut',
+    question: 'Welches Tier kann seine Farbe und Textur in Millisekunden verändern?',
+    options: ['Tintenfisch (Oktopus)', 'Chamäleon', 'Cuttlefish (Sepia)', 'Tarnrochen'],
+    correct: 'Cuttlefish (Sepia)',
+    funFact: 'Sepien (Tintenfische) haben Chromatophoren – Pigmentzellen, die sie innerhalb von 200 Millisekunden aktivieren können. Trotzdem sind sie farbenblind! Sie nehmen Licht durch ihre Pupillen wahr und rekonstruieren Farben durch die Polarisation des Lichts.'
+  },
+  {
+    id: 6012,
+    type: 'image',
+    category: 'Geographie',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/salar-de-uyuni.jpg',
+    imageAlt: 'Eine spiegelartige weiße Salzfläche, auf der sich der Himmel perfekt spiegelt',
+    question: 'Wie heißt diese größte Salzwüste der Welt in Bolivien?',
+    options: ['Salar de Atacama', 'Salar de Uyuni', 'Bonneville Salt Flats', 'Rann of Kutch'],
+    correct: 'Salar de Uyuni',
+    funFact: 'Der Salar de Uyuni (10.582 km²) ist so eben, dass er als Kalibrierungsreferenz für Satelliten genutzt wird. Nach Regenfällen bildet sich eine dünne Wasserschicht, die den Himmel perfekt spiegelt. Der Boden enthält über 50 % der weltweiten Lithiumreserven – ein begehrter Rohstoff für Elektroauto-Batterien.'
+  },
+  {
+    id: 6013,
+    type: 'image',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/kolosseum-rom.jpeg',
+    imageAlt: 'Ein antikes rundes Amphitheater aus Stein in einer Großstadt',
+    question: 'Für welche Art von Veranstaltungen wurde das Kolosseum in Rom hauptsächlich genutzt?',
+    options: ['Theater und Oper', 'Gladiatorenkämpfe und Tierhetzjagden', 'Religiöse Zeremonien', 'Märkte und Handel'],
+    correct: 'Gladiatorenkämpfe und Tierhetzjagden',
+    funFact: 'Das Kolosseum (Fertigstellung 80 n. Chr.) fasste 50.000–80.000 Zuschauer. Es hatte 80 Eingänge und ein Velarium – ein riesiges Sonnensegel. Unter der Arena lag ein Labyrinth aus Gängen, in dem Tiere und Gladiatoren auf ihren Einsatz warteten. Der Mythos, Christen wurden dort den Löwen vorgeworfen, ist historisch nicht belegt.'
+  },
+  {
+    id: 6014,
+    type: 'image',
+    category: 'Biologie',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/pilz-myzel.jpg',
+    imageAlt: 'Ein feines weißes Netzwerk von Fäden im Waldboden unter einem Pilz',
+    question: 'Was ist dieses feine weiße Netzwerk unter einem Pilz?',
+    options: ['Pilzsporen', 'Myzel (Pilzgeflecht)', 'Algen', 'Bakterienfilm'],
+    correct: 'Myzel (Pilzgeflecht)',
+    funFact: 'Das Myzel ist der eigentliche Körper des Pilzes – was wir als "Pilz" essen, ist nur der Fruchtkörper. Ein einziges Myzel kann Hunderte Hektar überspannen. Bäume nutzen Myzelnetze (Mykorrhiza), um Nährstoffe und sogar Informationen auszutauschen – das sogenannte "Wood Wide Web".'
+  },
+  {
+    id: 6015,
+    type: 'image',
+    category: 'Kunst',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/sternennacht-van-gogh.webp',
+    imageAlt: 'Ein expressionistisches Gemälde mit wirbelnden Wolken und einem leuchtenden Mond',
+    question: 'Von welchem Künstler stammt das Gemälde "Sternennacht"?',
+    options: ['Paul Gauguin', 'Edgar Degas', 'Vincent van Gogh', 'Claude Monet'],
+    correct: 'Vincent van Gogh',
+    funFact: 'Van Gogh malte "Sternennacht" (1889) in der psychiatrischen Anstalt Saint-Paul-de-Mausole in Saint-Rémy. Das Gemälde zeigt den Blick aus seinem Zimmerfenster, angereichert durch seine Vorstellungskraft. Zu Lebzeiten verkaufte er nur ein einziges Gemälde; heute sind seine Werke Milliarden wert.'
+  },
+  {
+    id: 6016,
+    type: 'image',
+    category: 'Technik',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/microchip-nahaufnahme.jpg',
+    imageAlt: 'Extreme Nahaufnahme eines silberfarbenen Chips mit komplexen Leiterbahnen',
+    question: 'Was ist auf diesem Bild zu sehen?',
+    options: ['Platine eines Computers', 'Mikrochip (integrierter Schaltkreis)', 'Solarzelle', 'Batterieanode'],
+    correct: 'Mikrochip (integrierter Schaltkreis)',
+    funFact: 'Moderne Mikrochips (wie die TSMC-5nm-Chips) haben Strukturen, die kleiner als ein Virus sind. Ein einzelner Chip mit der Fläche eines Fingernagels kann Milliarden von Transistoren enthalten. Die Moore\'sche Vermutung (Verdoppelung der Transistorzahl alle ~2 Jahre) hat die letzten 60 Jahre die gesamte IT-Industrie angetrieben.'
+  },
+  {
+    id: 6017,
+    type: 'image',
+    category: 'Natur',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/lavafluss.avif',
+    imageAlt: 'Leuchtend orangefarbene, glühende Flüssigkeit fließt über schwarzes Gestein',
+    question: 'Wie nennt man geschmolzenes Gestein, das aus einem Vulkan austritt?',
+    options: ['Magma', 'Lava', 'Basalt', 'Obsidian'],
+    correct: 'Lava',
+    funFact: 'Magma heißt geschmolzenes Gestein, solange es sich unter der Erdoberfläche befindet. Sobald es ausbricht, heißt es Lava. Lava kann bis zu 1.200 °C heiß sein. Nach dem Abkühlen entstehen Vulkangesteine wie Basalt (dunkle Lava) oder Bimsstein (sehr poröse, schwimmfähige Lava).'
+  },
+  {
+    id: 6018,
+    type: 'image',
+    category: 'Geschichte',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/rosetta-stein.jpg',
+    imageAlt: 'Ein dunkler Steinblock mit drei verschiedenen Schriftarten eingeritzt',
+    question: 'Was ermöglichte der Stein von Rosetta, der jetzt im British Museum liegt?',
+    options: ['Entschlüsselung der ägyptischen Hieroglyphen', 'Übersetzung der mesopotamischen Keilschrift', 'Entzifferung des Linearen B (Mykenes)', 'Entdeckung der phönizischen Schrift'],
+    correct: 'Entschlüsselung der ägyptischen Hieroglyphen',
+    funFact: 'Der Stein von Rosetta (196 v. Chr.) trägt denselben Text in drei Schriften: Hieroglyphen, Demotisch und Altgriechisch. Da Altgriechisch bekannt war, konnte Jean-François Champollion 1822 die Hieroglyphen entschlüsseln und damit eine jahrtausendealte Menschheitsgeschichte öffnen.'
+  },
+  {
+    id: 6019,
+    type: 'image',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/gran-canyon.jpg',
+    imageAlt: 'Eine riesige Schlucht mit roten Felswänden, durch die ein Fluss fließt',
+    question: 'Welcher Fluss hat den Grand Canyon in Arizona über Millionen von Jahren ausgehöhlt?',
+    options: ['Mississippi', 'Colorado', 'Snake', 'Rio Grande'],
+    correct: 'Colorado',
+    funFact: 'Der Grand Canyon ist 446 km lang, bis zu 29 km breit und bis zu 1.857 m tief. Seine Felswände sind ein geologisches Lehrbuch: Die ältesten Schichten sind fast 2 Milliarden Jahre alt. Der Colorado hat über etwa 5–6 Millionen Jahre an dieser Schlucht "gegraben".'
+  },
+  {
+    id: 6020,
+    type: 'image',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/mantarochen.webp',
+    imageAlt: 'Ein riesiger flügelförmiger Meeresrochen gleitet durchs blaue Wasser',
+    question: 'Wie heißt dieser Riesen-Rochen, der auch "Meeresteufel" genannt wird?',
+    options: ['Walhai', 'Mantarochen', 'Zitterrochen', 'Adlerrochen'],
+    correct: 'Mantarochen',
+    funFact: 'Mantarochen (Manta birostris) können eine Spannweite von bis zu 9 Metern erreichen und über 3 Tonnen wiegen. Trotz ihrer Größe fressen sie ausschließlich Plankton. Mantarochen gelten als sehr intelligent und haben das größte Gehirn aller Knorpelfische – relativ zu ihrer Körpergröße.'
+  },
+  {
+    id: 6021,
+    type: 'image',
+    category: 'Kunst',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/david-michelangelo.jpg',
+    imageAlt: 'Eine berühmte Marmorstatue eines nackten jungen Mannes',
+    question: 'Wo steht das Original von Michelangelos "David"?',
+    options: ['Rom, Vatikanische Museen', 'Florenz, Galleria dell\'Accademia', 'Paris, Louvre', 'Florenz, Uffizien'],
+    correct: 'Florenz, Galleria dell\'Accademia',
+    funFact: 'Michelangelos David (1501–1504) ist 5,17 m hoch und wiegt 5,7 Tonnen. Er stellt David VOR dem Kampf mit Goliath dar – fokussiert und angespannt, nicht triumphierend. Die Hände sind auffällig groß – als "Anker" der Komposition berechnet, die aus großer Entfernung betrachtet wird.'
+  },
+  {
+    id: 6022,
+    type: 'image',
+    category: 'Biologie',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/tardigrade.webp',
+    imageAlt: 'Ein mikroskopisch kleines Tier mit 8 Beinen, das wie ein kleiner Bär aussieht',
+    question: 'Wie nennt man dieses mikroskopische Lebewesen, das extremste Bedingungen überlebt?',
+    options: ['Milbe', 'Tardigrade (Bärchen)', 'Nematode', 'Rädertierchen'],
+    correct: 'Tardigrade (Bärchen)',
+    funFact: 'Tardigrade ("Bärtierchen") sind die widerstandsfähigsten Tiere der Welt: Sie überleben Vakuum, kosmische Strahlung, -272 °C bis +150 °C, extremen Druck und Austrocknung. In einem ausgetrockneten Zustand ("Kryptobiose") können sie Jahrzehnte warten und beim Kontakt mit Wasser wieder zum Leben erwachen.'
+  },
+  {
+    id: 6023,
+    type: 'image',
+    category: 'Geographie',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/fuji-san.jpg',
+    imageAlt: 'Ein symmetrischer schneebedeckter Vulkankegel mit Kirschblüten im Vordergrund',
+    question: 'In welchem Land ist dieser berühmte Berg – und wie heißt er?',
+    options: ['China – Huangshan', 'Japan – Fujisan', 'Korea – Hallasan', 'Nepal – Machapuchare'],
+    correct: 'Japan – Fujisan',
+    funFact: 'Der Fujisan (3.776 m) ist Japans höchster Berg und ein aktiver Stratovulkan. Er ist eine der meistabgebildeten Landschaften der Welt – besonders die Bilder von Katsushika Hokusai ("36 Ansichten des Berges Fuji") prägten sein Image. Er ist seit 2013 UNESCO-Weltkulturerbe.'
+  },
+  {
+    id: 6024,
+    type: 'image',
+    category: 'Essen & Trinken',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/baklava.jpg',
+    imageAlt: 'Goldgelbe, in Honig getränkte Blätterteigstücke mit Nüssen in einem Backblech',
+    question: 'Wie heißt dieses traditionelle Süßgebäck, das mit Nüssen und Honig gefüllt ist?',
+    options: ['Halva', 'Baklava', 'Kanafeh', 'Lokum'],
+    correct: 'Baklava',
+    funFact: 'Baklava ist ein Süßgebäck aus hauchdünnem Blätterteig (Yufka/Filo), Nüssen und Zuckersirup oder Honig. Es ist in der türkischen, griechischen, arabischen und persischen Küche verbreitet. Die Herkunft ist umstritten – Türken, Griechen und Araber beanspruchen alle die Erfindung.'
+  },
+  {
+    id: 6025,
+    type: 'image',
+    category: 'Wissenschaft',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/saturn-ringe.webp',
+    imageAlt: 'Ein Planet mit beeindruckenden Ringen um ihn herum, aufgenommen aus dem Weltraum',
+    question: 'Woraus bestehen die Ringe des Saturn hauptsächlich?',
+    options: ['Staub und Gas', 'Wassereis und Gestein', 'Flüssiges Helium', 'Metallpartikel'],
+    correct: 'Wassereis und Gestein',
+    funFact: 'Saturns Ringe sind 282.000 km weit, aber im Durchschnitt nur 20 Meter dick – dünner im Verhältnis als eine Rasierklinge! Sie bestehen zu 93 % aus Wassereis. Neuere Messungen zeigen, dass die Ringe nur 100–400 Millionen Jahre alt sind – jung im Vergleich zu Saturns 4,5 Milliarden Jahren.'
+  },
+  {
+    id: 6026,
+    type: 'image',
+    category: 'Architektur',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/sagrada-familia.avif',
+    imageAlt: 'Eine organisch geformte Kathedrale mit vielen Türmen in einer Großstadt',
+    question: 'Wer entwarf diese noch im Bau befindliche Kathedrale in Barcelona?',
+    options: ['Santiago Calatrava', 'Antoni Gaudí', 'Frank Gehry', 'Zaha Hadid'],
+    correct: 'Antoni Gaudí',
+    funFact: 'Antoni Gaudí begann 1882 mit dem Bau der Sagrada Família – sie ist bis heute unvollendet. Gaudí sagte: "Mein Auftraggeber hat keine Eile." Er widmete die letzten 43 Jahre seines Lebens dem Projekt. 2026 soll die Kathedrale nach über 140 Jahren Bauzeit fertiggestellt werden.'
+  },
+  {
+    id: 6027,
+    type: 'image',
+    category: 'Tiere',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/chameleon-auge.jpeg',
+    imageAlt: 'Ein kugelförmiges Tierauge mit türkisfarbener Pupille, das sich unabhängig dreht',
+    question: 'Chamäleons können ihre Augen unabhängig voneinander bewegen – welchen Vorteil hat das?',
+    options: ['Bessere Tarnung', '360-Grad-Blickfeld ohne Kopfbewegung', 'Infrarotsicht', 'Ultraviolettsicht'],
+    correct: '360-Grad-Blickfeld ohne Kopfbewegung',
+    funFact: 'Chamäleons können mit jedem Auge unabhängig in jede Richtung schauen – das gibt ihnen ein Sichtfeld von fast 360°. Wenn sie eine Beute fixieren, fokussieren beide Augen nach vorne für stereoskopisches Sehen. Ihre Zunge kann länger als ihr Körper sein und trifft Beute in 0,07 Sekunden.'
+  },
+  {
+    id: 6028,
+    type: 'image',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/berliner-mauer.jpg',
+    imageAlt: 'Eine graue Betonmauer mit Graffiti, dahinter ein Wachturm',
+    question: 'Wie viele Jahre trennte die Berliner Mauer Ost- und Westberlin?',
+    options: ['18 Jahre', '23 Jahre', '28 Jahre', '35 Jahre'],
+    correct: '28 Jahre',
+    funFact: 'Die Berliner Mauer stand vom 13. August 1961 bis zum 9. November 1989 – exakt 28 Jahre, 2 Monate und 26 Tage. Sie war 155 km lang und wurde von mindestens 140 Menschen beim Versuch, sie zu überqueren, getötet – die genaue Zahl ist bis heute nicht abschließend geklärt.'
+  },
+  {
+    id: 6029,
+    type: 'image',
+    category: 'Natur',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/borealer-wald.jpg',
+    imageAlt: 'Endlose Nadelwälder unter einem winterlichen Himmel, bedeckt mit Schnee',
+    question: 'Welches Ökosystem – das größte Waldgebiet der Erde – ist hier zu sehen?',
+    options: ['Taiga (borealer Nadelwald)', 'Temperater Regenwald', 'Montaner Wald', 'Subarktische Tundra'],
+    correct: 'Taiga (borealer Nadelwald)',
+    funFact: 'Die Taiga (borealer Nadelwald) ist das größte Waldökosystem der Erde und bedeckt ca. 17 Millionen km² – vor allem in Russland, Kanada und Skandinavien. Sie speichert enorme Mengen CO₂ im Boden (Permafrost). Die Erwärmung des Permafrost durch den Klimawandel könnte katastrophale Mengen Methan freisetzen.'
+  },
+  {
+    id: 6030,
+    type: 'image',
+    category: 'Kunst',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/optical-illusion-penrose.jpg',
+    imageAlt: 'Eine unmögliche dreieckige Figur, bei der jede Ecke scheinbar nach oben zeigt',
+    question: 'Wie heißt diese berühmte "unmögliche Figur"?',
+    options: ['Möbius-Band', 'Penrose-Dreieck', 'Necker-Würfel', 'Escher-Treppe'],
+    correct: 'Penrose-Dreieck',
+    funFact: 'Das Penrose-Dreieck wurde 1934 von dem schwedischen Künstler Oscar Reutersvärd erfunden und 1958 von Roger Penrose populär gemacht. Es ist dreidimensional scheinbar konsistent, aber physisch unmöglich. M.C. Escher verwendete es in seinen berühmten Werken "Wasserfall" und "Aufstieg und Abstieg".'
+  },
+  {
+    id: 6031,
+    type: 'image',
+    category: 'Geographie',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/aral-see-vorher-nachher.webp',
+    imageAlt: 'Eine Satellitenkarte zeigt zwei Bilder: links ein großer See, rechts fast nur Wüste',
+    question: 'Welche Umweltkatastrophe zeigt dieses Vorher-Nachher-Satellitenbild?',
+    options: ['Austrocknung des Tschadsees', 'Versalzung des Toten Meeres', 'Austrocknung des Aralsees', 'Verlandung der Lagune von Venedig'],
+    correct: 'Austrocknung des Aralsees',
+    funFact: 'Der Aralsee war bis in die 1960er Jahre der viertgrößte See der Welt. Durch sowjetische Bewässerungsprojekte wurden seine Zuflüsse umgeleitet – seitdem schrumpfte er auf etwa 10 % seiner ursprünglichen Größe. Das Salz und die Pestizide des trockengefallenen Seebodens werden vom Wind verteilt und schaden der Region noch heute.'
+  },
+  {
+    id: 6032,
+    type: 'image',
+    category: 'Biologie',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/querschnitt-baum.jpg',
+    imageAlt: 'Der Querschnitt eines Baumstammes mit deutlich sichtbaren Jahresringen',
+    question: 'Was verraten die Jahresringe eines Baumes außer seinem Alter?',
+    options: ['Nur das Alter des Baumes', 'Alter und Klimabedingungen jedes Jahres', 'Art des Baumes', 'Bodenqualität unter dem Baum'],
+    correct: 'Alter und Klimabedingungen jedes Jahres',
+    funFact: 'Die Wissenschaft der Jahresringanalyse heißt Dendrochronologie. Breite Ringe = gutes Wachstumsjahr (warm, feucht). Schmale = schlechte Bedingungen. Manche Bäume leben über 5.000 Jahre – die älteste Kiefer heißt Methuselah und steht in Kaliformien. Durch Jahresringe können Forscher Klimata bis vor 10.000 Jahren rekonstruieren.'
+  },
+  {
+    id: 6033,
+    type: 'image',
+    category: 'Sport',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/sumo-ringer.jpg',
+    imageAlt: 'Zwei schwere Männer in kleinen Lendenschurzen kämpfen auf einer runden Erhöhung',
+    question: 'Was ist das Ziel eines Sumo-Kampfes?',
+    options: ['Den Gegner K.O. schlagen', 'Den Gegner aus dem Ring drängen oder zu Boden bringen', 'Den Gegner 10 Sekunden festhalten', 'Den Gegner zur Aufgabe zwingen'],
+    correct: 'Den Gegner aus dem Ring drängen oder zu Boden bringen',
+    funFact: 'Sumo ist Japans Nationalsport und hat tiefe Wurzeln im Shinto-Ritual. Ein Kampf dauert meist unter einer Minute. Das Dohyo (Ring) ist 4,55 m im Durchmesser. Rikishi (Sumo-Ringer) dürfen keine Autos fahren, müssen in einem Stall (Heya) leben und folgen strengen Hierarchieregeln.'
+  },
+  {
+    id: 6034,
+    type: 'image',
+    category: 'Wissenschaft',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/feynman-diagramm.webp',
+    imageAlt: 'Ein Diagramm mit Linien und Wirbeln, die Teilchenwechselwirkungen darstellen',
+    question: 'Diese grafische Notation zur Darstellung von Teilchenwechselwirkungen heißt nach ihrem Erfinder?',
+    options: ['Einstein-Diagramm', 'Bohr-Grafik', 'Feynman-Diagramm', 'Heisenberg-Schema'],
+    correct: 'Feynman-Diagramm',
+    funFact: 'Richard Feynman entwickelte 1948 diese grafische Notation für die Quantenelektrodynamik. Die Wirbellinie (Photon), gerade Linien (Elektronen) und Zeitachse ermöglichen es, komplexe Quantenprozesse zu visualisieren und zu berechnen. Feynman war auch für seine Bongo-Trommeln und seine Abneigung gegen die NASA-Bürokratie bekannt.'
+  },
+  {
+    id: 6035,
+    type: 'image',
+    category: 'Tiere',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/qualle-leuchtend.jpg',
+    imageAlt: 'Eine blaue leuchtende Qualle im dunklen Ozean',
+    question: 'Wie nennt man die Fähigkeit von Tieren, selbst Licht zu erzeugen?',
+    options: ['Fluoreszenz', 'Phosphoreszenz', 'Biolumineszenz', 'Photosynthese'],
+    correct: 'Biolumineszenz',
+    funFact: 'Etwa 76 % aller Tiefseeorganismen sind biolumineszent. Sie erzeugen Licht durch chemische Reaktionen mit dem Protein Luciferin. Quallen nutzen es zur Kommunikation, Feinde zu verwirren oder Beute anzulocken. Das grüne Fluoreszenzprotein (GFP) der Qualle wurde zum wichtigsten Werkzeug der Zellbiologie.'
+  },
+  {
+    id: 6036,
+    type: 'image',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/stonehenge.jpg',
+    imageAlt: 'Riesige stehende Steine in einem Kreis auf einer Hochebene im Nebel',
+    question: 'In welchem Land steht Stonehenge?',
+    options: ['Irland', 'Schottland', 'Wales', 'England'],
+    correct: 'England',
+    funFact: 'Stonehenge (ca. 3000–1500 v. Chr.) in Wiltshire, England, ist ein megalithisches Monument. Die Sandsteine wiegen bis zu 25 Tonnen und wurden aus bis zu 250 km Entfernung transportiert – ohne Rad, ohne Eisen, ohne bekannte Technik. Ob es ein Kalender, ein Tempel oder ein Observatorium war, ist bis heute ungeklärt.'
+  },
+  {
+    id: 6037,
+    type: 'image',
+    category: 'Essen & Trinken',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/kaffee-latte-art.jpg',
+    imageAlt: 'Eine Tasse Kaffee mit einem Blattmuster aus Milchschaum',
+    question: 'Was ist die Technik, Muster in Milchschaum eines Kaffees zu gießen?',
+    options: ['Cappuccino-Art', 'Latte Art', 'Barista-Technik', 'Foam Drawing'],
+    correct: 'Latte Art',
+    funFact: 'Latte Art entstand in den 1980ern in der US-Specialty-Coffee-Szene. Profi-Baristas benötigen jahrelange Übung, um komplexe Muster wie Schwäne oder Gesichter zu gießen. In der Weltmeisterschaft wird Latte Art nach Muster, Kontrast und Symmetrie bewertet.'
+  },
+  {
+    id: 6038,
+    type: 'image',
+    category: 'Natur',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/eishoehle.jpg',
+    imageAlt: 'Eine Höhle mit türkisen Eiswänden und einem blauen Lichtschein',
+    question: 'Wie entsteht das Blaue Licht in einer Eishöhle?',
+    options: ['Biolumineszente Organismen', 'Kurzwelliges blaues Licht dringt tief in das Eis ein', 'Reflexion des Wassers', 'Minerale im Eis'],
+    correct: 'Kurzwelliges blaues Licht dringt tief in das Eis ein',
+    funFact: 'Eis absorbiert rotes und grünes Licht stärker als blaues – deshalb erscheint dickes Eis (wie Gletscher oder Eishöhlen) tiefblau. Je dicker und reiner das Eis, desto intensiver das Blau. Die bekanntesten Eishöhlen befinden sich auf Island, im Vatna-Gletscher.'
+  },
+  {
+    id: 6039,
+    type: 'image',
+    category: 'Kunst',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/anbetung-der-koenige-botticelli.jpg',
+    imageAlt: 'Ein Renaissancegemälde zeigt eine Gruppe elegant gekleideter Männer vor Maria mit Kind',
+    question: 'In welchem Stil ist dieses Gemälde aus der Frührenaissance gemalt?',
+    options: ['Barock', 'Manierismus', 'Tempera auf Holztafel (Frührenaissance)', 'Gotisch'],
+    correct: 'Tempera auf Holztafel (Frührenaissance)',
+    funFact: 'Vor der Erfindung der Ölmalerei (15. Jh.) malten Renaissancekünstler mit Ei-Tempera auf Holz oder Kalkputz (Fresko). Tempera trocknet schnell und verzeiht keine Fehler – anders als Öl. Die leuchtenden Farben der frühen Renaissance entstehen durch die feine Schichtung der Tempera.'
+  },
+  {
+    id: 6040,
+    type: 'image',
+    category: 'Geographie',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/zhangjiajie-berge.jpg',
+    imageAlt: 'Schroffe, säulenartige Felsformationen ragen aus dem Nebel heraus',
+    question: 'In welchem Land befinden sich diese "Hallelujah Mountains" (bekannt aus dem Film Avatar)?',
+    options: ['Vietnam', 'Thailand', 'China', 'Indonesien'],
+    correct: 'China',
+    funFact: 'Die Sandstein-Säulenberge des Zhangjiajie National Forest Park in der Provinz Hunan inspirierten die schwebenden Berge im Film "Avatar" (2009). Die Säulen wurden durch jahrmillionenlange Erosion aus einem ehemaligen Meeresgrund gebildet. Ein Gipfel wurde 2010 in "Avatar Hallelujah Mountain" umbenannt.'
+  },
+  {
+    id: 6041,
+    type: 'image',
+    category: 'Biologie',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/prion-proteinfaltung.png',
+    imageAlt: 'Computergenerierte Darstellung einer falsch gefalteten Proteinstruktur',
+    question: 'Was sind Prionen, und womit werden sie assoziiert?',
+    options: ['Viren ohne Hülle', 'Falsch gefaltete Proteine, die BSE und Creutzfeldt-Jakob verursachen', 'Bakterien-Endosporen', 'Retroviren'],
+    correct: 'Falsch gefaltete Proteine, die BSE und Creutzfeldt-Jakob verursachen',
+    funFact: 'Prionen sind fehlfach gefaltete Proteine, die gesunde Proteine "anstecken" und ebenfalls falsch zu falten veranlassen. Sie verursachen tödliche neurodegenerative Krankheiten (BSE beim Rind, Creutzfeldt-Jakob beim Menschen). Prionen können durch normales Kochen, Autoklavieren oder Bestrahlung nicht zerstört werden.'
+  },
+  {
+    id: 6042,
+    type: 'image',
+    category: 'Technik',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/3d-drucker.jpg',
+    imageAlt: 'Eine Maschine druckt Schicht für Schicht ein plastisches Objekt auf',
+    question: 'Wie heißt der Prozess, bei dem 3D-Drucker Objekte schichtweise aufbauen?',
+    options: ['Subtraktive Fertigung', 'Additive Fertigung', 'Formative Herstellung', 'Diffuse Modellierung'],
+    correct: 'Additive Fertigung',
+    funFact: '3D-Druck (additive Fertigung) wurde 1983 von Chuck Hull erfunden. Heute werden damit Prothesen, Häuser, Lebensmittel, Flugzeugteile und sogar menschliche Gewebe "gedruckt". NASA nutzt 3D-Druck, um Ersatzteile auf der ISS herzustellen – da ein Paket schicken etwas kompliziert ist.'
+  },
+  {
+    id: 6043,
+    type: 'image',
+    category: 'Sport',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/curling-team.avif',
+    imageAlt: 'Vier Athleten in bunten Jacken wischen energisch mit Besen auf Eis',
+    question: 'Bei welchem olympischen Wintersport wird mit Besen das Eis gefegt?',
+    options: ['Eisstockschießen', 'Curling', 'Boule auf Eis', 'Shuffleboard'],
+    correct: 'Curling',
+    funFact: 'Beim Curling beeinflusst das Wischen mit Besen die Richtung und Weite des Steins, indem es das Eis leicht anschmilzt und die Reibung reduziert. Profi-Curler können damit den Stein um bis zu 2 Meter von seiner natürlichen Bahn ablenken. Curling gilt als "Schach auf Eis".'
+  },
+  {
+    id: 6044,
+    type: 'image',
+    category: 'Natur',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/hagelkorn-querschnitt.jpg',
+    imageAlt: 'Der Querschnitt eines Hagelkorns zeigt konzentrische Eisschichten',
+    question: 'Was verraten die Schichten im Querschnitt eines Hagelkorns?',
+    options: ['Das Alter des Hagelkorns', 'Wie oft es im Gewittersturm auf- und abgestiegen ist', 'Die Temperatur beim Einschlag', 'Die chemische Zusammensetzung'],
+    correct: 'Wie oft es im Gewittersturm auf- und abgestiegen ist',
+    funFact: 'Jede Schicht im Hagelkorn entspricht einem Auf- und Abstieg im Gewitter: Abwärts in warme, feuchte Luft (transparente Schicht), aufwärts in kalte Luft (trübe Schicht). Das größte jemals gemessene Hagelkorn fiel 2010 in South Dakota: 20 cm Durchmesser, 878 Gramm.'
+  },
+  {
+    id: 6045,
+    type: 'image',
+    category: 'Geschichte',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/tutanchamun-maske.jpg',
+    imageAlt: 'Eine goldene Grabmaske mit Streifen in Blau und Gold eines ägyptischen Pharaos',
+    question: 'Welchem Pharao gehört diese Goldmaske, die 1922 entdeckt wurde?',
+    options: ['Ramses II.', 'Tutanchamun', 'Kleopatra', 'Nofretete'],
+    correct: 'Tutanchamun',
+    funFact: 'Tutanchamuns Grab (KV62 im Tal der Könige) wurde 1922 von Howard Carter entdeckt – als einziges Pharaonengrab nahezu unberührt von Grabräubern. Die Maske ist aus 11 kg purem Gold. Tutanchamun starb mit etwa 18–19 Jahren, wahrscheinlich an den Folgen eines Beinbruchs.'
+  },
+  {
+    id: 6046,
+    type: 'image',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/platypus.jpg',
+    imageAlt: 'Ein merkwürdiges braunes Tier mit Entenschnabel und Biberschwanz im Wasser',
+    question: 'Was ist die bemerkenswerteste Eigenschaft des Schnabeltiers unter Säugetieren?',
+    options: ['Es ist blind', 'Es legt Eier', 'Es hat kein Skelett', 'Es kann fliegen'],
+    correct: 'Es legt Eier',
+    funFact: 'Das Schnabeltier (Ornithorhynchus anatinus) ist eines von nur zwei eierlegen den Säugetieren (neben dem Ameisenigel). Männchen haben einen giftigen Sporn an den Hinterbeinen. Sie besitzen keinen Magen und haben im MRT-Bild keine sichtbaren Nieren. Als Forscher das erste Exemplar nach Europa schickten, glaubten Wissenschaftler, es sei ein Schwindel.'
+  },
+  {
+    id: 6047,
+    type: 'image',
+    category: 'Kunst',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/rothko-gemälde.jpg',
+    imageAlt: 'Große Farbfelder in Orange und Schwarz auf einer Leinwand ohne erkennbare Formen',
+    question: 'In welchem Kunststil wurde dieses Werk gemalt?',
+    options: ['Impressionismus', 'Abstrakter Expressionismus', 'Pop Art', 'Pointillismus'],
+    correct: 'Abstrakter Expressionismus',
+    funFact: 'Mark Rothko war ein Hauptvertreter des Abstrakten Expressionismus. Seine "Farbraum"-Bilder (Color Field Paintings) sollen beim Betrachter intensive emotionale Erlebnisse auslösen. Rothko sagte: "Wenn du weinst vor meinen Bildern, haben wir dasselbe religiöse Erlebnis geteilt." Er bestimmte selbst die Beleuchtung seiner Ausstellungen.'
+  },
+  {
+    id: 6048,
+    type: 'image',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/antarktis-eisberg.jpg',
+    imageAlt: 'Ein riesiger flacher Tafeleisberg ragt aus dem blauen Ozean',
+    question: 'Wie viel Prozent eines Eisbergs liegen typischerweise unter Wasser?',
+    options: ['50 %', '70 %', '90 %', '30 %'],
+    correct: '90 %',
+    funFact: 'Da Eis eine Dichte von 0,917 g/cm³ hat (weniger als Salzwasser mit 1,025), schwimmt es – aber 9/10 liegen unter Wasser. Der größte jemals gemessene Eisberg (B-15, 2000) war mit 11.000 km² größer als Jamaika. Die "Titanic" sank 1912 wegen des unsichtbaren Unterwasserteils eines Eisbergs.'
+  },
+  {
+    id: 6049,
+    type: 'image',
+    category: 'Biologie',
+    difficulty: 'leicht',
+    image: '/quiz/knowledge/src/photosynthese-blatt.jpg',
+    imageAlt: 'Blatt im Gegenlicht zeigt feine Adern und grüne Schichten',
+    question: 'In welchen Zellorganellen findet die Photosynthese statt?',
+    options: ['Mitochondrien', 'Chloroplasten', 'Ribosomen', 'Vakuolen'],
+    correct: 'Chloroplasten',
+    funFact: 'Chloroplasten enthalten das grüne Pigment Chlorophyll, das Sonnenlicht einfängt. Sie entstammen evolutionär ursprünglich Cyanobakterien, die von einer Vorläuferzelle "verschluckt" wurden und seitdem als Symbionten leben (endosymbiotische Theorie). Daher haben Chloroplasten noch ihre eigene DNA.'
+  },
+  {
+    id: 6050,
+    type: 'image',
+    category: 'Architektur',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/fallingwater.jpg',
+    imageAlt: 'Ein über einem Wasserfall schwebendes Gebäude aus Beton und Stein im Wald',
+    question: 'Von welchem Architekten stammt das Haus "Fallingwater" in Pennsylvania?',
+    options: ['Le Corbusier', 'Ludwig Mies van der Rohe', 'Frank Lloyd Wright', 'Walter Gropius'],
+    correct: 'Frank Lloyd Wright',
+    funFact: 'Fallingwater (1936–1939) gilt als eines der bedeutendsten Gebäude des 20. Jahrhunderts. Frank Lloyd Wright entwarf es mit 68 Jahren und vollendete die Pläne angeblich in nur zwei Stunden, nachdem er monatelang gezögert hatte. Das Haus schwebt mit seinen Terrassen über dem Bear Run Wasserfall in Pennsylvania.'
+  },
+  {
+    id: 6051,
+    type: 'image',
+    category: 'Geografie',
+    difficulty: 'mittel',
+    image: '/quiz/knowledge/src/barbados.svg',
+    imageAlt: 'Flagge von Barbados mit einem schwarzen Dreizack auf gelbem Hintergrund',
+    question: 'Welches Land hat diese Flagge?',
+    options: ['Barbados', 'Osttimor', 'Nauru', 'Palau'],
+    correct: 'Barbados',
+    funFact: 'Die Flagge von Barbados wurde 1966 bei der Unabhängigkeit eingeführt. Der schwarze Dreizack symbolisiert die Unabhängigkeit von Großbritannien (der Dreizack ist eine stilisierte Version von Neptuns Dreizack, da Barbados eine Insel ist). Die beiden blauen Streifen repräsentieren das Meer, der gelbe Streifen den Sandstrand.'
+  },
+  {
+    id: 6052,
+    type: 'image',
+    category: 'Geografie',
+    difficulty: 'schwer',
+    image: '/quiz/knowledge/src/gp.png',
+    imageAlt: 'Flagge von Guadaloupe',
+    question: 'Wem gehört diese Flagge?',
+    options: ['Guadaloupe', 'Martinique', 'St. Lucia', 'Grenada'],
+    correct: 'Guadaloupe',
+    funFact: 'Guadaloupe ist ein französisches Übersee-Département in der Karibik. Die Flagge zeigt die französische Trikolore mit einem gelben Sonnenmotiv und einem grünen Kokospalmenblatt – Symbole für Sonne, Strand und tropische Vegetation. Guadaloupe ist bekannt für seine Strände, den Vulkan La Soufrière und die kreolische Kultur.'
+  },
+
+  /* ════════════════════════════════════════════════════════
+     🎚️  SLIDER  (50 Fragen)
+     Format:
+       type: 'slider'
+       min, max, step: Schieberegler-Parameter
+       correct: exakter Wert (Number)
+       tolerance: erlaubte Abweichung (Number, optional)
+       unit: Einheit als String (optional)
+  ════════════════════════════════════════════════════════ */
+  {
+    id: 7001,
+    type: 'slider',
+    category: 'Astronomie',
+    difficulty: 'mittel',
+    question: 'Wie viele Erdmassen hat die Sonne ungefähr?',
+    min: 100000,
+    max: 500000,
+    step: 10000,
+    correct: 330000,
+    tolerance: 20000,
+    unit: ' Erdmassen',
+    funFact: 'Die Sonne hat ca. 330.000-mal die Masse der Erde. Sie enthält 99,86 % der gesamten Masse unseres Sonnensystems. Wäre die Sonne ein Hohlkörper, würden etwa 1,3 Millionen Erden hineinpassen.'
+  },
+  {
+    id: 7002,
+    type: 'slider',
+    category: 'Geographie',
+    difficulty: 'leicht',
+    question: 'Wie lang ist der Nil in Kilometern (gerundet auf 100 km)?',
+    min: 4000,
+    max: 8000,
+    step: 100,
+    correct: 6650,
+    tolerance: 200,
+    unit: ' km',
+    funFact: 'Der Nil ist mit 6.650 km der längste Fluss der Welt (je nach Messmethode konkurriert er mit dem Amazonas). Er fließt durch 11 Länder. Das Niltal ist eine der fruchtbarsten Regionen der Welt und Wiege einer der ältesten Zivilisationen.'
+  },
+  {
+    id: 7003,
+    type: 'slider',
+    category: 'Wissenschaft',
+    difficulty: 'schwer',
+    question: 'Bei welcher Temperatur (in °C) siedet Wasser auf dem Gipfel des Everest (8.849 m)?',
+    min: 50,
+    max: 100,
+    step: 1,
+    correct: 70,
+    tolerance: 3,
+    unit: ' °C',
+    funFact: 'Mit sinkendem Luftdruck sinkt auch der Siedepunkt von Wasser. Auf dem Everest siedet Wasser bei nur ca. 70 °C – zu niedrig, um Tee richtig aufzubrühen oder Speisen vollständig zu garen. Astronauten auf der ISS haben dasselbe Problem.'
+  },
+  {
+    id: 7004,
+    type: 'slider',
+    category: 'Biologie',
+    difficulty: 'mittel',
+    question: 'Wie viele Knochen hat ein erwachsener Mensch?',
+    min: 150,
+    max: 280,
+    step: 1,
+    correct: 206,
+    tolerance: 5,
+    unit: ' Knochen',
+    funFact: 'Babys werden mit etwa 270–300 Knochen geboren – viele davon knorpelig. Mit dem Wachstum verschmelzen sie, bis im Erwachsenenalter 206 übrig bleiben. Die kleinsten Knochen sind die drei Gehörknöchelchen (Hammer, Amboss, Steigbügel). Der Oberschenkelknochen ist der größte.'
+  },
+  {
+    id: 7005,
+    type: 'slider',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    question: 'In welchem Jahr wurde das Brandenburger Tor in Berlin eingeweiht?',
+    min: 1750,
+    max: 1850,
+    step: 1,
+    correct: 1791,
+    tolerance: 5,
+    unit: '',
+    funFact: 'Das Brandenburger Tor (1788–1791 erbaut) ist das einzig erhaltene Stadttor Berlins und eines der bekanntesten Symbole Deutschlands. Es wurde als Zeichen des Friedens errichtet. Napoleons Truppen trugen die Quadriga (Viergespann) 1806 als Kriegsbeute nach Paris – 1814 kehrte sie zurück.'
+  },
+  {
+    id: 7006,
+    type: 'slider',
+    category: 'Astronomie',
+    difficulty: 'schwer',
+    question: 'Wie viele Lichtjahre ist die Andromeda-Galaxie von uns entfernt?',
+    min: 1000000,
+    max: 4000000,
+    step: 100000,
+    correct: 2537000,
+    tolerance: 200000,
+    unit: ' Lichtjahre',
+    funFact: 'Die Andromeda-Galaxie (M31) ist mit 2,537 Millionen Lichtjahren die nächste große Galaxie zur Milchstraße. Sie rast mit 110 km/s auf uns zu. In etwa 4,5 Milliarden Jahren werden beide Galaxien miteinander verschmelzen – unser Sternensystem wird dabei wahrscheinlich in eine Außenbahn geworfen.'
+  },
+  {
+    id: 7007,
+    type: 'slider',
+    category: 'Tiere',
+    difficulty: 'leicht',
+    question: 'Wie viele Herzen hat ein Oktopus?',
+    min: 1,
+    max: 6,
+    step: 1,
+    correct: 3,
+    tolerance: 0,
+    unit: ' Herzen',
+    funFact: 'Der Oktopus hat 3 Herzen: ein Systemherz, das das Blut durch den Körper pumpt, und zwei Kiemenherzen, die das Blut durch die Kiemen drücken. Sein Blut ist blau (nicht rot), da es Hämocyanin (kupferbasiert) statt Hämoglobin (eisenbasiert) enthält.'
+  },
+  {
+    id: 7008,
+    type: 'slider',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    question: 'Wie viele Länder grenzen an Deutschland?',
+    min: 4,
+    max: 12,
+    step: 1,
+    correct: 9,
+    tolerance: 0,
+    unit: ' Länder',
+    funFact: 'Deutschland grenzt an 9 Länder: Dänemark (N), Polen und Tschechien (O), Österreich und die Schweiz (S), Frankreich, Luxemburg, Belgien und die Niederlande (W). Nur Russland und China haben mehr Nachbarländer.'
+  },
+  {
+    id: 7009,
+    type: 'slider',
+    category: 'Mathematik',
+    difficulty: 'mittel',
+    question: 'Die Kreiszahl Pi (π) beträgt ungefähr 3,14159... – wie viele Dezimalstellen wurden bisher berechnet?',
+    min: 1,
+    max: 200,
+    step: 1,
+    correct: 105,
+    tolerance: 50,
+    unit: ' Billionen Stellen',
+    funFact: '2024 wurde Pi auf über 105 Billionen Dezimalstellen berechnet – ein Weltrekord. Es ist eine irrationale Zahl: Sie hat unendlich viele Dezimalstellen ohne Muster. Selbst für astronomische Berechnungen genügen 40 Stellen (damit kann man den Umfang des beobachtbaren Universums auf Atomgröße genau berechnen).'
+  },
+  {
+    id: 7010,
+    type: 'slider',
+    category: 'Wissenschaft',
+    difficulty: 'schwer',
+    question: 'Bei wie viel Kelvin liegt der absolute Nullpunkt (0 K) in Grad Celsius?',
+    min: -300,
+    max: -200,
+    step: 1,
+    correct: -273,
+    tolerance: 1,
+    unit: ' °C',
+    funFact: 'Der absolute Nullpunkt (0 K = −273,15 °C) ist die tiefst mögliche Temperatur – bei der alle thermische Bewegung von Atomen zum Stillstand käme. Er kann praktisch nicht erreicht, nur angenähert werden. Forschern gelang es, Materie auf milliardstel Kelvin über dem absoluten Nullpunkt zu kühlen.'
+  },
+  {
+    id: 7011,
+    type: 'slider',
+    category: 'Sport',
+    difficulty: 'leicht',
+    question: 'Wie viele Spieler stehen beim Fußball auf dem Feld (beide Mannschaften zusammen)?',
+    min: 10,
+    max: 30,
+    step: 1,
+    correct: 22,
+    tolerance: 0,
+    unit: ' Spieler',
+    funFact: 'Jede Fußballmannschaft spielt mit 11 Spielern, macht 22 auf dem Feld. Dazu kommen der Schiedsrichter und in der Regel 2–4 Linienrichter. Das erste dokumentierte Fußballspiel nach modernen Regeln fand 1863 in England statt.'
+  },
+  {
+    id: 7012,
+    type: 'slider',
+    category: 'Biologie',
+    difficulty: 'schwer',
+    question: 'Wie viele Arten Bakterien leben schätzungsweise im menschlichen Darm?',
+    min: 100,
+    max: 1500,
+    step: 50,
+    correct: 1000,
+    tolerance: 200,
+    unit: ' Arten',
+    funFact: 'Im menschlichen Darm leben ca. 1.000 verschiedene Bakterienarten – mit insgesamt mehr als 39 Billionen einzelnen Bakterien. Das Darmmikrobiom hat eine Gesamtmasse von etwa 1,5 kg und beeinflusst Immunsystem, Stoffwechsel und sogar die Stimmung ("Darm-Gehirn-Achse").'
+  },
+  {
+    id: 7013,
+    type: 'slider',
+    category: 'Astronomie',
+    difficulty: 'mittel',
+    question: 'Mit wie viel km/s bewegt sich die Erde um die Sonne (gerundet)?',
+    min: 10,
+    max: 60,
+    step: 1,
+    correct: 30,
+    tolerance: 2,
+    unit: ' km/s',
+    funFact: 'Die Erde rast mit etwa 29,8 km/s (ca. 107.000 km/h) um die Sonne. Das sind fast 30 km jede Sekunde. In einer Minute legt die Erde ca. 1.800 km zurück – mehr als die Entfernung Berlin–Moskau.'
+  },
+  {
+    id: 7014,
+    type: 'slider',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    question: 'Wie viele Pyramiden gibt es in Ägypten (ungefähr)?',
+    min: 50,
+    max: 200,
+    step: 5,
+    correct: 130,
+    tolerance: 20,
+    unit: ' Pyramiden',
+    funFact: 'Ägypten hat etwa 130 bekannte Pyramiden – viel mehr als die meisten Menschen erwarten. Die berühmte Cheopspyramide in Gizeh ist mit 146 m (ursprünglich) die größte. Sudan hat sogar mehr Pyramiden als Ägypten (ca. 200–255), allerdings sind diese kleiner und weniger bekannt.'
+  },
+  {
+    id: 7015,
+    type: 'slider',
+    category: 'Wirtschaft',
+    difficulty: 'schwer',
+    question: 'Wie hoch ist das Bruttoinlandsprodukt der USA ungefähr (in Billionen US-Dollar, 2024)?',
+    min: 15,
+    max: 40,
+    step: 1,
+    correct: 28,
+    tolerance: 3,
+    unit: ' Billionen USD',
+    funFact: 'Die USA haben mit ca. 28 Billionen USD das größte Bruttoinlandsprodukt der Welt. Zum Vergleich: Deutschland liegt bei ca. 4,5 Billionen. Das US-BIP macht etwa 25 % der globalen Wirtschaftsleistung aus, obwohl die USA nur 4 % der Weltbevölkerung haben.'
+  },
+  {
+    id: 7016,
+    type: 'slider',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    question: 'Wie schnell kann ein Gepard maximal in km/h laufen?',
+    min: 80,
+    max: 150,
+    step: 5,
+    correct: 120,
+    tolerance: 10,
+    unit: ' km/h',
+    funFact: 'Der Gepard (Acinonyx jubatus) ist das schnellste Landtier der Welt mit bis zu 120 km/h – aber nur über kurze Distanzen (ca. 400–500 m). Nach einem Sprint muss er 15–30 Minuten ruhen. Seine Krallen sind nicht einziehbar, was ihm beim Rennen wie Spikes hilft.'
+  },
+  {
+    id: 7017,
+    type: 'slider',
+    category: 'Geographie',
+    difficulty: 'leicht',
+    question: 'Wie groß ist die Fläche Russlands in Millionen km² (gerundet)?',
+    min: 5,
+    max: 25,
+    step: 1,
+    correct: 17,
+    tolerance: 1,
+    unit: ' Mio. km²',
+    funFact: 'Russland ist mit 17,1 Millionen km² das größte Land der Welt – fast doppelt so groß wie Kanada (Platz 2). Es überspannt 11 Zeitzonen. Obwohl es so groß ist, lebt der Großteil der Bevölkerung im europäischen Teil westlich des Urals.'
+  },
+  {
+    id: 7018,
+    type: 'slider',
+    category: 'Wissenschaft',
+    difficulty: 'schwer',
+    question: 'Wie viele Atome hat ein Milliliter Wasser ungefähr (in Sextillionen = 10^21)?',
+    min: 10,
+    max: 200,
+    step: 5,
+    correct: 100,
+    tolerance: 30,
+    unit: ' Sextillionen Atome',
+    funFact: 'In 1 ml Wasser sind etwa 3,34 × 10^22 Wassermoleküle, also ca. 10^23 Atome. Zum Vergleich: Es gibt im beobachtbaren Universum schätzungsweise 10^80 Atome insgesamt. Die Avogadro-Zahl (6,022 × 10^23) beschreibt die Anzahl Atome/Moleküle in einem Mol einer Substanz.'
+  },
+  {
+    id: 7019,
+    type: 'slider',
+    category: 'Biologie',
+    difficulty: 'mittel',
+    question: 'Wie lang ist der menschliche Dünndarm in Metern?',
+    min: 2,
+    max: 15,
+    step: 1,
+    correct: 6,
+    tolerance: 1,
+    unit: ' Meter',
+    funFact: 'Der Dünndarm ist beim Erwachsenen ca. 5–7 m lang und für den größten Teil der Nährstoffaufnahme verantwortlich. Seine innere Oberfläche ist durch Falten, Zotten und Mikrovilli auf ca. 32 m² vergrößert – etwa die Größe eines kleinen Appartements. Der Dickdarm ist kürzer (ca. 1,5 m), aber weiter.'
+  },
+  {
+    id: 7020,
+    type: 'slider',
+    category: 'Geschichte',
+    difficulty: 'schwer',
+    question: 'In welchem Jahr wurde die Magna Carta in England unterzeichnet?',
+    min: 1100,
+    max: 1300,
+    step: 1,
+    correct: 1215,
+    tolerance: 5,
+    unit: '',
+    funFact: 'Die Magna Carta (Große Urkunde) wurde 1215 von König Johann Ohneland unterzeichnet und gilt als erstes verfassungsähnliches Dokument. Sie begrenzte die Macht des Königs und legte fest, dass niemand ohne rechtmäßiges Urteil inhaftiert werden darf – eine Grundlage des Rechtstaatsprinzips.'
+  },
+  {
+    id: 7021,
+    type: 'slider',
+    category: 'Technik',
+    difficulty: 'mittel',
+    question: 'Wie viele Megapixel hat die Kamera des James-Webb-Weltraumteleskops (NIRCAM)?',
+    min: 10,
+    max: 200,
+    step: 10,
+    correct: 68,
+    tolerance: 15,
+    unit: ' Megapixel',
+    funFact: 'Die NIRCam des James-Webb-Teleskops hat 68 Megapixel – verteilt auf 10 Sensoren. Wichtiger als die Megapixelzahl ist die Infrarotempfindlichkeit: Webb kann Galaxien beobachten, die nur 200–300 Millionen Jahre nach dem Urknall entstanden. Die Hauptspiegel-Fläche beträgt 25,4 m².'
+  },
+  {
+    id: 7022,
+    type: 'slider',
+    category: 'Tiere',
+    difficulty: 'leicht',
+    question: 'Wie lange lebt eine Arbeiterin im Bienenvolk im Sommer (in Tagen)?',
+    min: 10,
+    max: 100,
+    step: 5,
+    correct: 40,
+    tolerance: 10,
+    unit: ' Tage',
+    funFact: 'Eine Sommerbiene lebt nur ca. 40 Tage – die ersten 20 als "Hausdbiene" (Pflege, Bau), die letzten 20 als "Flugbiene" (Sammeln). Im Winter, ohne Flugbetrieb, können Bienen bis zu 6 Monate leben. Die Königin kann bis zu 5 Jahre leben und bis zu 2.000 Eier pro Tag legen.'
+  },
+  {
+    id: 7023,
+    type: 'slider',
+    category: 'Sport',
+    difficulty: 'mittel',
+    question: 'Wie hoch ist ein Basketballkorb in Metern (von der Hallenboden-Oberfläche)?',
+    min: 2.5,
+    max: 4.0,
+    step: 0.05,
+    correct: 3.05,
+    tolerance: 0.05,
+    unit: ' m',
+    funFact: 'Basketballkörbe hängen weltweit auf 3,05 m Höhe – eine Regelgröße, die James Naismith 1891 festlegte, weil der Balkon des YMCA-Gebäudes, an dem er den ersten Pfirsichkorb befestigte, genau 3,05 m hoch war. Eine echte historische Zufälligkeit!'
+  },
+  {
+    id: 7024,
+    type: 'slider',
+    category: 'Geographie',
+    difficulty: 'schwer',
+    question: 'Wie viele aktive Vulkane gibt es auf der Erde ungefähr?',
+    min: 200,
+    max: 1500,
+    step: 50,
+    correct: 800,
+    tolerance: 150,
+    unit: ' aktive Vulkane',
+    funFact: 'Es gibt ca. 800–1.500 Vulkane, die als "aktiv" gelten (in historischer Zeit ausgebrochen). Der "Feuerring" rund um den Pazifik beherbergt über 75 % aller Vulkane. Auf dem Meeresgrund gibt es zudem tausende unterseeische Vulkane, die ständig Gestein und Mineralien produzieren.'
+  },
+  {
+    id: 7025,
+    type: 'slider',
+    category: 'Biologie',
+    difficulty: 'schwer',
+    question: 'Wie viele Prozent der DNA teilt der Mensch mit einem Schimpansen?',
+    min: 70,
+    max: 100,
+    step: 1,
+    correct: 99,
+    tolerance: 1,
+    unit: ' %',
+    funFact: 'Menschen und Schimpansen teilen ca. 98,7–99 % ihrer DNA – je nach Messmethode. Der Unterschied von 1–1,3 % umfasst Gene für Sprache, Gehirngröße und aufrechten Gang. Mit Bananen teilen wir noch ca. 60 % unserer Gene – da viele grundlegende Zellfunktionen universell sind.'
+  },
+  {
+    id: 7026,
+    type: 'slider',
+    category: 'Wirtschaft',
+    difficulty: 'mittel',
+    question: 'In welchem Jahr wurde das Euro-Bargeld in Deutschland eingeführt?',
+    min: 1998,
+    max: 2006,
+    step: 1,
+    correct: 2002,
+    tolerance: 0,
+    unit: '',
+    funFact: 'Am 1. Januar 2002 wurde das Euro-Bargeld in 12 EU-Ländern eingeführt. In Deutschland war es der "umgekehrte D-Mark-Kurs" von 1,95583 DM pro Euro. Die letzten DM-Noten und -Münzen können noch immer bei der Bundesbank in Euro umgetauscht werden.'
+  },
+  {
+    id: 7027,
+    type: 'slider',
+    category: 'Astronomie',
+    difficulty: 'mittel',
+    question: 'Wie viele Monde hat der Planet Saturn (ungefähr, Stand 2024)?',
+    min: 20,
+    max: 150,
+    step: 5,
+    correct: 146,
+    tolerance: 10,
+    unit: ' Monde',
+    funFact: 'Saturn hat mit 146 bekannten Monden (Stand 2024) die meisten Monde aller Planeten. Der größte, Titan, ist größer als Merkur und hat eine dichte Atmosphäre mit flüssigen Methan-Seen auf seiner Oberfläche. Enceladus schießt Wasserdampf ins Weltall und gilt als Kandidat für außerirdisches Leben.'
+  },
+  {
+    id: 7028,
+    type: 'slider',
+    category: 'Technik',
+    difficulty: 'leicht',
+    question: 'Wie viel Prozent des Internets (Traffic) entfallen schätzungsweise auf Videostreaming?',
+    min: 10,
+    max: 90,
+    step: 5,
+    correct: 65,
+    tolerance: 10,
+    unit: ' %',
+    funFact: 'Videostreaming (Netflix, YouTube, TikTok etc.) macht ca. 65 % des globalen Internettraffics aus. Netflix allein ist zeitweise für über 15 % des gesamten globalen Downstreamtraffics verantwortlich. Ein einziger HD-Stream verbraucht ca. 3–4 GB pro Stunde.'
+  },
+  {
+    id: 7029,
+    type: 'slider',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    question: 'Wie hoch ist der Mount Everest (in Metern, gerundet auf 10 m)?',
+    min: 8000,
+    max: 9000,
+    step: 10,
+    correct: 8849,
+    tolerance: 20,
+    unit: ' m',
+    funFact: 'Der Mount Everest (Sagarmatha/Chomolungma) wurde 2020 neu vermessen und ist offiziell 8.848,86 m hoch – etwas höher als der vorherige Wert von 8.848 m. Er wächst jährlich um ca. 4 mm (tektonische Aktivität) und wird gleichzeitig durch Erosion abgetragen.'
+  },
+  {
+    id: 7030,
+    type: 'slider',
+    category: 'Tiere',
+    difficulty: 'schwer',
+    question: 'Wie viele Stunden schläft eine Koala täglich (ungefähr)?',
+    min: 10,
+    max: 24,
+    step: 1,
+    correct: 22,
+    tolerance: 1,
+    unit: ' Stunden',
+    funFact: 'Koalas schlafen bis zu 22 Stunden täglich – damit sind sie die Schläfer unter den Säugetieren. Der Grund: Eukalyptusblätter, ihre einzige Nahrung, enthalten kaum Energie und viele Giftstoffe. Schlafen spart Energie und gibt dem Körper Zeit, die Toxine zu verarbeiten.'
+  },
+  {
+    id: 7031,
+    type: 'slider',
+    category: 'Geschichte',
+    difficulty: 'leicht',
+    question: 'In welchem Jahr begann der Zweite Weltkrieg?',
+    min: 1930,
+    max: 1945,
+    step: 1,
+    correct: 1939,
+    tolerance: 0,
+    unit: '',
+    funFact: 'Am 1. September 1939 marschierte Deutschland in Polen ein – der Beginn des Zweiten Weltkriegs. Der Krieg dauerte bis zum 8. Mai 1945 (Europa) und 2. September 1945 (Pazifik). Er kostete ca. 70–85 Millionen Menschen das Leben – mehr als jeder andere Konflikt der Geschichte.'
+  },
+  {
+    id: 7032,
+    type: 'slider',
+    category: 'Biologie',
+    difficulty: 'mittel',
+    question: 'Wie viele Chromosomenpaare hat der Mensch?',
+    min: 10,
+    max: 50,
+    step: 1,
+    correct: 23,
+    tolerance: 0,
+    unit: ' Paare',
+    funFact: 'Der Mensch hat 23 Chromosomenpaare (46 Chromosomen). Interessant: Kartoffeln haben 48, Hunde haben 78. Das 23. Paar bestimmt das biologische Geschlecht: XX = weiblich, XY = männlich. Bei Down-Syndrom ist ein drittes Chromosom 21 vorhanden (Trisomie 21).'
+  },
+  {
+    id: 7033,
+    type: 'slider',
+    category: 'Sport',
+    difficulty: 'schwer',
+    question: 'Wie viele Goldmedaillen gewann Michael Phelps (Schwimmer) bei Olympischen Spielen insgesamt?',
+    min: 10,
+    max: 30,
+    step: 1,
+    correct: 23,
+    tolerance: 0,
+    unit: ' Goldmedaillen',
+    funFact: 'Michael Phelps gewann insgesamt 23 olympische Goldmedaillen (2000–2016) – mehr als jeder andere Athlet in der Olympiageschichte. Insgesamt hatte er 28 Medaillen. Im Vergleich: Das gesamte Olympia-Team Neuseelands hat in seiner Geschichte weniger Goldmedaillen gewonnen.'
+  },
+  {
+    id: 7034,
+    type: 'slider',
+    category: 'Essen & Trinken',
+    difficulty: 'mittel',
+    question: 'Wie viel Grad Celsius muss Schokolade beim sogenannten "Temperieren" erreichen?',
+    min: 20,
+    max: 60,
+    step: 1,
+    correct: 32,
+    tolerance: 2,
+    unit: ' °C',
+    funFact: 'Beim Temperieren wird Schokolade auf ca. 45–50 °C geschmolzen, auf ca. 27 °C abgekühlt und dann auf ca. 31–32 °C erwärmt. Dieser Prozess erzeugt stabile Kakaobutter-Kristalle (Typ V), die der Schokolade ihren Glanz, ihr Knacken und ihre glatte Textur geben. Falsches Temperieren führt zu "Fettreif".'
+  },
+  {
+    id: 7035,
+    type: 'slider',
+    category: 'Astronomie',
+    difficulty: 'schwer',
+    question: 'Wie viele Milliarden Jahre alt ist das Universum (ungefähr)?',
+    min: 10,
+    max: 20,
+    step: 1,
+    correct: 14,
+    tolerance: 1,
+    unit: ' Milliarden Jahre',
+    funFact: 'Das Universum ist ca. 13,8 Milliarden Jahre alt – ermittelt durch die kosmische Hintergrundstrahlung und die Expansion des Universums (Hubble-Konstante). Die Erde ist etwa 4,5 Milliarden Jahre alt. Die Sonne wird noch ca. 5 Milliarden Jahre existieren, dann wird sie zur Roten Riesin.'
+  },
+  {
+    id: 7036,
+    type: 'slider',
+    category: 'Wirtschaft',
+    difficulty: 'schwer',
+    question: 'Wie viele Milliarden Passagiere werden jährlich weltweit von Fluggesellschaften befördert (ca. 2023)?',
+    min: 1,
+    max: 8,
+    step: 1,
+    correct: 4,
+    tolerance: 1,
+    unit: ' Milliarden Passagiere',
+    funFact: 'Weltweit werden jährlich ca. 4 Milliarden Flugpassagiere befördert (vor COVID waren es fast 5 Milliarden). Zu jeder Sekunde befinden sich statistisch ca. 9.000–10.000 Flugzeuge gleichzeitig in der Luft. Fliegen ist statistisch das sicherste Transportmittel pro zurückgelegtem Kilometer.'
+  },
+  {
+    id: 7037,
+    type: 'slider',
+    category: 'Geographie',
+    difficulty: 'leicht',
+    question: 'Wie viele Einwohner hat Deutschland ungefähr (in Millionen, 2024)?',
+    min: 60,
+    max: 100,
+    step: 1,
+    correct: 84,
+    tolerance: 2,
+    unit: ' Millionen',
+    funFact: 'Deutschland hat ca. 84 Millionen Einwohner und ist das bevölkerungsreichste Land der Europäischen Union. Berlin ist mit 3,7 Millionen Einwohnern die größte Stadt, gefolgt von Hamburg und München. Seit 2023 hat die Bevölkerung durch Zuwanderung leicht zugenommen.'
+  },
+  {
+    id: 7038,
+    type: 'slider',
+    category: 'Biologie',
+    difficulty: 'schwer',
+    question: 'Wie viele Zellen hat ein menschlicher Körper ungefähr (in Billionen)?',
+    min: 10,
+    max: 100,
+    step: 5,
+    correct: 37,
+    tolerance: 10,
+    unit: ' Billionen Zellen',
+    funFact: 'Der menschliche Körper besteht aus ca. 37 Billionen (37 × 10^12) Zellen. Davon machen rote Blutkörperchen mit 25 Billionen den größten Anteil aus. Jeden Tag werden ca. 330 Milliarden Zellen ersetzt. Die kleinste Zelle ist das Spermium, die größte die Eizelle (mit dem Auge erkennbar!).'
+  },
+  {
+    id: 7039,
+    type: 'slider',
+    category: 'Sport',
+    difficulty: 'mittel',
+    question: 'Wie lang ist eine Olympische Schwimmbahn (in Metern)?',
+    min: 25,
+    max: 100,
+    step: 5,
+    correct: 50,
+    tolerance: 0,
+    unit: ' Meter',
+    funFact: 'Olympische Schwimmbecken sind 50 m lang und 25 m breit, mit mindestens 8 Bahnen. Das Wasser muss exakt 25–28 °C betragen. Für Kurzbahn-Wettkämpfe (Weltcup) gibt es 25-m-Becken. Der Weltrekord im 100-m-Freistil (Männer) liegt bei 46,80 Sekunden (Caeleb Dressel, 2021).'
+  },
+  {
+    id: 7040,
+    type: 'slider',
+    category: 'Astronomie',
+    difficulty: 'mittel',
+    question: 'Wie viele Planeten gibt es in unserem Sonnensystem (nach der IAU-Definition seit 2006)?',
+    min: 7,
+    max: 10,
+    step: 1,
+    correct: 8,
+    tolerance: 0,
+    unit: ' Planeten',
+    funFact: 'Seit 2006 gilt Pluto als Zwergplanet – deshalb hat unser Sonnensystem offiziell 8 Planeten: Merkur, Venus, Erde, Mars, Jupiter, Saturn, Uranus, Neptun. Die Entscheidung der IAU war höchst kontrovers. Interessant: 14 US-Bundesstaaten verabschiedeten symbolische Resolutionen, Pluto wieder als Planeten anzuerkennen.'
+  },
+  {
+    id: 7041,
+    type: 'slider',
+    category: 'Technik',
+    difficulty: 'schwer',
+    question: 'Wie viele Transistoren enthält ein moderner Smartphone-Prozessor (in Milliarden)?',
+    min: 1,
+    max: 30,
+    step: 1,
+    correct: 16,
+    tolerance: 6,
+    unit: ' Milliarden Transistoren',
+    funFact: 'Moderne Smartphone-Chips (z.B. Apple A18 Pro) enthalten ca. 16–20 Milliarden Transistoren auf einem Chip kleiner als eine Briefmarke. Im Vergleich: Der Intel 4004 (1971) hatte 2.300 Transistoren. Diese Verdoppelung alle ~2 Jahre (Mooresches Gesetz) hat die gesamte Computerrevolution angetrieben.'
+  },
+  {
+    id: 7042,
+    type: 'slider',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    question: 'Wie lange trägt eine Elefantin ihr Junges aus (in Monaten)?',
+    min: 12,
+    max: 30,
+    step: 1,
+    correct: 22,
+    tolerance: 1,
+    unit: ' Monate',
+    funFact: 'Elefanten haben mit ca. 22 Monaten die längste Tragzeit aller Landtiere. Die Kälber werden mit ca. 100 kg Geburtsgewicht zur Welt gebracht und können sofort laufen. Das Gehirn eines Elefantenbabys ist bei der Geburt zu 35 % ausgewachsen (beim Menschen zu 26 %).'
+  },
+  {
+    id: 7043,
+    type: 'slider',
+    category: 'Essen & Trinken',
+    difficulty: 'leicht',
+    question: 'Wie viele Tassen Kaffee werden täglich weltweit getrunken (in Milliarden)?',
+    min: 1,
+    max: 6,
+    step: 1,
+    correct: 3,
+    tolerance: 1,
+    unit: ' Milliarden Tassen',
+    funFact: 'Täglich werden weltweit etwa 2,5–3 Milliarden Tassen Kaffee getrunken. Kaffee ist das zweitgehandeltste Gut der Welt (nach Rohöl). Finnland ist pro Kopf der weltgrößte Kaffeetrinker. Kaffee wurde erst im 15. Jahrhundert im Jemen als Getränk populär – davor kauten Menschen die Kaffeebohnen.'
+  },
+  {
+    id: 7044,
+    type: 'slider',
+    category: 'Wissenschaft',
+    difficulty: 'mittel',
+    question: 'Wie viel Prozent des menschlichen Genoms bestehen aus kodierenden Sequenzen (Gene)?',
+    min: 1,
+    max: 30,
+    step: 1,
+    correct: 2,
+    tolerance: 1,
+    unit: ' %',
+    funFact: 'Nur ca. 1,5–2 % der menschlichen DNA kodiert für Proteine (Gene). Der Rest galt lange als "Junk-DNA" – wurde aber durch das ENCODE-Projekt als funktional erkannt: Regulator-Sequenzen, nicht-kodierende RNAs, strukturelle Elemente. "Junk" war ein großes Missverständnis.'
+  },
+  {
+    id: 7045,
+    type: 'slider',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    question: 'Wie tief ist der Marianengraben an seiner tiefsten Stelle (in Metern)?',
+    min: 8000,
+    max: 12000,
+    step: 100,
+    correct: 11000,
+    tolerance: 200,
+    unit: ' m',
+    funFact: 'Der Challenger Deep im Marianengraben ist mit ca. 10.935–11.034 m die tiefste bekannte Stelle im Ozean. Würde man den Mount Everest hineinwerfen, läge er 1,6 km unter Wasser. Nur wenige Menschen haben den Grund besucht – weniger als die Mondlandung! James Cameron fuhr 2012 dorthin.'
+  },
+  {
+    id: 7046,
+    type: 'slider',
+    category: 'Geschichte',
+    difficulty: 'schwer',
+    question: 'In welchem Jahr fand die Französische Revolution (Sturm der Bastille) statt?',
+    min: 1750,
+    max: 1820,
+    step: 1,
+    correct: 1789,
+    tolerance: 0,
+    unit: '',
+    funFact: 'Am 14. Juli 1789 stürmte das Volk die Bastille in Paris – Symbol der königlichen Willkürherrschaft. Dieser Tag ist heute Frankreichs Nationalfeiertag. Ironisch: In der Bastille befanden sich zum Zeitpunkt des Sturms nur 7 Gefangene.'
+  },
+  {
+    id: 7047,
+    type: 'slider',
+    category: 'Biologie',
+    difficulty: 'leicht',
+    question: 'Wie viele Milliliter Blut hat ein durchschnittlicher Erwachsener im Körper (in Litern)?',
+    min: 3,
+    max: 8,
+    step: 1,
+    correct: 5,
+    tolerance: 1,
+    unit: ' Liter Blut',
+    funFact: 'Ein erwachsener Mensch hat ca. 4,5–6 Liter Blut – je nach Körpergröße etwa 7–8 % des Körpergewichts. Das Herz pumpt dieses Blutvolumen ca. 70–80 Mal pro Minute durch den Körper. In einem Leben pumpt das Herz genug Blut, um 6 Supertanker zu füllen.'
+  },
+  {
+    id: 7048,
+    type: 'slider',
+    category: 'Wirtschaft',
+    difficulty: 'mittel',
+    question: 'Wie viel Prozent des weltweiten Handels werden per Schiff abgewickelt?',
+    min: 40,
+    max: 95,
+    step: 5,
+    correct: 80,
+    tolerance: 5,
+    unit: ' %',
+    funFact: 'Ca. 80 % des weltweiten Handels (nach Volumen) wird per Schiff abgewickelt. Die größten Containerriesen (Triple-E-Klasse) können über 24.000 Container tragen. Die Suez-Kanal-Blockade durch die "Ever Given" (2021) legte für 6 Tage einen beträchtlichen Teil des Welthandels lahm.'
+  },
+  {
+    id: 7049,
+    type: 'slider',
+    category: 'Sport',
+    difficulty: 'leicht',
+    question: 'Wie viele Spieler hat eine Volleyball-Mannschaft auf dem Feld?',
+    min: 4,
+    max: 10,
+    step: 1,
+    correct: 6,
+    tolerance: 0,
+    unit: ' Spieler',
+    funFact: 'Volleyball wird mit 6 Spielern pro Mannschaft gespielt. Es gibt eine Sonderrolle: den Libero (seit 1998 eingeführt), der ein andersfarbiges Trikot trägt und nicht angreifen, aber unbegrenzt wechseln darf. Volleyball wurde 1895 in Massachusetts von William Morgan erfunden.'
+  },
+  {
+    id: 7050,
+    type: 'slider',
+    category: 'Astronomie',
+    difficulty: 'leicht',
+    question: 'Wie viele Minuten benötigt Licht von der Sonne zur Erde (ungefähr)?',
+    min: 4,
+    max: 15,
+    step: 1,
+    correct: 8,
+    tolerance: 1,
+    unit: ' Minuten',
+    funFact: 'Licht von der Sonne braucht ca. 8 Minuten und 20 Sekunden, um die Erde zu erreichen. Das bedeutet: Wenn die Sonne plötzlich erlöschen würde, würden wir es erst 8 Minuten später bemerken. Von der nächsten anderen Sonne (Proxima Centauri) braucht Licht 4,24 Jahre.'
+  },
+
+  /* ════════════════════════════════════════════════════════
+     ☑️  MULTISELECT  (50 Fragen)
+     Format:
+       type: 'multiselect'
+       options: Array mit mind. 4 Optionen
+       correct: Array mit allen richtigen Antworten
+       (Spieler muss genau diese Kombination wählen)
+  ════════════════════════════════════════════════════════ */
+  {
+    id: 8001,
+    type: 'multiselect',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    question: 'Welche Länder grenzen an die Schweiz?',
+    options: ['Deutschland', 'Österreich', 'Slowenien', 'Frankreich', 'Italien', 'Tschechien'],
+    correct: ['Deutschland', 'Österreich', 'Frankreich', 'Italien'],
+    funFact: 'Die Schweiz grenzt an 5 Länder: Deutschland, Österreich, Frankreich, Italien und das Fürstentum Liechtenstein. Sie ist bekannt für ihre Neutralität (seit dem Wiener Kongress 1815) und ist weder EU- noch NATO-Mitglied.'
+  },
+  {
+    id: 8002,
+    type: 'multiselect',
+    category: 'Astronomie',
+    difficulty: 'schwer',
+    question: 'Welche Planeten haben keine Monde?',
+    options: ['Merkur', 'Venus', 'Erde', 'Mars', 'Jupiter', 'Saturn'],
+    correct: ['Merkur', 'Venus'],
+    funFact: 'Nur Merkur und Venus haben keine Monde. Die Erde hat einen, Mars zwei (Phobos und Deimos), Jupiter über 90, Saturn über 140. Die Erdmond entstand vermutlich durch den Einschlag eines marsgroßen Protoplaneten (Theia) vor ca. 4,5 Milliarden Jahren.'
+  },
+  {
+    id: 8003,
+    type: 'multiselect',
+    category: 'Chemie',
+    difficulty: 'mittel',
+    question: 'Welche Elemente sind Edelgase?',
+    options: ['Helium', 'Stickstoff', 'Argon', 'Sauerstoff', 'Neon', 'Chlor'],
+    correct: ['Helium', 'Argon', 'Neon'],
+    funFact: 'Edelgase (Gruppe 18) sind extrem reaktionsträge, weil ihre äußerste Elektronenschale vollständig besetzt ist. Die sechs stabilen Edelgase sind Helium, Neon, Argon, Krypton, Xenon und Radon. Argon macht ca. 1 % der Erdatmosphäre aus (häufiger als CO₂!).'
+  },
+  {
+    id: 8004,
+    type: 'multiselect',
+    category: 'Geschichte',
+    difficulty: 'schwer',
+    question: 'Welche Länder bildeten die Alliierten im Zweiten Weltkrieg (Hauptmächte)?',
+    options: ['USA', 'Frankreich', 'Deutschland', 'Italien', 'Sowjetunion', 'Großbritannien'],
+    correct: ['USA', 'Sowjetunion', 'Großbritannien'],
+    funFact: 'Die "Großen Drei" der Alliierten im WW2 waren USA, Sowjetunion und Großbritannien. Frankreich war nach 1940 besetzt, kämpfte aber mit den Freien Französischen Streitkräften unter de Gaulle weiter. Deutschland und Italien waren die Achsenmächte.'
+  },
+  {
+    id: 8005,
+    type: 'multiselect',
+    category: 'Biologie',
+    difficulty: 'mittel',
+    question: 'Welche der folgenden Tiere sind Säugetiere?',
+    options: ['Delfin', 'Hai', 'Fledermaus', 'Krokodil', 'Platypus', 'Tintenfisch'],
+    correct: ['Delfin', 'Fledermaus', 'Platypus'],
+    funFact: 'Säugetiere sind definiert durch: Warmblütigkeit, Haare/Fell, Säugen der Jungen, und (meist) lebende Geburten. Delfine und Wale sind vollständig aquatisch, aber trotzdem Säugetiere. Das Schnabeltier und der Ameisenigel sind Ausnahmen: Säugetiere, die Eier legen.'
+  },
+  {
+    id: 8006,
+    type: 'multiselect',
+    category: 'Musik',
+    difficulty: 'mittel',
+    question: 'Welche dieser Musikgenres haben ihre Wurzeln in der afroamerikanischen Musikkultur?',
+    options: ['Jazz', 'Blues', 'Klassik', 'Country', 'Rock\'n\'Roll', 'Oper'],
+    correct: ['Jazz', 'Blues', 'Rock\'n\'Roll'],
+    funFact: 'Jazz, Blues und Rock\'n\'Roll haben tiefe Wurzeln in der afroamerikanischen Kultur des US-Südens. Blues entstand Ende des 19. Jh. in den Südstaaten, Jazz in New Orleans Anfang des 20. Jh. Rock\'n\'Roll in den 1950ern. Die Übernahme dieser Genres durch weiße Künstler war historisch oft ohne Anerkennung und Vergütung.'
+  },
+  {
+    id: 8007,
+    type: 'multiselect',
+    category: 'Geographie',
+    difficulty: 'leicht',
+    question: 'Welche Städte sind Hauptstädte eines G7-Landes?',
+    options: ['Washington D.C.', 'Sydney', 'Tokio', 'Peking', 'Berlin', 'Brüssel'],
+    correct: ['Washington D.C.', 'Tokio', 'Berlin'],
+    funFact: 'Die G7 sind: USA (Washington D.C.), Japan (Tokio), Deutschland (Berlin), Frankreich (Paris), Großbritannien (London), Italien (Rom), Kanada (Ottawa) – sowie die EU. Sydney ist nicht Hauptstadt Australiens (das ist Canberra); Peking ist China, kein G7-Mitglied.'
+  },
+  {
+    id: 8008,
+    type: 'multiselect',
+    category: 'Wissenschaft',
+    difficulty: 'schwer',
+    question: 'Welche Phänomene sind Belege für die Relativitätstheorie?',
+    options: ['GPS-Zeitkorrekturen', 'Gravitationslinsen', 'Dopplereffekt bei Schall', 'Lichtablenkung durch Gravitation', 'Regenbogen'],
+    correct: ['GPS-Zeitkorrekturen', 'Gravitationslinsen', 'Lichtablenkung durch Gravitation'],
+    funFact: 'GPS-Satelliten müssen täglich relativistische Zeitkorrekturen vornehmen: Spezielle Relativität (Satellitenbewegung verlangsamt die Zeit) und Allgemeine Relativität (schwächere Gravitation beschleunigt die Zeit). Ohne diese Korrekturen wäre GPS nach einem Tag um mehrere Kilometer ungenau.'
+  },
+  {
+    id: 8009,
+    type: 'multiselect',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    question: 'Welche dieser Tiere sind für ihre vollständige Metamorphose (Holometabolie) bekannt?',
+    options: ['Schmetterling', 'Libelle', 'Heuschrecke', 'Käfer', 'Schnecke'],
+    correct: ['Schmetterling', 'Käfer'],
+    funFact: 'Vollständige Metamorphose (Holometabolie): Ei → Larve → Puppe → Imago. Das gilt für Schmetterlinge, Käfer, Fliegen, Bienen und Ameisen. Libellen und Heuschrecken machen eine unvollständige Metamorphose (Hemimetabolie) durch – ohne Puppenstadium. Schnecken metamorphosieren gar nicht.'
+  },
+  {
+    id: 8010,
+    type: 'multiselect',
+    category: 'Literatur',
+    difficulty: 'mittel',
+    question: 'Welche dieser Werke hat William Shakespeare geschrieben?',
+    options: ['Hamlet', 'Don Quijote', 'Macbeth', 'Faust', 'Othello', 'Die Göttliche Komödie'],
+    correct: ['Hamlet', 'Macbeth', 'Othello'],
+    funFact: 'Shakespeare schrieb 37 Theaterstücke, 154 Sonette und mehrere Langgedichte. "Don Quijote" ist von Miguel de Cervantes (Spanien, 1605), "Faust" von Goethe (Deutschland), "Die Göttliche Komödie" von Dante Alighieri (Italien, ca. 1320).'
+  },
+  {
+    id: 8011,
+    type: 'multiselect',
+    category: 'Essen & Trinken',
+    difficulty: 'leicht',
+    question: 'Welche Zutaten sind klassisch in einem Wiener Schnitzel enthalten?',
+    options: ['Kalbfleisch', 'Schweinefleisch', 'Ei', 'Semmelbrösel', 'Käse', 'Mehl'],
+    correct: ['Kalbfleisch', 'Ei', 'Semmelbrösel', 'Mehl'],
+    funFact: 'Das echte Wiener Schnitzel besteht aus Kalbfleisch, paniert in Mehl, Ei und Semmelbrösel, in Butterschmalz gebraten. Schnitzel aus Schweinefleisch heißen offiziell "Schnitzel Wiener Art". Es gibt um den Ursprung des Schnitzels einen freundlichen Streit zwischen Wien und Mailand (Cotoletta alla Milanese).'
+  },
+  {
+    id: 8012,
+    type: 'multiselect',
+    category: 'Technik',
+    difficulty: 'mittel',
+    question: 'Welche dieser Protokolle werden für die Übertragung von E-Mails verwendet?',
+    options: ['SMTP', 'IMAP', 'HTTP', 'POP3', 'FTP', 'DNS'],
+    correct: ['SMTP', 'IMAP', 'POP3'],
+    funFact: 'SMTP (Simple Mail Transfer Protocol) sendet E-Mails. IMAP und POP3 empfangen sie. HTTP/HTTPS ist für Webseiten, FTP für Dateiübertragungen, DNS für die Namensauflösung. Die erste E-Mail wurde 1971 von Ray Tomlinson an sich selbst geschickt – der Text ist nicht überliefert.'
+  },
+  {
+    id: 8013,
+    type: 'multiselect',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    question: 'Welche Erfindungen werden Thomas Edison zugeschrieben?',
+    options: ['Glühbirne (Verbesserung)', 'Phonograph', 'Telefon', 'Kinetoskop (früher Filmprojektor)', 'Radio'],
+    correct: ['Glühbirne (Verbesserung)', 'Phonograph', 'Kinetoskop (früher Filmprojektor)'],
+    funFact: 'Edison hielt 1.093 US-Patente. Das Telefon erfand Alexander Graham Bell, das Radio Guglielmo Marconi (und Nikola Tesla beanspruchte die Priorität). Edisons wichtigste Leistung war das erste Forschungslabor (Menlo Park, 1876) – die Erfindung der organisierten Forschung selbst.'
+  },
+  {
+    id: 8014,
+    type: 'multiselect',
+    category: 'Geographie',
+    difficulty: 'schwer',
+    question: 'Welche Meere/Ozeane berührt Russland?',
+    options: ['Arktischer Ozean', 'Pazifischer Ozean', 'Atlantischer Ozean', 'Indischer Ozean', 'Schwarzes Meer', 'Ostsee'],
+    correct: ['Arktischer Ozean', 'Pazifischer Ozean', 'Schwarzes Meer', 'Ostsee'],
+    funFact: 'Russland hat Küsten am Arktischen Ozean, Pazifischen Ozean, Schwarzen Meer, Ostsee und Kaspischen Meer (technisch ein See). Trotz seiner enormen Küstenlänge hat Russland im Winter große Probleme mit zugefrorenen Häfen – ein Hauptgrund für den historischen Wunsch nach "Warmwasserhäfen".'
+  },
+  {
+    id: 8015,
+    type: 'multiselect',
+    category: 'Film',
+    difficulty: 'mittel',
+    question: 'Welche dieser Filme haben den Oscar für den besten Film gewonnen?',
+    options: ['Der Pate', 'Schindlers Liste', 'Titanic', 'Avatar', 'Gladiator', 'Jurassic Park'],
+    correct: ['Der Pate', 'Schindlers Liste', 'Titanic', 'Gladiator'],
+    funFact: '"Avatar" (2009) war zwar der erfolgreichste Film aller Zeiten (nach Einspielergebnissen), gewann aber nicht den Best-Picture-Oscar (verlor gegen "Tut tig" / "The Hurt Locker"). "Jurassic Park" gewann 3 Oscars, aber nur technische. "Titanic" gewann 11 Oscars – gemeinsam mit "Ben-Hur" und "Herr der Ringe: Die Rückkehr" Rekord.'
+  },
+  {
+    id: 8016,
+    type: 'multiselect',
+    category: 'Biologie',
+    difficulty: 'schwer',
+    question: 'Welche dieser Organe hat der menschliche Körper doppelt (paarig)?',
+    options: ['Nieren', 'Leber', 'Lunge', 'Milz', 'Herz', 'Bauchspeicheldrüse'],
+    correct: ['Nieren', 'Lunge'],
+    funFact: 'Nieren und Lungen sind paarig angelegt – Leber, Milz, Herz und Bauchspeicheldrüse nicht. Mit einer einzigen Niere oder einem Lungenflügel ist Leben möglich (viele Lebendspender spenden eine Niere). Der Körper hat auch paarige Organe, die man nicht sieht: Hoden/Eierstöcke, Augen, Ohren, Hände, Beine.'
+  },
+  {
+    id: 8017,
+    type: 'multiselect',
+    category: 'Astronomie',
+    difficulty: 'mittel',
+    question: 'Welche Planeten unseres Sonnensystems sind Gasriesen?',
+    options: ['Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptun', 'Pluto'],
+    correct: ['Jupiter', 'Saturn'],
+    funFact: 'Jupiter und Saturn sind echte Gasriesen (hauptsächlich Wasserstoff und Helium, kein fester Kern). Uranus und Neptun heißen "Eisriesen" – sie enthalten mehr Wasser, Ammoniak und Methan unter extremem Druck. Saturn ist so leicht (Dichte < Wasser), dass er in einem riesigen Ozean schwimmen würde.'
+  },
+  {
+    id: 8018,
+    type: 'multiselect',
+    category: 'Essen & Trinken',
+    difficulty: 'mittel',
+    question: 'Welche Getränke enthalten von Natur aus Koffein?',
+    options: ['Kaffee', 'Grüner Tee', 'Kamillentee', 'Mate', 'Rooibos', 'Kakao'],
+    correct: ['Kaffee', 'Grüner Tee', 'Mate', 'Kakao'],
+    funFact: 'Koffein kommt natürlich in Kaffeebohnen, Teeblättern, Matepflanzen, Kakaobohnen, Kolanüssen und Guarana vor. Kamillentee und Rooibos sind koffeinfrei. Koffein ist weltweit die am häufigsten konsumierte psychoaktive Substanz. Es blockiert den Adenosin-Rezeptor, der normalerweise Müdigkeit signalisiert.'
+  },
+  {
+    id: 8019,
+    type: 'multiselect',
+    category: 'Wissenschaft',
+    difficulty: 'mittel',
+    question: 'Welche dieser Phänomene sind Beispiele für elektromagnetische Strahlung?',
+    options: ['Röntgenstrahlen', 'Schallwellen', 'Sichtbares Licht', 'Infrarotstrahlung', 'Erdbebenswellen', 'Radiowellen'],
+    correct: ['Röntgenstrahlen', 'Sichtbares Licht', 'Infrarotstrahlung', 'Radiowellen'],
+    funFact: 'Elektromagnetische Strahlung umfasst das gesamte Spektrum von Radiowellen bis Gammastrahlen – alle bewegen sich mit Lichtgeschwindigkeit. Schallwellen und Erdbebenwellen sind mechanische Wellen und brauchen ein Medium zur Ausbreitung; sie können sich nicht im Vakuum ausbreiten.'
+  },
+  {
+    id: 8020,
+    type: 'multiselect',
+    category: 'Geschichte',
+    difficulty: 'leicht',
+    question: 'Welche dieser Deutschen haben den Nobelpreis gewonnen?',
+    options: ['Albert Einstein', 'Max Planck', 'Karl Marx', 'Konrad Adenauer', 'Wilhelm Röntgen'],
+    correct: ['Albert Einstein', 'Max Planck', 'Wilhelm Röntgen'],
+    funFact: 'Einstein (Physik, 1921), Planck (Physik, 1918), Röntgen (Physik, 1901 – erster Physiknobelpreisträger überhaupt). Deutschland ist das Land mit den meisten Nobelpreisträgern nach den USA. Karl Marx und Konrad Adenauer erhielten keinen Nobelpreis.'
+  },
+  {
+    id: 8021,
+    type: 'multiselect',
+    category: 'Sprache',
+    difficulty: 'schwer',
+    question: 'Welche Sprachen sind romanische Sprachen (entstammen dem Latein)?',
+    options: ['Französisch', 'Rumänisch', 'Portugiesisch', 'Griechisch', 'Deutsch', 'Spanisch'],
+    correct: ['Französisch', 'Rumänisch', 'Portugiesisch', 'Spanisch'],
+    funFact: 'Romanische Sprachen entwickelten sich aus dem Vulgärlatein (dem gesprochenen Latein des Römischen Reiches). Die Hauptsprachen sind Spanisch, Portugiesisch, Französisch, Italienisch, Rumänisch und Katalanisch. Griechisch und Deutsch sind indoeuropäische Sprachen anderer Zweige (hellenisch und germanisch).'
+  },
+  {
+    id: 8022,
+    type: 'multiselect',
+    category: 'Sport',
+    difficulty: 'mittel',
+    question: 'Welche Sportarten sind Teil der Olympischen Sommerspiele (Stand 2024)?',
+    options: ['Klettern', 'Schach', 'Breakdance', 'Surfen', 'Cricket', 'Karate'],
+    correct: ['Klettern', 'Breakdance', 'Surfen'],
+    funFact: 'Klettern, Skateboard, Surfen und Breakdance wurden für Paris 2024 neu aufgenommen, um jüngere Zielgruppen anzusprechen. Karate war nur bei Tokio 2020 dabei und fiel danach wieder raus. Cricket und Schach sind trotz riesiger weltweiter Fangemeinden nicht olympisch.'
+  },
+  {
+    id: 8023,
+    type: 'multiselect',
+    category: 'Tiere',
+    difficulty: 'schwer',
+    question: 'Welche dieser Tiere können Ultraschall erzeugen oder wahrnehmen?',
+    options: ['Fledermaus', 'Delfin', 'Elefant', 'Hund', 'Katze', 'Schimpanse'],
+    correct: ['Fledermaus', 'Delfin', 'Hund', 'Katze'],
+    funFact: 'Fledermäuse und Delfine erzeugen Ultraschall zur Echoortung. Hunde hören bis ca. 65 kHz (Mensch bis 20 kHz), Katzen bis ca. 79 kHz. Elefanten dagegen kommunizieren in Infraschall (unter 20 Hz). Schimpansen haben ähnliche Hörfähigkeiten wie Menschen.'
+  },
+  {
+    id: 8024,
+    type: 'multiselect',
+    category: 'Mathematik',
+    difficulty: 'mittel',
+    question: 'Welche dieser Zahlen sind Primzahlen?',
+    options: ['2', '9', '13', '17', '21', '25'],
+    correct: ['2', '13', '17'],
+    funFact: '2 ist die einzige gerade Primzahl. 9 = 3×3, 21 = 3×7, 25 = 5×5 – also keine Primzahlen. Die größte bekannte Primzahl (Stand 2024) hat fast 25 Millionen Stellen. Der Beweis, ob es unendlich viele Primzahlzwillinge (z.B. 11&13, 17&19) gibt, ist eines der größten ungelösten Probleme der Mathematik.'
+  },
+  {
+    id: 8025,
+    type: 'multiselect',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    question: 'Welche Länder haben den Euro als offizielle Währung?',
+    options: ['Schweiz', 'Österreich', 'Norwegen', 'Frankreich', 'Schweden', 'Portugal'],
+    correct: ['Österreich', 'Frankreich', 'Portugal'],
+    funFact: 'Die Eurozone umfasst 20 EU-Länder (Stand 2024). Schweiz, Norwegen und Schweden sind nicht in der Eurozone: Schweiz und Norwegen sind nicht mal EU-Mitglieder; Schweden erfüllt die Kriterien, hat aber per Volksentscheid (2003) den Euro abgelehnt.'
+  },
+  {
+    id: 8026,
+    type: 'multiselect',
+    category: 'Medizin',
+    difficulty: 'schwer',
+    question: 'Welche Vitamine sind fettlöslich (können im Körper gespeichert werden)?',
+    options: ['Vitamin A', 'Vitamin B12', 'Vitamin C', 'Vitamin D', 'Vitamin E', 'Vitamin K'],
+    correct: ['Vitamin A', 'Vitamin D', 'Vitamin E', 'Vitamin K'],
+    funFact: 'Die fettlöslichen Vitamine ADEK werden im Fettgewebe und in der Leber gespeichert – ein Überschuss kann toxisch werden. Vitamin C und alle B-Vitamine sind wasserlöslich: Überschüsse werden über den Urin ausgeschieden. Daher ist eine Überdosierung mit Vitamin C kaum möglich, mit Vitamin A aber schon.'
+  },
+  {
+    id: 8027,
+    type: 'multiselect',
+    category: 'Film',
+    difficulty: 'mittel',
+    question: 'Welche dieser Figuren sind Charaktere aus dem Marvel Cinematic Universe (MCU)?',
+    options: ['Iron Man', 'Superman', 'Thor', 'The Flash', 'Black Panther', 'Batman'],
+    correct: ['Iron Man', 'Thor', 'Black Panther'],
+    funFact: 'Iron Man, Thor und Black Panther sind Marvel-Charaktere (MCU). Superman, The Flash und Batman sind DC-Charaktere. MCU ist das erfolgreichste Filmfranchise der Geschichte mit einem kumulierten Einspielergebnis von über 30 Milliarden Dollar.'
+  },
+  {
+    id: 8028,
+    type: 'multiselect',
+    category: 'Natur',
+    difficulty: 'mittel',
+    question: 'Welche dieser Faktoren tragen zu einem Tornado bei?',
+    options: ['Feuchte Warmluft aus dem Süden', 'Trockene Kaltluft aus dem Norden', 'Wind-Scherung (unterschiedliche Windrichtungen in verschiedenen Höhen)', 'Mondgravitation', 'Starke Sonneinstrahlung allein'],
+    correct: ['Feuchte Warmluft aus dem Süden', 'Trockene Kaltluft aus dem Norden', 'Wind-Scherung (unterschiedliche Windrichtungen in verschiedenen Höhen)'],
+    funFact: 'Tornados entstehen in Superzellen-Gewittern: Feuchte Warmluft steigt auf und trifft auf trockene Kaltluft; Windscherung (unterschiedliche Windrichtungen in verschiedenen Höhen) versetzt die aufsteigende Luft in Rotation. "Tornado Alley" in den USA hat ideale Bedingungen durch die Topografie des Kontinents.'
+  },
+  {
+    id: 8029,
+    type: 'multiselect',
+    category: 'Geschichte',
+    difficulty: 'schwer',
+    question: 'Welche Länder waren Gründungsmitglieder der NATO (1949)?',
+    options: ['USA', 'Deutschland', 'Großbritannien', 'Frankreich', 'Schweden', 'Island'],
+    correct: ['USA', 'Großbritannien', 'Frankreich', 'Island'],
+    funFact: 'Die NATO wurde 1949 von 12 Ländern gegründet: USA, Kanada, Großbritannien, Frankreich, Belgien, Niederlande, Luxemburg, Norwegen, Dänemark, Island, Italien und Portugal. Deutschland trat erst 1955 bei (Westdeutschland); Schweden wurde erst 2024 Mitglied.'
+  },
+  {
+    id: 8030,
+    type: 'multiselect',
+    category: 'Wissenschaft',
+    difficulty: 'mittel',
+    question: 'Welche Aussagen über Schwarze Löcher sind korrekt?',
+    options: ['Kein Licht kann entweichen', 'Sie saugen alles in der Nähe an', 'Sie haben eine "Ereignishorizont"-Grenze', 'Sie leben ewig', 'Sie entstehen nur aus Sternen'],
+    correct: ['Kein Licht kann entweichen', 'Sie haben eine "Ereignishorizont"-Grenze'],
+    funFact: 'Schwarze Löcher saugen nicht aktiv an – Materie fällt durch normale Gravitation hinein. Nach Hawking-Strahlung verdampfen sie sehr langsam. Sie entstehen auch aus dem Zusammenschluss von Galaxien. Der "Ereignishorizont" ist die Grenze, jenseits derer keine Rückkehr möglich ist.'
+  },
+  {
+    id: 8031,
+    type: 'multiselect',
+    category: 'Tiere',
+    difficulty: 'leicht',
+    question: 'Welche Tiere sind in Deutschland heimisch?',
+    options: ['Braunbär', 'Grizzlybär', 'Wolf', 'Luchs', 'Jaguar', 'Puma'],
+    correct: ['Braunbär', 'Wolf', 'Luchs'],
+    funFact: 'Wolf und Luchs sind nach Jahrzehnten der Ausrottung nach Deutschland zurückgekehrt. Der Braunbär ist in Bayern heimisch und wurde nach einem letzten Exemplar (Bruno, 2006) nicht wieder beobachtet. Jaguar und Puma sind ausschließlich in Amerika beheimatet.'
+  },
+  {
+    id: 8032,
+    type: 'multiselect',
+    category: 'Kunst',
+    difficulty: 'mittel',
+    question: 'Welche Kunstepochen folgten aufeinander (richtige Zuordnungen)?',
+    options: ['Renaissance (15./16. Jh.)', 'Barock (17./18. Jh.)', 'Kubismus (20. Jh.)', 'Impressionismus (19. Jh.)', 'Romantik (19. Jh.)'],
+    correct: ['Renaissance (15./16. Jh.)', 'Barock (17./18. Jh.)', 'Kubismus (20. Jh.)', 'Impressionismus (19. Jh.)', 'Romantik (19. Jh.)'],
+    funFact: 'Die Kunstgeschichte: Mittelalter → Renaissance (15./16. Jh.) → Barock (17./18. Jh.) → Klassizismus/Romantik (18./19. Jh.) → Impressionismus (spätes 19. Jh.) → Moderne mit Kubismus, Expressionismus etc. (frühes 20. Jh.) → Zeitgenössische Kunst.'
+  },
+  {
+    id: 8033,
+    type: 'multiselect',
+    category: 'Biologie',
+    difficulty: 'schwer',
+    question: 'Welche dieser Substanzen sind Makronährstoffe (liefern dem Menschen Energie)?',
+    options: ['Kohlenhydrate', 'Fette', 'Vitamine', 'Proteine', 'Mineralstoffe', 'Wasser'],
+    correct: ['Kohlenhydrate', 'Fette', 'Proteine'],
+    funFact: 'Makronährstoffe liefern Energie: Kohlenhydrate (4 kcal/g), Proteine (4 kcal/g) und Fette (9 kcal/g). Vitamine, Mineralstoffe und Wasser sind essenziell, liefern aber keine Energie. Alkohol ist eine Ausnahme: Er liefert 7 kcal/g Energie, ist aber kein Nährstoff im klassischen Sinne.'
+  },
+  {
+    id: 8034,
+    type: 'multiselect',
+    category: 'Technik',
+    difficulty: 'mittel',
+    question: 'Welche Betriebssysteme werden auf Smartphones verwendet?',
+    options: ['Android', 'iOS', 'Windows 11', 'HarmonyOS', 'macOS', 'Linux (Desktop)'],
+    correct: ['Android', 'iOS', 'HarmonyOS'],
+    funFact: 'Auf dem Smartphone-Markt dominieren Android (ca. 72 %) und iOS (ca. 27 %). HarmonyOS von Huawei ist seit 2019 im Einsatz, nachdem Huawei durch US-Sanktionen der Zugang zu Android-Diensten beschränkt wurde. Windows Phone wurde 2017 offiziell eingestellt.'
+  },
+  {
+    id: 8035,
+    type: 'multiselect',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    question: 'Welche Werke gehören zur Weltliteratur der Antike?',
+    options: ['Ilias (Homer)', 'Divina Commedia (Dante)', 'Aeneis (Vergil)', 'Hamlet (Shakespeare)', 'Odyssee (Homer)'],
+    correct: ['Ilias (Homer)', 'Aeneis (Vergil)', 'Odyssee (Homer)'],
+    funFact: '"Ilias" und "Odyssee" (Homer, ca. 8. Jh. v. Chr.) sind die ältesten erhaltenen Werke der europäischen Literatur. Vergils "Aeneis" (1. Jh. v. Chr.) ist das klassische Epos Roms und verbindet griechische und römische Mythologie. Dantes "Göttliche Komödie" und Shakespeares "Hamlet" sind Mittelalter/Renaissance.'
+  },
+  {
+    id: 8036,
+    type: 'multiselect',
+    category: 'Geographie',
+    difficulty: 'schwer',
+    question: 'Welche Länder befinden sich vollständig auf der Südhalbkugel?',
+    options: ['Australien', 'Brasilien', 'Indonesien', 'Chile', 'Neuseeland', 'Thailand'],
+    correct: ['Australien', 'Chile', 'Neuseeland'],
+    funFact: 'Australien und Neuseeland liegen vollständig auf der Südhalbkugel. Brasilien und Indonesien werden vom Äquator geteilt. Chile liegt fast vollständig auf der Südhalbkugel (nur ein winziges Stück im Norden). Thailand liegt vollständig auf der Nordhalbkugel.'
+  },
+  {
+    id: 8037,
+    type: 'multiselect',
+    category: 'Musik',
+    difficulty: 'schwer',
+    question: 'Welche Instrumente gehören zum klassischen Symphonieorchester?',
+    options: ['Fagott', 'Saxophon', 'Pauke', 'Gitarre', 'Oboe', 'Syntheziser'],
+    correct: ['Fagott', 'Pauke', 'Oboe'],
+    funFact: 'Das klassische Symphonieorchester (seit Beethoven) besteht aus Streichern, Holzbläsern (Flöte, Oboe, Klarinette, Fagott), Blechbläsern (Trompete, Horn, Posaune, Tuba) und Schlaginstrumenten (Pauke). Saxophon und Gitarre gehören nicht dazu – obwohl beide im 19. Jh. erfunden wurden.'
+  },
+  {
+    id: 8038,
+    type: 'multiselect',
+    category: 'Wirtschaft',
+    difficulty: 'mittel',
+    question: 'Welche Aussagen über Bitcoin sind korrekt?',
+    options: ['Maximale Menge: 21 Millionen BTC', 'Es gibt keine zentrale Kontrolle', 'Transaktionen sind vollständig anonym', 'Es gibt einen physischen Bitcoin-Server', 'Mining erzeugt neue Bitcoins'],
+    correct: ['Maximale Menge: 21 Millionen BTC', 'Es gibt keine zentrale Kontrolle', 'Mining erzeugt neue Bitcoins'],
+    funFact: 'Bitcoin-Transaktionen sind pseudonym, nicht anonym – alle sind auf der öffentlichen Blockchain einsehbar. Es gibt keine zentralen Server, sondern ein verteiltes Netzwerk. Das letzte Bitcoin wird ca. im Jahr 2140 gemint. Satoshi Nakamoto (Pseudonym) erfand Bitcoin 2008 – seine Identität ist bis heute unbekannt.'
+  },
+  {
+    id: 8039,
+    type: 'multiselect',
+    category: 'Natur',
+    difficulty: 'mittel',
+    question: 'Welche Phänomene können durch den Klimawandel verstärkt werden?',
+    options: ['Extremhitzeereignisse', 'Häufigere Überflutungen', 'Verstärkte Trockenzeiten', 'Abschwächung aller Winde', 'Mehr Schneefall weltweit'],
+    correct: ['Extremhitzeereignisse', 'Häufigere Überflutungen', 'Verstärkte Trockenzeiten'],
+    funFact: 'Klimawandel verstärkt Extremwettereignisse: Hitzewellen werden häufiger und intensiver; stärkere Verdunstung führt zu mehr Regen und Überflutungen in manchen Regionen, während Dürren in anderen zunehmen. Der Wasserkreislauf wird insgesamt intensiver – nicht einfach "mehr" oder "weniger" Wetter.'
+  },
+  {
+    id: 8040,
+    type: 'multiselect',
+    category: 'Biologie',
+    difficulty: 'mittel',
+    question: 'Welche dieser Organe/Strukturen des Körpers enthalten keine Blutgefäße?',
+    options: ['Hornhaut des Auges', 'Knorpel', 'Leber', 'Zähne (Zahnschmelz)', 'Knochen', 'Haare'],
+    correct: ['Hornhaut des Auges', 'Knorpel', 'Zähne (Zahnschmelz)', 'Haare'],
+    funFact: 'Gefäßlose Gewebe erhalten Nährstoffe durch Diffusion. Die Hornhaut bezieht Sauerstoff direkt aus der Luft – deshalb müssen Kontaktlinsen sauerstoffdurchlässig sein. Knorpelgewebe (z.B. Ohren, Nase) heilt so langsam, weil es keine Blutversorgung hat. Knochen sind sehr gut durchblutet (Knochenmark!).'
+  },
+  {
+    id: 8041,
+    type: 'multiselect',
+    category: 'Philosophie',
+    difficulty: 'schwer',
+    question: 'Welche Philosophen gehören zur antiken griechischen Philosophie?',
+    options: ['Sokrates', 'René Descartes', 'Aristoteles', 'Immanuel Kant', 'Platon', 'Friedrich Nietzsche'],
+    correct: ['Sokrates', 'Aristoteles', 'Platon'],
+    funFact: 'Das "goldene Dreieck" der griechischen Philosophie: Sokrates (470–399 v. Chr.) – schrieb nichts, lehrte durch Dialog. Platon (428–348) – Schüler des Sokrates, begründete die Akademie. Aristoteles (384–322) – Schüler Platons, lehrte Alexander den Großen. Descartes, Kant und Nietzsche sind neuzeitliche Philosophen.'
+  },
+  {
+    id: 8042,
+    type: 'multiselect',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    question: 'Welche Tiere können ihren eigenen Körperteil regenerieren?',
+    options: ['Seestern', 'Axolotl', 'Gecko', 'Krake', 'Regenwurm', 'Mensch'],
+    correct: ['Seestern', 'Axolotl', 'Gecko', 'Regenwurm'],
+    funFact: 'Seesterne können verlorene Arme regenerieren – manche sogar einen ganzen neuen Körper aus einem Arm. Axolotl regenerieren Gliedmaßen, Herz- und Gehirngewebe. Geckos können den Schwanz abwerfen und nachwachsen lassen. Regenwürmer können in zwei Teilen überleben und regenerieren. Menschen können nur die Leber teilweise regenerieren.'
+  },
+  {
+    id: 8043,
+    type: 'multiselect',
+    category: 'Sprache',
+    difficulty: 'mittel',
+    question: 'Welche Sprachen sind im Deutschen Grundgesetz als Amtssprachen der Bundesrepublik anerkannt?',
+    options: ['Deutsch', 'Sorbisch', 'Friesisch', 'Dänisch', 'Romanes', 'Englisch'],
+    correct: ['Deutsch', 'Sorbisch', 'Friesisch', 'Dänisch'],
+    funFact: 'Das Grundgesetz selbst nennt nur Deutsch als Amtssprache. Die Europäische Charta der Regional- oder Minderheitensprachen erkennt für Deutschland Sorbisch, Friesisch, Dänisch und Romanes an. Sorbisch wird von ca. 60.000 Menschen in der Lausitz gesprochen – einer der ältesten slawischen Minderheiten Westeuropas.'
+  },
+  {
+    id: 8044,
+    type: 'multiselect',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    question: 'Welche Länder haben die Atombombe (Kernwaffen) eingesetzt oder getestet?',
+    options: ['USA', 'Sowjetunion/Russland', 'Deutschland', 'Frankreich', 'China', 'Japan'],
+    correct: ['USA', 'Sowjetunion/Russland', 'Frankreich', 'China'],
+    funFact: 'Die USA haben als einzige Nation Atomwaffen im Krieg eingesetzt (Hiroshima und Nagasaki, 1945). Atomtests haben die USA, Sowjetunion, UK, Frankreich, China, Indien, Pakistan und Nordkorea durchgeführt. Deutschland und Japan haben das Atomwaffensperrvertrag unterzeichnet und keine Atomwaffen entwickelt.'
+  },
+  {
+    id: 8045,
+    type: 'multiselect',
+    category: 'Sport',
+    difficulty: 'leicht',
+    question: 'Welche dieser Sportarten werden auf Eis ausgeübt?',
+    options: ['Eisschnelllauf', 'Biathlon', 'Curling', 'Bobsport', 'Ski Alpin', 'Eishockey'],
+    correct: ['Eisschnelllauf', 'Curling', 'Eishockey'],
+    funFact: 'Auf Eis: Eisschnelllauf, Eiskunstlauf, Curling, Eishockey. Biathlon kombiniert Skilanglauf und Schießen – auf Schnee, nicht Eis. Bobsport und Skeleton laufen auf einer Eisrinne. Ski Alpin ist auf Schnee.'
+  },
+  {
+    id: 8046,
+    type: 'multiselect',
+    category: 'Technik',
+    difficulty: 'schwer',
+    question: 'Welche Technologien nutzen Quantenphänomene (Superposition, Verschränkung)?',
+    options: ['Quantencomputer', 'MRT (Magnetresonanztomografie)', 'Laser', 'Glasfaserkabel', 'Quantenkryptografie'],
+    correct: ['Quantencomputer', 'MRT (Magnetresonanztomografie)', 'Laser', 'Quantenkryptografie'],
+    funFact: 'MRT nutzt den Quantenspin von Wasserstoffatomen. Laser beruhen auf stimulierter Emission, einem Quantenphänomen. Quantencomputer und Quantenkryptografie nutzen Superposition und Verschränkung. Glasfaser überträgt Licht klassisch – obwohl Photonen Quantenteilchen sind, wird hier kein Quanteneffekt bewusst ausgenutzt.'
+  },
+  {
+    id: 8047,
+    type: 'multiselect',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    question: 'Welche Flüsse münden in den Atlantischen Ozean?',
+    options: ['Amazonas', 'Niger', 'Jangtse', 'Rhein', 'Mississippi', 'Ganges'],
+    correct: ['Amazonas', 'Niger', 'Rhein', 'Mississippi'],
+    funFact: 'Amazonas → Atlantik (ca. 20 % des weltweiten Süßwasserabflusses). Niger → Atlantik/Golf von Guinea. Rhein → Nordsee (Teil des Atlantiks). Mississippi → Golf von Mexiko (Atlantik). Jangtse → Pazifik (Ostchinesisches Meer). Ganges → Indischer Ozean (Golf von Bengalen).'
+  },
+  {
+    id: 8048,
+    type: 'multiselect',
+    category: 'Essen & Trinken',
+    difficulty: 'schwer',
+    question: 'Welche dieser Produkte sind nach EU-Recht als "geschützte Ursprungsbezeichnung" (g.U.) eingetragen?',
+    options: ['Champagner', 'Parmigiano Reggiano', 'Feta', 'Cheddar', 'Schwarzwälder Schinken', 'Gouda'],
+    correct: ['Champagner', 'Parmigiano Reggiano', 'Feta', 'Schwarzwälder Schinken'],
+    funFact: 'Die EU schützt über 3.000 Lebensmittelbezeichnungen als g.U., g.g.A. oder g.t.S. Champagner darf nur aus der Region Champagne (Frankreich) stammen; Feta nur aus Griechenland. Gouda und Cheddar haben keine geschützte Ursprungsbezeichnung und dürfen weltweit so heißen.'
+  },
+  {
+    id: 8049,
+    type: 'multiselect',
+    category: 'Astronomie',
+    difficulty: 'mittel',
+    question: 'Welche Eigenschaften hat ein Neutronenstern?',
+    options: ['Extrem hohe Dichte', 'Größer als die Sonne', 'Schnelle Rotation', 'Schwaches Magnetfeld', 'Entstehung aus Supernova'],
+    correct: ['Extrem hohe Dichte', 'Schnelle Rotation', 'Entstehung aus Supernova'],
+    funFact: 'Neutronensterne sind die dichtesten stabilen Objekte im Universum: Ein Teelöffel wiegt ca. 1 Milliarde Tonnen. Sie entstehen, wenn massereiche Sterne in einer Supernova kollabieren. Ihr Durchmesser beträgt nur ca. 20 km, sie rotieren bis zu 700-mal pro Sekunde (Millisekunden-Pulsare) und haben extrem starke Magnetfelder.'
+  },
+  {
+    id: 8050,
+    type: 'multiselect',
+    category: 'Medizin',
+    difficulty: 'mittel',
+    question: 'Welche dieser Aussagen über das menschliche Gehirn stimmen?',
+    options: ['Wir nutzen nur 10 % unseres Gehirns', 'Das Gehirn kann sich bis ins hohe Alter verändern', 'Das Gehirn hat keine Schmerzrezeptoren', 'Schlaf ist wichtig für die Gedächtniskonsolidierung', 'Linke Gehirnhälfte = kreativ, rechte = logisch'],
+    correct: ['Das Gehirn kann sich bis ins hohe Alter verändern', 'Das Gehirn hat keine Schmerzrezeptoren', 'Schlaf ist wichtig für die Gedächtniskonsolidierung'],
+    funFact: 'Der "Wir nutzen nur 10 %-Mythos" ist vollständig falsch – wir nutzen fast alle Gehirnbereiche. Die strikte Links-Rechts-Teilung ist ebenfalls ein Mythos. Das Gehirn hat tatsächlich keine Schmerzrezeptoren – Gehirnoperationen können am wachen Patienten durchgeführt werden (wichtig für Tumor-OPs).'
+  },
+
+  /* ════════════════════════════════════════════════════════
+     🃏  MEMORY  (50 Fragen)
+     Format:
+       type: 'memory'
+       pairs: [ { left: 'Begriff', right: 'Definition/Paarung' }, … ]
+       (Mindestens 4 Paare)
+  ════════════════════════════════════════════════════════ */
+  {
+    id: 9001,
+    type: 'matching',
+    category: 'Geographie',
+    difficulty: 'leicht',
+    question: 'Ordne die Hauptstädte den richtigen Ländern zu.',
+    pairs: [
+      { left: 'Japan', right: 'Tokio' },
+      { left: 'Australien', right: 'Canberra' },
+      { left: 'Kanada', right: 'Ottawa' },
+      { left: 'Brasilien', right: 'Brasília' }
+    ],
+    funFact: 'Brasília ist eine komplett geplante Hauptstadt – 1960 aus dem Nichts gebaut. Canberra ist ein Kompromiss zwischen Sydney und Melbourne, die beide Hauptstadt sein wollten. Ottawa wurde gewählt, weil es nicht an der US-Grenze liegt und damit weniger angreifbar wäre.'
+  },
+  {
+    id: 9002,
+    type: 'matching',
+    category: 'Wissenschaft',
+    difficulty: 'mittel',
+    question: 'Ordne die Wissenschaftler ihren wichtigsten Entdeckungen zu.',
+    pairs: [
+      { left: 'Marie Curie', right: 'Radioaktivität' },
+      { left: 'Alexander Fleming', right: 'Penicillin' },
+      { left: 'Gregor Mendel', right: 'Vererbungslehre' },
+      { left: 'Isaac Newton', right: 'Gravitationsgesetz' }
+    ],
+    funFact: 'Marie Curie ist die einzige Person, die den Nobelpreis in zwei verschiedenen Naturwissenschaften gewann (Physik 1903 und Chemie 1911). Ihre Labornotizbücher sind so radioaktiv, dass sie bis heute in Bleibehältern aufbewahrt werden und nur mit Schutzkleidung gelesen werden dürfen.'
+  },
+  {
+    id: 9003,
+    type: 'matching',
+    category: 'Musik',
+    difficulty: 'mittel',
+    question: 'Ordne die Komponisten ihren berühmtesten Werken zu.',
+    pairs: [
+      { left: 'Mozart', right: 'Zauberflöte' },
+      { left: 'Beethoven', right: '9. Sinfonie' },
+      { left: 'Bach', right: 'Brandenburgische Konzerte' },
+      { left: 'Verdi', right: 'Aida' }
+    ],
+    funFact: 'Mozart komponierte über 600 Werke in seinem kurzen Leben (35 Jahre). Beethoven schrieb seine 9. Sinfonie vollständig taub. Bach hatte 20 Kinder und war zu Lebzeiten vor allem als Organist berühmt. Verdis "Aida" wurde 1871 in Kairo uraufgeführt – zur Eröffnung der Suezkanal-Feierlichkeiten.'
+  },
+  {
+    id: 9004,
+    type: 'matching',
+    category: 'Geschichte',
+    difficulty: 'leicht',
+    question: 'Ordne den historischen Persönlichkeiten ihre Nationalität zu.',
+    pairs: [
+      { left: 'Napoleon Bonaparte', right: 'Frankreich (korsisch)' },
+      { left: 'Kleopatra', right: 'Ägypten (griechische Abstammung)' },
+      { left: 'Galileo Galilei', right: 'Italien' },
+      { left: 'Dschingis Khan', right: 'Mongolei' }
+    ],
+    funFact: 'Kleopatra war tatsächlich griechisch-makedonischer Abstammung (Ptolemäer-Dynastie) – die erste ihrer Linie, die überhaupt Ägyptisch sprach! Dschingis Khan gründete das größte zusammenhängende Landreich der Geschichte. Galilei stand unter Hausarrest der Inquisition und starb 1642.'
+  },
+  {
+    id: 9005,
+    type: 'matching',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    question: 'Ordne den Tieren ihre charakteristischen Eigenschaften zu.',
+    pairs: [
+      { left: 'Gepard', right: 'Schnellstes Landtier' },
+      { left: 'Blauwal', right: 'Größtes Tier aller Zeiten' },
+      { left: 'Kolibri', right: 'Kleinster Vogel der Welt' },
+      { left: 'Krokodil', right: 'Älteste kaum veränderte Art' }
+    ],
+    funFact: 'Der Blauwal ist das größte Tier, das je auf der Erde gelebt hat – größer als jeder Dinosaurier. Sein Herz ist so groß wie ein Kleinwagen. Krokodile haben sich seit 200 Millionen Jahren kaum verändert und überlebten den Meteoriten-Einschlag, der die Dinosaurier auslöschte.'
+  },
+  {
+    id: 9006,
+    type: 'matching',
+    category: 'Literatur',
+    difficulty: 'mittel',
+    question: 'Ordne die Romanfiguren ihren Büchern zu.',
+    pairs: [
+      { left: 'Sherlock Holmes', right: 'A. Conan Doyle – Detektiv-Geschichten' },
+      { left: 'Anna Karenina', right: 'Tolstoi – russischer Roman' },
+      { left: 'Don Quijote', right: 'Cervantes – spanischer Roman' },
+      { left: 'Gregor Samsa', right: 'Kafka – Die Verwandlung' }
+    ],
+    funFact: 'Sherlock Holmes ist die meistadaptierte literarische Figur der Geschichte (über 250 Filme/Serien). Kafka veröffentlichte kaum etwas zu Lebzeiten – sein Freund Max Brod rettete seine Werke gegen Kafkas ausdrücklichen Wunsch, alles zu verbrennen.'
+  },
+  {
+    id: 9007,
+    type: 'matching',
+    category: 'Chemie',
+    difficulty: 'schwer',
+    question: 'Ordne den chemischen Elementen ihre Symbole zu.',
+    pairs: [
+      { left: 'Gold', right: 'Au' },
+      { left: 'Eisen', right: 'Fe' },
+      { left: 'Blei', right: 'Pb' },
+      { left: 'Quecksilber', right: 'Hg' }
+    ],
+    funFact: 'Die Elementsymbole stammen oft aus dem Lateinischen: Au = Aurum (Gold), Fe = Ferrum (Eisen), Pb = Plumbum (Blei), Hg = Hydrargyrum (Quecksilber = "flüssiges Silber"). Pb gibt auch dem Wort "Klempner" (englisch: plumber) seinen Ursprung – Römer verlegten Bleirohre.'
+  },
+  {
+    id: 9008,
+    type: 'matching',
+    category: 'Astronomie',
+    difficulty: 'leicht',
+    question: 'Ordne den Planeten ihre auffälligsten Merkmale zu.',
+    pairs: [
+      { left: 'Mars', right: 'Roter Planet mit Eiswüsten' },
+      { left: 'Saturn', right: 'Planet mit ausgeprägten Ringen' },
+      { left: 'Jupiter', right: 'Größter Planet mit Großem Roten Fleck' },
+      { left: 'Venus', right: 'Heißester Planet des Sonnensystems' }
+    ],
+    funFact: 'Venus ist trotz seiner größeren Entfernung zur Sonne heißer als Merkur (460 °C), da ein extremer Treibhauseffekt Wärme einfängt. Jupiters Großer Roter Fleck ist ein Sturm, der seit über 350 Jahren tobt – so groß wie die Erde. Saturns Ringe sind nur 20 Meter dick.'
+  },
+  {
+    id: 9009,
+    type: 'matching',
+    category: 'Kunst',
+    difficulty: 'mittel',
+    question: 'Ordne den Künstlern ihren Kunststil zu.',
+    pairs: [
+      { left: 'Salvador Dalí', right: 'Surrealismus' },
+      { left: 'Claude Monet', right: 'Impressionismus' },
+      { left: 'Andy Warhol', right: 'Pop Art' },
+      { left: 'Wassily Kandinsky', right: 'Abstrakte Kunst' }
+    ],
+    funFact: 'Andy Warhol sagte: "In der Zukunft wird jeder für 15 Minuten berühmt sein" – eine der meistzitierten Vorhersagen über die Mediengesellschaft. Monets "Seerosen"-Zyklus umfasst über 250 Gemälde, die im Alter mit zunehmend schlechter werdendem Sehvermögen entstanden. Dalí schlief mit einer Gabel in der Hand zum "Schöpferischen Einschlafen".'
+  },
+  {
+    id: 9010,
+    type: 'matching',
+    category: 'Sport',
+    difficulty: 'leicht',
+    question: 'Ordne den Sportarten die Anzahl der Spieler pro Team zu.',
+    pairs: [
+      { left: 'Fußball', right: '11 Spieler' },
+      { left: 'Basketball', right: '5 Spieler' },
+      { left: 'Volleyball', right: '6 Spieler' },
+      { left: 'Handball', right: '7 Spieler' }
+    ],
+    funFact: 'Handball wurde 1917 in Deutschland entwickelt und war eine der ersten Ballsportarten mit gemischten Regeln für Männer und Frauen. Basketball erfand James Naismith 1891 mit 18 Spielern (9 pro Seite), bevor die Regeln auf 5 pro Team angepasst wurden.'
+  },
+  {
+    id: 9011,
+    type: 'matching',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    question: 'Ordne den Revolutionen/Bewegungen ihre Jahre zu.',
+    pairs: [
+      { left: 'Französische Revolution', right: '1789' },
+      { left: 'Oktoberrevolution (Russland)', right: '1917' },
+      { left: 'Amerikanische Unabhängigkeit', right: '1776' },
+      { left: 'Mauerfall Berlin', right: '1989' }
+    ],
+    funFact: 'Die Oktoberrevolution (7. November 1917 nach Gregorianischem Kalender) heißt so, weil Russland damals noch den Julianischen Kalender nutzte (25. Oktober). Alle vier dieser Daten gehören zu den wichtigsten in der Weltgeschichte und markieren fundamentale politische Umbrüche.'
+  },
+  {
+    id: 9012,
+    type: 'matching',
+    category: 'Biologie',
+    difficulty: 'schwer',
+    question: 'Ordne den Organellen ihre Funktionen zu.',
+    pairs: [
+      { left: 'Mitochondrium', right: 'Energieproduktion (ATP)' },
+      { left: 'Ribosom', right: 'Proteinbiosynthese' },
+      { left: 'Chloroplast', right: 'Photosynthese' },
+      { left: 'Golgi-Apparat', right: 'Sortierung und Transport von Proteinen' }
+    ],
+    funFact: 'Mitochondrien haben eine eigene DNA und vermehren sich unabhängig – sie entstammen einst eigenständigen Bakterien (endosymbiotische Theorie). Alle Mitochondrien-DNA wird ausschließlich von der Mutter vererbt – daher lassen sich mütterliche Abstammungslinien über Jahrhunderttausende zurückverfolgen.'
+  },
+  {
+    id: 9013,
+    type: 'matching',
+    category: 'Geographie',
+    difficulty: 'schwer',
+    question: 'Ordne den Wüsten ihren Kontinenten zu.',
+    pairs: [
+      { left: 'Sahara', right: 'Afrika' },
+      { left: 'Atacama', right: 'Südamerika' },
+      { left: 'Gobi', right: 'Asien' },
+      { left: 'Namib', right: 'Afrika (Südwest)' }
+    ],
+    funFact: 'Die Antarktis ist technisch gesehen die größte Wüste der Welt (Kältewüste, <200 mm Niederschlag). Die Sahara ist die größte Hitzewüste, die Atacama in Chile die trockenste – manche Stationen haben seit über 400 Jahren keinen Regen gemessen. Die Namib ist eine der ältesten Wüsten (ca. 55 Millionen Jahre).'
+  },
+  {
+    id: 9014,
+    type: 'matching',
+    category: 'Sprache',
+    difficulty: 'mittel',
+    question: 'Ordne die Sprachen der Anzahl ihrer weltweiten Muttersprachler (2024) zu.',
+    pairs: [
+      { left: 'Mandarin-Chinesisch', right: '1. Platz (ca. 920 Mio.)' },
+      { left: 'Spanisch', right: '2. Platz (ca. 480 Mio.)' },
+      { left: 'Englisch', right: '3. Platz (ca. 380 Mio.)' },
+      { left: 'Hindi', right: '4. Platz (ca. 340 Mio.)' }
+    ],
+    funFact: 'Englisch ist zwar "Weltsprache", hat aber weniger Muttersprachler als Mandarin und Spanisch. Als Gesamtsprache (Muttersprachler + Zweitsprachler) liegt Englisch jedoch klar vorne (ca. 1,5 Milliarden Sprecher). Arabisch hat über 30 Dialekte, die sich untereinander kaum verständlich sind.'
+  },
+  {
+    id: 9015,
+    type: 'matching',
+    category: 'Essen & Trinken',
+    difficulty: 'leicht',
+    question: 'Ordne den Gerichten ihren Herkunftsländern zu.',
+    pairs: [
+      { left: 'Sushi', right: 'Japan' },
+      { left: 'Paella', right: 'Spanien' },
+      { left: 'Moussaka', right: 'Griechenland' },
+      { left: 'Kimchi', right: 'Südkorea' }
+    ],
+    funFact: 'Kimchi – fermentierter Kohl – ist das Nationalgericht Südkoreas und UNESCO-Kulturerbe. Ein Durchschnitts-Koreaner isst ca. 25 kg Kimchi pro Jahr. Paella stammt ursprünglich aus Valencia und war ein Bauernessen mit Huhn und Gemüse – Meeresfrüchte-Paella ist eine spätere Variante.'
+  },
+  {
+    id: 9016,
+    type: 'matching',
+    category: 'Film',
+    difficulty: 'mittel',
+    question: 'Ordne den Filmregisseuren ihre bekanntesten Werke zu.',
+    pairs: [
+      { left: 'Steven Spielberg', right: 'Schindlers Liste' },
+      { left: 'Christopher Nolan', right: 'Inception' },
+      { left: 'Stanley Kubrick', right: '2001: Odyssee im Weltraum' },
+      { left: 'Alfred Hitchcock', right: 'Psycho' }
+    ],
+    funFact: 'Hitchcock erschien in fast all seinen Filmen in einem kurzen Cameo-Auftritt. Kubrick war so detailversessen, dass er für "The Shining" 127 Takes einer einzigen Szene drehte. Nolans "Inception" hatte kein CGI für den sich faltenden Paris-Effekt – sie bauten das Set tatsächlich.'
+  },
+  {
+    id: 9017,
+    type: 'matching',
+    category: 'Mathematik',
+    difficulty: 'mittel',
+    question: 'Ordne den mathematischen Konzepten ihre Entdecker zu.',
+    pairs: [
+      { left: 'Differentialrechnung', right: 'Newton und Leibniz' },
+      { left: 'Wahrscheinlichkeitstheorie', right: 'Pascal und Fermat' },
+      { left: 'Nicht-Euklidische Geometrie', right: 'Gauß, Bolyai, Lobatschewski' },
+      { left: 'Mengenlehre', right: 'Georg Cantor' }
+    ],
+    funFact: 'Newton und Leibniz entwickelten die Differentialrechnung unabhängig voneinander – was einen der bittersten Prioritätsstreit der Wissenschaftsgeschichte auslöste. Cantor bewies, dass es verschieden "große" Unendlichkeiten gibt – eine Idee, die seine Zeitgenossen für Wahnsinn hielten.'
+  },
+  {
+    id: 9018,
+    type: 'matching',
+    category: 'Wirtschaft',
+    difficulty: 'schwer',
+    question: 'Ordne den Wirtschaftsbegriffen ihre Definitionen zu.',
+    pairs: [
+      { left: 'Inflation', right: 'Allgemeiner Preisanstieg über Zeit' },
+      { left: 'BIP', right: 'Gesamtwert aller Waren/Dienstleistungen eines Landes' },
+      { left: 'Deflation', right: 'Allgemeiner Preisrückgang' },
+      { left: 'Rezession', right: '2 Quartale negatives Wirtschaftswachstum' }
+    ],
+    funFact: 'Deflation klingt gut (sinkende Preise), ist aber gefährlich: Wenn Konsumenten auf noch niedrigere Preise warten, bricht die Wirtschaft zusammen. Japan kämpfte in den 1990er-2010er Jahren Jahrzehnte mit Deflation ("Verlorenes Jahrzehnt"). Zu niedrige Inflation (unter 2 %) gilt Zentralbanken als problematisch.'
+  },
+  {
+    id: 9019,
+    type: 'matching',
+    category: 'Technik',
+    difficulty: 'mittel',
+    question: 'Ordne den Technologiefirmen ihre Gründungsländer zu.',
+    pairs: [
+      { left: 'Samsung', right: 'Südkorea' },
+      { left: 'Nokia', right: 'Finnland' },
+      { left: 'ASML', right: 'Niederlande' },
+      { left: 'SAP', right: 'Deutschland' }
+    ],
+    funFact: 'ASML ist das unbekannteste, aber vielleicht wichtigste Technologieunternehmen der Welt: Es ist der einzige Hersteller von EUV-Lithografiemaschinen, ohne die keine modernen Mikrochips existieren würden. Nokia war Ende der 1990er der weltgrößte Handyhersteller – bevor Apple und Samsung sie überholten.'
+  },
+  {
+    id: 9020,
+    type: 'matching',
+    category: 'Biologie',
+    difficulty: 'leicht',
+    question: 'Ordne den Tieren ihre Klassen zu.',
+    pairs: [
+      { left: 'Frosch', right: 'Amphibien' },
+      { left: 'Lachs', right: 'Fische' },
+      { left: 'Adler', right: 'Vögel' },
+      { left: 'Python', right: 'Reptilien' }
+    ],
+    funFact: 'Lachse sind katadrome Tiere: Sie leben im Meer, kehren aber zum Laichen in ihre Geburtsflüsse zurück – geleitet von Magnetfeld und Geruch. Frösche können keine Wärme erzeugen (wechselwarm) und frieren in Kälteperioden buchstäblich ein, um im Frühling wieder aufzutauen.'
+  },
+  {
+    id: 9021,
+    type: 'matching',
+    category: 'Geschichte',
+    difficulty: 'schwer',
+    question: 'Ordne den Philosophen ihre Hauptwerke zu.',
+    pairs: [
+      { left: 'Platon', right: 'Der Staat (Politeia)' },
+      { left: 'Kant', right: 'Kritik der reinen Vernunft' },
+      { left: 'Nietzsche', right: 'Also sprach Zarathustra' },
+      { left: 'Hobbes', right: 'Leviathan' }
+    ],
+    funFact: 'Kants "Kritik der reinen Vernunft" (1781) gilt als eines der schwierigsten Bücher der Philosophie. Nietzsche verkündete "Gott ist tot" – nicht als Jubel, sondern als Diagnose der Moderne. Hobbes\' "Leviathan" begründete die Staatstheorie: Der Mensch ist dem Menschen ein Wolf ohne Gesellschaftsvertrag.'
+  },
+  {
+    id: 9022,
+    type: 'matching',
+    category: 'Astronomie',
+    difficulty: 'mittel',
+    question: 'Ordne den Weltraummissionen ihre Leistungen zu.',
+    pairs: [
+      { left: 'Apollo 11', right: 'Erste Mondlandung (1969)' },
+      { left: 'Voyager 1', right: 'Erstes Objekt außerhalb des Sonnensystems' },
+      { left: 'Hubble', right: 'Weltraumteleskop seit 1990' },
+      { left: 'Cassini', right: 'Saturn-Orbiter (1997–2017)' }
+    ],
+    funFact: 'Voyager 1 startete 1977 und ist nach 47 Jahren noch aktiv – es ist das am weitesten von der Erde entfernte menschgemachte Objekt. Die Signale brauchen ca. 22 Stunden zur Erde. Cassini hat beim Eintauchen in die Saturnringe vollständig verbrannt, um Kontamination von Enceladus zu vermeiden.'
+  },
+  {
+    id: 9023,
+    type: 'matching',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    question: 'Ordne den Flüssen ihre Kontinente zu.',
+    pairs: [
+      { left: 'Amazonas', right: 'Südamerika' },
+      { left: 'Jangtse', right: 'Asien' },
+      { left: 'Murray-Darling', right: 'Australien' },
+      { left: 'Kongo', right: 'Afrika' }
+    ],
+    funFact: 'Der Kongo ist der tiefste Fluss der Welt (über 220 m) und der einzige große Fluss, der den Äquator zweimal überquert. Der Amazonas enthält ca. 20 % des gesamten Süßwassers aller Flüsse weltweit. Der Murray-Darling ist Australiens wichtigstes Flusssystem und für 40 % der australischen Nahrungsproduktion entscheidend.'
+  },
+  {
+    id: 9024,
+    type: 'matching',
+    category: 'Chemie',
+    difficulty: 'mittel',
+    question: 'Ordne den Alltagsstoffen ihre chemischen Namen zu.',
+    pairs: [
+      { left: 'Kochsalz', right: 'Natriumchlorid (NaCl)' },
+      { left: 'Backpulver', right: 'Natriumhydrogencarbonat (NaHCO₃)' },
+      { left: 'Essig', right: 'Essigsäure (CH₃COOH)' },
+      { left: 'Zucker', right: 'Saccharose (C₁₂H₂₂O₁₁)' }
+    ],
+    funFact: 'Kochsalz (NaCl) besteht aus zwei hochgiftigen Elementen – Natrium (explodiert in Wasser) und Chlor (Giftgas) – aber die ionische Verbindung ist für uns völlig harmlos und essenziell. Backpulver setzt beim Erhitzen CO₂ frei, das Teig aufgehen lässt.'
+  },
+  {
+    id: 9025,
+    type: 'matching',
+    category: 'Sport',
+    difficulty: 'mittel',
+    question: 'Ordne den Olympia-Sommerspielen ihre Austragungsorte zu.',
+    pairs: [
+      { left: '1936', right: 'Berlin' },
+      { left: '1972', right: 'München' },
+      { left: '2008', right: 'Peking' },
+      { left: '2024', right: 'Paris' }
+    ],
+    funFact: 'Die Münchener Olympiade 1972 wurde durch das Attentat auf die israelische Mannschaft überschattet – 11 Sportler wurden von palästinensischen Terroristen getötet. Die Berliner Spiele 1936 wurden von Hitler als Propagandashow genutzt; Jesse Owens widerlegte durch 4 Goldmedaillen die Rassenideologie der Nazis.'
+  },
+  {
+    id: 9026,
+    type: 'matching',
+    category: 'Medizin',
+    difficulty: 'schwer',
+    question: 'Ordne den Krankheiten ihren Erregern zu.',
+    pairs: [
+      { left: 'Tuberkulose', right: 'Mycobacterium tuberculosis (Bakterium)' },
+      { left: 'Malaria', right: 'Plasmodium (Parasit)' },
+      { left: 'Grippe (Influenza)', right: 'Influenza-Virus' },
+      { left: 'Cholera', right: 'Vibrio cholerae (Bakterium)' }
+    ],
+    funFact: 'Robert Koch entdeckte 1882 den Tuberkulosebazillus – einer der wichtigsten Momente in der Medizingeschichte. Malaria tötet auch heute noch ca. 600.000 Menschen pro Jahr (vor allem Kinder in Afrika). Cholera breitete sich im 19. Jh. durch verschmutztes Wasser aus; John Snow kartierte 1854 als erster eine Choleraepidemie in London.'
+  },
+  {
+    id: 9027,
+    type: 'matching',
+    category: 'Literatur',
+    difficulty: 'leicht',
+    question: 'Ordne den Büchern ihre Autoren zu.',
+    pairs: [
+      { left: '1984', right: 'George Orwell' },
+      { left: 'Der kleine Prinz', right: 'Antoine de Saint-Exupéry' },
+      { left: 'Homo sapiens', right: 'Yuval Noah Harari' },
+      { left: 'Die Verwandlung', right: 'Franz Kafka' }
+    ],
+    funFact: '"Der kleine Prinz" (1943) ist das meistübersetzte nicht-religiöse Buch der Welt (über 300 Sprachen). Orwells "1984" wurde während der Stalinschen Ära und des Kalten Krieges geschrieben – "Orwellian" ist seitdem ein Adjektiv für totalitäre Überwachungsstaaten.'
+  },
+  {
+    id: 9028,
+    type: 'matching',
+    category: 'Physik',
+    difficulty: 'schwer',
+    question: 'Ordne den physikalischen Formeln ihren Bedeutungen zu.',
+    pairs: [
+      { left: 'E = mc²', right: 'Masse-Energie-Äquivalenz (Einstein)' },
+      { left: 'F = m·a', right: 'Zweites Newtonsches Gesetz' },
+      { left: 'E = h·f', right: 'Energie eines Photons (Planck)' },
+      { left: 'pV = nRT', right: 'Ideales Gasgesetz' }
+    ],
+    funFact: 'E = mc² bedeutet: 1 g Masse entspricht 90 Billionen Joule Energie – genug, um eine Stadt zu versorgen. Die Atombombe nutzt nur einen Bruchteil dieser Umwandlung. Plancks Entdeckung der Lichtquanten (E = hf) begründete die Quantenmechanik – gegen seinen eigenen Willen.'
+  },
+  {
+    id: 9029,
+    type: 'matching',
+    category: 'Geschichte',
+    difficulty: 'leicht',
+    question: 'Ordne den Weltkriegsereignissen ihre Jahre zu.',
+    pairs: [
+      { left: 'Beginn des 1. Weltkriegs', right: '1914' },
+      { left: 'Ende des 1. Weltkriegs', right: '1918' },
+      { left: 'Beginn des 2. Weltkriegs', right: '1939' },
+      { left: 'Ende des 2. Weltkriegs (Europa)', right: '1945' }
+    ],
+    funFact: 'Der Erste Weltkrieg endete um 11 Uhr am 11. Tag des 11. Monats 1918 – ein symbolisches Datum, das vom deutschen Kaiserreich in der Waffenstillstandsverhandlung akzeptiert wurde. Beide Weltkriege zusammen kosteten schätzungsweise 100–120 Millionen Menschen das Leben.'
+  },
+  {
+    id: 9030,
+    type: 'matching',
+    category: 'Tiere',
+    difficulty: 'mittel',
+    question: 'Ordne den Tieren ihre Lebensspannen zu.',
+    pairs: [
+      { left: 'Grönlandwal', right: 'bis zu 200+ Jahre' },
+      { left: 'Hauskatze', right: 'ca. 12–18 Jahre' },
+      { left: 'Eintagsfliege (Imago)', right: 'Stunden bis wenige Tage' },
+      { left: 'Aldabra-Riesenschildkröte', right: '150+ Jahre' }
+    ],
+    funFact: 'Jonathan, eine Aldabra-Riesenschildkröte auf St. Helena, ist der älteste lebende Landwirbeltier der Welt (ca. 190 Jahre, geboren ca. 1832!). Er hat Napoleons Verbannung überlebt, war dabei, als das erste Automobil erfunden wurde. Grönlandwale können älter als 200 Jahre werden – im Fleisch einiger wurden Harpunen aus dem 19. Jahrhundert gefunden.'
+  },
+  {
+    id: 9031,
+    type: 'matching',
+    category: 'Geographie',
+    difficulty: 'leicht',
+    question: 'Ordne den Flüssen ihren Ländern zu (die Flüsse fließen durch oder haben ihre Quelle in diesen Ländern).',
+    pairs: [
+      { left: 'Rhein', right: 'Schweiz/Deutschland/Niederlande' },
+      { left: 'Ganges', right: 'Indien' },
+      { left: 'Mississippi', right: 'USA' },
+      { left: 'Nil', right: 'Ägypten/Äthiopien' }
+    ],
+    funFact: 'Der Ganges ist für über 400 Millionen Menschen die wichtigste Süßwasserquelle. Er gilt den Hindus als heiliger Fluss – ein Bad darin reinigt von allen Sünden. Der Mississippi entwässert ca. 40 % der Fläche der zusammenhängenden USA. Der Rhein war im Mittelalter die wichtigste Handelsroute Europas.'
+  },
+  {
+    id: 9032,
+    type: 'matching',
+    category: 'Film',
+    difficulty: 'mittel',
+    question: 'Ordne den Filmklassikern ihre Erscheinungsjahre zu.',
+    pairs: [
+      { left: 'Der Pate', right: '1972' },
+      { left: 'Star Wars: Eine neue Hoffnung', right: '1977' },
+      { left: 'Titanic', right: '1997' },
+      { left: 'Herr der Ringe: Die Gefährten', right: '2001' }
+    ],
+    funFact: '"Der Pate" (1972) von Francis Ford Coppola rettete Paramount Pictures vor dem Bankrott. Star Wars war so unerwartet erfolgreich, dass 20th Century Fox nicht wusste, wie sie mit den Merchandise-Rechten umgehen sollten – George Lucas behielt sie und wurde durch Merchandise-Milliarden zum Milliardär.'
+  },
+  {
+    id: 9033,
+    type: 'matching',
+    category: 'Wissenschaft',
+    difficulty: 'mittel',
+    question: 'Ordne den Erfindungen ihren Erfindern zu.',
+    pairs: [
+      { left: 'Buchdruckkunst (bewegliche Lettern)', right: 'Johannes Gutenberg' },
+      { left: 'Flugzeug (motorisiert)', right: 'Wright Brothers' },
+      { left: 'Telefon', right: 'Alexander Graham Bell' },
+      { left: 'Glühbirne (kommerziell nutzbar)', right: 'Thomas Edison' }
+    ],
+    funFact: 'Gutenbergs Druckerpresse (ca. 1450) revolutionierte die Wissensverbreitung – die Bibel war das erste Massendruck-Produkt. Die Wright Brothers flogen 1903 zum ersten Mal 12 Sekunden und 37 Meter. Die Erfindung des Telefons ist umstritten: Antonio Meucci meldete 1871 ein Patent an, Bell gewann das Rennen 1876.'
+  },
+  {
+    id: 9034,
+    type: 'matching',
+    category: 'Musik',
+    difficulty: 'schwer',
+    question: 'Ordne den Musikern ihren Bands/Gruppen zu.',
+    pairs: [
+      { left: 'Freddie Mercury', right: 'Queen' },
+      { left: 'John Lennon', right: 'The Beatles' },
+      { left: 'Jim Morrison', right: 'The Doors' },
+      { left: 'David Bowie', right: 'Solokarriere (Alter Egos: Ziggy Stardust u.a.)' }
+    ],
+    funFact: 'Freddie Mercury (bürgerlicher Name: Farrokh Bulsara) wurde 1946 auf Sansibar geboren. Queen-Konzerte sind berühmt für die Interaktion mit dem Publikum. John Lennon und Paul McCartney schrieben zusammen mehr Nummer-1-Hits als jedes andere Songwriting-Duo der Geschichte.'
+  },
+  {
+    id: 9035,
+    type: 'matching',
+    category: 'Biologie',
+    difficulty: 'mittel',
+    question: 'Ordne den Tieren ihre Fortbewegungsweise zu.',
+    pairs: [
+      { left: 'Gepard', right: 'Galoppieren (höchste Landgeschwindigkeit)' },
+      { left: 'Albatros', right: 'Gleiten über Tausende km ohne Schlagen' },
+      { left: 'Axolotl', right: 'Schwimmen (aquatisch)' },
+      { left: 'Siamang', right: 'Hangeln (Brachiation)' }
+    ],
+    funFact: 'Der Albatros kann bis zu 1.000 km am Tag zurücklegen, ohne mit den Flügeln zu schlagen – er nutzt Windunterschiede über dem Ozean (dynamisches Segeln). Er kann 50 Jahre alt werden. Siamangs (Gibbons) sind die schnellsten baumlebenden Tiere der Welt (bis zu 56 km/h durch Brachiation).'
+  },
+  {
+    id: 9036,
+    type: 'matching',
+    category: 'Technik',
+    difficulty: 'leicht',
+    question: 'Ordne den Abkürzungen ihre Bedeutungen zu.',
+    pairs: [
+      { left: 'HTML', right: 'Hypertext Markup Language' },
+      { left: 'GPS', right: 'Global Positioning System' },
+      { left: 'USB', right: 'Universal Serial Bus' },
+      { left: 'Wi-Fi', right: 'Wireless Fidelity' }
+    ],
+    funFact: 'HTML wurde 1990 von Tim Berners-Lee erfunden – zusammen mit HTTP und URL als Grundlagen des World Wide Web. GPS wurde vom US-Militär entwickelt und erst 1983 (nach dem Abschuss eines zivilen Flugzeugs) für die Öffentlichkeit freigegeben. "Wi-Fi" ist eigentlich eine Marke, kein Akronym – die offiziellen Entwickler sagen, es bedeutet nichts.'
+  },
+  {
+    id: 9037,
+    type: 'matching',
+    category: 'Geschichte',
+    difficulty: 'mittel',
+    question: 'Ordne den deutschen Bundeskanzlern ihre Amtszeiten zu.',
+    pairs: [
+      { left: 'Konrad Adenauer', right: '1949–1963' },
+      { left: 'Helmut Schmidt', right: '1974–1982' },
+      { left: 'Helmut Kohl', right: '1982–1998' },
+      { left: 'Angela Merkel', right: '2005–2021' }
+    ],
+    funFact: 'Angela Merkel war mit 16 Jahren Amtszeit die am längsten amtierende Bundeskanzlerin. Konrad Adenauer war bei Amtsantritt 73 Jahre alt. Helmut Kohl war Kanzler der deutschen Wiedervereinigung 1990. Helmut Schmidt rauchte so exzessiv, dass er extra dafür einen Ausnahmeantrag für EU-Gebäude hatte.'
+  },
+  {
+    id: 9038,
+    type: 'matching',
+    category: 'Essen & Trinken',
+    difficulty: 'schwer',
+    question: 'Ordne den Käsesorten ihren Herkunftsländern zu.',
+    pairs: [
+      { left: 'Roquefort', right: 'Frankreich' },
+      { left: 'Gouda', right: 'Niederlande' },
+      { left: 'Manchego', right: 'Spanien' },
+      { left: 'Gruyère', right: 'Schweiz' }
+    ],
+    funFact: 'Roquefort ist einer der ältesten bekannten Käse der Welt (urkundlich erwähnt 1070) und wird ausschließlich in den Höhlen von Combalou (Frankreich) gereift. Gruyère ist ein geschützter Käse und war Gegenstand eines Rechtsstreits, als die USA ihn als Gattungsbezeichnung behandelten.'
+  },
+  {
+    id: 9039,
+    type: 'matching',
+    category: 'Geographie',
+    difficulty: 'mittel',
+    question: 'Ordne den Vulkanen ihren Ländern zu.',
+    pairs: [
+      { left: 'Vesuv', right: 'Italien' },
+      { left: 'Fuji', right: 'Japan' },
+      { left: 'Eyjafjallajökull', right: 'Island' },
+      { left: 'Cotopaxi', right: 'Ecuador' }
+    ],
+    funFact: 'Der Vesuv zerstörte 79 n. Chr. Pompeji und Herculaneum – über 2.000 Menschen starben. Die Ausgrabungen Pompejis (seit 1748) sind eines der wichtigsten archäologischen Projekte der Geschichte. Islands Eyjafjallajökull-Ausbruch (2010) legte drei Wochen den europäischen Luftraum lahm.'
+  },
+  {
+    id: 9040,
+    type: 'matching',
+    category: 'Mathematik',
+    difficulty: 'leicht',
+    question: 'Ordne den Zahlen ihre korrekten Eigenschaften zu.',
+    pairs: [
+      { left: 'π (Pi)', right: 'Verhältnis Kreisumfang zu Durchmesser' },
+      { left: 'e (Eulersche Zahl)', right: 'Basis des natürlichen Logarithmus' },
+      { left: 'φ (Goldener Schnitt)', right: 'Teilt eine Strecke harmonisch' },
+      { left: '0 (Null)', right: 'Von Mathematikern in Indien entwickelt' }
+    ],
+    funFact: 'Die Null als eigenständige Zahl wurde in Indien im 7. Jahrhundert entwickelt – ein revolutionäres Konzept. Ohne die Null wäre Stellenwertschreibung und damit moderne Mathematik unmöglich. Die Maya entwickelten unabhängig davon ebenfalls ein Konzept der Null.'
+  },
+  {
+    id: 9041,
+    type: 'matching',
+    category: 'Natur',
+    difficulty: 'mittel',
+    question: 'Ordne den Naturphänomenen ihre Ursachen zu.',
+    pairs: [
+      { left: 'Polarlicht', right: 'Sonnenwinde treffen auf Atmosphäre' },
+      { left: 'Ebbe und Flut', right: 'Gravitation von Mond und Sonne' },
+      { left: 'Regenbogen', right: 'Lichtbrechung in Regentropfen' },
+      { left: 'Donner', right: 'Schallwelle durch Luftausdehnung beim Blitz' }
+    ],
+    funFact: 'Ein Regenbogen ist immer ein vollständiger Kreis – man sieht nur den oberen Teil, weil der Boden im Weg ist. Aus einem Flugzeug kann man manchmal vollständige Regenbogenkreise sehen. Mondregenbogen (Mondbögen) entstehen nachts bei hellem Vollmond und Regen – selten, aber real.'
   }
 
 ];

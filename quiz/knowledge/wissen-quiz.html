@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wissens-Quiz</title>
     <link rel="stylesheet" href="/quiz/style.css">
-		<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <style>
         /* ════════════════════════════════════════════
            PROGRESS BAR
@@ -41,7 +41,7 @@
             to   { opacity: 1; transform: translateY(0)   scale(1); }
         }
 
-        /* ── Question meta: category badge + type pill ── */
+        /* ── Question meta ── */
         .question-meta {
             display: flex;
             align-items: center;
@@ -139,7 +139,6 @@
         .answers-grid.col-2 { grid-template-columns: 1fr 1fr; }
         .answers-grid.col-1 { grid-template-columns: 1fr; }
 
-        /* True/False special layout */
         .answers-grid.tf-grid {
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
@@ -181,7 +180,6 @@
             transition: var(--transition);
         }
 
-        /* TF buttons: no letter prefix, centered, larger */
         .tf-grid .answer-btn { text-align: center; font-size: 1.05rem; padding: 1.4rem; }
         .tf-grid .answer-btn::before { display: none; }
 
@@ -205,10 +203,7 @@
             box-shadow: 0 0 0 3px rgba(45, 138, 94, 0.15);
         }
 
-        .answer-btn.correct::before {
-            background: var(--success);
-            color: white;
-        }
+        .answer-btn.correct::before { background: var(--success); color: white; }
 
         .answer-btn.incorrect {
             background: var(--error-light);
@@ -217,11 +212,7 @@
             box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12);
         }
 
-        .answer-btn.incorrect::before {
-            background: var(--error);
-            color: white;
-        }
-
+        .answer-btn.incorrect::before { background: var(--error); color: white; }
         .answer-btn.disabled { cursor: not-allowed; opacity: 0.72; transform: none !important; }
 
         /* ════════════════════════════════════════════
@@ -297,13 +288,15 @@
         .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
         /* ════════════════════════════════════════════
-           ORDER TYPE (Drag & Drop)
+           ORDER TYPE (Drag & Drop) – Desktop + Touch
         ════════════════════════════════════════════ */
         .order-list {
             display: flex;
             flex-direction: column;
             gap: 0.65rem;
             user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
         }
 
         .order-item {
@@ -315,26 +308,53 @@
             align-items: center;
             gap: 0.85rem;
             cursor: grab;
-            transition: var(--transition);
+            transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, opacity 0.15s;
             box-shadow: var(--shadow-sm);
             font-weight: 600;
             font-size: 0.95rem;
             color: var(--text-primary);
+            touch-action: none;
+            -webkit-user-select: none;
         }
 
         .order-item:active { cursor: grabbing; }
 
         .order-item.dragging {
-            opacity: 0.4;
+            opacity: 0.35;
             transform: scale(0.97);
+        }
+
+        /* Touch ghost that follows finger */
+        .order-ghost {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.88;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.22);
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            padding: 1rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-family: 'Sora', sans-serif;
+            transition: none;
+            transform: rotate(1.5deg) scale(1.03);
+            max-width: 90vw;
         }
 
         .order-item.drag-over {
             border-color: var(--accent);
             background: var(--accent-light);
-            transform: translateY(-3px);
             box-shadow: var(--shadow-md);
         }
+
+        .order-item.drop-above { border-top: 3px solid var(--accent); }
+        .order-item.drop-below { border-bottom: 3px solid var(--accent); }
 
         .order-item.correct-pos {
             background: var(--success-light);
@@ -355,6 +375,7 @@
             flex-direction: column;
             gap: 3px;
             transition: var(--transition);
+            cursor: grab;
         }
 
         .drag-handle span {
@@ -410,11 +431,413 @@
         .check-order-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
         /* ════════════════════════════════════════════
+           AUDIO TYPE
+        ════════════════════════════════════════════ */
+        .audio-player-wrap {
+            background: var(--bg-subtle);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.1rem;
+        }
+
+        .audio-visualizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 40px;
+        }
+
+        .audio-bar {
+            width: 5px;
+            background: var(--accent);
+            border-radius: 3px;
+            opacity: 0.4;
+            transition: height 0.1s ease;
+            min-height: 4px;
+        }
+
+        .audio-player-wrap.playing .audio-bar { opacity: 1; }
+        .audio-player-wrap.playing .audio-bar:nth-child(1) { animation: audioWave 0.8s ease-in-out infinite; }
+        .audio-player-wrap.playing .audio-bar:nth-child(2) { animation: audioWave 0.8s ease-in-out 0.1s infinite; }
+        .audio-player-wrap.playing .audio-bar:nth-child(3) { animation: audioWave 0.8s ease-in-out 0.2s infinite; }
+        .audio-player-wrap.playing .audio-bar:nth-child(4) { animation: audioWave 0.8s ease-in-out 0.05s infinite; }
+        .audio-player-wrap.playing .audio-bar:nth-child(5) { animation: audioWave 0.8s ease-in-out 0.15s infinite; }
+        .audio-player-wrap.playing .audio-bar:nth-child(6) { animation: audioWave 0.8s ease-in-out 0.25s infinite; }
+        .audio-player-wrap.playing .audio-bar:nth-child(7) { animation: audioWave 0.8s ease-in-out 0.08s infinite; }
+
+        @keyframes audioWave {
+            0%, 100% { height: 8px; }
+            50% { height: 32px; }
+        }
+
+        .audio-play-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--text-primary);
+            border: none;
+            color: white;
+            padding: 0.9rem 1.75rem;
+            border-radius: 100px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Sora', sans-serif;
+            transition: var(--transition);
+        }
+
+        .audio-play-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232,100,58,0.3);
+        }
+
+        .audio-play-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+        .audio-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .audio-progress-wrap {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .audio-progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.25s linear;
+        }
+
+        /* ════════════════════════════════════════════
+           SLIDER TYPE
+        ════════════════════════════════════════════ */
+        .slider-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .slider-display {
+            text-align: center;
+            background: var(--bg-subtle);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+        }
+
+        .slider-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -2px;
+            line-height: 1;
+            font-family: 'Sora', sans-serif;
+        }
+
+        .slider-unit {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        .slider-input-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            padding: 0 2px;
+        }
+
+        /* Custom range styling */
+        input[type="range"].quiz-range {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: var(--bg-subtle);
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            border: 1.5px solid var(--border);
+            padding: 0;
+        }
+
+        input[type="range"].quiz-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(232,100,58,0.4);
+            border: 2px solid white;
+            transition: transform 0.1s;
+        }
+
+        input[type="range"].quiz-range::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+        }
+
+        input[type="range"].quiz-range::-moz-range-thumb {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(232,100,58,0.4);
+        }
+
+        input[type="range"].quiz-range.correct {
+            background: rgba(45,138,94,0.2);
+        }
+
+        input[type="range"].quiz-range.correct::-webkit-slider-thumb {
+            background: var(--success);
+        }
+
+        input[type="range"].quiz-range.incorrect {
+            background: rgba(192,57,43,0.15);
+        }
+
+        input[type="range"].quiz-range.incorrect::-webkit-slider-thumb {
+            background: var(--error);
+        }
+
+        .slider-correct-indicator {
+            display: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius-md);
+            margin-top: 0.25rem;
+        }
+
+        .slider-correct-indicator.show-correct {
+            display: block;
+            background: var(--success-light);
+            color: var(--success);
+            border: 1px solid rgba(45,138,94,0.3);
+        }
+
+        .slider-correct-indicator.show-incorrect {
+            display: block;
+            background: var(--error-light);
+            color: var(--error);
+            border: 1px solid rgba(192,57,43,0.2);
+        }
+
+        /* ════════════════════════════════════════════
+           MULTISELECT TYPE
+        ════════════════════════════════════════════ */
+        .multiselect-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .multiselect-hint::before {
+            content: '';
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #7c6bde;
+            flex-shrink: 0;
+        }
+
+        .answer-btn.selected {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .answer-btn.selected::before {
+            background: var(--accent);
+            color: white;
+        }
+
+        .check-multi-btn {
+            margin-top: 1rem;
+            width: 100%;
+            background: var(--text-primary);
+            border: none;
+            color: white;
+            padding: 1.05rem;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Sora', sans-serif;
+        }
+
+        .check-multi-btn:hover:not(:disabled) {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 100, 58, 0.3);
+        }
+
+        .check-multi-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        /* ════════════════════════════════════════════
+           MATCHING TYPE (Paare zuordnen)
+        ════════════════════════════════════════════ */
+        .matching-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .match-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .match-col-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            padding: 0 0.25rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .match-item {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 0.9rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+        }
+
+        .match-item:hover:not(.disabled):not(.matched) {
+            border-color: var(--accent);
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .match-item.selected-left {
+            border-color: #7c6bde;
+            background: rgba(124,107,222,0.08);
+            color: #7c6bde;
+            box-shadow: 0 0 0 3px rgba(124,107,222,0.15);
+        }
+
+        .match-item.selected-right {
+            border-color: #7c6bde;
+            background: rgba(124,107,222,0.08);
+            color: #7c6bde;
+        }
+
+        .match-item.matched-correct {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: var(--success);
+            cursor: default;
+        }
+
+        .match-item.matched-wrong {
+            background: var(--error-light);
+            border-color: var(--error);
+            color: var(--error);
+            cursor: default;
+        }
+
+        .match-item.disabled { cursor: default; opacity: 0.6; }
+
+        .match-badge {
+            display: inline-flex;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--bg-subtle);
+            border: 1.5px solid var(--border);
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin-right: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .match-item.selected-left .match-badge,
+        .match-item.selected-right .match-badge {
+            background: #7c6bde;
+            border-color: #7c6bde;
+            color: white;
+        }
+
+        .match-item.matched-correct .match-badge {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .match-item.matched-wrong .match-badge {
+            background: var(--error);
+            border-color: var(--error);
+            color: white;
+        }
+
+        .match-score {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        .match-score span {
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        /* ════════════════════════════════════════════
            HINT + FUN FACT REVEALS
         ════════════════════════════════════════════ */
-        .reveal-area {
-            margin-top: 1.1rem;
-        }
+        .reveal-area { margin-top: 1.1rem; }
 
         .hint-toggle {
             background: none;
@@ -522,6 +945,9 @@
             .answers-grid.tf-grid { grid-template-columns: 1fr 1fr; }
             .input-area { flex-direction: column; }
             .submit-btn { width: 100%; justify-content: center; }
+            .matching-wrap { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+            .match-item { font-size: 0.78rem; padding: 0.7rem 0.65rem; }
+            .match-badge { display: none; }
         }
     </style>
 </head>
@@ -543,17 +969,12 @@
         </div>
 
         <main class="quiz-container">
-
-            <!-- Progress bar -->
             <div class="progress-bar-wrap">
                 <div class="progress-bar" id="progress-bar" style="width:0%"></div>
             </div>
-
-            <!-- ── Dynamic question card ── -->
             <div class="quiz-card" id="question-card">
                 <!-- Populated by JS -->
             </div>
-
         </main>
 
         <!-- ════ RESULTS MODAL ════ -->
@@ -604,7 +1025,8 @@
     <script src="wissen-questions.js"></script>
     <script>
     /* ══════════════════════════════════════════════════════════
-       wissen-quiz.js  –  Quiz-Engine für alle Fragetypen
+       wissen-quiz.js  –  Quiz-Engine  (alle Fragetypen inkl.
+       audio, slider, multiselect, matching + Touch-Drag)
     ══════════════════════════════════════════════════════════ */
 
     /* ── State ── */
@@ -615,7 +1037,27 @@
     let bestStreak     = 0;
     let isAnswered     = false;
     let dragSrcIndex   = null;
-    let currentQ       = null;   // always holds the active question object
+    let currentQ       = null;
+
+    /* Touch-drag state */
+    let touchDragging  = false;
+    let touchGhost     = null;
+    let touchSrcEl     = null;
+    let touchSrcIdx    = null;
+    let touchLastOver  = null;
+
+    /* Audio state */
+    let currentAudio   = null;
+    let audioInterval  = null;
+
+    /* Multiselect state */
+    let selectedOptions = new Set();
+
+    /* Matching state */
+    let matchSelected   = null;   // { side: 'left'|'right', idx }
+    let matchedCount    = 0;
+    let matchTotal      = 0;
+    let matchCorrectCount = 0;
 
     /* ══════════════════════════════════════════════════════════
        INIT
@@ -626,14 +1068,13 @@
         const catsRaw    = sessionStorage.getItem('wissenCategories');
         const cats       = catsRaw ? new Set(JSON.parse(catsRaw)) : new Set(['all']);
 
-        // Build pool with filters
         let pool = QUESTIONS.filter(q => {
             const catOk  = cats.has('all') || cats.has(q.category);
             const diffOk = difficulty === 'all' || q.difficulty === difficulty;
             return catOk && diffOk;
         });
 
-        if (pool.length === 0) pool = [...QUESTIONS];   // fallback
+        if (pool.length === 0) pool = [...QUESTIONS];
         shuffle(pool);
         const n = count >= 9999 ? pool.length : Math.min(count, pool.length);
         quizQuestions = pool.slice(0, n);
@@ -646,58 +1087,75 @@
        RENDER DISPATCHER
     ══════════════════════════════════════════════════════════ */
     function renderQuestion() {
+        // Stop any playing audio
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio = null;
+        }
+        clearInterval(audioInterval);
+
         if (currentIndex >= quizQuestions.length) { showResults(); return; }
 
-        isAnswered = false;
+        isAnswered     = false;
+        selectedOptions = new Set();
+        matchSelected   = null;
+        matchedCount    = 0;
+        matchCorrectCount = 0;
         const q = quizQuestions[currentIndex];
 
-        // Update top bar
         document.getElementById('current-question').textContent = currentIndex + 1;
         document.getElementById('progress-bar').style.width =
             (currentIndex / quizQuestions.length * 100) + '%';
 
-        // Dispatch to type renderer
         const card = document.getElementById('question-card');
         card.style.animation = 'none';
-        void card.offsetWidth; // reflow to restart animation
-        card.style.animation  = '';
-
-        const renderers = {
-            choice:    renderChoice,
-            image:     renderImage,
-            truefalse: renderTrueFalse,
-            input:     renderInput,
-            order:     renderOrder,
-        };
+        void card.offsetWidth;
+        card.style.animation = '';
 
         currentQ = q;
+
+        const renderers = {
+            choice:      renderChoice,
+            image:       renderImage,
+            truefalse:   renderTrueFalse,
+            input:       renderInput,
+            order:       renderOrder,
+            audio:       renderAudio,
+            slider:      renderSlider,
+            multiselect: renderMultiselect,
+            matching:    renderMatching,
+        };
+
         (renderers[q.type] || renderChoice)(q);
     }
 
     /* ── Shared meta header HTML ── */
     function metaHTML(q) {
         const typeLabels = {
-            choice:    'Multiple Choice',
-            image:     'Bildfrage',
-            truefalse: 'Wahr / Falsch',
-            input:     'Freitext',
-            order:     'Reihenfolge',
+            choice:      'Multiple Choice',
+            image:       'Bildfrage',
+            truefalse:   'Wahr / Falsch',
+            input:       'Freitext',
+            order:       'Reihenfolge',
+            audio:       'Audiofrage',
+            slider:      'Schätzen',
+            multiselect: 'Mehrfachauswahl',
+            matching:    'Paare zuordnen',
         };
         return `
             <div class="question-meta">
-                <span class="q-category">${q.category}</span>
+                <span class="q-category">${escHtml(q.category)}</span>
                 <span class="q-difficulty ${q.difficulty}">${q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1)}</span>
             </div>
-            <div class="question-text">${q.question}</div>
+            <div class="question-text">${escHtml(q.question)}</div>
         `;
     }
 
     /* ── Hint + FunFact footer HTML ── */
     function revealFooterHTML(q) {
-        const hasHint = q.hint;
         return `
             <div class="reveal-area">
-                ${hasHint ? `
+                ${q.hint ? `
                 <button class="hint-toggle" id="hint-toggle" onclick="toggleHint()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -707,10 +1165,10 @@
                     </svg>
                     Hinweis anzeigen
                 </button>
-                <div class="hint-box" id="hint-box">💡 ${q.hint}</div>
+                <div class="hint-box" id="hint-box">💡 ${escHtml(q.hint)}</div>
                 ` : ''}
                 <div class="answer-feedback" id="answer-feedback"></div>
-                ${q.funFact ? `<div class="funfact-box" id="funfact-box"><strong>💡 Wusstest du?</strong> ${q.funFact}</div>` : ''}
+                ${q.funFact ? `<div class="funfact-box" id="funfact-box"><strong>💡 Wusstest du?</strong> ${escHtml(q.funFact)}</div>` : ''}
             </div>
         `;
     }
@@ -719,7 +1177,8 @@
         const box = document.getElementById('hint-box');
         box.classList.toggle('visible');
         const btn = document.getElementById('hint-toggle');
-        btn.textContent = box.classList.contains('visible') ? '▲ Hinweis ausblenden' : '💡 Hinweis anzeigen';
+        btn.textContent = box.classList.contains('visible')
+            ? '▲ Hinweis ausblenden' : '💡 Hinweis anzeigen';
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -727,11 +1186,10 @@
     ══════════════════════════════════════════════════════════ */
     function renderChoice(q) {
         const letters = ['A', 'B', 'C', 'D'];
-        const opts    = [...q.options];
-        const html = `
+        document.getElementById('question-card').innerHTML = `
             ${metaHTML(q)}
             <div class="answers-grid col-2" id="answers">
-                ${opts.map((o, i) => `
+                ${q.options.map((o, i) => `
                     <button class="answer-btn" data-letter="${letters[i]}" data-answer="${escHtml(o)}">
                         ${escHtml(o)}
                     </button>
@@ -739,35 +1197,23 @@
             </div>
             ${revealFooterHTML(q)}
         `;
-        document.getElementById('question-card').innerHTML = html;
-        document.querySelectorAll('#answers .answer-btn').forEach(btn => {
-            btn.addEventListener('click', () => handleChoice(btn));
-        });
+        document.querySelectorAll('#answers .answer-btn').forEach(btn =>
+            btn.addEventListener('click', () => handleChoice(btn))
+        );
     }
 
     function handleChoice(btn) {
         if (isAnswered) return;
         isAnswered = true;
-
-        const chosen  = btn.dataset.answer;
-        const correct = currentQ.correct;
-        const isCorrect = chosen === correct;
-
+        const chosen    = btn.dataset.answer;
+        const isCorrect = chosen === currentQ.correct;
         disableAllAnswers();
-
         document.querySelectorAll('#answers .answer-btn').forEach(b => {
-            if (b.dataset.answer === correct) b.classList.add('correct');
+            if (b.dataset.answer === currentQ.correct) b.classList.add('correct');
         });
-
-        if (isCorrect) {
-            btn.classList.add('correct');
-            addScore();
-        } else {
-            btn.classList.add('incorrect');
-            loseStreak();
-        }
-
-        showFeedback(isCorrect, correct);
+        if (isCorrect) { btn.classList.add('correct'); addScore(); }
+        else           { btn.classList.add('incorrect'); loseStreak(); }
+        showFeedback(isCorrect, currentQ.correct);
         scheduleNext(isCorrect);
     }
 
@@ -776,7 +1222,7 @@
     ══════════════════════════════════════════════════════════ */
     function renderImage(q) {
         const letters = ['A', 'B', 'C', 'D'];
-        const html = `
+        document.getElementById('question-card').innerHTML = `
             ${metaHTML(q)}
             <div class="q-image-wrap loading" id="img-wrap">
                 <img id="q-img" src="${escHtml(q.image)}" alt="${escHtml(q.imageAlt || 'Bild')}"
@@ -792,17 +1238,16 @@
             </div>
             ${revealFooterHTML(q)}
         `;
-        document.getElementById('question-card').innerHTML = html;
-        document.querySelectorAll('#answers .answer-btn').forEach(btn => {
-            btn.addEventListener('click', () => handleChoice(btn));
-        });
+        document.querySelectorAll('#answers .answer-btn').forEach(btn =>
+            btn.addEventListener('click', () => handleChoice(btn))
+        );
     }
 
     /* ══════════════════════════════════════════════════════════
        RENDERER: TRUE / FALSE
     ══════════════════════════════════════════════════════════ */
     function renderTrueFalse(q) {
-        const html = `
+        document.getElementById('question-card').innerHTML = `
             ${metaHTML(q)}
             <div class="answers-grid tf-grid" id="answers">
                 <button class="answer-btn" data-answer="Wahr">✓ Wahr</button>
@@ -810,17 +1255,16 @@
             </div>
             ${revealFooterHTML(q)}
         `;
-        document.getElementById('question-card').innerHTML = html;
-        document.querySelectorAll('#answers .answer-btn').forEach(btn => {
-            btn.addEventListener('click', () => handleChoice(btn));
-        });
+        document.querySelectorAll('#answers .answer-btn').forEach(btn =>
+            btn.addEventListener('click', () => handleChoice(btn))
+        );
     }
 
     /* ══════════════════════════════════════════════════════════
        RENDERER: INPUT (Freitext)
     ══════════════════════════════════════════════════════════ */
     function renderInput(q) {
-        const html = `
+        document.getElementById('question-card').innerHTML = `
             ${metaHTML(q)}
             <div class="input-area">
                 <input type="text" class="text-input" id="text-input"
@@ -837,8 +1281,6 @@
             </div>
             ${revealFooterHTML(q)}
         `;
-        document.getElementById('question-card').innerHTML = html;
-
         const input = document.getElementById('text-input');
         input.focus();
         input.addEventListener('keydown', e => { if (e.key === 'Enter') handleInput(); });
@@ -851,29 +1293,365 @@
         const input = document.getElementById('text-input');
         const val   = input.value.trim();
         if (!val) return;
-
         isAnswered = true;
         document.getElementById('submit-btn').disabled = true;
         input.disabled = true;
-
         const accepted  = q.acceptedAnswers || [q.correct];
         const isCorrect = accepted.some(a =>
             a.toLowerCase().trim() === val.toLowerCase().trim()
         );
-
         input.classList.add(isCorrect ? 'correct' : 'incorrect');
-
         showFeedback(isCorrect, q.correct);
         if (isCorrect) addScore(); else loseStreak();
         scheduleNext(isCorrect);
     }
 
     /* ══════════════════════════════════════════════════════════
-       RENDERER: ORDER (Drag & Drop)
+       RENDERER: AUDIO
+       q.audio   = URL zur Audio-Datei
+       q.options = 4 Antwortmöglichkeiten
+       q.correct = korrekte Antwort
+    ══════════════════════════════════════════════════════════ */
+    function renderAudio(q) {
+        const letters = ['A', 'B', 'C', 'D'];
+        document.getElementById('question-card').innerHTML = `
+            ${metaHTML(q)}
+            <div class="audio-player-wrap" id="audio-wrap">
+                <div class="audio-visualizer">
+                    <div class="audio-bar" style="height:12px"></div>
+                    <div class="audio-bar" style="height:20px"></div>
+                    <div class="audio-bar" style="height:8px"></div>
+                    <div class="audio-bar" style="height:28px"></div>
+                    <div class="audio-bar" style="height:16px"></div>
+                    <div class="audio-bar" style="height:24px"></div>
+                    <div class="audio-bar" style="height:10px"></div>
+                </div>
+                <button class="audio-play-btn" id="audio-play-btn" onclick="toggleAudio()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="audio-icon">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span id="audio-btn-label">Abspielen</span>
+                </button>
+                <div class="audio-progress-wrap">
+                    <div class="audio-progress-fill" id="audio-progress"></div>
+                </div>
+                <div class="audio-label" id="audio-label">Höre dir den Clip an und beantworte die Frage</div>
+            </div>
+            <div class="answers-grid col-2" id="answers">
+                ${q.options.map((o, i) => `
+                    <button class="answer-btn" data-letter="${letters[i]}" data-answer="${escHtml(o)}">
+                        ${escHtml(o)}
+                    </button>
+                `).join('')}
+            </div>
+            ${revealFooterHTML(q)}
+        `;
+        document.querySelectorAll('#answers .answer-btn').forEach(btn =>
+            btn.addEventListener('click', () => handleChoice(btn))
+        );
+        // Preload audio
+        if (q.audio) {
+            currentAudio = new Audio(q.audio);
+            currentAudio.addEventListener('ended', () => {
+                document.getElementById('audio-wrap').classList.remove('playing');
+                document.getElementById('audio-btn-label').textContent = 'Nochmal abspielen';
+                document.getElementById('audio-icon').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+                clearInterval(audioInterval);
+            });
+            currentAudio.addEventListener('timeupdate', () => {
+                const pct = currentAudio.duration
+                    ? (currentAudio.currentTime / currentAudio.duration * 100)
+                    : 0;
+                const el = document.getElementById('audio-progress');
+                if (el) el.style.width = pct + '%';
+            });
+        }
+    }
+
+    function toggleAudio() {
+        if (!currentAudio) return;
+        const wrap = document.getElementById('audio-wrap');
+        const icon = document.getElementById('audio-icon');
+        const label = document.getElementById('audio-btn-label');
+        if (currentAudio.paused) {
+            currentAudio.play().catch(() => {});
+            wrap.classList.add('playing');
+            label.textContent = 'Pausieren';
+            icon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+        } else {
+            currentAudio.pause();
+            wrap.classList.remove('playing');
+            label.textContent = 'Weiter';
+            icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+        }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RENDERER: SLIDER
+       q.min     = Minimalwert
+       q.max     = Maximalwert
+       q.step    = Schrittweite
+       q.correct = korrekte Zahl (Number)
+       q.tolerance = erlaubte Abweichung (optional, default 0)
+       q.unit    = Einheit z.B. "km", "%" (optional)
+    ══════════════════════════════════════════════════════════ */
+    function renderSlider(q) {
+        const min   = q.min   ?? 0;
+        const max   = q.max   ?? 100;
+        const step  = q.step  ?? 1;
+        const unit  = q.unit  ?? '';
+        const start = Math.round((min + max) / 2);
+
+        document.getElementById('question-card').innerHTML = `
+            ${metaHTML(q)}
+            <div class="slider-wrap" id="slider-wrap">
+                <div class="slider-display">
+                    <div class="slider-value" id="slider-val">${start.toLocaleString('de-DE')}${unit}</div>
+                    <div class="slider-unit">Deine Schätzung</div>
+                </div>
+                <div class="slider-input-row">
+                    <input type="range" class="quiz-range" id="quiz-range"
+                           min="${min}" max="${max}" step="${step}" value="${start}">
+                    <div class="range-labels">
+                        <span>${min.toLocaleString('de-DE')}${unit}</span>
+                        <span>${max.toLocaleString('de-DE')}${unit}</span>
+                    </div>
+                </div>
+                <div class="slider-correct-indicator" id="slider-indicator"></div>
+            </div>
+            <button class="check-order-btn" id="check-slider">
+                Antwort prüfen
+            </button>
+            ${revealFooterHTML(q)}
+        `;
+
+        const rangeEl  = document.getElementById('quiz-range');
+        const valEl    = document.getElementById('slider-val');
+
+        rangeEl.addEventListener('input', () => {
+            valEl.textContent = Number(rangeEl.value).toLocaleString('de-DE') + unit;
+        });
+
+        document.getElementById('check-slider').addEventListener('click', checkSlider);
+    }
+
+    function checkSlider() {
+        if (isAnswered) return;
+        isAnswered = true;
+
+        const q         = currentQ;
+        const rangeEl   = document.getElementById('quiz-range');
+        const val       = Number(rangeEl.value);
+        const correct   = Number(q.correct);
+        const tolerance = q.tolerance ?? 0;
+        const unit      = q.unit ?? '';
+        const isCorrect = Math.abs(val - correct) <= tolerance;
+
+        rangeEl.classList.add(isCorrect ? 'correct' : 'incorrect');
+        rangeEl.disabled = true;
+
+        const ind = document.getElementById('slider-indicator');
+        if (isCorrect) {
+            ind.className = 'slider-correct-indicator show-correct';
+            ind.textContent = `✓ Richtig! Korrekte Antwort: ${correct.toLocaleString('de-DE')}${unit}`;
+        } else {
+            ind.className = 'slider-correct-indicator show-incorrect';
+            ind.textContent = `✗ Deine Schätzung: ${val.toLocaleString('de-DE')}${unit} – Korrekt wäre: ${correct.toLocaleString('de-DE')}${unit}`;
+        }
+
+        document.getElementById('check-slider').disabled = true;
+        showFeedback(isCorrect, correct + unit);
+        if (isCorrect) addScore(); else loseStreak();
+        scheduleNext(isCorrect);
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RENDERER: MULTISELECT
+       q.options  = Array mit Antwortoptionen
+       q.correct  = Array mit allen richtigen Antworten
+    ══════════════════════════════════════════════════════════ */
+    function renderMultiselect(q) {
+        const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+        document.getElementById('question-card').innerHTML = `
+            ${metaHTML(q)}
+            <div class="multiselect-hint">Mehrere Antworten können richtig sein – wähle alle richtigen aus</div>
+            <div class="answers-grid col-2" id="answers">
+                ${q.options.map((o, i) => `
+                    <button class="answer-btn" data-letter="${letters[i]}" data-answer="${escHtml(o)}">
+                        ${escHtml(o)}
+                    </button>
+                `).join('')}
+            </div>
+            <button class="check-multi-btn" id="check-multi">
+                Auswahl prüfen
+            </button>
+            ${revealFooterHTML(q)}
+        `;
+        document.querySelectorAll('#answers .answer-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (isAnswered) return;
+                const val = btn.dataset.answer;
+                if (selectedOptions.has(val)) {
+                    selectedOptions.delete(val);
+                    btn.classList.remove('selected');
+                } else {
+                    selectedOptions.add(val);
+                    btn.classList.add('selected');
+                }
+            });
+        });
+        document.getElementById('check-multi').addEventListener('click', checkMultiselect);
+    }
+
+    function checkMultiselect() {
+        if (isAnswered || selectedOptions.size === 0) return;
+        isAnswered = true;
+
+        const q       = currentQ;
+        const correct = new Set(q.correct);
+        let allRight  = true;
+
+        document.querySelectorAll('#answers .answer-btn').forEach(b => {
+            b.disabled = true;
+            b.classList.add('disabled');
+            b.classList.remove('selected');
+            const val = b.dataset.answer;
+            if (correct.has(val)) {
+                b.classList.add('correct');
+            } else if (selectedOptions.has(val)) {
+                b.classList.add('incorrect');
+            }
+        });
+
+        // Check: must select exactly right answers
+        const selectedArr = [...selectedOptions];
+        allRight = selectedArr.length === correct.size &&
+                   selectedArr.every(v => correct.has(v));
+
+        document.getElementById('check-multi').disabled = true;
+        showFeedback(allRight, [...correct].join(', '));
+        if (allRight) addScore(); else loseStreak();
+        scheduleNext(allRight);
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RENDERER: MATCHING (Paare zuordnen)
+       q.pairs = [ { left: 'Begriff', right: 'Definition' }, … ]
+    ══════════════════════════════════════════════════════════ */
+    function renderMatching(q) {
+        const pairs = q.pairs;
+        matchTotal  = pairs.length;
+        matchedCount = 0;
+        matchCorrectCount = 0;
+
+        // Shuffle right column independently
+        const rightShuffled = shuffle([...pairs.map((p, i) => ({ text: p.right, pairIdx: i }))]);
+
+        document.getElementById('question-card').innerHTML = `
+            ${metaHTML(q)}
+            <div class="matching-wrap" id="matching-wrap">
+                <div class="match-col">
+                    <div class="match-col-label">Begriffe</div>
+                    ${pairs.map((p, i) => `
+                        <div class="match-item" id="left-${i}" data-side="left" data-idx="${i}" data-pair="${i}">
+                            <span class="match-badge">${i + 1}</span>
+                            ${escHtml(p.left)}
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="match-col">
+                    <div class="match-col-label">Definitionen</div>
+                    ${rightShuffled.map((item, i) => `
+                        <div class="match-item" id="right-${i}" data-side="right" data-idx="${i}" data-pair="${item.pairIdx}">
+                            <span class="match-badge">?</span>
+                            ${escHtml(item.text)}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="match-score" id="match-score" style="display:none">
+                <span id="match-score-val">0</span> / ${matchTotal} Paare gefunden
+            </div>
+            ${revealFooterHTML(q)}
+        `;
+
+        document.querySelectorAll('.match-item').forEach(item => {
+            item.addEventListener('click', () => handleMatchClick(item));
+        });
+    }
+
+    function handleMatchClick(item) {
+        if (isAnswered) return;
+        if (item.classList.contains('matched-correct') ||
+            item.classList.contains('matched-wrong') ||
+            item.classList.contains('disabled')) return;
+
+        const side = item.dataset.side;
+        const idx  = parseInt(item.dataset.idx);
+
+        // If clicking same side twice: deselect old, select new
+        if (matchSelected && matchSelected.side === side) {
+            const prevEl = document.querySelector(`[data-side="${side}"][data-idx="${matchSelected.idx}"]`);
+            if (prevEl) prevEl.classList.remove('selected-left', 'selected-right');
+            matchSelected = { side, idx };
+            item.classList.add(side === 'left' ? 'selected-left' : 'selected-right');
+            return;
+        }
+
+        // First selection
+        if (!matchSelected) {
+            matchSelected = { side, idx };
+            item.classList.add(side === 'left' ? 'selected-left' : 'selected-right');
+            return;
+        }
+
+        // Second selection: try to match
+        const leftIdx  = side === 'right' ? matchSelected.idx : idx;
+        const rightIdx = side === 'right' ? idx : matchSelected.idx;
+
+        const leftEl  = document.querySelector(`[data-side="left"][data-idx="${leftIdx}"]`);
+        const rightEl = document.querySelector(`[data-side="right"][data-idx="${rightIdx}"]`);
+
+        if (!leftEl || !rightEl) { matchSelected = null; return; }
+
+        const leftPair  = parseInt(leftEl.dataset.pair);
+        const rightPair = parseInt(rightEl.dataset.pair);
+        const isCorrect = leftPair === rightPair;
+
+        // Clear selection highlights
+        leftEl.classList.remove('selected-left');
+        rightEl.classList.remove('selected-right');
+
+        leftEl.classList.add(isCorrect ? 'matched-correct' : 'matched-wrong');
+        rightEl.classList.add(isCorrect ? 'matched-correct' : 'matched-wrong');
+        leftEl.classList.add('disabled');
+        rightEl.classList.add('disabled');
+
+        if (isCorrect) matchCorrectCount++;
+        matchedCount++;
+        matchSelected = null;
+
+        // Show score
+        const scoreEl = document.getElementById('match-score');
+        scoreEl.style.display = 'block';
+        document.getElementById('match-score-val').textContent = matchCorrectCount;
+
+        // Check if all matched
+        if (matchedCount === matchTotal) {
+            isAnswered = true;
+            const allCorrect = matchCorrectCount === matchTotal;
+            showFeedback(allCorrect, allCorrect ? 'Alle Paare korrekt!' : `${matchCorrectCount} von ${matchTotal} Paaren korrekt`);
+            if (allCorrect) addScore(); else loseStreak();
+            scheduleNext(allCorrect);
+        }
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RENDERER: ORDER (Drag & Drop) – Desktop + TOUCH
     ══════════════════════════════════════════════════════════ */
     function renderOrder(q) {
         const shuffled = shuffle([...q.items]);
-        const html = `
+        document.getElementById('question-card').innerHTML = `
             ${metaHTML(q)}
             <div class="order-list" id="order-list">
                 ${shuffled.map((item, i) => `
@@ -889,15 +1667,17 @@
             </button>
             ${revealFooterHTML(q)}
         `;
-        document.getElementById('question-card').innerHTML = html;
         document.getElementById('check-order').addEventListener('click', checkOrder);
         initDragDrop();
     }
 
+    /* ── Desktop Drag & Drop ── */
     function initDragDrop() {
         const list = document.getElementById('order-list');
+        if (!list) return;
 
         list.querySelectorAll('.order-item').forEach(item => {
+            /* Desktop: drag events */
             item.addEventListener('dragstart', e => {
                 dragSrcIndex = parseInt(item.dataset.index);
                 setTimeout(() => item.classList.add('dragging'), 0);
@@ -906,66 +1686,150 @@
 
             item.addEventListener('dragend', () => {
                 item.classList.remove('dragging');
-                list.querySelectorAll('.order-item').forEach(i => i.classList.remove('drag-over'));
+                list.querySelectorAll('.order-item').forEach(i => {
+                    i.classList.remove('drag-over', 'drop-above', 'drop-below');
+                });
             });
 
             item.addEventListener('dragover', e => {
                 e.preventDefault();
                 e.dataTransfer.dropEffect = 'move';
-                list.querySelectorAll('.order-item').forEach(i => i.classList.remove('drag-over'));
+                list.querySelectorAll('.order-item').forEach(i =>
+                    i.classList.remove('drag-over', 'drop-above', 'drop-below'));
                 item.classList.add('drag-over');
             });
 
-            item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+            item.addEventListener('dragleave', () =>
+                item.classList.remove('drag-over', 'drop-above', 'drop-below'));
 
             item.addEventListener('drop', e => {
                 e.preventDefault();
-                item.classList.remove('drag-over');
+                item.classList.remove('drag-over', 'drop-above', 'drop-below');
                 const targetIndex = parseInt(item.dataset.index);
                 if (dragSrcIndex === null || dragSrcIndex === targetIndex) return;
-
-                // Swap DOM nodes
-                const items = [...list.querySelectorAll('.order-item')];
-                const src   = items.find(i => parseInt(i.dataset.index) === dragSrcIndex);
-                const tgt   = items.find(i => parseInt(i.dataset.index) === targetIndex);
-
-                if (dragSrcIndex < targetIndex) {
-                    list.insertBefore(src, tgt.nextSibling);
-                } else {
-                    list.insertBefore(src, tgt);
-                }
-
-                // Re-assign indices & position labels
-                list.querySelectorAll('.order-item').forEach((it, newI) => {
-                    it.dataset.index = newI;
-                    it.querySelector('.order-pos').textContent = newI + 1;
-                });
-
+                reorderItems(list, dragSrcIndex, targetIndex);
                 dragSrcIndex = null;
             });
+
+            /* Touch events – für Mobile/Tablet */
+            item.addEventListener('touchstart', onTouchStart, { passive: false });
+        });
+    }
+
+    function onTouchStart(e) {
+        if (isAnswered) return;
+        e.preventDefault();
+        const item = e.currentTarget;
+        touchSrcEl  = item;
+        touchSrcIdx = parseInt(item.dataset.index);
+        touchDragging = true;
+
+        const touch  = e.touches[0];
+        const rect   = item.getBoundingClientRect();
+
+        // Create ghost clone
+        touchGhost = document.createElement('div');
+        touchGhost.className = 'order-ghost';
+        touchGhost.style.width  = rect.width + 'px';
+        touchGhost.innerHTML    = item.innerHTML;
+        touchGhost.style.left   = (touch.clientX - rect.width / 2) + 'px';
+        touchGhost.style.top    = (touch.clientY - rect.height / 2) + 'px';
+        document.body.appendChild(touchGhost);
+
+        item.classList.add('dragging');
+
+        document.addEventListener('touchmove',  onTouchMove,  { passive: false });
+        document.addEventListener('touchend',   onTouchEnd,   { passive: false });
+        document.addEventListener('touchcancel', onTouchEnd,  { passive: false });
+    }
+
+    function onTouchMove(e) {
+        if (!touchDragging) return;
+        e.preventDefault();
+        const touch  = e.touches[0];
+        const gWidth = touchGhost.offsetWidth;
+        const gHeight= touchGhost.offsetHeight;
+
+        touchGhost.style.left = (touch.clientX - gWidth / 2)  + 'px';
+        touchGhost.style.top  = (touch.clientY - gHeight / 2) + 'px';
+
+        // Find which item we're hovering over
+        touchGhost.style.display = 'none';
+        const elBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+        touchGhost.style.display = '';
+
+        const list = document.getElementById('order-list');
+        if (!list) return;
+
+        list.querySelectorAll('.order-item').forEach(i =>
+            i.classList.remove('drag-over', 'drop-above', 'drop-below'));
+
+        const hovered = elBelow ? elBelow.closest('.order-item') : null;
+        if (hovered && hovered !== touchSrcEl) {
+            hovered.classList.add('drag-over');
+            touchLastOver = hovered;
+        } else {
+            touchLastOver = null;
+        }
+    }
+
+    function onTouchEnd(e) {
+        if (!touchDragging) return;
+        touchDragging = false;
+
+        document.removeEventListener('touchmove',   onTouchMove);
+        document.removeEventListener('touchend',    onTouchEnd);
+        document.removeEventListener('touchcancel', onTouchEnd);
+
+        if (touchGhost) { touchGhost.remove(); touchGhost = null; }
+        if (touchSrcEl)  touchSrcEl.classList.remove('dragging');
+
+        const list = document.getElementById('order-list');
+        if (list) list.querySelectorAll('.order-item').forEach(i =>
+            i.classList.remove('drag-over', 'drop-above', 'drop-below'));
+
+        if (touchLastOver && touchSrcIdx !== null) {
+            const targetIdx = parseInt(touchLastOver.dataset.index);
+            if (targetIdx !== touchSrcIdx) {
+                reorderItems(list, touchSrcIdx, targetIdx);
+            }
+        }
+
+        touchSrcEl   = null;
+        touchSrcIdx  = null;
+        touchLastOver = null;
+    }
+
+    /* Shared reorder helper */
+    function reorderItems(list, srcIdx, tgtIdx) {
+        const items = [...list.querySelectorAll('.order-item')];
+        const src   = items.find(i => parseInt(i.dataset.index) === srcIdx);
+        const tgt   = items.find(i => parseInt(i.dataset.index) === tgtIdx);
+        if (!src || !tgt) return;
+        if (srcIdx < tgtIdx) list.insertBefore(src, tgt.nextSibling);
+        else                  list.insertBefore(src, tgt);
+        // Re-assign indices & position labels
+        list.querySelectorAll('.order-item').forEach((it, newI) => {
+            it.dataset.index = newI;
+            it.querySelector('.order-pos').textContent = newI + 1;
         });
     }
 
     function checkOrder() {
         if (isAnswered) return;
         isAnswered = true;
-
         const correct = currentQ.correct;
         const list    = document.getElementById('order-list');
         const items   = [...list.querySelectorAll('.order-item')];
         const current = items.map(i => i.dataset.value);
-
         let allCorrect = true;
         items.forEach((item, i) => {
             const isPos = current[i] === correct[i];
             item.classList.add(isPos ? 'correct-pos' : 'wrong-pos');
             if (!isPos) allCorrect = false;
         });
-
         document.getElementById('check-order').disabled = true;
-
-        const correctStr = correct.join(' → ');
-        showFeedback(allCorrect, correctStr);
+        showFeedback(allCorrect, correct.join(' → '));
         if (allCorrect) addScore(); else loseStreak();
         scheduleNext(allCorrect);
     }
@@ -1000,7 +1864,6 @@
     function showFeedback(isCorrect, correctAnswer) {
         const fb = document.getElementById('answer-feedback');
         if (!fb) return;
-
         if (isCorrect) {
             fb.className = 'answer-feedback correct-fb';
             fb.innerHTML = `✓ Richtig!`;
@@ -1008,7 +1871,6 @@
             fb.className = 'answer-feedback incorrect-fb';
             fb.innerHTML = `✗ Falsch – Richtige Antwort: <strong style="margin-left:0.35rem">${escHtml(String(correctAnswer))}</strong>`;
         }
-
         const funFact = document.getElementById('funfact-box');
         if (funFact) funFact.classList.add('visible');
     }
