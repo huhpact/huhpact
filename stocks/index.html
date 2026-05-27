@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Market Watch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0c0e12;
+      --surface: #13161d;
+      --surface2: #1a1e28;
+      --border: #232736;
+      --accent: #e8ff47;
+      --accent2: #47c9ff;
+      --text: #f0f2f5;
+      --text-muted: #6b7280;
+      --text-dim: #9ca3af;
+      --green: #4ade80;
+      --red: #f87171;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(12,14,18,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-brand .dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:.4; transform:scale(1.4); }
+    }
+
+    .header-brand h1 {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .header-brand h1 span { color: var(--accent); }
+
+    .header-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      color: var(--text-muted);
+      letter-spacing: .06em;
+    }
+
+    /* ── NAV PILLS ── */
+    .nav-strip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 20px 32px 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-strip::-webkit-scrollbar { display:none; }
+
+    .nav-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-dim);
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .05em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+    .nav-pill:hover, .nav-pill.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+    .nav-pill .flag { font-size: .85em; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      padding: 40px 32px 20px;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+
+    .section-label h2 {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .section-label .line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── STOCK CARD ── */
+    .stock-card {
+      margin: 0 32px 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color .3s;
+    }
+    .stock-card:hover { border-color: #2e3347; }
+
+    /* top bar */
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .card-identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .stock-logo {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      overflow: hidden;
+    }
+
+    .stock-logo img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      padding: 6px;
+    }
+
+    .stock-title h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stock-title .ticker {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      color: var(--accent);
+      letter-spacing: .08em;
+    }
+
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      padding: 4px 10px;
+      border-radius: 99px;
+      border: 1px solid;
+      letter-spacing: .05em;
+    }
+    .badge-sector {
+      color: var(--accent2);
+      border-color: rgba(71,201,255,.25);
+      background: rgba(71,201,255,.07);
+    }
+    .badge-exchange {
+      color: var(--text-muted);
+      border-color: var(--border);
+      background: transparent;
+    }
+
+    /* company quick stats */
+    .card-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat-item {
+      padding: 14px 20px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem;
+      color: var(--text-muted);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-family: 'DM Mono', monospace;
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .stat-value.green { color: var(--green); }
+    .stat-value.red { color: var(--red); }
+
+    /* body: chart + analysis side by side */
+    .card-body {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      min-height: 440px;
+    }
+
+    @media (max-width: 960px) {
+      .card-body { grid-template-columns: 1fr; }
+    }
+
+    .chart-section {
+      border-right: 1px solid var(--border);
+      padding: 0;
+      position: relative;
+      background: #0f1117;
+    }
+
+    .chart-section iframe,
+    .chart-section .tv-embed {
+      width: 100%;
+      height: 100%;
+      min-height: 400px;
+      border: none;
+      display: block;
+    }
+
+    /* right column */
+    .side-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .side-block {
+      flex: 1;
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .side-block:last-child { border-bottom: none; }
+
+    .side-block-title {
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    /* analyst widget placeholder */
+    .analyst-embed {
+      width: 100%;
+      min-height: 200px;
+      border: none;
+      border-radius: 6px;
+      overflow: hidden;
+      display: block;
+      background: #0f1117;
+    }
+
+    /* description */
+    .stock-desc {
+      font-size: .82rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 60px;
+      border-top: 1px solid var(--border);
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem;
+      color: var(--text-muted);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      header { padding: 0 16px; }
+      .nav-strip, .section-label { padding-left: 16px; padding-right: 16px; }
+      .stock-card { margin-left: 16px; margin-right: 16px; }
+      .card-header { padding: 14px 16px; }
+      .stat-item { padding: 10px 14px; }
+      footer { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-brand">
+      <div class="dot"></div>
+      <h1>Market<span>Watch</span></h1>
+    </div>
+    <div class="header-meta" id="clock">—</div>
+  </header>
+
+  <!-- Quick navigation -->
+  <nav class="nav-strip">
+    <a class="nav-pill active" href="#nvda"><span class="flag">🟢</span> NVDA</a>
+    <a class="nav-pill" href="#aapl"><span class="flag">🟢</span> AAPL</a>
+    <a class="nav-pill" href="#msft"><span class="flag">🟡</span> MSFT</a>
+    <a class="nav-pill" href="#tsla"><span class="flag">🔴</span> TSLA</a>
+    <a class="nav-pill" href="#amzn"><span class="flag">🟢</span> AMZN</a>
+    <a class="nav-pill" href="#meta"><span class="flag">🟢</span> META</a>
+  </nav>
+
+  <main>
+
+    <!-- ────────────────────────────────── NVIDIA ── -->
+    <div class="section-label">
+      <h2>Technologie</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="stock-card" id="nvda">
+      <div class="card-header">
+        <div class="card-identity">
+          <div class="stock-logo">
+            <img src="https://logo.clearbit.com/nvidia.com" alt="NVIDIA" onerror="this.parentElement.textContent='🟩'">
+          </div>
+          <div class="stock-title">
+            <h3>NVIDIA Corporation</h3>
+            <div class="ticker">NASDAQ: NVDA</div>
+          </div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-sector">Halbleiter</span>
+          <span class="badge badge-exchange">USA</span>
+        </div>
+      </div>
+
+      <div class="card-stats">
+        <div class="stat-item">
+          <div class="stat-label">Market Cap</div>
+          <div class="stat-value">~3.3T $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">KGV (ttm)</div>
+          <div class="stat-value">53x</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Hoch</div>
+          <div class="stat-value green">153.13 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Tief</div>
+          <div class="stat-value red">86.02 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Dividende</div>
+          <div class="stat-value">0.01 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Beta</div>
+          <div class="stat-value">1.98</div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="chart-section">
+          <!-- TradingView Chart Embed -->
+          <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-NVDA/" rel="noopener nofollow" target="_blank"><span class="blue-text">NVDA stock price</span></a><span class="trademark">&nbsp;by TradingView</span></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+  {
+  "lineWidth": 2,
+  "lineType": 0,
+  "chartType": "area",
+  "fontColor": "rgb(106, 109, 120)",
+  "gridLineColor": "rgba(242, 242, 242, 0.06)",
+  "volumeUpColor": "rgba(34, 171, 148, 0.5)",
+  "volumeDownColor": "rgba(247, 82, 95, 0.5)",
+  "backgroundColor": "#0F0F0F",
+  "widgetFontColor": "#DBDBDB",
+  "upColor": "#22ab94",
+  "downColor": "#f7525f",
+  "borderUpColor": "#22ab94",
+  "borderDownColor": "#f7525f",
+  "wickUpColor": "#22ab94",
+  "wickDownColor": "#f7525f",
+  "colorTheme": "dark",
+  "isTransparent": false,
+  "locale": "en",
+  "chartOnly": false,
+  "scalePosition": "right",
+  "scaleMode": "Normal",
+  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+  "valuesTracking": "1",
+  "changeMode": "price-and-percent",
+  "symbols": [
+    [
+      "NASDAQ:NVDA|1D"
+    ]
+  ],
+  "dateRanges": [
+    "1d|1",
+    "5d|5",
+    "1m|30",
+    "3m|60",
+    "12m|1D"
+  ],
+  "fontSize": "10",
+  "headerFontSize": "medium",
+  "autosize": true,
+  "width": "100%",
+  "height": "100%",
+  "noTimeScale": false,
+  "hideDateRanges": false,
+  "hideMarketStatus": false,
+  "hideSymbolLogo": true
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+        </div>
+
+        <div class="side-column">
+          <div class="side-block">
+            <div class="side-block-title">Analysten-Empfehlung</div>
+            
+						<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-NVDA/technicals/" rel="noopener nofollow" target="_blank"><span class="blue-text">NVDA stock analysis</span></a><span class="trademark"> by TradingView</span></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+  {
+  "colorTheme": "dark",
+  "displayMode": "single",
+  "isTransparent": false,
+  "locale": "en",
+  "interval": "1M",
+  "disableInterval": false,
+  "width": 425,
+  "height": 450,
+  "symbol": "NASDAQ:NVDA",
+  "showIntervalTabs": true
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+          </div>
+          <div class="side-block">
+            <div class="side-block-title">Über das Unternehmen</div>
+            <p class="stock-desc">NVIDIA ist führend in der Entwicklung von Grafikprozessoren (GPUs) und System-on-Chip-Lösungen. Das Unternehmen treibt Innovationen in den Bereichen KI, Rechenzentren, Gaming und autonomes Fahren voran.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────── APPLE ── -->
+    <div class="stock-card" id="aapl">
+      <div class="card-header">
+        <div class="card-identity">
+          <div class="stock-logo">
+            <img src="https://logo.clearbit.com/apple.com" alt="Apple" onerror="this.parentElement.textContent='🍎'">
+          </div>
+          <div class="stock-title">
+            <h3>Apple Inc.</h3>
+            <div class="ticker">NASDAQ: AAPL</div>
+          </div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-sector">Consumer Tech</span>
+          <span class="badge badge-exchange">USA</span>
+        </div>
+      </div>
+
+      <div class="card-stats">
+        <div class="stat-item">
+          <div class="stat-label">Market Cap</div>
+          <div class="stat-value">~3.2T $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">KGV (ttm)</div>
+          <div class="stat-value">32x</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Hoch</div>
+          <div class="stat-value green">237.23 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Tief</div>
+          <div class="stat-value red">169.21 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Dividende</div>
+          <div class="stat-value">0.25 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Beta</div>
+          <div class="stat-value">1.24</div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="chart-section">
+          <iframe
+            src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_aapl&symbol=NASDAQ%3AAAPL&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=131621&studies=[]&theme=dark&style=1&timezone=Europe%2FBerlin&withdateranges=1&showpopupbutton=0&locale=de_DE&utm_source=&utm_medium=widget&utm_campaign=chart"
+            allowtransparency="true"
+            frameborder="0"
+            scrolling="no"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="side-column">
+          <div class="side-block">
+            <div class="side-block-title">Analysten-Empfehlung</div>
+            <iframe
+              class="analyst-embed"
+              src="https://s.tradingview.com/embed-widget/symbol-overview/?locale=de_DE#%7B%22symbols%22%3A%5B%5B%22NASDAQ%3AAAPL%22%2C%22NASDAQ%3AAAPL%7C1D%22%5D%5D%2C%22chartOnly%22%3Afalse%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22200%22%2C%22colorTheme%22%3A%22dark%22%2C%22showVolume%22%3Afalse%2C%22hideDateRanges%22%3Atrue%2C%22hideMarketStatus%22%3Atrue%2C%22hideSymbolLogo%22%3Atrue%2C%22noTimeScale%22%3Atrue%2C%22chartType%22%3A%22area%22%2C%22lineWidth%22%3A2%7D"
+              frameborder="0"
+              scrolling="no">
+            </iframe>
+          </div>
+          <div class="side-block">
+            <div class="side-block-title">Über das Unternehmen</div>
+            <p class="stock-desc">Apple entwirft und vermarktet Consumer Electronics, Software und Online-Services. Mit iPhone, Mac, iPad und dem wachsenden Services-Segment ist Apple eines der wertvollsten Unternehmen weltweit.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────── MICROSOFT ── -->
+    <div class="stock-card" id="msft">
+      <div class="card-header">
+        <div class="card-identity">
+          <div class="stock-logo">
+            <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft" onerror="this.parentElement.textContent='🪟'">
+          </div>
+          <div class="stock-title">
+            <h3>Microsoft Corporation</h3>
+            <div class="ticker">NASDAQ: MSFT</div>
+          </div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-sector">Cloud / Software</span>
+          <span class="badge badge-exchange">USA</span>
+        </div>
+      </div>
+
+      <div class="card-stats">
+        <div class="stat-item">
+          <div class="stat-label">Market Cap</div>
+          <div class="stat-value">~3.1T $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">KGV (ttm)</div>
+          <div class="stat-value">37x</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Hoch</div>
+          <div class="stat-value green">468.35 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Tief</div>
+          <div class="stat-value red">344.79 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Dividende</div>
+          <div class="stat-value">0.83 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Beta</div>
+          <div class="stat-value">0.90</div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="chart-section">
+          <iframe
+            src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_msft&symbol=NASDAQ%3AMSFT&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=131621&studies=[]&theme=dark&style=1&timezone=Europe%2FBerlin&withdateranges=1&showpopupbutton=0&locale=de_DE&utm_source=&utm_medium=widget&utm_campaign=chart"
+            allowtransparency="true"
+            frameborder="0"
+            scrolling="no"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="side-column">
+          <div class="side-block">
+            <div class="side-block-title">Analysten-Empfehlung</div>
+            <iframe
+              class="analyst-embed"
+              src="https://s.tradingview.com/embed-widget/symbol-overview/?locale=de_DE#%7B%22symbols%22%3A%5B%5B%22NASDAQ%3AMSFT%22%2C%22NASDAQ%3AMSFT%7C1D%22%5D%5D%2C%22chartOnly%22%3Afalse%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22200%22%2C%22colorTheme%22%3A%22dark%22%2C%22showVolume%22%3Afalse%2C%22hideDateRanges%22%3Atrue%2C%22hideMarketStatus%22%3Atrue%2C%22hideSymbolLogo%22%3Atrue%2C%22noTimeScale%22%3Atrue%2C%22chartType%22%3A%22area%22%2C%22lineWidth%22%3A2%7D"
+              frameborder="0"
+              scrolling="no">
+            </iframe>
+          </div>
+          <div class="side-block">
+            <div class="side-block-title">Über das Unternehmen</div>
+            <p class="stock-desc">Microsoft entwickelt Software, Cloud-Dienste (Azure) und Hardware. Mit der KI-Partnerschaft mit OpenAI und dem Copilot-Ökosystem positioniert sich Microsoft als zentraler KI-Infrastrukturanbieter.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────── TESLA ── -->
+    <div class="section-label">
+      <h2>Automotive / EV</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="stock-card" id="tsla">
+      <div class="card-header">
+        <div class="card-identity">
+          <div class="stock-logo">
+            <img src="https://logo.clearbit.com/tesla.com" alt="Tesla" onerror="this.parentElement.textContent='⚡'">
+          </div>
+          <div class="stock-title">
+            <h3>Tesla, Inc.</h3>
+            <div class="ticker">NASDAQ: TSLA</div>
+          </div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-sector">Elektrofahrzeuge</span>
+          <span class="badge badge-exchange">USA</span>
+        </div>
+      </div>
+
+      <div class="card-stats">
+        <div class="stat-item">
+          <div class="stat-label">Market Cap</div>
+          <div class="stat-value">~1.0T $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">KGV (ttm)</div>
+          <div class="stat-value">180x</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Hoch</div>
+          <div class="stat-value green">488.54 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Tief</div>
+          <div class="stat-value red">138.80 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Dividende</div>
+          <div class="stat-value">—</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Beta</div>
+          <div class="stat-value">2.34</div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="chart-section">
+          <iframe
+            src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_tsla&symbol=NASDAQ%3ATSLA&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=131621&studies=[]&theme=dark&style=1&timezone=Europe%2FBerlin&withdateranges=1&showpopupbutton=0&locale=de_DE&utm_source=&utm_medium=widget&utm_campaign=chart"
+            allowtransparency="true"
+            frameborder="0"
+            scrolling="no"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="side-column">
+          <div class="side-block">
+            <div class="side-block-title">Analysten-Empfehlung</div>
+            <iframe
+              class="analyst-embed"
+              src="https://s.tradingview.com/embed-widget/symbol-overview/?locale=de_DE#%7B%22symbols%22%3A%5B%5B%22NASDAQ%3ATSLA%22%2C%22NASDAQ%3ATSLA%7C1D%22%5D%5D%2C%22chartOnly%22%3Afalse%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22200%22%2C%22colorTheme%22%3A%22dark%22%2C%22showVolume%22%3Afalse%2C%22hideDateRanges%22%3Atrue%2C%22hideMarketStatus%22%3Atrue%2C%22hideSymbolLogo%22%3Atrue%2C%22noTimeScale%22%3Atrue%2C%22chartType%22%3A%22area%22%2C%22lineWidth%22%3A2%7D"
+              frameborder="0"
+              scrolling="no">
+            </iframe>
+          </div>
+          <div class="side-block">
+            <div class="side-block-title">Über das Unternehmen</div>
+            <p class="stock-desc">Tesla produziert Elektrofahrzeuge, Energiespeichersysteme und Solarlösungen. Full Self-Driving (FSD) und der geplante Robotaxi-Dienst „Cybercab" gelten als zentrale Wachstumstreiber.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────── AMAZON ── -->
+    <div class="section-label">
+      <h2>E-Commerce / Cloud</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="stock-card" id="amzn">
+      <div class="card-header">
+        <div class="card-identity">
+          <div class="stock-logo">
+            <img src="https://logo.clearbit.com/amazon.com" alt="Amazon" onerror="this.parentElement.textContent='📦'">
+          </div>
+          <div class="stock-title">
+            <h3>Amazon.com, Inc.</h3>
+            <div class="ticker">NASDAQ: AMZN</div>
+          </div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-sector">E-Commerce / AWS</span>
+          <span class="badge badge-exchange">USA</span>
+        </div>
+      </div>
+
+      <div class="card-stats">
+        <div class="stat-item">
+          <div class="stat-label">Market Cap</div>
+          <div class="stat-value">~2.3T $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">KGV (ttm)</div>
+          <div class="stat-value">42x</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Hoch</div>
+          <div class="stat-value green">242.52 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Tief</div>
+          <div class="stat-value red">151.61 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Dividende</div>
+          <div class="stat-value">—</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Beta</div>
+          <div class="stat-value">1.33</div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="chart-section">
+          <iframe
+            src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_amzn&symbol=NASDAQ%3AAMZN&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=131621&studies=[]&theme=dark&style=1&timezone=Europe%2FBerlin&withdateranges=1&showpopupbutton=0&locale=de_DE&utm_source=&utm_medium=widget&utm_campaign=chart"
+            allowtransparency="true"
+            frameborder="0"
+            scrolling="no"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="side-column">
+          <div class="side-block">
+            <div class="side-block-title">Analysten-Empfehlung</div>
+            <iframe
+              class="analyst-embed"
+              src="https://s.tradingview.com/embed-widget/symbol-overview/?locale=de_DE#%7B%22symbols%22%3A%5B%5B%22NASDAQ%3AAMZN%22%2C%22NASDAQ%3AAMZN%7C1D%22%5D%5D%2C%22chartOnly%22%3Afalse%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22200%22%2C%22colorTheme%22%3A%22dark%22%2C%22showVolume%22%3Afalse%2C%22hideDateRanges%22%3Atrue%2C%22hideMarketStatus%22%3Atrue%2C%22hideSymbolLogo%22%3Atrue%2C%22noTimeScale%22%3Atrue%2C%22chartType%22%3A%22area%22%2C%22lineWidth%22%3A2%7D"
+              frameborder="0"
+              scrolling="no">
+            </iframe>
+          </div>
+          <div class="side-block">
+            <div class="side-block-title">Über das Unternehmen</div>
+            <p class="stock-desc">Amazon dominiert den globalen E-Commerce und ist mit AWS Marktführer im Cloud-Computing. Prime, Advertising und KI-Dienste (Bedrock, Alexa+) treiben das Wachstum zusätzlich an.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────── META ── -->
+    <div class="stock-card" id="meta">
+      <div class="card-header">
+        <div class="card-identity">
+          <div class="stock-logo">
+            <img src="https://logo.clearbit.com/meta.com" alt="Meta" onerror="this.parentElement.textContent='👁️'">
+          </div>
+          <div class="stock-title">
+            <h3>Meta Platforms, Inc.</h3>
+            <div class="ticker">NASDAQ: META</div>
+          </div>
+        </div>
+        <div class="card-badges">
+          <span class="badge badge-sector">Social Media / KI</span>
+          <span class="badge badge-exchange">USA</span>
+        </div>
+      </div>
+
+      <div class="card-stats">
+        <div class="stat-item">
+          <div class="stat-label">Market Cap</div>
+          <div class="stat-value">~1.6T $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">KGV (ttm)</div>
+          <div class="stat-value">28x</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Hoch</div>
+          <div class="stat-value green">740.91 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">52W Tief</div>
+          <div class="stat-value red">474.79 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Dividende</div>
+          <div class="stat-value">0.53 $</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Beta</div>
+          <div class="stat-value">1.22</div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="chart-section">
+          <iframe
+            src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_meta&symbol=NASDAQ%3AMETA&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=131621&studies=[]&theme=dark&style=1&timezone=Europe%2FBerlin&withdateranges=1&showpopupbutton=0&locale=de_DE&utm_source=&utm_medium=widget&utm_campaign=chart"
+            allowtransparency="true"
+            frameborder="0"
+            scrolling="no"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="side-column">
+          <div class="side-block">
+            <div class="side-block-title">Analysten-Empfehlung</div>
+            <iframe
+              class="analyst-embed"
+              src="https://s.tradingview.com/embed-widget/symbol-overview/?locale=de_DE#%7B%22symbols%22%3A%5B%5B%22NASDAQ%3AMETA%22%2C%22NASDAQ%3AMETA%7C1D%22%5D%5D%2C%22chartOnly%22%3Afalse%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22200%22%2C%22colorTheme%22%3A%22dark%22%2C%22showVolume%22%3Afalse%2C%22hideDateRanges%22%3Atrue%2C%22hideMarketStatus%22%3Atrue%2C%22hideSymbolLogo%22%3Atrue%2C%22noTimeScale%22%3Atrue%2C%22chartType%22%3A%22area%22%2C%22lineWidth%22%3A2%7D"
+              frameborder="0"
+              scrolling="no">
+            </iframe>
+          </div>
+          <div class="side-block">
+            <div class="side-block-title">Über das Unternehmen</div>
+            <p class="stock-desc">Meta betreibt Facebook, Instagram, WhatsApp und Threads. Mit massiven Investitionen in KI (Llama-Modelle, Meta AI) und dem Reality-Labs-Ökosystem setzt das Unternehmen auf langfristiges Plattformwachstum.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>MarketWatch Dashboard · Daten via TradingView</p>
+    <p>Keine Anlageberatung · Alle Angaben ohne Gewähr</p>
+  </footer>
+
+  <script>
+    // Live clock
+    function updateClock() {
+      const now = new Date();
+      const options = { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+      document.getElementById('clock').textContent =
+        'Berlin · ' + now.toLocaleTimeString('de-DE', options);
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // Active nav pill on scroll
+    const cards = document.querySelectorAll('.stock-card[id]');
+    const pills = document.querySelectorAll('.nav-pill');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          pills.forEach(p => p.classList.remove('active'));
+          const active = document.querySelector(`.nav-pill[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    cards.forEach(c => observer.observe(c));
+  </script>
+</body>
+</html>

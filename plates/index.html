@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlateWorld — Kennzeichen aus aller Welt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ════════════ HEADER ════════════ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-plate">PW</span>
+        <div class="logo-text">
+          <span class="logo-title">PlateWorld</span>
+          <span class="logo-sub">Kennzeichen-Lexikon</span>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="#search-section">Suche</a>
+        <a href="#countries-section">Länder</a>
+        <a href="#" id="random-btn"><i class="fa-solid fa-shuffle"></i> Zufällig</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ════════════ HERO ════════════ -->
+  <section class="hero">
+    <div class="hero-bg-plates" aria-hidden="true">
+      <div class="bg-plate">B · MUC</div>
+      <div class="bg-plate">LN · 77</div>
+      <div class="bg-plate">NY · CA</div>
+      <div class="bg-plate">RM · ZH</div>
+      <div class="bg-plate">P · AA</div>
+      <div class="bg-plate">W · SK</div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge"><i class="fa-solid fa-earth-europe"></i> Europa & darüber hinaus</div>
+      <h1 class="hero-title">
+        Jedes Kennzeichen.<br />
+        <span class="hero-accent">Jede Geschichte.</span>
+      </h1>
+      <p class="hero-desc">
+        Entdecke Kennzeichen aus über 30 Ländern — mit Fakten, Bildern und spannenden Details zu jeder Stadt und Region.
+      </p>
+
+      <!-- SEARCH BAR -->
+      <div class="search-wrap" id="search-section">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input
+            type="text"
+            id="search-input"
+            class="search-input"
+            placeholder="Kennzeichen eingeben… z. B. B, MUC, NY, ZH"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button class="search-clear" id="clear-btn" title="Löschen"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="search-hint">
+          <span><i class="fa-regular fa-lightbulb"></i> Tipp: Buchstaben oder Ziffern des Kennzeichens eingeben</span>
+          <span class="example-pills">
+            <button class="pill" data-q="B">B</button>
+            <button class="pill" data-q="M">M</button>
+            <button class="pill" data-q="ZH">ZH</button>
+            <button class="pill" data-q="NY">NY</button>
+            <button class="pill" data-q="75">75</button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO GRAPHIC -->
+    <div class="hero-graphic" aria-hidden="true">
+      <div class="plate-mockup">
+        <div class="plate-mockup-inner">
+          <div class="plate-eu-strip"><span>D</span></div>
+          <div class="plate-num">
+            <span class="plate-city" id="hero-city">B</span>
+            <span class="plate-rand"> · </span>
+            <span class="plate-rest">PW 2024</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stat-bubbles">
+        <div class="stat-bubble"><i class="fa-solid fa-globe"></i><span>30+</span><small>Länder</small></div>
+        <div class="stat-bubble"><i class="fa-solid fa-id-card"></i><span>60+</span><small>Kennzeichen</small></div>
+        <div class="stat-bubble"><i class="fa-solid fa-map-pin"></i><span>45+</span><small>Städte</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════ SEARCH RESULTS ════════════ -->
+  <section id="results-section" class="results-section hidden">
+    <div class="container">
+      <div class="results-header">
+        <h2 id="results-title">Suchergebnisse</h2>
+        <span id="results-count" class="results-count"></span>
+      </div>
+      <div id="results-grid" class="results-grid"></div>
+    </div>
+  </section>
+
+  <!-- ════════════ COUNTRIES SECTION ════════════ -->
+  <section id="countries-section" class="countries-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Länder durchsuchen</h2>
+        <p class="section-sub">Wähle ein Land, um alle verfügbaren Kennzeichen zu sehen</p>
+      </div>
+      <div id="country-bubbles" class="country-bubbles"></div>
+    </div>
+  </section>
+
+  <!-- ════════════ COUNTRY DETAIL ════════════ -->
+  <section id="country-detail-section" class="country-detail-section hidden">
+    <div class="container">
+      <div class="country-detail-header">
+        <button class="back-btn" id="back-btn">
+          <i class="fa-solid fa-arrow-left"></i> Zurück zur Übersicht
+        </button>
+        <div class="country-detail-title-wrap">
+          <span id="cd-flag" class="cd-flag"></span>
+          <div>
+            <h2 id="cd-name"></h2>
+            <p id="cd-sub" class="cd-sub"></p>
+          </div>
+        </div>
+      </div>
+      <div id="country-plates-grid" class="results-grid"></div>
+    </div>
+  </section>
+
+  <!-- ════════════ FEATURED / EXAMPLES ════════════ -->
+  <section id="featured-section" class="featured-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Bekannte Kennzeichen</h2>
+        <p class="section-sub">Einige der berühmtesten Nummernschilder der Welt</p>
+      </div>
+      <div id="featured-grid" class="results-grid"></div>
+    </div>
+  </section>
+
+  <!-- ════════════ POPUP / MODAL ════════════ -->
+  <div id="popup-overlay" class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popup-name">
+    <div class="popup-card">
+      <button class="popup-close" id="popup-close" aria-label="Schließen">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="popup-image-wrap">
+        <img id="popup-img" src="" alt="" class="popup-img" />
+        <div class="popup-img-overlay">
+          <span class="popup-country-tag" id="popup-country-tag"></span>
+        </div>
+      </div>
+
+      <div class="popup-body">
+        <div class="popup-plate-display">
+          <div class="mini-plate" id="popup-mini-plate">
+            <div class="mini-eu"></div>
+            <span class="mini-code" id="popup-code"></span>
+          </div>
+        </div>
+
+        <h2 class="popup-name" id="popup-name"></h2>
+        <p class="popup-region-line" id="popup-region-line"></p>
+
+        <p class="popup-desc" id="popup-desc"></p>
+
+        <div class="popup-stats" id="popup-stats"></div>
+
+        <div class="popup-extra-facts" id="popup-extra-facts"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ FOOTER ════════════ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">
+        <span class="logo-plate small">PW</span>
+        <span>PlateWorld</span>
+      </div>
+      <p class="footer-text">Kennzeichen-Lexikon für Neugierige · Daten ohne Gewähr</p>
+      <div class="footer-stats">
+        <span><i class="fa-solid fa-database"></i> <span id="footer-count"></span> Einträge</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
