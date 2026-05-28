@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprachen-Quiz</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <style>
+        /* ════════════════════════════════════════════
+           LANGUAGE TEXT DISPLAY
+        ════════════════════════════════════════════ */
+        .lang-stage {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 2.75rem 2.5rem 2.25rem;
+            margin-bottom: 1.75rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.1rem;
+        }
+
+        .lang-stage::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,92,58,0.06) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        /* Animated shimmer top border */
+        .lang-stage::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; right: -100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: shimmerLine 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmerLine {
+            0%   { transform: translateX(-50%); opacity: 0; }
+            30%  { opacity: 1; }
+            70%  { opacity: 1; }
+            100% { transform: translateX(50%); opacity: 0; }
+        }
+
+        .lang-text {
+            font-size: clamp(1.15rem, 3.5vw, 1.65rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+            position: relative;
+            z-index: 1;
+            font-family: 'Cabinet Grotesk', sans-serif;
+        }
+
+        /* Special handling for scripts */
+        .lang-text.script-arabic,
+        .lang-text.script-hebrew {
+            direction: rtl;
+            font-size: clamp(1.3rem, 4vw, 1.9rem);
+            line-height: 1.7;
+        }
+
+        .lang-text.script-cjk {
+            font-size: clamp(1.4rem, 4.5vw, 2.1rem);
+            letter-spacing: 0.08em;
+        }
+
+        .lang-text.script-devanagari,
+        .lang-text.script-tibetan,
+        .lang-text.script-georgian,
+        .lang-text.script-armenian {
+            font-size: clamp(1.2rem, 3.8vw, 1.8rem);
+            line-height: 1.8;
+        }
+
+        /* ── Hint chips ── */
+        .hint-chips {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hint-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-strong);
+            color: var(--text-secondary);
+            padding: 0.3rem 0.85rem;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .hint-chip.region-chip {
+            background: var(--accent-light);
+            border-color: rgba(255,92,58,0.25);
+            color: var(--accent);
+        }
+
+        .hint-chip.family-chip {
+            background: var(--teal-light);
+            border-color: rgba(58,232,200,0.2);
+            color: var(--teal);
+        }
+
+        /* ── Translation reveal ── */
+        .translation-hint {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+            max-width: 480px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .translation-hint.visible { display: block; }
+
+        /* ── Answer input area ── */
+        .input-area {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ── Feedback ── */
+        .answer-feedback {
+            padding: 0.9rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-size: 0.93rem;
+            font-weight: 700;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .answer-feedback.visible { display: flex; }
+
+        .answer-feedback.correct-fb {
+            background: var(--success-light);
+            border: 1px solid rgba(58,232,200,0.25);
+            color: var(--success);
+        }
+
+        .answer-feedback.incorrect-fb {
+            background: var(--error-light);
+            border: 1px solid rgba(255,92,58,0.25);
+            color: var(--text-secondary);
+        }
+
+        /* ── Fun fact box ── */
+        .funfact-box {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--gold);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.25rem;
+            font-size: 0.86rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            display: none;
+            gap: 0.7rem;
+            align-items: flex-start;
+            margin-top: 0.75rem;
+        }
+
+        .funfact-box.visible { display: flex; }
+        .funfact-icon { font-size: 0.95rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+        /* ── Speaker & native name badge ── */
+        .lang-meta {
+            display: none;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lang-meta.visible { display: flex; }
+
+        .meta-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--gold-light);
+            border: 1px solid rgba(245,200,66,0.2);
+            color: var(--gold);
+            padding: 0.3rem 0.85rem;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        /* ── Top bar ── */
+        .quiz-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.1rem 1.75rem;
+            margin-bottom: 1.75rem;
+            gap: 1rem;
+        }
+
+        .qnum-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .qnum-value {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .score-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .score-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .score-value {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--accent);
+            letter-spacing: -1px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .streak-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: var(--gold-light);
+            border: 1px solid rgba(245,200,66,0.25);
+            color: var(--gold);
+            padding: 0.3rem 0.8rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            animation: streakPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .streak-badge.hidden { display: none; }
+
+        /* ── Results modal extras ── */
+        .result-emoji {
+            font-size: 3.5rem;
+            line-height: 1;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .result-msg {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* ── Skip button ── */
+        .skip-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Cabinet Grotesk', sans-serif;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            letter-spacing: 0.02em;
+        }
+
+        .skip-btn:hover {
+            color: var(--text-secondary);
+            background: var(--bg-subtle);
+        }
+
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            gap: 0.75rem;
+        }
+
+        /* ── Enter hint in input ── */
+        .keyboard-hint {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .key-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-strong);
+            color: var(--text-secondary);
+            padding: 0.15rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        @media (max-width: 600px) {
+            .lang-text { font-size: 1.15rem; }
+            .lang-stage { padding: 2rem 1.5rem 1.75rem; min-height: 140px; }
+            .bottom-actions { flex-direction: column; gap: 0.5rem; }
+            .keyboard-hint { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <header class="quiz-header">
+            <button class="back-btn" onclick="window.location.href='sprachen-setup.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Einstellungen
+            </button>
+            <h1 class="neon-text">Sprachen<em>Quiz</em></h1>
+        </header>
+
+        <main style="max-width:720px;margin:0 auto;width:100%;">
+
+            <!-- Progress -->
+            <div class="progress-bar-wrap">
+                <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+            </div>
+
+            <!-- Top bar -->
+            <div class="quiz-top-bar">
+                <div>
+                    <div class="qnum-label">Frage</div>
+                    <div class="qnum-value" id="q-counter">1 / —</div>
+                </div>
+                <div class="score-wrap">
+                    <div id="streak-badge" class="streak-badge hidden">
+                        🔥 <span id="streak-count">0</span>
+                    </div>
+                    <div>
+                        <div class="score-label">Punkte</div>
+                        <div class="score-value" id="score">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question card -->
+            <div class="quiz-card-question" id="question-card">
+
+                <!-- Language text stage -->
+                <div class="lang-stage" id="lang-stage">
+                    <div class="hint-chips" id="hint-chips"></div>
+                    <div class="lang-text" id="lang-text">Lade...</div>
+                    <div class="translation-hint" id="translation-hint"></div>
+                    <div class="lang-meta" id="lang-meta"></div>
+                </div>
+
+                <!-- Input -->
+                <div class="input-area" id="input-area">
+                    <input
+                        type="text"
+                        class="text-input"
+                        id="lang-input"
+                        placeholder="Welche Sprache ist das?"
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                    />
+                    <button class="submit-btn" id="submit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                        Prüfen
+                    </button>
+                </div>
+
+                <!-- Feedback -->
+                <div class="answer-feedback" id="answer-feedback"></div>
+
+                <!-- Fun fact -->
+                <div class="funfact-box" id="funfact-box">
+                    <span class="funfact-icon">💡</span>
+                    <span id="funfact-text"></span>
+                </div>
+
+                <!-- Bottom row -->
+                <div class="bottom-actions">
+                    <div class="keyboard-hint">
+                        <span class="key-tag">↵ Enter</span>
+                        <span>zum Prüfen</span>
+                    </div>
+                    <button class="skip-btn" id="skip-btn">
+                        Überspringen
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                             style="width:14px;height:14px">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Results Modal -->
+    <div class="modal hidden" id="results-modal">
+        <div class="modal-content">
+            <span class="result-emoji" id="result-emoji">🏆</span>
+            <h2 id="result-title">Ausgezeichnet!</h2>
+            <p class="result-msg" id="result-msg"></p>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="final-score">0</div>
+                    <div class="stat-label">Richtig</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="final-total">0</div>
+                    <div class="stat-label">Gesamt</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="final-percentage">0%</div>
+                    <div class="stat-label">Trefferquote</div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="window.location.href='sprachen-setup.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M16.24 7.76a6 6 0 0 1 0 8.49"></path>
+                    </svg>
+                    Einstellungen
+                </button>
+                <button class="modal-btn" onclick="restartQuiz()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 .49-4.95"></path>
+                    </svg>
+                    Nochmal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="sprachen-questions.js"></script>
+    <script>
+    /* ══════════════════════════════════════════════════════════
+       STATE
+    ══════════════════════════════════════════════════════════ */
+    let quizQuestions  = [];
+    let currentIndex   = 0;
+    let score          = 0;
+    let streak         = 0;
+    let bestStreak     = 0;
+    let isAnswered     = false;
+    let hintMode       = 'none';
+
+    /* ══════════════════════════════════════════════════════════
+       INIT
+    ══════════════════════════════════════════════════════════ */
+    document.addEventListener('DOMContentLoaded', () => {
+        loadSettings();
+        buildQuiz();
+        renderQuestion();
+        bindEvents();
+    });
+
+    function loadSettings() {
+        const count    = parseInt(sessionStorage.getItem('sprachenCount') || '10');
+        const diff     = sessionStorage.getItem('sprachenDifficulty') || 'all';
+        const regions  = JSON.parse(sessionStorage.getItem('sprachenRegions')  || '["all"]');
+        const families = JSON.parse(sessionStorage.getItem('sprachenFamilies') || '["all"]');
+        hintMode       = sessionStorage.getItem('sprachenHint') || 'none';
+
+        const regSet = new Set(regions);
+        const famSet = new Set(families);
+
+        const pool = SPRACHEN_QUESTIONS.filter(q => {
+            const regOk  = regSet.has('all')  || regSet.has(q.region);
+            const famOk  = famSet.has('all')  || famSet.has(q.family);
+            const diffOk = diff === 'all'      || q.difficulty === diff;
+            return regOk && famOk && diffOk;
+        });
+
+        shuffle(pool);
+        quizQuestions = count >= 9999 ? pool : pool.slice(0, count);
+    }
+
+    function buildQuiz() {
+        if (quizQuestions.length === 0) {
+            window.location.href = 'sprachen-setup.html';
+        }
+    }
+
+    function bindEvents() {
+        document.getElementById('submit-btn').addEventListener('click', checkAnswer);
+        document.getElementById('skip-btn').addEventListener('click', skipQuestion);
+        document.getElementById('lang-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                if (isAnswered) nextQuestion();
+                else checkAnswer();
+            }
+        });
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RENDER QUESTION
+    ══════════════════════════════════════════════════════════ */
+    function renderQuestion() {
+        if (currentIndex >= quizQuestions.length) { showResults(); return; }
+
+        const q = quizQuestions[currentIndex];
+        isAnswered = false;
+
+        /* Progress */
+        const pct = (currentIndex / quizQuestions.length) * 100;
+        document.getElementById('progress-bar').style.width = pct + '%';
+        document.getElementById('q-counter').textContent =
+            `${currentIndex + 1} / ${quizQuestions.length}`;
+
+        /* Hint chips */
+        const hintsEl = document.getElementById('hint-chips');
+        hintsEl.innerHTML = '';
+        if (hintMode === 'region' || hintMode === 'both') {
+            const c = document.createElement('span');
+            c.className = 'hint-chip region-chip';
+            c.textContent = '🌍 ' + q.region;
+            hintsEl.appendChild(c);
+        }
+        if (hintMode === 'family' || hintMode === 'both') {
+            const c = document.createElement('span');
+            c.className = 'hint-chip family-chip';
+            c.textContent = '🧬 ' + q.family;
+            hintsEl.appendChild(c);
+        }
+
+        /* Language text */
+        const textEl = document.getElementById('lang-text');
+        textEl.textContent = q.text;
+        textEl.className = 'lang-text ' + detectScript(q.text);
+
+        /* Translation hidden */
+        const transEl = document.getElementById('translation-hint');
+        transEl.textContent = '„' + q.translation + '"';
+        transEl.classList.remove('visible');
+
+        /* Meta chips hidden */
+        document.getElementById('lang-meta').classList.remove('visible');
+        document.getElementById('lang-meta').innerHTML = '';
+
+        /* Reset input & buttons */
+        const input = document.getElementById('lang-input');
+        input.value = '';
+        input.className = 'text-input';
+        input.disabled = false;
+        input.focus();
+
+        document.getElementById('submit-btn').disabled = false;
+        document.getElementById('skip-btn').style.display = 'flex';
+
+        /* Reset feedback */
+        const fb = document.getElementById('answer-feedback');
+        fb.className = 'answer-feedback';
+        fb.innerHTML = '';
+
+        const ff = document.getElementById('funfact-box');
+        ff.classList.remove('visible');
+        document.getElementById('funfact-text').textContent = '';
+
+        /* Animate card */
+        const card = document.getElementById('question-card');
+        card.style.animation = 'none';
+        void card.offsetWidth;
+        card.style.animation = 'cardIn 0.32s cubic-bezier(0.34,1.3,0.64,1) both';
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       CHECK ANSWER
+    ══════════════════════════════════════════════════════════ */
+    function checkAnswer() {
+        if (isAnswered) return;
+
+        const q     = quizQuestions[currentIndex];
+        const input = document.getElementById('lang-input');
+        const raw   = input.value.trim();
+        if (!raw) return;
+
+        isAnswered = true;
+        input.disabled = true;
+        document.getElementById('submit-btn').disabled = true;
+        document.getElementById('skip-btn').style.display = 'none';
+
+        const correct = isCorrectAnswer(raw, q.acceptedAnswers);
+
+        /* Style input */
+        input.className = 'text-input ' + (correct ? 'correct' : 'incorrect');
+
+        /* Feedback */
+        const fb = document.getElementById('answer-feedback');
+        if (correct) {
+            fb.className = 'answer-feedback correct-fb visible';
+            fb.innerHTML = `✓ Richtig! <strong style="margin-left:0.3rem">${escHtml(q.language)}</strong>`;
+            addScore();
+        } else {
+            fb.className = 'answer-feedback incorrect-fb visible';
+            fb.innerHTML = `✗ Falsch – Richtige Antwort: <strong style="margin-left:0.3rem">${escHtml(q.language)}</strong>`;
+            loseStreak();
+        }
+
+        /* Show translation */
+        document.getElementById('translation-hint').classList.add('visible');
+
+        /* Show meta chips */
+        const metaEl = document.getElementById('lang-meta');
+        metaEl.innerHTML = `
+            <span class="meta-chip">🗣️ ${escHtml(q.nativeName)}</span>
+            <span class="meta-chip">👥 ${escHtml(q.speakerCount)} Sprecher</span>
+        `;
+        metaEl.classList.add('visible');
+
+        /* Fun fact */
+        if (q.funFact) {
+            document.getElementById('funfact-text').textContent = q.funFact;
+            document.getElementById('funfact-box').classList.add('visible');
+        }
+
+        /* Auto-advance */
+        setTimeout(() => nextQuestion(), correct ? 1400 : 2600);
+    }
+
+    function isCorrectAnswer(input, accepted) {
+        const norm = s => s.toLowerCase()
+            .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue')
+            .replace(/ß/g,'ss').replace(/[^a-z0-9\u0080-\uFFFF\s]/g,'')
+            .trim();
+        const ni = norm(input);
+        return accepted.some(a => norm(a) === ni);
+    }
+
+    function skipQuestion() {
+        if (isAnswered) return;
+        isAnswered = true;
+        loseStreak();
+
+        const q     = quizQuestions[currentIndex];
+        const input = document.getElementById('lang-input');
+        input.disabled = true;
+        document.getElementById('submit-btn').disabled = true;
+        document.getElementById('skip-btn').style.display = 'none';
+
+        const fb = document.getElementById('answer-feedback');
+        fb.className = 'answer-feedback incorrect-fb visible';
+        fb.innerHTML = `⏭ Übersprungen – Antwort: <strong style="margin-left:0.3rem">${escHtml(q.language)}</strong>`;
+
+        document.getElementById('translation-hint').classList.add('visible');
+
+        const metaEl = document.getElementById('lang-meta');
+        metaEl.innerHTML = `
+            <span class="meta-chip">🗣️ ${escHtml(q.nativeName)}</span>
+            <span class="meta-chip">👥 ${escHtml(q.speakerCount)} Sprecher</span>
+        `;
+        metaEl.classList.add('visible');
+
+        if (q.funFact) {
+            document.getElementById('funfact-text').textContent = q.funFact;
+            document.getElementById('funfact-box').classList.add('visible');
+        }
+
+        setTimeout(() => nextQuestion(), 2000);
+    }
+
+    function nextQuestion() {
+        currentIndex++;
+        renderQuestion();
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       SCORE & STREAK
+    ══════════════════════════════════════════════════════════ */
+    function addScore() {
+        score++;
+        streak++;
+        if (streak > bestStreak) bestStreak = streak;
+        document.getElementById('score').textContent = score;
+        const badge = document.getElementById('streak-badge');
+        if (streak >= 3) {
+            badge.classList.remove('hidden');
+            document.getElementById('streak-count').textContent = streak;
+        }
+    }
+
+    function loseStreak() {
+        streak = 0;
+        document.getElementById('streak-badge').classList.add('hidden');
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       RESULTS
+    ══════════════════════════════════════════════════════════ */
+    function showResults() {
+        const total = quizQuestions.length;
+        const pct   = Math.round(score / total * 100);
+
+        document.getElementById('final-score').textContent      = score;
+        document.getElementById('final-total').textContent      = total;
+        document.getElementById('final-percentage').textContent = pct + '%';
+        document.getElementById('progress-bar').style.width     = '100%';
+
+        const tiers = [
+            [90, '🏆', 'Sprachgenie!'],
+            [75, '🎯', 'Sehr gut!'],
+            [55, '👍', 'Gut gemacht!'],
+            [ 0, '📚', 'Weiter üben!'],
+        ];
+        const [, emoji, title] = tiers.find(([t]) => pct >= t);
+        document.getElementById('result-emoji').textContent = emoji;
+        document.getElementById('result-title').textContent = title;
+        document.getElementById('result-msg').textContent =
+            `Du hast ${score} von ${total} Sprachen erkannt. Beste Serie: ${bestStreak} in Folge.`;
+
+        document.getElementById('results-modal').classList.remove('hidden');
+    }
+
+    function restartQuiz() {
+        currentIndex = 0;
+        score = 0;
+        streak = 0;
+        bestStreak = 0;
+        isAnswered = false;
+        document.getElementById('score').textContent = '0';
+        document.getElementById('streak-badge').classList.add('hidden');
+        document.getElementById('results-modal').classList.add('hidden');
+        loadSettings();
+        renderQuestion();
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       SCRIPT DETECTION (for CSS class)
+    ══════════════════════════════════════════════════════════ */
+    function detectScript(text) {
+        if (/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(text)) return 'script-arabic';
+        if (/[\u0590-\u05FF]/.test(text)) return 'script-hebrew';
+        if (/[\u4E00-\u9FFF\u3400-\u4DBF\u3000-\u303F]/.test(text)) return 'script-cjk';
+        if (/[\u3040-\u30FF]/.test(text)) return 'script-cjk';
+        if (/[\u0900-\u097F\u0980-\u09FF\u0A80-\u0AFF\u0B00-\u0B7F]/.test(text)) return 'script-devanagari';
+        if (/[\u10A0-\u10FF]/.test(text)) return 'script-georgian';
+        if (/[\u0530-\u058F]/.test(text)) return 'script-armenian';
+        if (/[\u0F00-\u0FFF]/.test(text)) return 'script-tibetan';
+        return '';
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       UTILS
+    ══════════════════════════════════════════════════════════ */
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function escHtml(str) {
+        return String(str)
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;');
+    }
+    </script>
+</body>
+</html>

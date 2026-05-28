@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprachen-Quiz – Einstellungen</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <style>
+        /* ── Region toggle grid ── */
+        .region-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.65rem;
+        }
+
+        .region-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.9rem 0.6rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Cabinet Grotesk', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.45rem;
+            letter-spacing: 0.01em;
+        }
+
+        .region-btn .reg-icon {
+            font-size: 1.4rem;
+            line-height: 1;
+            display: block;
+        }
+
+        .region-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        .region-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 16px rgba(255,92,58,0.35);
+        }
+
+        .region-btn.all-region-btn {
+            grid-column: 1 / -1;
+            flex-direction: row;
+            justify-content: center;
+            gap: 0.55rem;
+            background: var(--accent-light);
+            border-color: rgba(255,92,58,0.3);
+            color: var(--accent);
+            padding: 0.75rem;
+            font-size: 0.92rem;
+            font-weight: 800;
+        }
+
+        .region-btn.all-region-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 16px rgba(255,92,58,0.35);
+        }
+
+        /* ── Family filter ── */
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.6rem;
+        }
+
+        .family-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.75rem 0.6rem;
+            border-radius: var(--radius-md);
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Cabinet Grotesk', sans-serif;
+            text-align: center;
+        }
+
+        .family-btn:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+            background: var(--teal-light);
+        }
+
+        .family-btn.active {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: #0d0f14;
+            font-weight: 800;
+            box-shadow: 0 4px 16px rgba(58,232,200,0.3);
+        }
+
+        .family-btn.all-family-btn {
+            grid-column: 1 / -1;
+            background: var(--teal-light);
+            border-color: rgba(58,232,200,0.25);
+            color: var(--teal);
+            font-weight: 800;
+        }
+
+        .family-btn.all-family-btn.active {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: #0d0f14;
+        }
+
+        /* ── Difficulty selection ── */
+        .diff-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.65rem;
+        }
+
+        .diff-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.85rem 0.5rem;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Cabinet Grotesk', sans-serif;
+            text-align: center;
+        }
+
+        .diff-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .diff-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 14px rgba(255,92,58,0.3);
+        }
+
+        /* ── Hint mode ── */
+        .hint-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.65rem;
+        }
+
+        .hint-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Cabinet Grotesk', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            text-align: center;
+        }
+
+        .hint-btn .hint-icon { font-size: 1.3rem; }
+        .hint-btn .hint-desc {
+            font-size: 0.74rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .hint-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--gold-light);
+        }
+
+        .hint-btn.active {
+            background: var(--gold-light);
+            border-color: rgba(245,200,66,0.4);
+            color: var(--gold);
+        }
+
+        /* ── Stats bar ── */
+        .setup-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            padding: 1.5rem 0 0;
+            border-top: 1px solid var(--border);
+            margin-top: 0.5rem;
+        }
+
+        .setup-stat {
+            text-align: center;
+        }
+
+        .setup-stat-value {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--accent);
+            letter-spacing: -1.5px;
+            line-height: 1;
+        }
+
+        .setup-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            margin-top: 0.3rem;
+        }
+
+        /* ── Section divider ── */
+        .setup-section + .setup-section {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ── Language family chip preview ── */
+        .family-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            justify-content: center;
+        }
+
+        .family-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.3rem 0.7rem;
+            border-radius: 100px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .family-chip .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 560px) {
+            .options-grid  { grid-template-columns: repeat(3, 1fr); }
+            .diff-grid     { grid-template-columns: repeat(2, 1fr); }
+            .hint-grid     { grid-template-columns: 1fr; }
+            .region-grid   { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+            .setup-stats   { gap: 1.5rem; }
+            .family-grid   { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <header class="quiz-header">
+            <button class="back-btn" onclick="window.location.href='index.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Zurück
+            </button>
+            <h1 class="neon-text">Sprachen<em>Quiz</em></h1>
+        </header>
+
+        <main class="setup-container">
+            <div class="setup-card">
+
+                <!-- ── Anzahl Fragen ── -->
+                <div class="setup-section">
+                    <h2>Anzahl der Fragen</h2>
+                    <div class="options-grid" id="count-grid">
+                        <button class="option-btn" data-count="5">5</button>
+                        <button class="option-btn active" data-count="10">10</button>
+                        <button class="option-btn" data-count="20">20</button>
+                        <button class="option-btn" data-count="30">30</button>
+                        <button class="option-btn" data-count="50">50</button>
+                        <button class="option-btn" data-count="9999">Alle</button>
+                    </div>
+                </div>
+
+                <!-- ── Schwierigkeit ── -->
+                <div class="setup-section">
+                    <h2>Schwierigkeit</h2>
+                    <div class="diff-grid" id="diff-grid">
+                        <button class="diff-btn active" data-diff="all">Alle</button>
+                        <button class="diff-btn" data-diff="leicht">🟢 Leicht</button>
+                        <button class="diff-btn" data-diff="mittel">🟡 Mittel</button>
+                        <button class="diff-btn" data-diff="schwer">🔴 Schwer</button>
+                    </div>
+                </div>
+
+                <!-- ── Regionen ── -->
+                <div class="setup-section">
+                    <h2>Regionen</h2>
+                    <div class="region-grid" id="region-grid">
+                        <button class="region-btn all-region-btn active" data-region="all">
+                            🌐 Alle Regionen
+                        </button>
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- ── Sprachfamilien ── -->
+                <div class="setup-section">
+                    <h2>Sprachfamilien</h2>
+                    <div class="family-grid" id="family-grid">
+                        <button class="family-btn all-family-btn active" data-family="all">
+                            Alle Familien
+                        </button>
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- ── Hinweis-Modus ── -->
+                <div class="setup-section">
+                    <h2>Hinweis anzeigen</h2>
+                    <div class="hint-grid" id="hint-grid">
+                        <button class="hint-btn active" data-hint="none">
+                            <span class="hint-icon">🚫</span>
+                            <span>Kein Hinweis</span>
+                            <span class="hint-desc">Nur den Text</span>
+                        </button>
+                        <button class="hint-btn" data-hint="region">
+                            <span class="hint-icon">🌍</span>
+                            <span>Region</span>
+                            <span class="hint-desc">Zeigt die Weltregion</span>
+                        </button>
+                        <button class="hint-btn" data-hint="family">
+                            <span class="hint-icon">🧬</span>
+                            <span>Sprachfamilie</span>
+                            <span class="hint-desc">Zeigt die Sprachfamilie</span>
+                        </button>
+                        <button class="hint-btn" data-hint="both">
+                            <span class="hint-icon">💡</span>
+                            <span>Region + Familie</span>
+                            <span class="hint-desc">Beide Hinweise</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ── Stats ── -->
+                <div class="setup-stats">
+                    <div class="setup-stat">
+                        <div class="setup-stat-value" id="available-count">—</div>
+                        <div class="setup-stat-label">Verfügbare Sprachen</div>
+                    </div>
+                    <div class="setup-stat">
+                        <div class="setup-stat-value" id="selected-count">—</div>
+                        <div class="setup-stat-label">Ausgewählt</div>
+                    </div>
+                </div>
+
+                <button class="start-btn" id="start-btn" onclick="startQuiz()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Quiz starten
+                </button>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="sprachen-questions.js"></script>
+    <script>
+    /* ── State ── */
+    let selectedCount   = 10;
+    let selectedDiff    = 'all';
+    let selectedRegions = new Set(['all']);
+    let selectedFamilies= new Set(['all']);
+    let selectedHint    = 'none';
+
+    /* ── Region icons ── */
+    const REGION_ICONS = {
+        'Europa':        '🇪🇺',
+        'Asien':         '🌏',
+        'Afrika':        '🌍',
+        'Amerika':       '🌎',
+        'Naher Osten':   '🕌',
+        'Ozeanien':      '🌊',
+        'Zentralasien':  '🏔️',
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        buildRegionGrid();
+        buildFamilyGrid();
+        initCountButtons();
+        initDiffButtons();
+        initHintButtons();
+        updateStats();
+    });
+
+    /* ── Count ── */
+    function initCountButtons() {
+        document.querySelectorAll('#count-grid .option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#count-grid .option-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedCount = parseInt(btn.dataset.count);
+                updateStats();
+            });
+        });
+    }
+
+    /* ── Difficulty ── */
+    function initDiffButtons() {
+        document.querySelectorAll('#diff-grid .diff-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#diff-grid .diff-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedDiff = btn.dataset.diff;
+                updateStats();
+            });
+        });
+    }
+
+    /* ── Hint mode ── */
+    function initHintButtons() {
+        document.querySelectorAll('#hint-grid .hint-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#hint-grid .hint-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedHint = btn.dataset.hint;
+            });
+        });
+    }
+
+    /* ── Region grid ── */
+    function buildRegionGrid() {
+        const regions = [...new Set(SPRACHEN_QUESTIONS.map(q => q.region))].sort();
+        const grid = document.getElementById('region-grid');
+
+        grid.querySelector('.all-region-btn').addEventListener('click', selectAllRegions);
+
+        regions.forEach(reg => {
+            const btn = document.createElement('button');
+            btn.className = 'region-btn';
+            btn.dataset.region = reg;
+            const icon = REGION_ICONS[reg] || '🌐';
+            btn.innerHTML = `<span class="reg-icon">${icon}</span>${reg}`;
+            btn.addEventListener('click', () => toggleRegion(reg, btn));
+            grid.appendChild(btn);
+        });
+    }
+
+    function selectAllRegions() {
+        selectedRegions = new Set(['all']);
+        document.querySelectorAll('#region-grid .region-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.all-region-btn').classList.add('active');
+        updateStats();
+    }
+
+    function toggleRegion(reg, btn) {
+        selectedRegions.delete('all');
+        document.querySelector('.all-region-btn').classList.remove('active');
+        if (selectedRegions.has(reg)) {
+            selectedRegions.delete(reg);
+            btn.classList.remove('active');
+            if (selectedRegions.size === 0) selectAllRegions();
+        } else {
+            selectedRegions.add(reg);
+            btn.classList.add('active');
+        }
+        updateStats();
+    }
+
+    /* ── Family grid ── */
+    function buildFamilyGrid() {
+        const families = [...new Set(SPRACHEN_QUESTIONS.map(q => q.family))].sort();
+        const grid = document.getElementById('family-grid');
+
+        grid.querySelector('.all-family-btn').addEventListener('click', selectAllFamilies);
+
+        families.forEach(fam => {
+            const btn = document.createElement('button');
+            btn.className = 'family-btn';
+            btn.dataset.family = fam;
+            btn.textContent = fam;
+            btn.addEventListener('click', () => toggleFamily(fam, btn));
+            grid.appendChild(btn);
+        });
+    }
+
+    function selectAllFamilies() {
+        selectedFamilies = new Set(['all']);
+        document.querySelectorAll('#family-grid .family-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.all-family-btn').classList.add('active');
+        updateStats();
+    }
+
+    function toggleFamily(fam, btn) {
+        selectedFamilies.delete('all');
+        document.querySelector('.all-family-btn').classList.remove('active');
+        if (selectedFamilies.has(fam)) {
+            selectedFamilies.delete(fam);
+            btn.classList.remove('active');
+            if (selectedFamilies.size === 0) selectAllFamilies();
+        } else {
+            selectedFamilies.add(fam);
+            btn.classList.add('active');
+        }
+        updateStats();
+    }
+
+    /* ── Filter pool ── */
+    function getFilteredPool() {
+        return SPRACHEN_QUESTIONS.filter(q => {
+            const regOk  = selectedRegions.has('all')   || selectedRegions.has(q.region);
+            const famOk  = selectedFamilies.has('all')  || selectedFamilies.has(q.family);
+            const diffOk = selectedDiff === 'all'        || q.difficulty === selectedDiff;
+            return regOk && famOk && diffOk;
+        });
+    }
+
+    function updateStats() {
+        const pool   = getFilteredPool();
+        const avail  = pool.length;
+        const chosen = selectedCount >= 9999 ? avail : Math.min(selectedCount, avail);
+
+        document.getElementById('available-count').textContent = avail;
+        document.getElementById('selected-count').textContent  = chosen;
+
+        const startBtn = document.getElementById('start-btn');
+        startBtn.disabled = avail === 0;
+        startBtn.style.opacity = avail === 0 ? '0.4' : '1';
+    }
+
+    /* ── Start ── */
+    function startQuiz() {
+        const pool = getFilteredPool();
+        if (pool.length === 0) return;
+
+        sessionStorage.setItem('sprachenCount',    selectedCount);
+        sessionStorage.setItem('sprachenDifficulty', selectedDiff);
+        sessionStorage.setItem('sprachenRegions',  JSON.stringify([...selectedRegions]));
+        sessionStorage.setItem('sprachenFamilies', JSON.stringify([...selectedFamilies]));
+        sessionStorage.setItem('sprachenHint',     selectedHint);
+
+        window.location.href = 'sprachen-quiz.html';
+    }
+    </script>
+</body>
+</html>
