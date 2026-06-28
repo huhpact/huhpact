@@ -25,11 +25,11 @@ const wishlistItems = [
     },
     {
         id: 6,
-        titre: "Datejust 36 Oyster",
+        titre: "Datejust 41",
         prix: 9450,
-        lien: "https://www.rolex.com/fr/watches/datejust/m126234-0017",
-        image: "/souhaits/assets/datejust.avif",
-        description: "Montre Rolex Datejust 36 avec boîtier Oyster en acier inoxydable et or blanc, cadran blanc.",
+        lien: "https://www.rolex.com/fr/watches/datejust/m126334-0013",
+        image: "/souhaits/assets/datejust41.avif",
+        description: "Montre Rolex Datejust 41 avec boîtier Oyster en acier inoxydable, cadran gris.",
         categorie: "Montres & Bijoux",
         priorite: "Moyenne",
         disponibilite: "Disponible"
