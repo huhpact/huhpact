@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WISHLIST — 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,200;0,300;0,400;0,600;0,800;0,900;1,200&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <!-- Scroll progress bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Side navigation -->
+    <nav class="side-nav" id="sideNav" aria-label="Section navigation">
+      <a href="#hero"   class="side-nav__item active" data-label="INTRO">
+        <span class="side-nav__line"></span>
+      </a>
+      <a href="#item-1" class="side-nav__item" data-label="01 &mdash; 911 GT3 RS">
+        <span class="side-nav__line"></span>
+      </a>
+      <a href="#item-2" class="side-nav__item" data-label="02 &mdash; ROYAL OAK">
+        <span class="side-nav__line"></span>
+      </a>
+      <a href="#item-3" class="side-nav__item" data-label="03 &mdash; LEICA M11">
+        <span class="side-nav__line"></span>
+      </a>
+    </nav>
+
+    <!-- Custom cursor (injected via JS, structure here for clarity) -->
+
+    <!-- ============================================================ -->
+    <!-- HERO                                                         -->
+    <!-- ============================================================ -->
+    <div class="panel-wrap" id="wrap-hero">
+      <section class="panel hero-panel" id="hero">
+        <div class="hero-bg-text" aria-hidden="true">WISH</div>
+
+        <header class="site-header">
+          <span class="site-header__label">PERSONAL &mdash; 2026</span>
+          <span class="site-header__count">3 ITEMS</span>
+        </header>
+
+        <div class="hero-content">
+          <h1 class="hero-title">
+            <span class="reveal-line"><span class="reveal-inner">WISH</span></span>
+            <span class="reveal-line reveal-line--offset"><span class="reveal-inner" style="--delay:0.12s">LIST</span></span>
+          </h1>
+          <p class="hero-sub">
+            <span class="reveal-fade" style="--delay:0.5s">A curated selection of things worth wanting.</span>
+          </p>
+        </div>
+
+        <div class="hero-scroll-hint" aria-hidden="true">
+          <div class="scroll-line"></div>
+          <span>SCROLL</span>
+        </div>
+
+        <div class="hero-meta">
+          <span>VOL. I</span>
+          <span class="hero-meta__year">MMXXVI</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ITEM 01  image:left  info:right                              -->
+    <!-- ============================================================ -->
+    <div class="panel-wrap" id="wrap-item-1">
+      <section class="panel item-panel item-panel--left" id="item-1">
+        <span class="bg-number" aria-hidden="true">01</span>
+
+        <div class="item-inner">
+
+          <div class="item-image-col">
+            <div class="item-image-wrap js-tilt">
+              <div class="img-glow"></div>
+              <img
+                src="https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop"
+                alt="Porsche 911 GT3 RS"
+                class="item-img"
+                loading="eager"
+                draggable="false"
+              />
+              <div class="img-shine"></div>
+            </div>
+          </div>
+
+          <div class="item-info-col">
+            <div class="item-info-inner">
+              <span class="item-count reveal-fade" style="--delay:0.3s">01</span>
+
+              <h2 class="item-title js-split-title">PORSCHE<br>911 GT3 RS</h2>
+
+              <div class="divider"></div>
+
+              <div class="item-details">
+                <div class="detail-row" style="--row:0">
+                  <div class="detail-icon">
+                    <!-- price -->
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 .5v13M4.5 3.5C4.5 2.4 5.67 1.5 7 1.5s2.5.9 2.5 2-.86 1.62-1.88 1.88L6.38 6C5.3 6.25 4.5 7.1 4.5 8s.86 1.87 1.87 2.12L7.62 10.38C8.7 10.62 9.5 11.48 9.5 12.5s-1.12 2-2.5 2-2.5-.9-2.5-2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+                  </div>
+                  <div class="detail-text">
+                    <span class="detail-label">PRICE</span>
+                    <span class="detail-value">$230,000</span>
+                  </div>
+                </div>
+
+                <div class="detail-row" style="--row:1">
+                  <div class="detail-icon">
+                    <!-- priority star -->
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="7,0.5 8.8,4.5 13.2,5.1 10,8.1 10.9,12.4 7,10.3 3.1,12.4 4,8.1 0.8,5.1 5.2,4.5" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="detail-text">
+                    <span class="detail-label">PRIORITY</span>
+                    <span class="detail-value priority--high">HIGH</span>
+                  </div>
+                </div>
+
+                <div class="detail-row" style="--row:2">
+                  <div class="detail-icon">
+                    <!-- arrow link -->
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="detail-text">
+                    <span class="detail-label">LINK</span>
+                    <a href="https://www.porsche.com" target="_blank" rel="noopener" class="detail-link">PORSCHE.COM</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ITEM 02  image:right  info:left                              -->
+    <!-- ============================================================ -->
+    <div class="panel-wrap" id="wrap-item-2">
+      <section class="panel item-panel item-panel--right" id="item-2">
+        <span class="bg-number" aria-hidden="true">02</span>
+
+        <div class="item-inner">
+
+          <div class="item-info-col">
+            <div class="item-info-inner">
+              <span class="item-count reveal-fade" style="--delay:0.3s">02</span>
+
+              <h2 class="item-title js-split-title">AUDEMARS<br>PIGUET<br>ROYAL OAK</h2>
+
+              <div class="divider"></div>
+
+              <div class="item-details">
+                <div class="detail-row" style="--row:0">
+                  <div class="detail-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 .5v13M4.5 3.5C4.5 2.4 5.67 1.5 7 1.5s2.5.9 2.5 2-.86 1.62-1.88 1.88L6.38 6C5.3 6.25 4.5 7.1 4.5 8s.86 1.87 1.87 2.12L7.62 10.38C8.7 10.62 9.5 11.48 9.5 12.5s-1.12 2-2.5 2-2.5-.9-2.5-2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+                  </div>
+                  <div class="detail-text">
+                    <span class="detail-label">PRICE</span>
+                    <span class="detail-value">$35,000</span>
+                  </div>
+                </div>
+
+                <div class="detail-row" style="--row:1">
+                  <div class="detail-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="7,0.5 8.8,4.5 13.2,5.1 10,8.1 10.9,12.4 7,10.3 3.1,12.4 4,8.1 0.8,5.1 5.2,4.5" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="detail-text">
+                    <span class="detail-label">PRIORITY</span>
+                    <span class="detail-value priority--mid">MEDIUM</span>
+                  </div>
+                </div>
+
+                <div class="detail-row" style="--row:2">
+                  <div class="detail-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="detail-text">
+                    <span class="detail-label">LINK</span>
+                    <a href="https://www.audemarspiguet.com" target="_blank" rel="noopener" class="detail-link">AUDEMARSPIGUET.COM</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-image-col">
+            <div class="item-image-wrap js-tilt">
+              <div class="img-glow"></div>
+              <img
+                src="https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop"
+                alt="Audemars Piguet Royal Oak"
+                class="item-img"
+                loading="lazy"
+                draggable="false"
+              />
+              <div class="img-shine"></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ITEM 03  image:left  info:right                              -->
+    <!-- ============================================================ -->
+    <div class="panel-wrap" id="wrap-item-3">
+      <section class="panel item-panel item-panel--left" id="item-3">
+        <span class="bg-number" aria-hidden="true">03</span>
+
+        <div class="item-inner">
+
+          <div class="item-image-col">
+            <div class="item-image-wrap js-tilt">
+              <div class="img-glow"></div>
+              <img
+                src="https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=1400&h=900&fit=crop"
+                alt="Leica M11"
+                class="item-img"
+                loading="lazy"
+                draggable="false"
+              />
+              <div class="img-shine"></div>
+            </div>
+          </div>
+
+          <div class="item-info-col">
+            <div class="item-info-inner">
+              <span class="item-count reveal-fade" style="--delay:0.3s">03</span>
+
+              <h2 class="item-title js-split-title">LEICA<br>M11</h2>
+
+              <div class="divider"></div>
+
+              <div class="item-details">
+                <div class="detail-row" style="--row:0">
+                  <div class="detail-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 .5v13M4.5 3.5C4.5 2.4 5.67 1.5 7 1.5s2.5.9 2.5 2-.86 1.62-1.88 1.88L6.38 6C5.3 6.25 4.5 7.1 4.5 8s.86 1.87 1.87 2.12L7.62 10.38C8.7 10.62 9.5 11.48 9.5 12.5s-1.12 2-2.5 2-2.5-.9-2.5-2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+                  </div>
+                  <div class="detail-text">
+                    <span class="detail-label">PRICE</span>
+                    <span class="detail-value">$8,995</span>
+                  </div>
+                </div>
+
+                <div class="detail-row" style="--row:1">
+                  <div class="detail-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="7,0.5 8.8,4.5 13.2,5.1 10,8.1 10.9,12.4 7,10.3 3.1,12.4 4,8.1 0.8,5.1 5.2,4.5" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="detail-text">
+                    <span class="detail-label">PRIORITY</span>
+                    <span class="detail-value priority--high">HIGH</span>
+                  </div>
+                </div>
+
+                <div class="detail-row" style="--row:2">
+                  <div class="detail-icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="detail-text">
+                    <span class="detail-label">LINK</span>
+                    <a href="https://www.leica-camera.com" target="_blank" rel="noopener" class="detail-link">LEICA-CAMERA.COM</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+    <!-- END -->
+    <div class="end-spacer">
+      <p class="end-text" aria-hidden="true">FIN.</p>
+    </div>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,980 @@
+/* =============================================================================
+   KNIFFELBLOCK — STYLESHEET
+   -----------------------------------------------------------------------------
+   Design language: a real paper Kniffel score pad — warm ivory paper, ruled
+   ledger grid, red "scorepad ink" accents, a typewriter display face for
+   headings and a handwriting face for the numbers players actually enter.
+   Organized in sections: tokens -> reset -> layout -> components -> responsive.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1. DESIGN TOKENS
+   ------------------------------------------------------------------------- */
+:root {
+  /* Paper & ink palette */
+  --paper-base:        #f3ead9;
+  --paper-base-2:      #ede2cc;
+  --paper-shadow:      #d9c9a8;
+  --ink-dark:          #3a332a;
+  --ink-soft:          #6b5f4e;
+  --ink-faint:         #9c8e77;
+  --scorepad-red:      #a8342a;
+  --scorepad-red-dark: #7f2620;
+  --brass:             #b8935a;
+  --brass-light:       #d8b478;
+  --line-rule:         #c9b795;
+  --line-rule-strong:  #a08e6a;
+  --row-tint:          #ece0c7;
+  --row-tint-lower:    #e9dfc9;
+  --white-paper:       #faf6ea;
+
+  /* Section accent tints (kept low-saturation, paper-like) */
+  --upper-tint:  #efe6cf;
+  --lower-tint:  #e8ddc4;
+  --grand-tint:  #dcc9a0;
+
+  /* Semantic */
+  --success: #4a7a4a;
+  --danger:  #a8342a;
+
+  /* Typography */
+  --font-display: 'Special Elite', 'Courier New', monospace;
+  --font-hand:    'Caveat', cursive;
+  --font-ui:      'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(58, 51, 42, 0.08), 0 1px 1px rgba(58, 51, 42, 0.06);
+  --shadow-md: 0 4px 10px rgba(58, 51, 42, 0.12), 0 2px 4px rgba(58, 51, 42, 0.08);
+  --shadow-lg: 0 14px 34px rgba(58, 51, 42, 0.20), 0 4px 10px rgba(58, 51, 42, 0.10);
+  --shadow-inset: inset 0 1px 3px rgba(58, 51, 42, 0.18);
+
+  /* Layout */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --label-col-width: 190px;
+  --player-col-width: 148px;
+
+  color-scheme: light;
+}
+
+/* ---------------------------------------------------------------------------
+   2. RESET & BASE
+   ------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-ui);
+  color: var(--ink-dark);
+  background: var(--paper-base-2);
+  position: relative;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { margin: 0; }
+ul { margin: 0; padding: 0; }
+button { font-family: inherit; }
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--scorepad-red);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------------------------------------------------------------------------
+   3. PAPER TEXTURE BACKDROP
+   ------------------------------------------------------------------------- */
+.paper-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--paper-base-2);
+  background-image:
+    /* subtle fiber speckle */
+    radial-gradient(rgba(58,51,42,0.05) 0.5px, transparent 0.5px),
+    radial-gradient(rgba(58,51,42,0.035) 0.5px, transparent 0.5px),
+    /* very soft vignette to feel like a photographed desk */
+    radial-gradient(ellipse at 50% 0%, rgba(255,252,242,0.5) 0%, rgba(0,0,0,0) 60%);
+  background-size: 3px 3px, 7px 7px, 100% 100%;
+  background-position: 0 0, 2px 3px, 0 0;
+}
+
+/* ---------------------------------------------------------------------------
+   4. APP SHELL / LAYOUT
+   ------------------------------------------------------------------------- */
+.app-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(14px, 3vw, 40px) 60px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 34px);
+}
+
+/* ---------------------------------------------------------------------------
+   5. HEADER
+   ------------------------------------------------------------------------- */
+.app-header {
+  position: relative;
+  padding-top: clamp(20px, 4vw, 40px);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-dice {
+  flex-shrink: 0;
+  filter: drop-shadow(0 3px 4px rgba(58,51,42,0.25));
+  transform: rotate(-6deg);
+}
+
+.brand-text h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  color: var(--ink-dark);
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+}
+
+.brand-sub {
+  color: var(--scorepad-red);
+}
+
+.brand-tagline {
+  margin: 6px 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-icon-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--white-paper);
+  border: 1.5px solid var(--line-rule-strong);
+  border-radius: var(--radius-md);
+  color: var(--ink-dark);
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn-icon-label:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  background: #fffdf6;
+}
+
+.btn-icon-label:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-install {
+  background: var(--scorepad-red);
+  border-color: var(--scorepad-red-dark);
+  color: #fdf6ea;
+}
+.btn-install:hover { background: var(--scorepad-red-dark); }
+
+.hidden { display: none !important; }
+
+/* Torn paper strip beneath the header, like tearing off the previous sheet */
+.torn-edge {
+  margin-top: clamp(16px, 3vw, 26px);
+  height: 14px;
+  width: 100%;
+  background:
+    linear-gradient(115deg, transparent 49%, var(--paper-base-2) 50%) 0 0 / 22px 100%,
+    linear-gradient(245deg, transparent 49%, var(--paper-base-2) 50%) 0 0 / 22px 100%;
+  background-color: var(--paper-shadow);
+  opacity: 0.7;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   6. MAIN / SCOREPAD CARD
+   ------------------------------------------------------------------------- */
+.app-main {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 3vw, 28px);
+}
+
+.scorepad-card {
+  position: relative;
+  background:
+    linear-gradient(var(--white-paper), var(--white-paper));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--paper-shadow);
+  padding: clamp(6px, 1.4vw, 10px);
+  overflow: hidden;
+}
+
+/* subtle page-curl corner */
+.page-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, transparent 50%, rgba(58,51,42,0.10) 50%);
+  border-radius: 0 var(--radius-lg) 0 0;
+  pointer-events: none;
+}
+
+.scorepad-scroll-region {
+  overflow-x: auto;
+  overflow-y: visible;
+  border-radius: calc(var(--radius-lg) - 6px);
+  /* Custom scrollbar for the horizontal player scroll */
+  scrollbar-width: thin;
+  scrollbar-color: var(--brass) var(--paper-base);
+}
+
+.scorepad-scroll-region::-webkit-scrollbar { height: 10px; }
+.scorepad-scroll-region::-webkit-scrollbar-track { background: var(--paper-base); border-radius: 8px; }
+.scorepad-scroll-region::-webkit-scrollbar-thumb { background: var(--brass); border-radius: 8px; }
+.scorepad-scroll-region::-webkit-scrollbar-thumb:hover { background: var(--brass-light); }
+
+/* ---------------------------------------------------------------------------
+   7. TABLE — the ledger grid itself
+   ------------------------------------------------------------------------- */
+.scorepad-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  background: var(--paper-base);
+}
+
+/* Sticky label column so it stays put while player columns scroll */
+.col-label {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  width: var(--label-col-width);
+  min-width: var(--label-col-width);
+  max-width: var(--label-col-width);
+  background: var(--paper-base);
+  text-align: left;
+  padding: 12px 16px;
+  border-right: 2.5px solid var(--line-rule-strong);
+  box-shadow: 2px 0 6px -2px rgba(58,51,42,0.15);
+}
+
+.col-label-head {
+  background: var(--paper-base-2);
+  vertical-align: middle;
+  border-bottom: 2.5px solid var(--line-rule-strong);
+}
+
+thead th {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+/* Player header cell */
+.col-player-head {
+  min-width: var(--player-col-width);
+  width: var(--player-col-width);
+  background: var(--paper-base-2);
+  border-bottom: 2.5px solid var(--line-rule-strong);
+  border-right: 1px solid var(--line-rule);
+  padding: 10px 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+.col-player-head:last-child { border-right: none; }
+
+/* Generic row cell rhythm */
+tbody td {
+  border-bottom: 1px solid var(--line-rule);
+  border-right: 1px solid var(--line-rule);
+  padding: 0;
+  height: 46px;
+}
+tbody td:last-child { border-right: none; }
+
+tbody tr:nth-child(even):not(.row-spacer):not(.row-upper-total):not(.row-lower-total):not(.row-grand-total) td {
+  background: var(--row-tint);
+}
+
+/* Section tinting */
+.row-upper td.col-label,
+.row-upper td.cell-score { background: var(--upper-tint); }
+.row-lower td.col-label,
+.row-lower td.cell-score { background: var(--lower-tint); }
+
+/* keep even/odd tint override consistent within sections */
+tbody tr.row-upper:nth-child(even) td { background: #ece0c2; }
+tbody tr.row-lower:nth-child(even) td { background: #e4d8ba; }
+
+/* Category label cell contents */
+.category-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--ink-dark);
+}
+
+.category-icon {
+  flex-shrink: 0;
+  color: var(--scorepad-red);
+  opacity: 0.85;
+}
+
+.category-hint {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   8. SCORE CELLS & HANDWRITTEN INPUTS
+   ------------------------------------------------------------------------- */
+.cell-score { text-align: center; vertical-align: middle; }
+
+.score-input {
+  width: 100%;
+  height: 46px;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #274a7a; /* ballpoint-pen blue, contrasts with printed red/black */
+  padding: 0 6px;
+  -moz-appearance: textfield;
+}
+
+.score-input::-webkit-outer-spin-button,
+.score-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.score-input::placeholder {
+  color: var(--ink-faint);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.score-input:focus {
+  outline: none;
+  background: rgba(168, 52, 42, 0.07);
+  box-shadow: inset 0 -2px 0 var(--scorepad-red);
+}
+
+/* Slight per-row "handwriting" tilt for organic feel, alternating direction */
+tbody tr:nth-child(4n+1) .score-input { transform: rotate(-1deg); }
+tbody tr:nth-child(4n+2) .score-input { transform: rotate(0.6deg); }
+tbody tr:nth-child(4n+3) .score-input { transform: rotate(-0.4deg); }
+tbody tr:nth-child(4n)   .score-input { transform: rotate(1deg); }
+.score-input:focus { transform: rotate(0deg); }
+
+/* Fixed-value categories (Full House, Straights, Yahtzee) get a quick-fill chip */
+.fixed-value-row .cell-score {
+  position: relative;
+}
+
+.quick-fill-btn {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  font-size: 0.62rem;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 20px;
+  border: 1px solid var(--brass);
+  background: var(--white-paper);
+  color: var(--brass);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+  line-height: 1.4;
+}
+.quick-fill-btn:hover { opacity: 1; background: var(--brass); color: #fff; }
+
+/* ---------------------------------------------------------------------------
+   9. BONUS ROW
+   ------------------------------------------------------------------------- */
+.row-bonus td.col-label,
+.row-bonus td.cell-score {
+  background: #f1e2d4;
+}
+
+.bonus-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.bonus-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
+.bonus-badge.is-pending {
+  background: #e5dcc9;
+  color: var(--ink-faint);
+  border: 1px dashed var(--ink-faint);
+}
+
+.bonus-badge.is-earned {
+  background: #dcecdc;
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.bonus-badge.is-missed {
+  background: #f3dcd9;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+/* ---------------------------------------------------------------------------
+   10. TOTAL ROWS
+   ------------------------------------------------------------------------- */
+tr.row-upper-total td,
+tr.row-lower-total td {
+  border-top: 2.5px solid var(--line-rule-strong);
+  border-bottom: 2.5px solid var(--line-rule-strong);
+  background: var(--paper-base-2) !important;
+  font-weight: 800;
+  height: 48px;
+}
+
+tr.row-grand-total td {
+  border-top: 4px double var(--scorepad-red-dark);
+  background: var(--grand-tint) !important;
+  height: 56px;
+}
+
+.total-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-dark);
+  text-transform: uppercase;
+}
+
+.row-grand-total .total-label {
+  color: var(--scorepad-red-dark);
+  font-size: 0.95rem;
+}
+
+.total-value {
+  display: block;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--ink-dark);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.row-grand-total .total-value {
+  font-size: 1.4rem;
+  color: var(--scorepad-red-dark);
+}
+
+/* Pulse animation when totals update */
+@keyframes total-pulse {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.18); color: var(--scorepad-red); }
+  100% { transform: scale(1); }
+}
+.total-value.just-updated { animation: total-pulse 0.5s ease; }
+
+/* ---------------------------------------------------------------------------
+   11. SPACER ROW
+   ------------------------------------------------------------------------- */
+.row-spacer td {
+  height: 22px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 8px,
+    var(--line-rule) 8px,
+    var(--line-rule) 9px
+  ) !important;
+  border: none !important;
+  padding: 0;
+}
+
+.row-spacer .col-label { background: var(--paper-base) !important; }
+
+/* ---------------------------------------------------------------------------
+   12. PLAYER NAME CELL / ADD PLAYER BUTTON
+   ------------------------------------------------------------------------- */
+.add-player-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-add-player {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(155deg, #fdf8ec, var(--paper-base-2));
+  color: var(--scorepad-red-dark);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Ridged / embossed border effect */
+  border: 2px solid var(--brass);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.7) inset,
+    0 -2px 3px rgba(58,51,42,0.15) inset,
+    var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn-add-player:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(155deg, #fffdf7, #f6ecd6);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.8) inset,
+    0 -2px 3px rgba(58,51,42,0.15) inset,
+    var(--shadow-md);
+}
+
+.btn-add-player:active { transform: translateY(0); }
+
+.btn-add-player:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.add-player-caption {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Player name input (shown before Enter is pressed) */
+.player-name-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--brass);
+  background: var(--white-paper);
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--ink-dark);
+}
+.player-name-input:focus {
+  outline: none;
+  border-color: var(--scorepad-red);
+  box-shadow: 0 0 0 3px rgba(168,52,42,0.15);
+}
+
+/* Player name display (shown after Enter) */
+.player-name-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--ink-dark);
+  cursor: text;
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+  word-break: break-word;
+}
+.player-name-display:hover {
+  background: rgba(168,52,42,0.06);
+}
+.player-name-display .rename-icon {
+  opacity: 0;
+  color: var(--ink-faint);
+  transition: opacity 0.15s ease;
+  flex-shrink: 0;
+}
+.player-name-display:hover .rename-icon { opacity: 0.7; }
+
+.player-header-cell {
+  position: relative;
+}
+
+.btn-remove-player {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--scorepad-red);
+  background: var(--white-paper);
+  color: var(--scorepad-red);
+  font-size: 0.7rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.15s ease, transform 0.15s ease, background 0.15s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.player-header-cell:hover .btn-remove-player,
+.btn-remove-player:focus-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.btn-remove-player:hover {
+  background: var(--scorepad-red);
+  color: #fff;
+}
+
+.player-color-flag {
+  display: block;
+  width: 100%;
+  height: 4px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+/* ---------------------------------------------------------------------------
+   13. ACTION BAR (Calculate button + hint)
+   ------------------------------------------------------------------------- */
+.action-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.btn-calculate {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  color: #fdf6ea;
+  background: linear-gradient(160deg, var(--scorepad-red), var(--scorepad-red-dark));
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(255,255,255,0.08) inset;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-calculate:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.08) inset;
+  filter: brightness(1.05);
+}
+
+.btn-calculate:active { transform: translateY(0); }
+
+.btn-calculate.is-calculating svg {
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.hint-text {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  max-width: 480px;
+}
+
+.hint-text strong {
+  color: var(--scorepad-red);
+  font-size: 1.05em;
+}
+
+/* ---------------------------------------------------------------------------
+   14. RULES DETAILS/SUMMARY CARD
+   ------------------------------------------------------------------------- */
+.rules-card {
+  background: var(--white-paper);
+  border: 1px solid var(--paper-shadow);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 4px 6px;
+}
+
+.rules-card summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink-dark);
+}
+.rules-card summary::-webkit-details-marker { display: none; }
+.rules-card summary svg { color: var(--scorepad-red); flex-shrink: 0; }
+
+.rules-card[open] summary {
+  border-bottom: 1px dashed var(--line-rule);
+}
+
+.rules-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 18px 22px 22px;
+}
+
+.rules-col h3 {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--scorepad-red-dark);
+  margin-bottom: 10px;
+}
+
+.rules-col ul { display: flex; flex-direction: column; gap: 7px; }
+.rules-col li {
+  list-style: none;
+  font-size: 0.87rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  padding-left: 14px;
+  position: relative;
+}
+.rules-col li::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: var(--brass);
+  font-weight: 700;
+}
+.rules-col li strong { color: var(--ink-dark); }
+
+/* ---------------------------------------------------------------------------
+   15. FOOTER
+   ------------------------------------------------------------------------- */
+.app-footer {
+  text-align: center;
+  padding-top: 6px;
+}
+.app-footer p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+/* ---------------------------------------------------------------------------
+   16. TOAST NOTIFICATION
+   ------------------------------------------------------------------------- */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink-dark);
+  color: var(--white-paper);
+  padding: 13px 22px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 100;
+  max-width: min(90vw, 420px);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.toast.is-success { background: #2f4a2f; }
+.toast.is-error { background: var(--scorepad-red-dark); }
+
+/* ---------------------------------------------------------------------------
+   17. EMPTY STATE (no players yet)
+   ------------------------------------------------------------------------- */
+.empty-state-row td {
+  padding: 40px 20px !important;
+  text-align: center;
+  color: var(--ink-faint);
+  font-style: italic;
+  font-size: 0.9rem;
+  border: none !important;
+  background: transparent !important;
+}
+
+/* ---------------------------------------------------------------------------
+   18. RESPONSIVE — TABLET
+   ------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  :root {
+    --label-col-width: 156px;
+    --player-col-width: 128px;
+  }
+
+  .rules-content {
+    grid-template-columns: 1fr;
+  }
+
+  .header-inner {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .brand { justify-content: center; }
+}
+
+/* ---------------------------------------------------------------------------
+   19. RESPONSIVE — MOBILE
+   ------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  :root {
+    --label-col-width: 128px;
+    --player-col-width: 112px;
+  }
+
+  .app-shell { padding-bottom: 40px; }
+
+  .brand-text h1 { font-size: 1.35rem; }
+  .brand-tagline { font-size: 0.78rem; }
+  .brand-dice { width: 38px; height: 38px; }
+
+  .header-actions .btn-icon-label span { display: none; }
+  .btn-icon-label { padding: 10px; }
+
+  .category-label { font-size: 0.8rem; gap: 6px; }
+  .category-hint { display: none; }
+
+  .score-input { font-size: 1.25rem; }
+
+  .btn-calculate {
+    width: 100%;
+    justify-content: center;
+    padding: 15px 20px;
+    font-size: 0.98rem;
+  }
+
+  .col-label { padding: 10px 10px; }
+
+  .total-label { font-size: 0.72rem; gap: 6px; }
+  .total-value { font-size: 1rem; }
+  .row-grand-total .total-value { font-size: 1.2rem; }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --label-col-width: 110px;
+    --player-col-width: 100px;
+  }
+  .category-label span:not(.category-icon) { font-size: 0.72rem; }
+}
+
+/* ---------------------------------------------------------------------------
+   20. PRINT (bonus: lets someone print an actual physical copy)
+   ------------------------------------------------------------------------- */
+@media print {
+  .app-header .header-actions,
+  .action-bar .btn-calculate,
+  .rules-card,
+  .app-footer,
+  .btn-remove-player,
+  .toast,
+  .add-player-caption { display: none !important; }
+
+  body { background: #fff; }
+  .paper-backdrop { display: none; }
+  .scorepad-card { box-shadow: none; border: 1px solid #999; }
+}
