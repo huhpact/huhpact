@@ -836,7 +836,7 @@ body::after {
 }
 
 /* ================================================================
-   RESPONSIVE — SMALL MOBILE  (≤ 480px)
+   RESPONSIVE — SMALL MOBILE  (≤ 480px) x
    ================================================================ */
 @media (max-width: 480px) {
   .hero-title { font-size: clamp(4.5rem, 23vw, 8rem); }

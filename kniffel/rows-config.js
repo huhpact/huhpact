@@ -80,3 +80,5 @@ const BONUS_POINTS = 35;
 
 /** Number of independent score sheets each player fills in, per game mode. */
 const SHEETS_PER_MODE = { single: 1, double: 2 };
+
+//hallo

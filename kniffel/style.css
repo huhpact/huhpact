@@ -1076,7 +1076,7 @@ tr.row-grand-total td {
 }
 
 /* ---------------------------------------------------------------------------
-   20. PRINT (bonus: lets someone print an actual physical copy)
+   20. PRINT (bonus: lets someone print an actual physical copy) x
    ------------------------------------------------------------------------- */
 @media print {
   .app-header .header-actions,
