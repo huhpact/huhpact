@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vokabel-Quiz Setup</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+</head>
+<body>
+    <div class="container">
+        <header class="quiz-header">
+            <button class="back-btn" onclick="window.location.href='/quiz/index.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Zurück
+            </button>
+            <h1 class="neon-text">Vokabel-Quiz</h1>
+        </header>
+        <main class="setup-container">
+            <div class="setup-card">
+                <div class="setup-section">
+                    <h2>Anzahl der Fragen</h2>
+                    <div class="options-grid">
+                        <button class="option-btn active" data-questions="10">10</button>
+                        <button class="option-btn" data-questions="20">20</button>
+                        <button class="option-btn" data-questions="30">30</button>
+                        <button class="option-btn" data-questions="50">50</button>
+                    </div>
+                </div>
+
+                <div class="setup-section">
+                    <h2>Sprache</h2>
+                    <div class="region-grid">
+                        <button class="region-btn active" data-lang="all">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            <span>Beide</span>
+                        </button>
+                        <button class="region-btn" data-lang="fr">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"></path><line x1="9.33" y1="4" x2="9.33" y2="20"></line><line x1="14.67" y1="4" x2="14.67" y2="20"></line></svg>
+                            <span>Französisch</span>
+                        </button>
+                        <button class="region-btn" data-lang="en">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="1"></rect><path d="M2 4l20 16M22 4L2 20"></path></svg>
+                            <span>Englisch</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="setup-section">
+                    <h2>Schwierigkeit</h2>
+                    <div class="region-grid">
+                        <button class="region-btn active" data-level="all">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                            <span>Alle</span>
+                        </button>
+                        <button class="region-btn" data-level="easy">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"></path></svg>
+                            <span>Einfach</span>
+                        </button>
+                        <button class="region-btn" data-level="medium">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"></path></svg>
+                            <span>Mittel</span>
+                        </button>
+                        <button class="region-btn" data-level="hard">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            <span>Schwer</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="start-btn" onclick="startQuiz()">
+                    Quiz starten
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </button>
+            </div>
+        </main>
+    </div>
+    <script src="vocab.js"></script>
+    <script src="setup-vocab.js"></script>
+</body>
+</html>
