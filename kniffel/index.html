@@ -44,6 +44,14 @@
         </div>
 
         <div class="header-actions">
+          <div class="mode-toggle" id="mode-toggle" role="radiogroup" aria-label="Einfach oder Doppel spielen">
+            <button type="button" class="mode-toggle-option is-active" id="btn-mode-single" role="radio" aria-checked="true" title="Ein Zettel pro Spieler">
+              <span>Einfach</span>
+            </button>
+            <button type="button" class="mode-toggle-option" id="btn-mode-double" role="radio" aria-checked="false" title="Zwei Zettel pro Spieler (Doppel-Kniffel)">
+              <span>Doppel</span>
+            </button>
+          </div>
           <button type="button" class="btn-icon-label" id="btn-new-game" title="Neues Spiel starten">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
             <span>Neues Blatt</span>
@@ -79,6 +87,10 @@
                   </div>
                 </th>
                 <!-- Player columns injected here by JS -->
+              </tr>
+              <tr class="row-sheets hidden" id="row-sheets">
+                <th class="col-label col-label-head" scope="col"></th>
+                <!-- "Zettel 1" / "Zettel 2" sub-headers injected here by JS, double mode only -->
               </tr>
             </thead>
 
@@ -131,6 +143,14 @@
               <li><strong>Große Straße:</strong> 40 Punkte</li>
               <li><strong>Kniffel:</strong> 50 Punkte</li>
               <li><strong>Chance:</strong> Summe aller Würfel</li>
+            </ul>
+          </div>
+          <div class="rules-col">
+            <h3>Doppel-Modus</h3>
+            <ul>
+              <li>Jeder Spieler füllt <strong>zwei</strong> Zettel gleichzeitig aus</li>
+              <li>Bonus &amp; Zwischensummen gelten pro Zettel</li>
+              <li>Die Gesamtsumme addiert beide Zettel</li>
             </ul>
           </div>
         </div>

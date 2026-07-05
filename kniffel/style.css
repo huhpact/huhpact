@@ -54,6 +54,11 @@
   --radius-lg: 20px;
   --label-col-width: 190px;
   --player-col-width: 148px;
+  /* In "Doppel" mode each player splits into two sub-columns (one per
+     sheet); each is narrower than a full single-mode player column but the
+     pair together is a bit wider than one single column, since two sets of
+     numbers need to fit without feeling cramped. */
+  --sheet-col-width: 92px;
 
   color-scheme: light;
 }
@@ -183,6 +188,45 @@ summary:focus-visible {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+/* ---------------------------------------------------------------------------
+   Mode toggle (Einfach / Doppel) — pill-shaped segmented control
+   ------------------------------------------------------------------------- */
+.mode-toggle {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--white-paper);
+  border: 1.5px solid var(--line-rule-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  gap: 2px;
+}
+
+.mode-toggle-option {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border: none;
+  border-radius: calc(var(--radius-md) - 3px);
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mode-toggle-option:hover:not(.is-active) {
+  color: var(--ink-dark);
+  background: rgba(168, 52, 42, 0.06);
+}
+
+.mode-toggle-option.is-active {
+  background: var(--scorepad-red);
+  color: #fdf6ea;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-icon-label {
@@ -330,6 +374,49 @@ thead th {
 }
 .col-player-head:last-child { border-right: none; }
 
+/* ---------------------------------------------------------------------------
+   "Doppel" mode — per-player sub-columns (Zettel 1 / Zettel 2)
+   ------------------------------------------------------------------------- */
+
+/* Sub-header row showing "Zettel 1" / "Zettel 2" under each player's name.
+   Hidden entirely in single mode via the .hidden utility class (toggled in JS). */
+.row-sheets th.col-sheet-head {
+  min-width: var(--sheet-col-width);
+  width: var(--sheet-col-width);
+  background: var(--paper-base);
+  border-bottom: 2.5px solid var(--line-rule-strong);
+  border-right: 1px solid var(--line-rule);
+  padding: 5px 6px 8px;
+  text-align: center;
+  vertical-align: middle;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.row-sheets th.col-sheet-head:last-child { border-right: none; }
+.row-sheets th.is-sheet-a { color: var(--scorepad-red); }
+.row-sheets th.is-sheet-b { color: #2f5f8a; }
+
+/* Data-row sub-columns: same idea as .col-player-head, but sized for two
+   per player instead of one. A subtle inner divider (cell-sheet-a's right
+   border) separates the two sheets of the same player, while the divider
+   between two different players stays the normal .line-rule weight. */
+td.cell-sheet-a,
+td.cell-sheet-b {
+  min-width: var(--sheet-col-width);
+  width: var(--sheet-col-width);
+}
+td.cell-sheet-a { border-right: 1px dashed var(--brass); }
+
+/* Merged grand-total cell spans both sub-columns (see JS colSpan) — give it
+   back the full double-width so it doesn't look squeezed. */
+td.cell-merged {
+  min-width: calc(var(--sheet-col-width) * 2);
+}
+
 /* Generic row cell rhythm */
 tbody td {
   border-bottom: 1px solid var(--line-rule);
@@ -410,6 +497,14 @@ tbody tr.row-lower:nth-child(even) td { background: #e4d8ba; }
   font-size: 0.85rem;
   font-weight: 400;
   opacity: 0.6;
+}
+
+/* Slightly smaller so three-digit scores stay comfortable in the narrower
+   Doppel-mode sub-columns. */
+td.cell-sheet-a .score-input,
+td.cell-sheet-b .score-input {
+  font-size: 1.25rem;
+  padding: 0 3px;
 }
 
 .score-input:focus {
@@ -494,6 +589,24 @@ tbody tr:nth-child(4n)   .score-input { transform: rotate(1deg); }
   background: #f3dcd9;
   color: var(--danger);
   border: 1px solid var(--danger);
+}
+
+/* Narrower Doppel-mode sub-columns can't fit "Noch 12 bis Bonus" on one
+   line at normal size — shrink the badge and let it wrap to two lines
+   instead of overflowing into the neighboring cell. */
+td.cell-sheet-a .bonus-badge,
+td.cell-sheet-b .bonus-badge {
+  font-size: 0.62rem;
+  padding: 3px 7px;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.25;
+}
+td.cell-sheet-a .bonus-cell,
+td.cell-sheet-b .bonus-cell {
+  height: auto;
+  min-height: 46px;
+  padding: 4px 2px;
 }
 
 /* ---------------------------------------------------------------------------

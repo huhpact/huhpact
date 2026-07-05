@@ -26,10 +26,22 @@
 
   /**
    * players: Array of player objects.
-   * Each player: { id, name, nameConfirmed, colorHue, scores: { [rowId]: number|null } }
+   * Each player: { id, name, nameConfirmed, colorHue, sheets: [scores, ...] }
+   * where each entry in `sheets` is a { [rowId]: number|null } map — one map
+   * per score sheet. In "single" mode every player has exactly one sheet; in
+   * "double" mode every player has exactly two independent sheets (see
+   * STATE.mode below), rendered as two sub-columns under that player.
    */
   let players = [];
   let nextPlayerId = 1;
+
+  /**
+   * mode: 'single' -> one score sheet per player (classic).
+   *       'double' -> two independent score sheets per player, entered side
+   *                   by side; each has its own totals/bonus, and the
+   *                   player's grand total adds both sheets together.
+   */
+  let mode = 'single';
 
   /* Distinct, paper-friendly "pen color" hues assigned round-robin to players
      so each player's column header gets a small identifying flag. */
@@ -48,6 +60,9 @@
     emptyHint: document.getElementById('empty-state-hint'),
     toast: document.getElementById('toast'),
     table: document.getElementById('scorepad-table'),
+    btnModeSingle: document.getElementById('btn-mode-single'),
+    btnModeDouble: document.getElementById('btn-mode-double'),
+    sheetsHeaderRow: document.getElementById('row-sheets'),
   };
 
   /* ===========================================================================
@@ -105,7 +120,9 @@
       if (row.type === 'spacer') {
         tr.className = 'row-spacer';
         tr.appendChild(makeLabelCell(null));
-        players.forEach(() => tr.appendChild(document.createElement('td')));
+        players.forEach((player) => {
+          sheetsFor(player).forEach(() => tr.appendChild(document.createElement('td')));
+        });
         els.body.appendChild(tr);
         return;
       }
@@ -114,11 +131,29 @@
       tr.appendChild(makeLabelCell(row));
 
       players.forEach((player) => {
-        tr.appendChild(makeScoreCell(row, player));
+        // The grand total is one combined figure per player (sum of both
+        // sheets in double mode), so it gets a single merged cell spanning
+        // both sub-columns instead of one cell per sheet.
+        if (row.id === 'grandTotal' && mode === 'double') {
+          tr.appendChild(makeScoreCell(row, player, 0, { colSpan: 2 }));
+          return;
+        }
+        sheetsFor(player).forEach((sheetScores, sheetIndex) => {
+          tr.appendChild(makeScoreCell(row, player, sheetIndex));
+        });
       });
 
       els.body.appendChild(tr);
     });
+  }
+
+  /**
+   * Returns the array of score-sheet objects for a player, e.g. [scoresA] in
+   * single mode or [scoresA, scoresB] in double mode. Centralizing this means
+   * every render/calculate loop below automatically adapts to the mode.
+   */
+  function sheetsFor(player) {
+    return player.sheets;
   }
 
   function rowClassFor(row) {
@@ -159,53 +194,97 @@
     return td;
   }
 
-  /** Builds one player's cell for a given row (input, bonus, or total). */
-  function makeScoreCell(row, player) {
+  /**
+   * Builds a unique DOM id fragment for a given row/player/sheet combination.
+   * In single mode sheetIndex is always 0, so ids stay identical to the
+   * pre-double-mode format for that case (keeps old saved games compatible).
+   */
+  function cellKey(playerId, sheetIndex) {
+    return sheetIndex === 0 ? `${playerId}` : `${playerId}-s${sheetIndex}`;
+  }
+
+  /** Builds one player's cell for a given row + sheet (input, bonus, or total). */
+  function makeScoreCell(row, player, sheetIndex, opts) {
     const td = document.createElement('td');
     td.className = 'cell-score';
+    if (mode === 'double') td.classList.add(sheetIndex === 0 ? 'cell-sheet-a' : 'cell-sheet-b');
+    if (opts && opts.colSpan) {
+      td.colSpan = opts.colSpan;
+      td.classList.add('cell-merged');
+    }
     td.dataset.rowId = row.id;
     td.dataset.playerId = player.id;
+    td.dataset.sheetIndex = sheetIndex;
+
+    const key = cellKey(player.id, sheetIndex);
+    const sheetScores = player.sheets[sheetIndex];
 
     if (row.type === 'total') {
-      td.innerHTML = `<span class="total-value" id="total-${row.id}-${player.id}">0</span>`;
+      td.innerHTML = `<span class="total-value" id="total-${row.id}-${key}">0</span>`;
       return td;
     }
 
     if (row.type === 'bonus') {
-      td.innerHTML = `<div class="bonus-cell" id="bonus-${player.id}">
+      td.innerHTML = `<div class="bonus-cell" id="bonus-${key}">
         <span class="bonus-badge is-pending">${icon('star')} &nbsp;+0</span>
       </div>`;
       return td;
     }
 
     // Standard editable input cell
-    const inputId = `score-${row.id}-${player.id}`;
-    const existingValue = player.scores[row.id];
+    const inputId = `score-${row.id}-${key}`;
+    const existingValue = sheetScores[row.id];
+    const maxAllowed = maxValueFor(row); // e.g. 25 for Full House, 30 for Sixes/Chance, null if unbounded
 
     const input = document.createElement('input');
     input.type = 'number';
     input.inputMode = 'numeric';
     input.min = '0';
+    if (maxAllowed !== null) input.max = String(maxAllowed);
     input.className = 'score-input';
     input.id = inputId;
     input.placeholder = '–';
-    input.setAttribute('aria-label', `${row.label} – ${player.name}`);
+    const sheetSuffix = mode === 'double' ? ` (Zettel ${sheetIndex + 1})` : '';
+    const maxHint = maxAllowed !== null ? ` (max. ${maxAllowed})` : '';
+    input.setAttribute('aria-label', `${row.label} – ${player.name}${sheetSuffix}${maxHint}`);
+    if (maxAllowed !== null) input.title = `Maximal ${maxAllowed} Punkte in dieser Kategorie`;
     if (existingValue !== null && existingValue !== undefined) {
       input.value = existingValue;
     }
 
     input.addEventListener('input', () => {
       const raw = input.value;
-      player.scores[row.id] = raw === '' ? null : Number(raw);
+
+      if (raw === '') {
+        sheetScores[row.id] = null;
+        savePlayers();
+        return;
+      }
+
+      let numeric = Number(raw);
+
+      // Clamp to what's physically possible in this category (e.g. Full
+      // House can never exceed 25, Sixes can never exceed 30) rather than
+      // rejecting the keystroke outright — typing "99" in the Sixes box
+      // just settles at 30, the real ceiling for that box.
+      if (maxAllowed !== null && numeric > maxAllowed) {
+        numeric = maxAllowed;
+        input.value = String(numeric);
+      } else if (numeric < 0) {
+        numeric = 0;
+        input.value = '0';
+      }
+
+      sheetScores[row.id] = numeric;
       savePlayers();
     });
 
     // Enter key on a score input moves focus to the next row's cell (same
-    // player) for fast, calculator-like data entry.
+    // player + same sheet) for fast, calculator-like data entry.
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        focusNextInput(row.id, player.id);
+        focusNextInput(row.id, player.id, sheetIndex);
       }
     });
 
@@ -219,7 +298,7 @@
       chip.title = `${row.fixedValue} Punkte eintragen`;
       chip.addEventListener('click', () => {
         input.value = row.fixedValue;
-        player.scores[row.id] = row.fixedValue;
+        sheetScores[row.id] = row.fixedValue;
         savePlayers();
         input.focus();
       });
@@ -229,12 +308,13 @@
     return td;
   }
 
-  /** Moves keyboard focus to the next editable input below the current one. */
-  function focusNextInput(currentRowId, playerId) {
+  /** Moves keyboard focus to the next editable input below the current one (same sheet). */
+  function focusNextInput(currentRowId, playerId, sheetIndex) {
     const editableRows = EDITABLE_ROW_IDS;
     const idx = editableRows.indexOf(currentRowId);
+    const key = cellKey(playerId, sheetIndex);
     for (let i = idx + 1; i < editableRows.length; i++) {
-      const next = document.getElementById(`score-${editableRows[i]}-${playerId}`);
+      const next = document.getElementById(`score-${editableRows[i]}-${key}`);
       if (next) {
         next.focus();
         next.select();
@@ -254,6 +334,7 @@
       const th = document.createElement('th');
       th.className = 'col-player-head player-header-cell';
       th.scope = 'col';
+      if (mode === 'double') th.colSpan = 2;
 
       const removeBtn = document.createElement('button');
       removeBtn.type = 'button';
@@ -274,7 +355,34 @@
       els.headerRow.appendChild(th);
     });
 
+    renderSheetSubHeaders();
     updateAddPlayerButtonState();
+  }
+
+  /**
+   * Renders (or hides) the "Zettel 1 / Zettel 2" sub-header row shown right
+   * below the player names. Only relevant in double mode — in single mode
+   * the row is hidden entirely since there's nothing to disambiguate.
+   */
+  function renderSheetSubHeaders() {
+    els.sheetsHeaderRow.querySelectorAll('.col-sheet-head').forEach((el) => el.remove());
+
+    if (mode !== 'double' || players.length === 0) {
+      els.sheetsHeaderRow.classList.add('hidden');
+      return;
+    }
+
+    els.sheetsHeaderRow.classList.remove('hidden');
+
+    players.forEach((player) => {
+      [0, 1].forEach((sheetIndex) => {
+        const th = document.createElement('th');
+        th.className = `col-sheet-head ${sheetIndex === 0 ? 'is-sheet-a' : 'is-sheet-b'}`;
+        th.scope = 'col';
+        th.textContent = `Zettel ${sheetIndex + 1}`;
+        els.sheetsHeaderRow.appendChild(th);
+      });
+    });
   }
 
   /** Builds either the name <input> (unconfirmed) or the name display (confirmed). */
@@ -346,21 +454,31 @@
      5. PLAYER MANAGEMENT
      =========================================================================== */
 
+  /** Builds one empty { [rowId]: null } score map for a single sheet. */
+  function emptyScoreMap() {
+    const scores = {};
+    EDITABLE_ROW_IDS.forEach((id) => { scores[id] = null; });
+    return scores;
+  }
+
+  /** Builds the sheets array for a fresh player, sized to the current mode. */
+  function emptySheets() {
+    const count = SHEETS_PER_MODE[mode] || 1;
+    return Array.from({ length: count }, () => emptyScoreMap());
+  }
+
   function addPlayer() {
     if (players.length >= MAX_PLAYERS) {
       showToast(`Maximal ${MAX_PLAYERS} Spieler pro Blatt.`, 'error');
       return;
     }
 
-    const scores = {};
-    EDITABLE_ROW_IDS.forEach((id) => { scores[id] = null; });
-
     const player = {
       id: nextPlayerId++,
       name: `Spieler ${players.length + 1}`,
       nameConfirmed: false,
       colorHue: PLAYER_HUES[players.length % PLAYER_HUES.length],
-      scores,
+      sheets: emptySheets(),
     };
 
     players.push(player);
@@ -406,8 +524,10 @@
   const LOWER_ROW_IDS = SCORE_ROWS.filter((r) => r.section === 'lower' && r.type === 'input').map((r) => r.id);
 
   /**
-   * Recalculates and displays Upper Total, Bonus, Lower Total, and Grand Total
-   * for every player currently on the sheet.
+   * Recalculates and displays Upper Total, Bonus, and Lower Total for every
+   * sheet of every player, then the Grand Total per player — which, in
+   * double mode, is the sum of BOTH sheets' totals (two independent score
+   * sheets rolled up into one combined result for that player).
    */
   function calculateAllScores() {
     if (players.length === 0) {
@@ -416,34 +536,46 @@
     }
 
     players.forEach((player) => {
-      const upperSum = sumRows(player, UPPER_ROW_IDS);
-      const bonusEarned = upperSum >= BONUS_THRESHOLD;
-      const bonusPoints = bonusEarned ? BONUS_POINTS : 0;
-      const upperTotal = upperSum + bonusPoints;
+      let grandTotal = 0;
 
-      const lowerTotal = sumRows(player, LOWER_ROW_IDS);
-      const grandTotal = upperTotal + lowerTotal;
+      player.sheets.forEach((sheetScores, sheetIndex) => {
+        const key = cellKey(player.id, sheetIndex);
 
-      updateTotalDisplay('upperTotal', player.id, upperSum);
-      updateBonusDisplay(player, upperSum, bonusEarned, bonusPoints);
-      updateTotalDisplay('lowerTotal', player.id, lowerTotal);
-      updateTotalDisplay('grandTotal', player.id, grandTotal);
+        const upperSum = sumRows(sheetScores, UPPER_ROW_IDS);
+        const bonusEarned = upperSum >= BONUS_THRESHOLD;
+        const bonusPoints = bonusEarned ? BONUS_POINTS : 0;
+        const upperTotal = upperSum + bonusPoints;
+
+        const lowerTotal = sumRows(sheetScores, LOWER_ROW_IDS);
+        const sheetTotal = upperTotal + lowerTotal;
+        grandTotal += sheetTotal;
+
+        updateTotalDisplay('upperTotal', key, upperSum);
+        updateBonusDisplay(key, upperSum, bonusEarned, bonusPoints);
+        updateTotalDisplay('lowerTotal', key, lowerTotal);
+      });
+
+      // Grand total is rendered once per player, on sheet 0's cell — in
+      // single mode that's the only cell anyway; in double mode the second
+      // sheet's grandTotal cell is visually merged away (see CSS) so only
+      // the first is shown, spanning both sub-columns.
+      updateTotalDisplay('grandTotal', cellKey(player.id, 0), grandTotal);
     });
 
     savePlayers();
     showToast('Punkte wurden berechnet!', 'success');
   }
 
-  /** Sums the numeric scores of the given row ids for one player (nulls -> 0). */
-  function sumRows(player, rowIds) {
+  /** Sums the numeric scores of the given row ids for one sheet (nulls -> 0). */
+  function sumRows(sheetScores, rowIds) {
     return rowIds.reduce((sum, id) => {
-      const val = player.scores[id];
+      const val = sheetScores[id];
       return sum + (typeof val === 'number' && !Number.isNaN(val) ? val : 0);
     }, 0);
   }
 
-  function updateTotalDisplay(rowId, playerId, value) {
-    const el = document.getElementById(`total-${rowId}-${playerId}`);
+  function updateTotalDisplay(rowId, key, value) {
+    const el = document.getElementById(`total-${rowId}-${key}`);
     if (!el) return;
     el.textContent = value;
     el.classList.remove('just-updated');
@@ -452,8 +584,8 @@
     el.classList.add('just-updated');
   }
 
-  function updateBonusDisplay(player, upperSum, earned, bonusPoints) {
-    const container = document.getElementById(`bonus-${player.id}`);
+  function updateBonusDisplay(key, upperSum, earned, bonusPoints) {
+    const container = document.getElementById(`bonus-${key}`);
     if (!container) return;
 
     let badgeClass = 'is-pending';
@@ -481,17 +613,19 @@
      Gerät" (your data stays on this device).
      =========================================================================== */
 
-  const STORAGE_KEY = 'kniffelblock.state.v1';
+  const STORAGE_KEY = 'kniffelblock.state.v2';
+  const LEGACY_STORAGE_KEY = 'kniffelblock.state.v1'; // pre-"Doppel" format (single `scores` map)
 
   function savePlayers() {
     try {
       const payload = {
+        mode,
         players: players.map((p) => ({
           id: p.id,
           name: p.name,
           nameConfirmed: p.nameConfirmed,
           colorHue: p.colorHue,
-          scores: p.scores,
+          sheets: p.sheets,
         })),
         nextPlayerId,
       };
@@ -506,17 +640,46 @@
   function loadPlayers() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return false;
-      const payload = JSON.parse(raw);
-      if (!payload || !Array.isArray(payload.players)) return false;
+      if (raw) {
+        const payload = JSON.parse(raw);
+        if (!payload || !Array.isArray(payload.players)) return false;
 
-      players = payload.players;
-      nextPlayerId = payload.nextPlayerId || players.length + 1;
-      return true;
+        players = payload.players;
+        mode = payload.mode === 'double' ? 'double' : 'single';
+        nextPlayerId = payload.nextPlayerId || players.length + 1;
+        return true;
+      }
+
+      // No v2 save yet — try migrating an old v1 save (single-sheet format)
+      // so upgrading the app doesn't wipe anyone's in-progress game.
+      return migrateLegacySave();
     } catch (err) {
       console.warn('Konnte Spielstand nicht laden:', err);
       return false;
     }
+  }
+
+  /** Migrates a pre-"Doppel" save ({ scores }) into the current ({ sheets }) format. */
+  function migrateLegacySave() {
+    const raw = localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (!raw) return false;
+
+    const payload = JSON.parse(raw);
+    if (!payload || !Array.isArray(payload.players)) return false;
+
+    players = payload.players.map((p) => ({
+      id: p.id,
+      name: p.name,
+      nameConfirmed: p.nameConfirmed,
+      colorHue: p.colorHue,
+      sheets: [p.scores || emptyScoreMap()],
+    }));
+    mode = 'single';
+    nextPlayerId = payload.nextPlayerId || players.length + 1;
+
+    savePlayers();
+    try { localStorage.removeItem(LEGACY_STORAGE_KEY); } catch (err) { /* ignore */ }
+    return true;
   }
 
   function clearSavedGame() {
@@ -535,6 +698,53 @@
     renderPlayerHeaders();
     updateEmptyHint();
     showToast('Neues Blatt bereit — viel Glück! 🎲');
+  }
+
+  /**
+   * Switches between "single" and "double" mode.
+   *  - single -> double: lossless. Every player simply gains a second, empty
+   *    sheet; sheet 1's existing scores are untouched.
+   *  - double -> single: lossy for anyone who has entered anything on their
+   *    second sheet, so it asks for confirmation first and then just drops
+   *    each player's second sheet.
+   */
+  function setMode(newMode) {
+    if (newMode === mode) return;
+
+    if (newMode === 'single' && mode === 'double') {
+      const anySecondSheetData = players.some((p) =>
+        p.sheets[1] && Object.values(p.sheets[1]).some((v) => v !== null && v !== undefined)
+      );
+      if (anySecondSheetData) {
+        const proceed = window.confirm(
+          'Zurück zu Einfach wechseln? Die Punkte auf dem zweiten Zettel jedes Spielers gehen dabei verloren.'
+        );
+        if (!proceed) return;
+      }
+      players.forEach((p) => { p.sheets = [p.sheets[0] || emptyScoreMap()]; });
+    } else if (newMode === 'double' && mode === 'single') {
+      players.forEach((p) => { p.sheets = [p.sheets[0] || emptyScoreMap(), emptyScoreMap()]; });
+    }
+
+    mode = newMode;
+    updateModeToggleUI();
+    renderBody();
+    renderPlayerHeaders();
+    savePlayers();
+    showToast(
+      newMode === 'double'
+        ? 'Doppel-Modus aktiv — zwei Zettel pro Spieler! 🎲🎲'
+        : 'Einfach-Modus aktiv — ein Zettel pro Spieler.'
+    );
+  }
+
+  /** Syncs the toggle buttons' visual/active state with the current mode. */
+  function updateModeToggleUI() {
+    const isDouble = mode === 'double';
+    els.btnModeSingle.classList.toggle('is-active', !isDouble);
+    els.btnModeSingle.setAttribute('aria-checked', String(!isDouble));
+    els.btnModeDouble.classList.toggle('is-active', isDouble);
+    els.btnModeDouble.setAttribute('aria-checked', String(isDouble));
   }
 
   /* ===========================================================================
@@ -567,6 +777,8 @@
     }, 260);
   });
   els.btnNewGame.addEventListener('click', startNewGame);
+  els.btnModeSingle.addEventListener('click', () => setMode('single'));
+  els.btnModeDouble.addEventListener('click', () => setMode('double'));
 
   /* ===========================================================================
      10. PWA: SERVICE WORKER + INSTALL PROMPT
@@ -611,6 +823,7 @@
 
   function init() {
     const hadSavedGame = loadPlayers();
+    updateModeToggleUI();
     renderBody();
     renderPlayerHeaders();
     updateEmptyHint();
