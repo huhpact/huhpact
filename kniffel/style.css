@@ -310,7 +310,14 @@ summary:focus-visible {
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--paper-shadow);
   padding: clamp(6px, 1.4vw, 10px);
-  overflow: hidden;
+  /* Both modes keep the names row sticky *to the viewport* (see section 6b
+     and 19c below) rather than inside their own scroll container —
+     position:sticky stops working the moment ANY ancestor clips overflow,
+     and this card would otherwise be exactly such an ancestor.
+     .scorepad-scroll-region already carries a matching border-radius of
+     its own (see below), so the table's corners still get rounded off
+     without this card having to clip anything itself. */
+  overflow: visible;
 }
 
 /* subtle page-curl corner */
@@ -368,6 +375,28 @@ summary:focus-visible {
   background: var(--paper-base-2);
   vertical-align: middle;
   border-bottom: 2.5px solid var(--line-rule-strong);
+}
+
+/* Names row stays visible while scrolling the page, outside Rentner-Modus.
+   Rentner-Modus already solves this its own way (a capped-height, self-
+   scrolling .scorepad-scroll-region — see section 19c below), so this is
+   scoped to skip it entirely rather than doubling up two different sticky
+   mechanisms on the same row. Only .row-players (the names) gets this —
+   .row-sheets (the Zettel 1/2 sub-header, Doppel mode only) intentionally
+   scrolls away as usual. */
+body:not(.senior-mode) .row-players th {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  box-shadow: 0 3px 8px rgba(58, 51, 42, 0.22);
+}
+
+/* Same corner conflict as Rentner-Modus (see the z-index 9 rule below):
+   .col-label is already its own always-on sticky column at z-index 5, so
+   where it overlaps the row that's now also sticky (z-index 8), the corner
+   cell needs to out-rank both. */
+body:not(.senior-mode) .row-players th.col-label-head {
+  z-index: 9;
 }
 
 thead th {
@@ -1198,22 +1227,29 @@ body.senior-mode .bonus-cell { height: 64px; }
    perfectly level so nothing looks harder to read than it needs to. */
 body.senior-mode tbody tr .score-input { transform: none !important; }
 
-/* --- c) Sticky header row(s) ----------------------------------------------- */
+/* --- c) Sticky header row -------------------------------------------------- */
 /* Sticky positioning is applied at the individual <th> level, not on
    <thead> itself — browser support for position:sticky on table row-group
    elements (thead/tbody) is inconsistent, while sticky cells (th/td) are
    universally supported and are the standard technique for sticky table
-   headers. */
+   headers.
 
-body.senior-mode .scorepad-scroll-region {
-  /* The table can get tall with bigger rows; capping the region's own
-     height and letting IT scroll vertically (instead of the whole page)
-     is what makes a sticky thead genuinely useful — otherwise, on a long
-     sheet, the header would still scroll out of view along with the page
-     on very short viewports. */
-  max-height: min(78vh, 900px);
-  overflow-y: auto;
-}
+   This used to run its own capped-height, self-scrolling
+   .scorepad-scroll-region (max-height + overflow-y: auto), so the page
+   itself never scrolled — only this one div did. That's gone: the page
+   now scrolls normally here too, same mechanism as normal mode (see
+   section 6b above), just with only the names row (.row-players) kept
+   sticky. The reasons for removing it:
+     - Scrolling inside a small inner box, separate from the rest of the
+       page, is a worse experience than just scrolling the page — doubly
+       so for the audience Rentner-Modus is built for.
+     - It meant TWO header rows stacked and both sticky (names +, in
+       Doppel mode, "Zettel 1/2"), which at senior mode's larger 64-76px
+       row heights could eat a big chunk of a phone's screen before a
+       single data row was visible.
+   Only .row-players stays sticky now — .row-sheets (the Zettel 1/2
+   sub-header, Doppel mode only) intentionally scrolls away like any other
+   row, matching the choice already made for normal mode. */
 
 body.senior-mode .row-players th {
   position: sticky;
@@ -1222,24 +1258,12 @@ body.senior-mode .row-players th {
   box-shadow: 0 3px 8px rgba(58, 51, 42, 0.28);
 }
 
-/* The Zettel 1/2 sub-header (Doppel mode only) sticks directly beneath the
-   name row — main.js measures that row's real rendered height and exposes
-   it here as --sticky-header-row-height, since it isn't a fixed value
-   (fluid padding + this very mode's own larger type both change it). */
-body.senior-mode .row-sheets th {
-  position: sticky;
-  top: var(--sticky-header-row-height, 64px);
-  z-index: 8;
-  box-shadow: 0 3px 8px rgba(58, 51, 42, 0.22);
-}
-
 /* The sticky corner (label column × sticky header row) needs to out-rank
    both the plain sticky column (z-index 5) and the plain sticky header row
    (z-index 8) above. Matched to (and exceeding) their specificity
    explicitly — a selector with a lower z-index number but higher
    specificity would otherwise win regardless of which number is bigger. */
-body.senior-mode .row-players th.col-label-head,
-body.senior-mode .row-sheets th.col-label-head {
+body.senior-mode .row-players th.col-label-head {
   z-index: 9;
 }
 

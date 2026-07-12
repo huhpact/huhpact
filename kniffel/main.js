@@ -420,25 +420,7 @@
 
     renderSheetSubHeaders();
     updateAddPlayerButtonState();
-    updateStickyHeaderOffset();
   }
-
-  /**
-   * Rentner-Modus sticky headers: the player-name row (.row-players) sticks
-   * at top: 0, and — in double mode — the "Zettel 1/2" sub-header row
-   * (.row-sheets) needs to stick directly beneath it. Row heights aren't
-   * fixed (fluid padding + senior-mode's larger type both change them), so
-   * rather than hardcoding an offset in CSS, measure the actual rendered
-   * height of .row-players after each render and expose it as a CSS var
-   * that .row-sheets' `top` reads. Cheap enough to just always keep in
-   * sync, even when senior mode / double mode aren't currently active.
-   */
-  function updateStickyHeaderOffset() {
-    const headerRowHeight = els.headerRow.getBoundingClientRect().height;
-    els.table.style.setProperty('--sticky-header-row-height', `${Math.ceil(headerRowHeight)}px`);
-  }
-
-  window.addEventListener('resize', updateStickyHeaderOffset);
 
   /**
    * Renders (or hides) the "Zettel 1 / Zettel 2" sub-header row shown right
@@ -465,10 +447,6 @@
         els.sheetsHeaderRow.appendChild(th);
       });
     });
-
-    // The sub-header row's own height can change too (e.g. text wrapping
-    // differently once populated), so re-measure once more after it's built.
-    updateStickyHeaderOffset();
   }
 
   /** Builds either the name <input> (unconfirmed) or the name display (confirmed). */
@@ -888,7 +866,6 @@
   function toggleSeniorMode() {
     seniorMode = !seniorMode;
     applySeniorModeUI();
-    updateStickyHeaderOffset();
     savePlayers();
     showToast(
       seniorMode
@@ -985,7 +962,6 @@
     applySeniorModeUI();
     renderBody();
     renderPlayerHeaders();
-    updateStickyHeaderOffset();
     updateEmptyHint();
     if (hadSavedGame && players.length > 0) {
       showToast('Dein letztes Blatt wurde geladen.');
