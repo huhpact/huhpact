@@ -7,10 +7,15 @@
  * structure only ever has to be defined once.
  *
  * Row "type" values:
- *   "input"     -> an editable score cell for every player
- *   "bonus"     -> the special Yes/No + auto +35 bonus row
- *   "total"     -> a computed, read-only total row
- *   "spacer"    -> the empty visual gap row between upper & lower sections
+ *   "input"          -> an editable score cell for every player
+ *   "bonus"          -> the special Yes/No + auto +35 bonus row
+ *   "total"          -> a computed, read-only total row
+ *   "total-with-bonus" -> a computed, read-only row showing another total
+ *                       row's value with the upper-section bonus folded in
+ *                       (e.g. "Summe oben" shows 63, this row then shows 98
+ *                       once the +35 bonus is included) — see app.js ->
+ *                       calculateAllScores, which writes both figures.
+ *   "spacer"        -> the empty visual gap row between upper & lower sections
  *
  * Note on "Doppel" mode: this file describes WHICH categories exist on a
  * sheet, independent of how many sheets a player fills in. When the app is
@@ -33,6 +38,7 @@ const SCORE_ROWS = [
   { id: 'sixes',       label: 'Sechser',       icon: 'die-6', type: 'input', section: 'upper', hint: 'Anzahl gewürfelter 6er × 6', maxValue: 30 },
   { id: 'bonus',       label: 'Bonus',         icon: 'star',  type: 'bonus', section: 'upper', hint: 'Ab 63 Punkten oben: automatisch +35' },
   { id: 'upperTotal',  label: 'Summe oben',    icon: null,    type: 'total', section: 'upper' },
+  { id: 'upperTotalWithBonus', label: 'Summe oben inkl. Bonus', icon: 'star', type: 'total-with-bonus', section: 'upper', hint: 'Zwischensumme + Bonus (falls erreicht)' },
 
   // ---------------- Spacer between sections ----------------
   { id: 'spacer-1', type: 'spacer' },

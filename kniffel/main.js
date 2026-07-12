@@ -26,11 +26,14 @@
 
   /**
    * players: Array of player objects.
-   * Each player: { id, name, nameConfirmed, colorHue, sheets: [scores, ...] }
-   * where each entry in `sheets` is a { [rowId]: number|null } map — one map
-   * per score sheet. In "single" mode every player has exactly one sheet; in
-   * "double" mode every player has exactly two independent sheets (see
-   * STATE.mode below), rendered as two sub-columns under that player.
+   * Each player: { id, name, nameConfirmed, colorHue, sheets: [scores, ...],
+   * struck: [struckMap, ...] } where each entry in `sheets` is a
+   * { [rowId]: number|null } map and each entry in `struck` is a parallel
+   * { [rowId]: boolean } map (same indexing as `sheets`) marking categories
+   * deliberately crossed out — see emptyStruckMap(). In "single" mode every
+   * player has exactly one sheet (and one struck map); in "double" mode
+   * every player has exactly two of each (see STATE.mode below), rendered
+   * as two sub-columns under that player.
    */
   let players = [];
   let nextPlayerId = 1;
@@ -42,6 +45,18 @@
    *                   player's grand total adds both sheets together.
    */
   let mode = 'single';
+
+  /**
+   * seniorMode: "Rentner-Modus" — an independent, orthogonal accessibility
+   * toggle (can be combined with either single or double mode). When on:
+   * much stronger player/section background tints, larger & bolder type,
+   * a header row that stays pinned to the top of the viewport while
+   * scrolling, hard column-divider rules, and a per-cell "erledigt/
+   * durchgestrichen" (done/crossed-out) toggle to help mark categories
+   * that can't be used. Applied as a single class on <body> (see
+   * applySeniorModeUI) so all the CSS lives in one attribute-scoped block.
+   */
+  let seniorMode = false;
 
   /* Distinct, paper-friendly "pen color" hues assigned round-robin to players
      so each player's column header gets a small identifying flag. */
@@ -63,6 +78,7 @@
     btnModeSingle: document.getElementById('btn-mode-single'),
     btnModeDouble: document.getElementById('btn-mode-double'),
     sheetsHeaderRow: document.getElementById('row-sheets'),
+    btnSeniorMode: document.getElementById('btn-senior-mode'),
   };
 
   /* ===========================================================================
@@ -162,6 +178,7 @@
     if (row.section === 'lower') classes.push('row-lower');
     if (row.id === 'bonus') classes.push('row-bonus');
     if (row.id === 'upperTotal') classes.push('row-upper-total');
+    if (row.id === 'upperTotalWithBonus') classes.push('row-upper-total-with-bonus');
     if (row.id === 'lowerTotal') classes.push('row-lower-total');
     if (row.id === 'grandTotal') classes.push('row-grand-total');
     if (row.fixedValue) classes.push('fixed-value-row');
@@ -175,7 +192,7 @@
 
     if (!row) return td; // spacer row: empty label cell
 
-    if (row.type === 'total') {
+    if (row.type === 'total' || row.type === 'total-with-bonus') {
       td.innerHTML = `
         <span class="total-label">
           ${row.icon ? icon(row.icon) : ''}
@@ -206,7 +223,7 @@
   /** Builds one player's cell for a given row + sheet (input, bonus, or total). */
   function makeScoreCell(row, player, sheetIndex, opts) {
     const td = document.createElement('td');
-    td.className = 'cell-score';
+    td.className = 'cell-score player-tinted-col';
     if (mode === 'double') td.classList.add(sheetIndex === 0 ? 'cell-sheet-a' : 'cell-sheet-b');
     if (opts && opts.colSpan) {
       td.colSpan = opts.colSpan;
@@ -215,11 +232,16 @@
     td.dataset.rowId = row.id;
     td.dataset.playerId = player.id;
     td.dataset.sheetIndex = sheetIndex;
+    // Carries this player's pen color down through every cell in their
+    // column (not just the header flag) as a CSS var, so a very light tint
+    // of "who's who" stays visible even once the header scrolls out of view.
+    td.style.setProperty('--player-tint', player.colorHue);
 
     const key = cellKey(player.id, sheetIndex);
     const sheetScores = player.sheets[sheetIndex];
+    const sheetStruck = player.struck && player.struck[sheetIndex];
 
-    if (row.type === 'total') {
+    if (row.type === 'total' || row.type === 'total-with-bonus') {
       td.innerHTML = `<span class="total-value" id="total-${row.id}-${key}">0</span>`;
       return td;
     }
@@ -305,6 +327,46 @@
       td.appendChild(chip);
     }
 
+    // "Durchgestrichen" (struck-out) toggle — a Rentner-Modus affordance for
+    // marking a category as deliberately unusable this round, the way many
+    // players cross out a box on a real paper sheet. Always built (so no
+    // extra render pass is needed when senior mode is switched on), but
+    // only shown via CSS while .senior-mode is active on <body>. Struck
+    // cells lock their input so a crossed-out box can't also hold a value.
+    const isStruck = !!(sheetStruck && sheetStruck[row.id]);
+    td.classList.toggle('is-struck', isStruck);
+    input.disabled = isStruck;
+
+    const strikeBtn = document.createElement('button');
+    strikeBtn.type = 'button';
+    strikeBtn.className = 'strike-toggle-btn';
+    strikeBtn.title = isStruck ? 'Streichung aufheben' : `${row.label} durchstreichen`;
+    strikeBtn.setAttribute('aria-label', isStruck ? `Streichung bei ${row.label} aufheben` : `${row.label} durchstreichen`);
+    strikeBtn.setAttribute('aria-pressed', String(isStruck));
+    strikeBtn.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 12h16"/></svg>';
+    strikeBtn.addEventListener('click', () => {
+      if (!player.struck) player.struck = [];
+      if (!player.struck[sheetIndex]) player.struck[sheetIndex] = emptyStruckMap();
+      const nowStruck = !player.struck[sheetIndex][row.id];
+      player.struck[sheetIndex][row.id] = nowStruck;
+
+      td.classList.toggle('is-struck', nowStruck);
+      input.disabled = nowStruck;
+      strikeBtn.setAttribute('aria-pressed', String(nowStruck));
+      strikeBtn.title = nowStruck ? 'Streichung aufheben' : `${row.label} durchstreichen`;
+      strikeBtn.setAttribute('aria-label', nowStruck ? `Streichung bei ${row.label} aufheben` : `${row.label} durchstreichen`);
+      if (nowStruck) {
+        // Crossing out a box clears any stray value in it, matching what
+        // crossing it out on paper means: this box is no longer in play.
+        sheetScores[row.id] = null;
+        input.value = '';
+      } else {
+        input.focus();
+      }
+      savePlayers();
+    });
+    td.appendChild(strikeBtn);
+
     return td;
   }
 
@@ -332,9 +394,10 @@
 
     players.forEach((player) => {
       const th = document.createElement('th');
-      th.className = 'col-player-head player-header-cell';
+      th.className = 'col-player-head player-header-cell player-tinted-col';
       th.scope = 'col';
       if (mode === 'double') th.colSpan = 2;
+      th.style.setProperty('--player-tint', player.colorHue);
 
       const removeBtn = document.createElement('button');
       removeBtn.type = 'button';
@@ -357,7 +420,25 @@
 
     renderSheetSubHeaders();
     updateAddPlayerButtonState();
+    updateStickyHeaderOffset();
   }
+
+  /**
+   * Rentner-Modus sticky headers: the player-name row (.row-players) sticks
+   * at top: 0, and — in double mode — the "Zettel 1/2" sub-header row
+   * (.row-sheets) needs to stick directly beneath it. Row heights aren't
+   * fixed (fluid padding + senior-mode's larger type both change them), so
+   * rather than hardcoding an offset in CSS, measure the actual rendered
+   * height of .row-players after each render and expose it as a CSS var
+   * that .row-sheets' `top` reads. Cheap enough to just always keep in
+   * sync, even when senior mode / double mode aren't currently active.
+   */
+  function updateStickyHeaderOffset() {
+    const headerRowHeight = els.headerRow.getBoundingClientRect().height;
+    els.table.style.setProperty('--sticky-header-row-height', `${Math.ceil(headerRowHeight)}px`);
+  }
+
+  window.addEventListener('resize', updateStickyHeaderOffset);
 
   /**
    * Renders (or hides) the "Zettel 1 / Zettel 2" sub-header row shown right
@@ -377,12 +458,17 @@
     players.forEach((player) => {
       [0, 1].forEach((sheetIndex) => {
         const th = document.createElement('th');
-        th.className = `col-sheet-head ${sheetIndex === 0 ? 'is-sheet-a' : 'is-sheet-b'}`;
+        th.className = `col-sheet-head player-tinted-col ${sheetIndex === 0 ? 'is-sheet-a' : 'is-sheet-b'}`;
         th.scope = 'col';
         th.textContent = `Zettel ${sheetIndex + 1}`;
+        th.style.setProperty('--player-tint', player.colorHue);
         els.sheetsHeaderRow.appendChild(th);
       });
     });
+
+    // The sub-header row's own height can change too (e.g. text wrapping
+    // differently once populated), so re-measure once more after it's built.
+    updateStickyHeaderOffset();
   }
 
   /** Builds either the name <input> (unconfirmed) or the name display (confirmed). */
@@ -461,10 +547,30 @@
     return scores;
   }
 
+  /**
+   * Builds one empty { [rowId]: false } "durchgestrichen" (struck-out) map
+   * for a single sheet — Rentner-Modus-only affordance for marking a
+   * category as deliberately skipped/not usable, kept fully separate from
+   * the numeric score map above so it can never collide with a row id or
+   * interfere with sumRows()/calculateAllScores(). One entry per player
+   * sheet, same indexing as player.sheets (player.struck[sheetIndex]).
+   */
+  function emptyStruckMap() {
+    const struck = {};
+    EDITABLE_ROW_IDS.forEach((id) => { struck[id] = false; });
+    return struck;
+  }
+
   /** Builds the sheets array for a fresh player, sized to the current mode. */
   function emptySheets() {
     const count = SHEETS_PER_MODE[mode] || 1;
     return Array.from({ length: count }, () => emptyScoreMap());
+  }
+
+  /** Builds the struck-rows array for a fresh player, mirroring emptySheets(). */
+  function emptyStruckSheets() {
+    const count = SHEETS_PER_MODE[mode] || 1;
+    return Array.from({ length: count }, () => emptyStruckMap());
   }
 
   function addPlayer() {
@@ -479,6 +585,7 @@
       nameConfirmed: false,
       colorHue: PLAYER_HUES[players.length % PLAYER_HUES.length],
       sheets: emptySheets(),
+      struck: emptyStruckSheets(),
     };
 
     players.push(player);
@@ -552,6 +659,10 @@
 
         updateTotalDisplay('upperTotal', key, upperSum);
         updateBonusDisplay(key, upperSum, bonusEarned, bonusPoints);
+        // "Summe oben inkl. Bonus": the plain upper sum with the +35 folded
+        // in once earned (63 -> 98). Before the bonus is reached this just
+        // mirrors the plain sum, since there's nothing yet to add.
+        updateTotalDisplay('upperTotalWithBonus', key, upperTotal);
         updateTotalDisplay('lowerTotal', key, lowerTotal);
       });
 
@@ -620,12 +731,14 @@
     try {
       const payload = {
         mode,
+        seniorMode,
         players: players.map((p) => ({
           id: p.id,
           name: p.name,
           nameConfirmed: p.nameConfirmed,
           colorHue: p.colorHue,
           sheets: p.sheets,
+          struck: p.struck,
         })),
         nextPlayerId,
       };
@@ -646,7 +759,17 @@
 
         players = payload.players;
         mode = payload.mode === 'double' ? 'double' : 'single';
+        seniorMode = payload.seniorMode === true;
         nextPlayerId = payload.nextPlayerId || players.length + 1;
+        // Backfill: saves written before the "durchgestrichen" feature
+        // existed won't have a `struck` array at all — give every such
+        // player a fresh, correctly-sized, all-false one rather than
+        // leaving it undefined (which the renderer isn't expecting).
+        players.forEach((p) => {
+          if (!Array.isArray(p.struck) || p.struck.length !== p.sheets.length) {
+            p.struck = p.sheets.map(() => emptyStruckMap());
+          }
+        });
         return true;
       }
 
@@ -673,8 +796,10 @@
       nameConfirmed: p.nameConfirmed,
       colorHue: p.colorHue,
       sheets: [p.scores || emptyScoreMap()],
+      struck: [emptyStruckMap()],
     }));
     mode = 'single';
+    seniorMode = false;
     nextPlayerId = payload.nextPlayerId || players.length + 1;
 
     savePlayers();
@@ -712,18 +837,26 @@
     if (newMode === mode) return;
 
     if (newMode === 'single' && mode === 'double') {
-      const anySecondSheetData = players.some((p) =>
-        p.sheets[1] && Object.values(p.sheets[1]).some((v) => v !== null && v !== undefined)
-      );
+      const anySecondSheetData = players.some((p) => {
+        const hasScores = p.sheets[1] && Object.values(p.sheets[1]).some((v) => v !== null && v !== undefined);
+        const hasStrikes = p.struck && p.struck[1] && Object.values(p.struck[1]).some(Boolean);
+        return hasScores || hasStrikes;
+      });
       if (anySecondSheetData) {
         const proceed = window.confirm(
           'Zurück zu Einfach wechseln? Die Punkte auf dem zweiten Zettel jedes Spielers gehen dabei verloren.'
         );
         if (!proceed) return;
       }
-      players.forEach((p) => { p.sheets = [p.sheets[0] || emptyScoreMap()]; });
+      players.forEach((p) => {
+        p.sheets = [p.sheets[0] || emptyScoreMap()];
+        p.struck = [(p.struck && p.struck[0]) || emptyStruckMap()];
+      });
     } else if (newMode === 'double' && mode === 'single') {
-      players.forEach((p) => { p.sheets = [p.sheets[0] || emptyScoreMap(), emptyScoreMap()]; });
+      players.forEach((p) => {
+        p.sheets = [p.sheets[0] || emptyScoreMap(), emptyScoreMap()];
+        p.struck = [(p.struck && p.struck[0]) || emptyStruckMap(), emptyStruckMap()];
+      });
     }
 
     mode = newMode;
@@ -745,6 +878,30 @@
     els.btnModeSingle.setAttribute('aria-checked', String(!isDouble));
     els.btnModeDouble.classList.toggle('is-active', isDouble);
     els.btnModeDouble.setAttribute('aria-checked', String(isDouble));
+  }
+
+  /**
+   * Toggles "Rentner-Modus" — independent of single/double, so it can be
+   * combined with either. Unlike setMode(), this never touches player data,
+   * only presentation, so there's nothing to confirm before switching.
+   */
+  function toggleSeniorMode() {
+    seniorMode = !seniorMode;
+    applySeniorModeUI();
+    updateStickyHeaderOffset();
+    savePlayers();
+    showToast(
+      seniorMode
+        ? 'Rentner-Modus aktiv — große Schrift & starke Farben. 🔍'
+        : 'Rentner-Modus ausgeschaltet.'
+    );
+  }
+
+  /** Syncs the <body> class + button state with the current seniorMode flag. */
+  function applySeniorModeUI() {
+    document.body.classList.toggle('senior-mode', seniorMode);
+    els.btnSeniorMode.classList.toggle('is-active', seniorMode);
+    els.btnSeniorMode.setAttribute('aria-pressed', String(seniorMode));
   }
 
   /* ===========================================================================
@@ -779,6 +936,7 @@
   els.btnNewGame.addEventListener('click', startNewGame);
   els.btnModeSingle.addEventListener('click', () => setMode('single'));
   els.btnModeDouble.addEventListener('click', () => setMode('double'));
+  els.btnSeniorMode.addEventListener('click', toggleSeniorMode);
 
   /* ===========================================================================
      10. PWA: SERVICE WORKER + INSTALL PROMPT
@@ -824,8 +982,10 @@
   function init() {
     const hadSavedGame = loadPlayers();
     updateModeToggleUI();
+    applySeniorModeUI();
     renderBody();
     renderPlayerHeaders();
+    updateStickyHeaderOffset();
     updateEmptyHint();
     if (hadSavedGame && players.length > 0) {
       showToast('Dein letztes Blatt wurde geladen.');
