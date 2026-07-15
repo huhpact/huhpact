@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Europe Plate Quiz – Setup</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+</head>
+<body>
+    <div class="container">
+        <header class="quiz-header">
+            <button class="back-btn" onclick="window.location.href='/quiz/index.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back
+            </button>
+            <h1 class="neon-text">Europe Plates</h1>
+        </header>
+        <main class="setup-container">
+            <div class="setup-card">
+                <div class="setup-section">
+                    <h2>Number of Questions</h2>
+                    <div class="options-grid">
+                        <button class="option-btn active" data-questions="10">10</button>
+                        <button class="option-btn" data-questions="20">20</button>
+                        <button class="option-btn" data-questions="30">30</button>
+                        <button class="option-btn" data-questions="50">50</button>
+                    </div>
+                </div>
+                <div class="setup-section">
+                    <h2>Select Region</h2>
+                    <div class="region-grid">
+                        <button class="region-btn active" data-region="all">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            <span>All Regions</span>
+                        </button>
+                        <button class="region-btn" data-region="Österreich">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Österreich</span>
+                        </button>
+                        <button class="region-btn" data-region="Schweiz">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Schweiz</span>
+                        </button>
+                        <button class="region-btn" data-region="Frankreich">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                            <span>Frankreich</span>
+                        </button>
+                       
+                    </div>
+                </div>
+                <button class="start-btn" onclick="startQuiz()">
+                    Start Quiz
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </button>
+            </div>
+        </main>
+    </div>
+    <script>
+        var selectedQuestions = 10;
+        var selectedRegion = 'all';
+
+        document.querySelectorAll('.option-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.option-btn').forEach(function(b){ b.classList.remove('active'); });
+                btn.classList.add('active');
+                selectedQuestions = parseInt(btn.dataset.questions);
+            });
+        });
+
+        document.querySelectorAll('.region-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.region-btn').forEach(function(b){ b.classList.remove('active'); });
+                btn.classList.add('active');
+                selectedRegion = btn.dataset.region;
+            });
+        });
+
+        function startQuiz() {
+            sessionStorage.setItem('germanyPlatesQuestions', selectedQuestions);
+            sessionStorage.setItem('germanyPlatesRegion', selectedRegion);
+            window.location.href = 'quiz-germany-plates.html';
+        }
+    </script>
+</body>
+</html>
