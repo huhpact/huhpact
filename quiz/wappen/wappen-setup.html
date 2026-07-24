@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wappen-Quiz – Setup</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <style>
+        /* ── Bundesland filter grid ── */
+        .brand-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.6rem;
+            margin-bottom: 0;
+        }
+
+        .brand-btn {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.55rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Sora', sans-serif;
+            text-align: center;
+            letter-spacing: 0.01em;
+        }
+
+        .brand-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .brand-btn.active {
+            background: var(--text-primary);
+            border-color: var(--text-primary);
+            color: white;
+        }
+
+        .brand-btn.all-btn {
+            background: var(--accent-light);
+            border-color: var(--accent);
+            color: var(--accent);
+            grid-column: 1 / -1;
+            font-size: 0.88rem;
+            padding: 0.65rem;
+            font-weight: 700;
+        }
+
+        .brand-btn.all-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* ── Count selection ── */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.6rem;
+        }
+
+        .option-btn {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.85rem 0.5rem;
+            border-radius: var(--radius-md);
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Sora', sans-serif;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .option-btn.active {
+            background: var(--text-primary);
+            border-color: var(--text-primary);
+            color: white;
+        }
+
+        @media (max-width: 540px) {
+            .options-grid { grid-template-columns: repeat(3, 1fr); }
+            .brand-grid   { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <header class="quiz-header">
+            <button class="back-btn" onclick="window.location.href='index.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Zurück
+            </button>
+            <h1 class="neon-text">Wappen<span style="color:var(--accent)">Quiz</span></h1>
+        </header>
+
+        <main class="setup-container">
+            <div class="setup-card">
+
+                <!-- ── Anzahl Fragen ── -->
+                <div class="setup-section">
+                    <h2>Anzahl der Fragen</h2>
+                    <div class="options-grid" id="count-grid">
+                        <button class="option-btn" data-count="10">10</button>
+                        <button class="option-btn active" data-count="20">20</button>
+                        <button class="option-btn" data-count="30">30</button>
+                        <button class="option-btn" data-count="50">50</button>
+                        <button class="option-btn" data-count="9999">Alle</button>
+                    </div>
+                </div>
+
+                <!-- ── Bundesland-Filter ── -->
+                <div class="setup-section">
+                    <h2>Bundesländer auswählen</h2>
+                    <div class="brand-grid" id="brand-grid">
+                        <button class="brand-btn all-btn active" data-brand="all">
+                            ✦ Alle Bundesländer
+                        </button>
+                        <!-- Populated by setup-wappen.js -->
+                    </div>
+                </div>
+
+                <button class="start-btn" onclick="startQuiz()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Quiz starten
+                </button>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="wappen.js"></script>
+    <script>
+			/* ── setup-wappen.js ────────────────────────────────────────
+   Liest WAPPEN aus wappen.js, baut die Bundesland-Auswahl auf
+   und speichert die gewählten Einstellungen in sessionStorage.
+────────────────────────────────────────────────────────── */
+
+let selectedCount  = 20;
+let selectedBrands = new Set(['all']);   // 'all' = keine Einschränkung
+
+document.addEventListener('DOMContentLoaded', () => {
+    buildBrandGrid();
+    initCountButtons();
+});
+
+/* ── Fragenanzahl-Buttons ── */
+function initCountButtons() {
+    document.querySelectorAll('#count-grid .option-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#count-grid .option-btn')
+                    .forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedCount = parseInt(btn.dataset.count);
+        });
+    });
+}
+
+/* ── Bundesland-Buttons dynamisch aus WAPPEN befüllen ── */
+function buildBrandGrid() {
+    const brands = [...new Set(WAPPEN.map(w => w.bundesland))].sort();
+    const grid   = document.getElementById('brand-grid');
+
+    // "Alle"-Button-Handler anhängen
+    grid.querySelector('.all-btn').addEventListener('click', selectAll);
+
+    brands.forEach(brand => {
+        const btn = document.createElement('button');
+        btn.className    = 'brand-btn';
+        btn.dataset.brand = brand;
+        btn.textContent  = brand;
+        btn.addEventListener('click', () => toggleBrand(brand, btn));
+        grid.appendChild(btn);
+    });
+}
+
+function selectAll() {
+    selectedBrands = new Set(['all']);
+    document.querySelectorAll('.brand-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.all-btn').classList.add('active');
+}
+
+function toggleBrand(brand, btn) {
+    // Einzelnes Bundesland aktivieren/deaktivieren
+    selectedBrands.delete('all');
+    document.querySelector('.all-btn').classList.remove('active');
+
+    if (selectedBrands.has(brand)) {
+        selectedBrands.delete(brand);
+        btn.classList.remove('active');
+        if (selectedBrands.size === 0) selectAll();  // Fallback → Alle
+    } else {
+        selectedBrands.add(brand);
+        btn.classList.add('active');
+    }
+}
+
+/* ── Quiz starten: Auswahl speichern, weiterleiten ── */
+function startQuiz() {
+    sessionStorage.setItem('wappenQuizCount',  selectedCount);
+    sessionStorage.setItem('wappenQuizBrands', JSON.stringify([...selectedBrands]));
+    window.location.href = 'wappen-quiz.html';
+}
+		</script>
+</body>
+</html>

@@ -7,37 +7,37 @@
 }
 
 :root {
-    /* Palette – vivid citrus + ink on bright white */
-    --bg:              #fafaf7;
-    --bg-card:         #ffffff;
-    --bg-elevated:     #f4f3ef;
-    --bg-subtle:       #f0ede7;
-    --accent:          #ff4d1c;
-    --accent-2:        #ff8c00;
-    --accent-light:    #fff2ee;
-    --accent-hover:    #e63c0e;
-    --accent-gradient: linear-gradient(135deg, #ff4d1c 0%, #ff8c00 100%);
-    --lime:            #b5e048;
-    --lime-dark:       #5a7a0a;
-    --lime-light:      #f2fad8;
-    --sky:             #3b9eff;
-    --sky-light:       #e8f4ff;
-    --violet:          #7c5cfc;
-    --violet-light:    #f0ecff;
-    --text-primary:    #141210;
-    --text-secondary:  #6b6560;
-    --text-muted:      #aaa49c;
-    --border:          #e8e3db;
-    --border-strong:   #d0c9be;
-    --success:         #0faa72;
-    --success-light:   #e6f9f1;
-    --error:           #f03d3d;
-    --error-light:     #fef0f0;
-    --shadow-xs:       0 1px 3px rgba(20,18,16,0.06);
-    --shadow-sm:       0 2px 8px rgba(20,18,16,0.07);
-    --shadow-md:       0 6px 24px rgba(20,18,16,0.09);
-    --shadow-lg:       0 16px 56px rgba(20,18,16,0.11);
-    --shadow-xl:       0 28px 80px rgba(20,18,16,0.13);
+    /* Palette – dim, warm dark mode: muted charcoal + soft terracotta glow */
+    --bg:              #1a1714;
+    --bg-card:         #23201b;
+    --bg-elevated:     #2b2721;
+    --bg-subtle:       #322d26;
+    --accent:          #f0653c;
+    --accent-2:        #e0954a;
+    --accent-light:    #3a281f;
+    --accent-hover:    #ff7a4d;
+    --accent-gradient: linear-gradient(135deg, #e2532a 0%, #f0653c 45%, #e0954a 100%);
+    --lime:            #b8dd5e;
+    --lime-dark:       #d7edac;
+    --lime-light:      #2e3420;
+    --sky:             #6cb0f2;
+    --sky-light:       #202b36;
+    --violet:          #9a83f0;
+    --violet-light:    #2a2438;
+    --text-primary:    #f3ede4;
+    --text-secondary:  #b7ada0;
+    --text-muted:      #7d7469;
+    --border:          #3a352c;
+    --border-strong:   #4c4638;
+    --success:         #4fbf8e;
+    --success-light:   #1f332a;
+    --error:           #e8685a;
+    --error-light:     #362320;
+    --shadow-xs:       0 1px 3px rgba(0,0,0,0.22);
+    --shadow-sm:       0 3px 10px rgba(0,0,0,0.26);
+    --shadow-md:       0 8px 28px rgba(0,0,0,0.32);
+    --shadow-lg:       0 18px 60px rgba(0,0,0,0.38);
+    --shadow-xl:       0 30px 84px rgba(0,0,0,0.44);
     --radius-xs:       6px;
     --radius-sm:       10px;
     --radius-md:       16px;
@@ -60,7 +60,7 @@ body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background-image: radial-gradient(circle, rgba(20,18,16,0.045) 1px, transparent 1px);
+    background-image: radial-gradient(circle, rgba(243,237,228,0.045) 1px, transparent 1px);
     background-size: 28px 28px;
     pointer-events: none;
     z-index: 0;
@@ -72,8 +72,8 @@ body::after {
     position: fixed;
     inset: 0;
     background:
-        radial-gradient(ellipse 55% 35% at 95% 5%, rgba(255,140,0,0.09) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 30% at 5% 95%, rgba(181,224,72,0.1) 0%, transparent 60%);
+        radial-gradient(ellipse 55% 35% at 95% 5%, rgba(240,101,60,0.09) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 30% at 5% 95%, rgba(184,221,94,0.07) 0%, transparent 60%);
     pointer-events: none;
     z-index: 0;
 }
@@ -199,7 +199,7 @@ body::after {
     border-radius: 100px;
     font-size: 0.82rem;
     font-weight: 700;
-    border: 1.5px solid rgba(255,77,28,0.2);
+    border: 1.5px solid rgba(240,101,60,0.2);
 }
 
 .arrow {
@@ -213,12 +213,12 @@ body::after {
     justify-content: center;
     font-size: 1rem;
     transition: var(--transition);
-    box-shadow: 0 4px 14px rgba(255,77,28,0.35);
+    box-shadow: 0 4px 14px rgba(240,101,60,0.35);
 }
 
 .quiz-card:hover .arrow {
     transform: translateX(4px);
-    box-shadow: 0 6px 22px rgba(255,77,28,0.5);
+    box-shadow: 0 6px 22px rgba(240,101,60,0.5);
 }
 
 /* ─── Footer ─── */
@@ -269,7 +269,7 @@ body::after {
 
 .back-btn:hover {
     background: var(--text-primary);
-    color: white;
+    color: var(--bg);
     border-color: var(--text-primary);
     box-shadow: var(--shadow-sm);
 }
@@ -341,7 +341,7 @@ body::after {
     background: var(--accent-gradient);
     border-color: transparent;
     color: white;
-    box-shadow: 0 4px 16px rgba(255,77,28,0.35);
+    box-shadow: 0 4px 16px rgba(240,101,60,0.35);
 }
 
 /* ─── Region Grid ─── */
@@ -382,7 +382,7 @@ body::after {
     background: var(--accent-gradient);
     border-color: transparent;
     color: white;
-    box-shadow: 0 4px 16px rgba(255,77,28,0.3);
+    box-shadow: 0 4px 16px rgba(240,101,60,0.3);
 }
 .region-btn.active svg { color: white; }
 
@@ -404,13 +404,13 @@ body::after {
     gap: 0.65rem;
     font-family: 'Plus Jakarta Sans', sans-serif;
     letter-spacing: 0.01em;
-    box-shadow: 0 6px 28px rgba(255,77,28,0.4);
+    box-shadow: 0 6px 28px rgba(240,101,60,0.4);
     margin-top: 2rem;
 }
 
 .start-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 10px 40px rgba(255,77,28,0.5);
+    box-shadow: 0 10px 40px rgba(240,101,60,0.5);
     filter: brightness(1.06);
 }
 
@@ -474,9 +474,9 @@ body::after {
     display: flex;
     align-items: center;
     gap: 0.35rem;
-    background: #fffbea;
-    border: 1.5px solid #ffe866;
-    color: #a36a00;
+    background: #3a2f14;
+    border: 1.5px solid #6b5320;
+    color: #e8c667;
     padding: 0.32rem 0.8rem;
     border-radius: 100px;
     font-size: 0.8rem;
@@ -541,7 +541,7 @@ body::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(255,77,28,0.04) 0%, transparent 70%);
+    background: radial-gradient(circle at 50% 50%, rgba(240,101,60,0.04) 0%, transparent 70%);
 }
 
 .flag-image {
@@ -665,7 +665,7 @@ body::after {
 
 .text-input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(255,77,28,0.1);
+    box-shadow: 0 0 0 4px rgba(240,101,60,0.1);
 }
 
 .text-input.correct {
@@ -704,7 +704,7 @@ body::after {
     background: var(--accent);
     border-color: var(--accent);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255,77,28,0.35);
+    box-shadow: 0 6px 20px rgba(240,101,60,0.35);
 }
 
 .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
@@ -737,13 +737,13 @@ body::after {
 
 /* ─── Fun fact ─── */
 .funfact-box {
-    background: #fffbea;
-    border: 1.5px solid #ffe866;
-    border-left: 3px solid #f5c842;
+    background: #3a2f14;
+    border: 1.5px solid #6b5320;
+    border-left: 3px solid #c99a2e;
     border-radius: var(--radius-md);
     padding: 1rem 1.25rem;
     font-size: 0.86rem;
-    color: #6b5500;
+    color: #e8c667;
     line-height: 1.65;
     display: none;
     gap: 0.7rem;
@@ -857,14 +857,14 @@ body::after {
     justify-content: center;
     gap: 0.6rem;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    box-shadow: 0 4px 18px rgba(255,77,28,0.38);
+    box-shadow: 0 4px 18px rgba(240,101,60,0.38);
 }
 
 .modal-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
 
 .modal-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(255,77,28,0.5);
+    box-shadow: 0 8px 30px rgba(240,101,60,0.5);
     filter: brightness(1.07);
 }
 
@@ -986,7 +986,7 @@ body::after {
     width: 100%;
     background: var(--text-primary);
     border: none;
-    color: white;
+    color: var(--bg);
     padding: 1.05rem;
     border-radius: var(--radius-md);
     font-size: 0.95rem;
@@ -999,7 +999,7 @@ body::after {
 .check-order-btn:hover:not(:disabled) {
     background: var(--accent);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255,77,28,0.35);
+    box-shadow: 0 6px 20px rgba(240,101,60,0.35);
 }
 
 .check-order-btn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -1050,7 +1050,7 @@ input[type="range"].quiz-range::-webkit-slider-thumb {
     border-radius: 50%;
     background: var(--accent-gradient);
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(255,77,28,0.4);
+    box-shadow: 0 2px 10px rgba(240,101,60,0.4);
     border: 2px solid white;
     transition: transform 0.1s;
 }
@@ -1100,7 +1100,7 @@ input[type="range"].quiz-range::-webkit-slider-thumb:hover { transform: scale(1.
     gap: 0.6rem;
     background: var(--text-primary);
     border: none;
-    color: white;
+    color: var(--bg);
     padding: 0.85rem 1.75rem;
     border-radius: 100px;
     font-size: 0.92rem;
@@ -1113,7 +1113,7 @@ input[type="range"].quiz-range::-webkit-slider-thumb:hover { transform: scale(1.
 .audio-play-btn:hover {
     background: var(--accent);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255,77,28,0.4);
+    box-shadow: 0 8px 24px rgba(240,101,60,0.4);
 }
 
 .audio-play-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
@@ -1130,24 +1130,7 @@ input[type="range"].quiz-range::-webkit-slider-thumb:hover { transform: scale(1.
 .brand-stage    { min-height: clamp(220px, 32vw, 360px) !important; }
 .brand-image    { max-width: clamp(180px, 32vw, 340px) !important; max-height: clamp(140px, 22vw, 260px) !important; }
 
-/* ─── Answer pill letters ─── */
-.answer-btn::before {
-    content: attr(data-letter);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    background: var(--bg-elevated);
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 800;
-    margin-right: 0.65rem;
-    letter-spacing: 0;
-    vertical-align: middle;
-    color: var(--text-muted);
-    transition: var(--transition);
-}
+
 
 .answer-btn:hover:not(.disabled)::before { background: var(--accent); color: white; }
 .answer-btn.correct::before { background: var(--success); color: white; }
@@ -1165,7 +1148,7 @@ input[type="range"].quiz-range::-webkit-slider-thumb:hover { transform: scale(1.
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    border: 1.5px solid rgba(255,77,28,0.2);
+    border: 1.5px solid rgba(240,101,60,0.2);
 }
 
 .q-type-pill {
@@ -1181,7 +1164,7 @@ input[type="range"].quiz-range::-webkit-slider-thumb:hover { transform: scale(1.
 
 .q-difficulty { margin-left: auto; font-size: 0.72rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 100px; letter-spacing: 0.04em; }
 .q-difficulty.leicht { background: var(--lime-light); color: var(--lime-dark); border: 1.5px solid rgba(90,122,10,0.2); }
-.q-difficulty.mittel { background: #fffbea; color: #a36a00; border: 1.5px solid rgba(163,106,0,0.2); }
+.q-difficulty.mittel { background: #3a2f14; color: #e8c667; border: 1.5px solid rgba(232,198,103,0.25); }
 .q-difficulty.schwer { background: var(--error-light); color: var(--error); border: 1.5px solid rgba(240,61,61,0.2); }
 
 /* ─── Answers grid with letters ─── */

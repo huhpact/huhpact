@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Wetter">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Wetter — Aurora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- Dynamischer Himmel-Hintergrund -->
+  <div class="sky" id="sky">
+    <div class="sky-gradient"></div>
+    <div class="celestial" id="celestial"></div>
+    <div class="clouds" id="clouds"></div>
+    <div class="rain" id="rain"></div>
+    <div class="snow" id="snow"></div>
+    <div class="stars" id="stars"></div>
+  </div>
+
+  <!-- Ladezustand -->
+  <div class="state state--loading" id="loadingState">
+    <div class="loading-orb">
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+    </div>
+    <p class="loading-text" id="loadingText">Standort wird ermittelt …</p>
+  </div>
+
+  <!-- Fehlerzustand -->
+  <div class="state state--error" id="errorState" hidden>
+    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 9v4M12 17h.01M10.29 3.86l-8.18 14.18A2 2 0 0 0 3.82 21h16.36a2 2 0 0 0 1.71-3.02L13.71 3.86a2 2 0 0 0-3.42 0z" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <p class="error-title">Standort nicht verfügbar</p>
+    <p class="error-text" id="errorText">Bitte Standortzugriff erlauben, um dein lokales Wetter zu sehen.</p>
+    <div class="error-actions">
+      <button class="btn btn--primary" id="retryBtn">Erneut versuchen</button>
+      <button class="btn btn--ghost" id="searchInsteadBtn">Stadt suchen</button>
+    </div>
+  </div>
+
+  <!-- Hauptinhalt -->
+  <main class="content" id="content" hidden>
+
+    <!-- Kopfzeile: Ort + Suche -->
+    <header class="topbar">
+      <button class="icon-btn" id="menuBtn" aria-label="Gespeicherte Orte">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+      </button>
+      <button class="location-pill" id="locationPill">
+        <svg class="pin-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span id="cityName">—</span>
+        <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="searchBtn" aria-label="Stadt suchen">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+
+    <!-- Haupttemperatur -->
+    <section class="hero">
+      <div class="hero-icon" id="heroIcon"></div>
+      <div class="hero-temp">
+        <span class="temp-num" id="tempNow">--</span>
+        <span class="temp-deg">°</span>
+      </div>
+      <p class="hero-desc" id="weatherDesc">—</p>
+      <p class="hero-range">
+        <span class="hi" id="tempMax">--°</span>
+        <span class="range-sep">·</span>
+        <span class="lo" id="tempMin">--°</span>
+        <span class="range-sep">·</span>
+        Gefühlt <span id="feelsLike">--°</span>
+      </p>
+    </section>
+
+    <!-- Stündliche Vorhersage -->
+    <section class="card hourly-card">
+      <div class="card-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="hourlySummary">Stündliche Vorhersage</span>
+      </div>
+      <div class="hourly-scroll" id="hourlyScroll"></div>
+    </section>
+
+    <!-- 7-Tage-Vorhersage -->
+    <section class="card daily-card">
+      <div class="card-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4" stroke-linecap="round"/></svg>
+        <span>7-Tage-Vorhersage</span>
+      </div>
+      <div class="daily-list" id="dailyList"></div>
+    </section>
+
+    <!-- Detail-Grid -->
+    <section class="detail-grid" id="detailGrid">
+      <!-- wird per JS gefüllt -->
+    </section>
+
+    <footer class="footer">
+      <span id="lastUpdated">—</span>
+      <span class="dot">·</span>
+      <span>Open-Meteo</span>
+    </footer>
+
+  </main>
+
+  <!-- Sucher-Overlay -->
+  <div class="overlay" id="searchOverlay" hidden>
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35" stroke-linecap="round"/></svg>
+        <input type="text" id="searchInput" placeholder="Stadt suchen …" autocomplete="off" autocorrect="off" spellcheck="false">
+        <button class="icon-btn icon-btn--sm" id="closeSearchBtn" aria-label="Schließen">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <button class="use-location-row" id="useLocationBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke-linecap="round"/><circle cx="12" cy="12" r="5"/></svg>
+        <span>Aktuellen Standort verwenden</span>
+      </button>
+      <div class="results" id="searchResults"></div>
+      <div class="saved-section" id="savedSection">
+        <p class="saved-label">Gespeicherte Orte</p>
+        <div class="saved-list" id="savedList"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
