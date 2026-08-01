@@ -67,8 +67,57 @@ const CARS = [
   { brand: "Audi", model: "Nuvolari",             year: "2026", cat: "PKW",        img: "cars/nuvolari.jpg" },
 
   { brand: "Mercedes-Benz", model: "A-Klasse",             year: "2026", cat: "PKW",        img: "cars/aklasse.avif" },
-  { brand: "Mercedes-Benz", model: "A-Klasse",             year: "2026", cat: "PKW",        img: "cars/bklasse.avif" },
+  { brand: "Mercedes-Benz", model: "B-Klasse",             year: "2026", cat: "PKW",        img: "cars/bklasse.avif" },
+  { brand: "Mercedes-Benz", model: "CLA",             year: "2026", cat: "PKW",        img: "cars/cla.jpeg" },
+  { brand: "Mercedes-Benz", model: "CLS",             year: "2026", cat: "PKW",        img: "cars/cls.jpg" },
+  { brand: "Mercedes-Benz", model: "CLE",             year: "2026", cat: "PKW",        img: "cars/cle.jpg" },
+  { brand: "Mercedes-Benz", model: "C-Klasse",             year: "2026", cat: "PKW",        img: "cars/cklasse.jpg" },
+  { brand: "Mercedes-Benz", model: "E-Klasse",             year: "2026", cat: "PKW",        img: "cars/eklasse.webp" },
+  { brand: "Mercedes-Benz", model: "S-Klasse",             year: "2026", cat: "PKW",        img: "cars/sklasse.jpg" },
+  { brand: "Mercedes-Benz", model: "SL",             year: "2026", cat: "PKW",        img: "cars/sl.jpg" },
+  { brand: "Mercedes-Benz", model: "GLA",             year: "2026", cat: "PKW",        img: "cars/gla.webp" },
+  { brand: "Mercedes-Benz", model: "GLB",             year: "2026", cat: "PKW",        img: "cars/glb.jpg" },
+  { brand: "Mercedes-Benz", model: "GLC",             year: "2026", cat: "PKW",        img: "cars/glc.avif" },
+  { brand: "Mercedes-Benz", model: "GLE",             year: "2026", cat: "PKW",        img: "cars/gle.avif" },
+  { brand: "Mercedes-Benz", model: "GLS",             year: "2026", cat: "PKW",        img: "cars/gls.avif" },
+  { brand: "Mercedes-Benz", model: "G-Klasse",             year: "2026", cat: "PKW",        img: "cars/gklasse.jpg" },
+  { brand: "Mercedes-Benz", model: "EQA",             year: "2026", cat: "PKW",        img: "cars/eqa.jpg" },
+  { brand: "Mercedes-Benz", model: "EQB",             year: "2026", cat: "PKW",        img: "cars/eqb.jpg" },
+  { brand: "Mercedes-Benz", model: "EQC",             year: "2026", cat: "PKW",        img: "cars/eqc.jpg" },
+  { brand: "Mercedes-Benz", model: "EQE",             year: "2026", cat: "PKW",        img: "cars/eqe.webp" },
+  { brand: "Mercedes-Benz", model: "EQS",             year: "2026", cat: "PKW",        img: "cars/eqs.webp" },
+  { brand: "Mercedes-Benz", model: "EQT",             year: "2026", cat: "PKW",        img: "cars/eqt.webp" },
+  { brand: "Mercedes-Benz", model: "AMG ONE",             year: "2026", cat: "PKW",        img: "cars/amgone.jpg" },
+  { brand: "Mercedes-Benz", model: "AMG GT",             year: "2026", cat: "PKW",        img: "cars/amggt.jpg" },
+  { brand: "Mercedes-Benz", model: "AMG Purespeed",             year: "2026", cat: "PKW",        img: "cars/amgpurespeed.jpg" },
+  { brand: "Mercedes-Benz", model: "Citan",             year: "2026", cat: "PKW",        img: "cars/citan.jpg" },
+  { brand: "Mercedes-Benz", model: "T-Klasse",             year: "2026", cat: "PKW",        img: "cars/tklasse.jpg" },
+  { brand: "Mercedes-Benz", model: "V-Klasse",             year: "2026", cat: "PKW",        img: "cars/vklasse.webp" },
+  { brand: "Mercedes-Benz", model: "M-Klasse",             year: "2026", cat: "PKW",        img: "cars/mklasse.jpg" },
+  { brand: "Mercedes-Benz", model: "SLS AMG",             year: "2026", cat: "PKW",        img: "cars/slsamg.webp" },
+  { brand: "Mercedes-Benz", model: "Maybach S-Klasse",             year: "2026", cat: "PKW",        img: "cars/maybachsklasse.jpg" },
+  { brand: "Mercedes-Benz", model: "Maybach GLS",             year: "2026", cat: "PKW",        img: "cars/maybachgls.avif" },
+
+  { brand: "Porsche", model: "911",             year: "2026", cat: "PKW",        img: "cars/911.jpg" },
+  { brand: "Porsche", model: "718",             year: "2026", cat: "PKW",        img: "cars/718.jpeg" },
+  { brand: "Porsche", model: "Cayenne",             year: "2026", cat: "PKW",        img: "cars/cayenne.webp" },
+  { brand: "Porsche", model: "Macan",             year: "2026", cat: "PKW",        img: "cars/macan.webp" },
+  { brand: "Porsche", model: "Panamera",             year: "2026", cat: "PKW",        img: "cars/panamera.jpg" },
+  { brand: "Porsche", model: "Taycan",             year: "2026", cat: "PKW",        img: "cars/taycan.jpg" },
+  { brand: "Porsche", model: "911 GT3",             year: "2026", cat: "PKW",        img: "cars/gt3.jpeg" },
+  { brand: "Porsche", model: "911 GT3 RS",             year: "2026", cat: "PKW",        img: "cars/gt3rs.webp" },
+  { brand: "Porsche", model: "718 Cayman GT4",             year: "2026", cat: "PKW",        img: "cars/gt4.webp" },
+  { brand: "Porsche", model: "911 Turbo S",             year: "2026", cat: "PKW",        img: "cars/turbos.webp" },
+
+  { brand: "Lamborghini", model: "Temerario",             year: "2026", cat: "PKW",        img: "cars/temerario.jpg" },
+  { brand: "Lamborghini", model: "Revuelto",             year: "2026", cat: "PKW",        img: "cars/revuelto.jpeg" },
+  { brand: "Lamborghini", model: "Temerario",             year: "2026", cat: "PKW",        img: "cars/temerario.jpg" },
+  { brand: "Lamborghini", model: "Revuelto",             year: "2026", cat: "PKW",        img: "cars/revuelto.jpeg" },
   
+
+  
+
+
 
 
 
