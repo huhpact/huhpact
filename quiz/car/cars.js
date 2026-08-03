@@ -115,7 +115,81 @@ const CARS = [
   { brand: "Lamborghini", model: "Huracan",             year: "2026", cat: "PKW",        img: "cars/huracan.avif" },
   { brand: "Lamborghini", model: "Aventador",             year: "2026", cat: "PKW",        img: "cars/aventador.webp" },
   { brand: "Lamborghini", model: "Gallardo",             year: "2026", cat: "PKW",        img: "cars/gallardo.webp" },
-  
+
+  { brand: "BYD", model: "Han",             year: "2026", cat: "PKW",        img: "cars/han.jpg" },
+  { brand: "BYD", model: "Tang",             year: "2026", cat: "PKW",        img: "cars/tang.jpg" },
+  { brand: "BYD", model: "Song",             year: "2026", cat: "PKW",        img: "cars/song.jpg" },
+  { brand: "BYD", model: "Qin",             year: "2026", cat: "PKW",        img: "cars/qin.webp" },
+  { brand: "BYD", model: "Yuan",             year: "2026", cat: "PKW",        img: "cars/yuan.jpg" },
+  { brand: "BYD", model: "Datang",             year: "2026", cat: "PKW",        img: "cars/datang.jpg" },
+  { brand: "BYD", model: "Seal",             year: "2026", cat: "PKW",        img: "cars/seal.jpg" },
+  { brand: "BYD", model: "Dolphin",             year: "2026", cat: "PKW",        img: "cars/dolphin.webp" },
+  { brand: "BYD", model: "Sealion",             year: "2026", cat: "PKW",        img: "cars/sealion.webp" },
+
+  { brand: "Xiaomi", model: "SU7",             year: "2026", cat: "PKW",        img: "cars/su7.webp" },
+  { brand: "Xiaomi", model: "SU7 Ultra",             year: "2026", cat: "PKW",        img: "cars/su7ultra.jpg" },
+  { brand: "Xiaomi", model: "YU7",             year: "2026", cat: "PKW",        img: "cars/yu7.jpg" },
+  { brand: "Xiaomi", model: "YU9",             year: "2026", cat: "PKW",        img: "cars/yu9.webp" },
+
+  { brand: "SEAT", model: "Ibiza",             year: "2026", cat: "PKW",        img: "cars/ibiza.jpeg" },
+  { brand: "SEAT", model: "Arona",             year: "2026", cat: "PKW",        img: "cars/arona.webp" },
+  { brand: "SEAT", model: "Leon",             year: "2026", cat: "PKW",        img: "cars/leon.avif" },
+  { brand: "SEAT", model: "Ateca",             year: "2026", cat: "PKW",        img: "cars/ateca.jpg" },
+  { brand: "SEAT", model: "Tarraco",             year: "2026", cat: "PKW",        img: "cars/tarraco.webp" },
+
+  { brand: "Cupra", model: "Formentor",             year: "2026", cat: "PKW",        img: "cars/formentor.avif" },
+  { brand: "Cupra", model: "Leon",             year: "2026", cat: "PKW",        img: "cars/cleon.jpg" },
+  { brand: "Cupra", model: "Born",             year: "2026", cat: "PKW",        img: "cars/born.webp" },
+  { brand: "Cupra", model: "Tavascan",             year: "2026", cat: "PKW",        img: "cars/tavascan.webp" },
+  { brand: "Cupra", model: "Terramar",             year: "2026", cat: "PKW",        img: "cars/terramar.avif" },
+  { brand: "Cupra", model: "Raval",             year: "2026", cat: "PKW",        img: "cars/raval.webp" },
+  { brand: "Cupra", model: "Ateca",             year: "2026", cat: "PKW",        img: "cars/cateca.jpg" },
+
+  { brand: "Skoda", model: "Fabia",             year: "2026", cat: "PKW",        img: "cars/fabia.webp" },
+  { brand: "Skoda", model: "Scala",             year: "2026", cat: "PKW",        img: "cars/scala.webp" },
+  { brand: "Skoda", model: "Octavia",             year: "2026", cat: "PKW",        img: "cars/octavia.webp" },
+  { brand: "Skoda", model: "Superb",             year: "2026", cat: "PKW",        img: "cars/superb.jpg" },
+  { brand: "Skoda", model: "Kamiq",             year: "2026", cat: "PKW",        img: "cars/kamiq.webp" },
+  { brand: "Skoda", model: "Karoq",             year: "2026", cat: "PKW",        img: "cars/karoq.webp" },
+  { brand: "Skoda", model: "Kodiaq",             year: "2026", cat: "PKW",        img: "cars/kodiaq.avif" },
+  { brand: "Skoda", model: "Elroq",             year: "2026", cat: "PKW",        img: "cars/elroq.webp" },
+  { brand: "Skoda", model: "Enyaq",             year: "2026", cat: "PKW",        img: "cars/enyaq.jpg" },
+  { brand: "Skoda", model: "Epiq",             year: "2026", cat: "PKW",        img: "cars/epiq.jpg" },
+  { brand: "Skoda", model: "Peaq",             year: "2026", cat: "PKW",        img: "cars/peaq.jpeg" },
+  { brand: "Skoda", model: "Fabia",             year: "2026", cat: "PKW",        img: "cars/fabia.webp" },
+
+  { brand: "Bugatti", model: "Tourbillon",             year: "2026", cat: "PKW",        img: "cars/tourbillon.jpg" },
+  { brand: "Bugatti", model: "Chiron",             year: "2026", cat: "PKW",        img: "cars/chiron.webp" },
+  { brand: "Bugatti", model: "Mistral",             year: "2026", cat: "PKW",        img: "cars/mistral.webp" },
+  { brand: "Bugatti", model: "Bolide",             year: "2026", cat: "PKW",        img: "cars/bolide.avif" },
+  { brand: "Bugatti", model: "Brouillard",             year: "2026", cat: "PKW",        img: "cars/brouillard.jpg" },
+  { brand: "Bugatti", model: "F.K.P Hommage",             year: "2026", cat: "PKW",        img: "cars/fkp.jpg" },
+
+  { brand: "Bentley", model: "Continental GT",             year: "2026", cat: "PKW",        img: "cars/continental.jpg" },
+  { brand: "Bentley", model: "Flying Spur",             year: "2026", cat: "PKW",        img: "cars/flyingspur.jpg" },
+  { brand: "Bentley", model: "Batur",             year: "2026", cat: "PKW",        img: "cars/batur.jpg" },
+  { brand: "Bentley", model: "Bacalar",             year: "2026", cat: "PKW",        img: "cars/bacalar.jpg" },
+  { brand: "Bentley", model: "Blower",             year: "2026", cat: "PKW",        img: "cars/blower.avif" },
+  { brand: "Bentley", model: "Urban SUV",             year: "2026", cat: "PKW",        img: "cars/urbansuv.jpg" },
+
+
+{ brand: "Lexus", model: "LBX",             year: "2026", cat: "PKW",        img: "cars/lbx.jpeg" },
+{ brand: "Lexus", model: "UX",             year: "2026", cat: "PKW",        img: "cars/ux.avif" },
+{ brand: "Lexus", model: "NX",             year: "2026", cat: "PKW",        img: "cars/nx.avif" },
+{ brand: "Lexus", model: "RX",             year: "2026", cat: "PKW",        img: "cars/rx.avif" },
+{ brand: "Lexus", model: "ES",             year: "2026", cat: "PKW",        img: "cars/es.webp" },
+{ brand: "Lexus", model: "IS",             year: "2026", cat: "PKW",        img: "cars/is.avif" },
+{ brand: "Lexus", model: "LS",             year: "2026", cat: "PKW",        img: "cars/ls.webp" },
+{ brand: "Lexus", model: "LX",             year: "2026", cat: "PKW",        img: "cars/lx.jpg" },
+{ brand: "Lexus", model: "GX",             year: "2026", cat: "PKW",        img: "cars/gx.avif" },
+{ brand: "Lexus", model: "TX",             year: "2026", cat: "PKW",        img: "cars/tx.avif" },
+{ brand: "Lexus", model: "RZ",             year: "2026", cat: "PKW",        img: "cars/rz.webp" },
+{ brand: "Lexus", model: "LC",             year: "2026", cat: "PKW",        img: "cars/lc.jpg" },
+{ brand: "Lexus", model: "LM",             year: "2026", cat: "PKW",        img: "cars/lm.jpeg" },
+
+{ brand: "Toyota", model: "Aygo X",             year: "2026", cat: "PKW",        img: "cars/aygox.webp" },
+{ brand: "Toyota", model: "Yaris",             year: "2026", cat: "PKW",        img: "cars/yaris.webp" },
+
   
 
   
