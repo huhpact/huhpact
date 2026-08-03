@@ -111,8 +111,11 @@ const CARS = [
 
   { brand: "Lamborghini", model: "Temerario",             year: "2026", cat: "PKW",        img: "cars/temerario.jpg" },
   { brand: "Lamborghini", model: "Revuelto",             year: "2026", cat: "PKW",        img: "cars/revuelto.jpeg" },
-  { brand: "Lamborghini", model: "Temerario",             year: "2026", cat: "PKW",        img: "cars/temerario.jpg" },
-  { brand: "Lamborghini", model: "Revuelto",             year: "2026", cat: "PKW",        img: "cars/revuelto.jpeg" },
+  { brand: "Lamborghini", model: "Urus",             year: "2026", cat: "PKW",        img: "cars/urus.webp" },
+  { brand: "Lamborghini", model: "Huracan",             year: "2026", cat: "PKW",        img: "cars/huracan.avif" },
+  { brand: "Lamborghini", model: "Aventador",             year: "2026", cat: "PKW",        img: "cars/aventador.webp" },
+  { brand: "Lamborghini", model: "Gallardo",             year: "2026", cat: "PKW",        img: "cars/gallardo.webp" },
+  
   
 
   
