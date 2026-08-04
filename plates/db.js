@@ -115,6 +115,32 @@ const COUNTRIES = {
         nickname: "Aktuell",
         extra: ""
       },
+      {
+        code: "OD",
+        name: "Bad Oldesloe",
+        region: "Schleswig-Holstein",
+        population: 248000,
+        registered: 190000,
+        imageReal: "/plates/img/od-de.jpeg",
+        description: "Bad Oldesloe ist eine Stadt in Schleswig-Holstein, Deutschland. Sie ist bekannt für ihre historische Altstadt, die malerische Umgebung und ihre Rolle als regionales Zentrum für Handel und Dienstleistungen.",
+        area: "766 km²",
+        founded: "1956",
+        nickname: "Aktuell",
+        extra: ""
+      },
+      {
+        code: "NDH",
+        name: "Nordhausen",
+        region: "Thüringen",
+        population: 82000,
+        registered: 60000,
+        imageReal: "/plates/img/ndh-de.jpeg",
+        description: "Nordhausen ist eine Stadt in Thüringen, Deutschland. Sie ist bekannt für ihre historische Altstadt, die Fachwerkhäuser und die Nähe zum Harzgebirge. Die Stadt hat eine lange Geschichte und ist ein kulturelles Zentrum der Region.",
+        area: "712 km²",
+        founded: "1991",
+        nickname: "Aktuell",
+        extra: ""
+      },
     ]
   },
   GB: {
@@ -278,18 +304,103 @@ const COUNTRIES = {
         extra: "incl. Bordeaux"
       },
       {
-        code: "13",
-        name: "Marseille",
-        region: "Bouches-du-Rhône",
-        population: 870000,
-        registered: 370000,
-        imageReal: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Marseille_vue_du_ciel.jpg/640px-Marseille_vue_du_ciel.jpg",
-        description: "Marseille ist die älteste Stadt Frankreichs und zweitgrößte Metropole des Landes. Die lebhafte Hafenstadt am Mittelmeer ist bekannt für Bouillabaisse, Pétanque und die beeindruckende Basilika Notre-Dame de la Garde.",
-        area: "240 km²",
-        founded: "600 v. Chr.",
-        nickname: "La Cité Phocéenne",
-        extra: "Älteste Stadt Frankreichs"
-      }
+        code: "86",
+        name: "Vienne",
+        region: "Nouvelle-Aquitaine",
+        population: 430000,
+        registered: 340000,
+        imageReal: "/plates/img/86-fr.jpeg",
+        description: "Vienne ist eine Region in Frankreich und bekannt für ihre reiche Geschichte und ihre schöne Landschaft.",
+        area: "6990 km²",
+        founded: "2009",
+        nickname: "Aktuell",
+        extra: "incl. Poitiers"
+      },
+       {
+        code: "14",
+        name: "Calvados",
+        region: "Basse-Normandie",
+        population: 700000,
+        registered: 530000,
+        imageReal: "/plates/img/14-fr.jpeg",
+        description: "Calvados ist eine Region in Frankreich und bekannt für ihre reiche Geschichte und ihre schöne Landschaft.",
+        area: "9975 km²",
+        founded: "2009",
+        nickname: "Aktuell"
+      },
+       {
+        code: "91",
+        name: "Essonne",
+        region: "Île-de-France",
+        population: 1200000,
+        registered: 850000,
+        imageReal: "/plates/img/91-fr.jpeg",
+        description: "Essonne ist eine Region in Frankreich und bekannt für ihre reiche Geschichte und ihre schöne Landschaft.",
+        area: "1804 km²",
+        founded: "2009",
+        nickname: "Aktuell"
+      },
+       {
+        code: "73",
+        name: "Savoie",
+        region: "Auvergne-Rhône-Alpes",
+        population: 400000,
+        registered: 360000,
+        imageReal: "/plates/img/73-fr.jpeg",
+        description: "Savoie ist eine Region in Frankreich und bekannt für ihre reiche Geschichte und ihre schöne Landschaft.",
+        area: "6028 km²",
+        founded: "2009",
+        nickname: "Aktuell"
+      },
+       {
+        code: "91",
+        name: "Essonne",
+        region: "Île-de-France",
+        population: 1200000,
+        registered: 850000,
+        imageReal: "/plates/img/91-fr.jpeg",
+        description: "Essonne ist eine Region in Frankreich und bekannt für ihre reiche Geschichte und ihre schöne Landschaft.",
+        area: "1804 km²",
+        founded: "2009",
+        nickname: "Aktuell"
+      },
+        {
+        code: "51",
+        name: "Marne",
+        region: "Grand Est",
+        population: 560000,
+        registered: 400000,
+        imageReal: "/plates/img/51-fr.jpeg",
+        description: "Marne ist eine Region in Frankreich und bekannt für ihre reiche Geschichte und ihre schöne Landschaft.",
+        area: "8162 km²",
+        founded: "2009",
+        nickname: "Aktuell"
+      },
+        {
+        code: "07",
+        name: "Ardèche",
+        region: "Auvergne-Rhône-Alpes",
+        population: 320000,
+        registered: 280000,
+        imageReal: "/plates/img/07-fr.jpeg",
+        description: "Ardèche ist eine Region in Frankreich und bekannt für ihre reiche Geschichte und ihre schöne Landschaft.",
+        area: "5529 km²",
+        founded: "2009",
+        nickname: "Aktuell"
+      },
+          {
+        code: "59",
+        name: "Nord",
+        region: "Hauts-de-France",
+        population: 2600000,
+        registered: 1600000,
+        imageReal: "/plates/img/59-fr.jpeg",
+        description: "Nord ist eine Region in Frankreich und bekannt für ihre reiche Geschichte und ihre schöne Landschaft.",
+        area: "5742 km²",
+        founded: "2009",
+        nickname: "Aktuell"
+      },
+      
     ]
   },
   UA: {
@@ -300,30 +411,16 @@ const COUNTRIES = {
     region_label: "Oblast",
     plates: [
       {
-        code: "AA",
-        name: "Kyiv",
-        region: "Kyiv (Stadt)",
-        population: 2952000,
-        registered: 1100000,
-        imageReal: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Kyiv_Monastery_of_the_Caves.jpg/640px-Kyiv_Monastery_of_the_Caves.jpg",
-        description: "Kyiv ist die Hauptstadt und größte Stadt der Ukraine. Als eine der ältesten Städte Osteuropas hat Kyiv eine reiche Geschichte und ist bekannt für das Höhlenkloster Pechersk Lavra und das Goldene Tor.",
-        area: "839 km²",
-        founded: "482",
-        nickname: "Mutter der russischen Städte",
-        extra: "Älteste Hauptstadt Osteuropas"
-      },
-      {
-        code: "AX",
-        name: "Kharkiv",
-        region: "Kharkiv Oblast",
-        population: 1420000,
-        registered: 580000,
-        imageReal: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Kharkiv_Svobody_Square.jpg/640px-Kharkiv_Svobody_Square.jpg",
-        description: "Kharkiv ist die zweitgrößte Stadt der Ukraine und ein wichtiges Industrie- und Bildungszentrum. Der Freiheitsplatz ist einer der größten Stadtplätze Europas.",
-        area: "350 km²",
-        founded: "1654",
-        nickname: "Stadt der Studenten",
-        extra: "Ehemalige Hauptstadt der Ukraine"
+        code: "DI",
+        name: "Diia Portal",
+        region: "Landesweit",
+        population: 0,
+        registered: 0,
+        imageReal: "/plates/img/di-ua.jpeg",
+        description: "Diia Portal ist eine digitale Plattform in der Ukraine, die Bürgern den Zugang zu staatlichen Dienstleistungen erleichtert. Sie bietet eine Vielzahl von Online-Diensten, darunter die Beantragung von Dokumenten und die Verwaltung von persönlichen Daten.",
+        area: "0 km²",
+        founded: "2019",
+        nickname: "Aktuell"
       }
     ]
   },
