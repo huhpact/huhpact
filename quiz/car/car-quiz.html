@@ -400,26 +400,46 @@ function loadQuestion() {
     });
 }
 
-/* ── Get 3 wrong options (prefer same category for difficulty) ── */
+/* ── Get 3 wrong options (immer gleiche Marke wie die richtige Antwort) ── */
 function getWrongOptions(correct) {
-    const pool = shuffle([...CARS.filter(c => c !== correct)]);
     const seen = new Set([correct.model]);
     const wrongs = [];
 
-    // 1st pass: same category, different brand
-    for (const c of pool) {
+    // Pool: nur Autos derselben Marke
+    const sameBrandPool = shuffle(
+        CARS.filter(c => c !== correct && c.brand === correct.brand)
+    );
+
+    // 1st pass: gleiche Marke + gleiche Kategorie (schwerer zu unterscheiden)
+    for (const c of sameBrandPool) {
         if (c.cat === correct.cat && !seen.has(c.model)) {
             seen.add(c.model); wrongs.push(c);
         }
         if (wrongs.length === 3) return wrongs;
     }
-    // 2nd pass: any remaining
-    for (const c of pool) {
+    // 2nd pass: gleiche Marke, andere Kategorie
+    for (const c of sameBrandPool) {
         if (!seen.has(c.model)) {
             seen.add(c.model); wrongs.push(c);
         }
         if (wrongs.length === 3) return wrongs;
     }
+
+    // Fallback: zu wenige Modelle dieser Marke im Datensatz vorhanden →
+    // restliche Plätze markenübergreifend auffüllen, damit das Quiz
+    // trotzdem 4 Antworten anzeigen kann.
+    if (wrongs.length < 3) {
+        const restPool = shuffle(
+            CARS.filter(c => c !== correct && c.brand !== correct.brand)
+        );
+        for (const c of restPool) {
+            if (!seen.has(c.model)) {
+                seen.add(c.model); wrongs.push(c);
+            }
+            if (wrongs.length === 3) return wrongs;
+        }
+    }
+
     return wrongs;
 }
 
