@@ -61,6 +61,7 @@ const CARS = [
   { brand: "Audi", model: "RS5",             year: "2026", cat: "PKW",        img: "cars/rs5.webp" },
   { brand: "Audi", model: "S6",             year: "2026", cat: "PKW",        img: "cars/s6.jpg" },
   { brand: "Audi", model: "RS7",             year: "2026", cat: "PKW",        img: "cars/rs7.jpg" },
+  { brand: "Audi", model: "RS6",             year: "2026", cat: "PKW",        img: "cars/rs6.jpg" },
   { brand: "Audi", model: "SQ5",             year: "2026", cat: "PKW",        img: "cars/sq5.jpg" },
   { brand: "Audi", model: "SQ8",             year: "2026", cat: "PKW",        img: "cars/sq8.jpg" },
   { brand: "Audi", model: "RSQ8",             year: "2026", cat: "PKW",        img: "cars/rsq8.jpg" },
