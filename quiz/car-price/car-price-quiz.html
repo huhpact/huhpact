@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Preise Quiz</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <style>
+        /* ── Car stage ── */
+        .car-stage {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 1.75rem;
+            margin-bottom: 1.75rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            gap: 1.75rem;
+            align-items: stretch;
+        }
+
+        .car-image-col {
+            flex: 1 1 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: var(--bg);
+            position: relative;
+        }
+
+        .car-image-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: carIn 0.38s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+        }
+
+        @keyframes carIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        .car-image {
+            width: 100%;
+            height: 100%;
+            min-height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .car-error-msg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            padding: 1.5rem;
+            min-height: 220px;
+        }
+
+        .car-data-col {
+            flex: 1 1 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.9rem;
+            min-width: 0;
+        }
+
+        .car-name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 0.15rem;
+            line-height: 1.25;
+        }
+
+        .car-stat {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.65rem 0.9rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .car-stat-label-group {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+
+        .car-stat-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            color: var(--accent);
+        }
+
+        .car-stat-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .car-stat-value {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        /* ── Slider / input area ── */
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            width: 100%;
+        }
+
+        .guess-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15rem;
+        }
+
+        .guess-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .guess-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+            transition: color 0.15s;
+        }
+
+        .guess-value.correct   { color: #22c55e; }
+        .guess-value.incorrect { color: #ef4444; }
+
+        .slider-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            width: 100%;
+        }
+
+        .price-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--border);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .price-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg-card);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .price-slider::-webkit-slider-thumb:active { transform: scale(1.12); }
+
+        .price-slider::-moz-range-thumb {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg-card);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+        .price-slider:disabled { cursor: default; opacity: 0.7; }
+        .price-slider:disabled::-webkit-slider-thumb { cursor: default; }
+
+        .slider-bounds {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Reveal marker for actual price, shown after answering */
+        .price-track-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .actual-marker {
+            position: absolute;
+            top: -0.55rem;
+            width: 2px;
+            height: 20px;
+            background: #22c55e;
+            transform: translateX(-50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .actual-marker.shown { opacity: 1; }
+
+        .actual-marker::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid #22c55e;
+        }
+
+        .submit-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.4rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+            white-space: nowrap;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .submit-btn:hover   { opacity: 0.88; }
+        .submit-btn:active  { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.5; cursor: default; }
+
+        /* ── Feedback ── */
+        .feedback-row {
+            min-height: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .feedback-row.correct   { color: #22c55e; }
+        .feedback-row.incorrect { color: #ef4444; }
+        .feedback-row.hidden    { opacity: 0; }
+
+        @media (max-width: 640px) {
+            .car-stage { flex-direction: column; }
+            .car-image { min-height: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-top-bar">
+            <div class="score-display">
+                <span class="score-label">Score:</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="progress-display">
+                <span id="current-question">1</span> / <span id="total-questions">10</span>
+            </div>
+        </div>
+
+        <main class="quiz-container">
+            <div class="car-stage">
+                <div class="car-image-col" id="car-render"></div>
+                <div class="car-data-col">
+                    <p class="car-name" id="car-name"></p>
+                    <div class="car-stat">
+                        <span class="car-stat-label-group">
+                            <svg class="car-stat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z"></path><path d="M12 12 16 8"></path><path d="M12 7v1"></path><path d="M17.5 12h1"></path><path d="M12 16v1"></path><path d="M6.5 12h1"></path></svg>
+                            <span class="car-stat-label">Kilometerstand</span>
+                        </span>
+                        <span class="car-stat-value" id="car-km"></span>
+                    </div>
+                    <div class="car-stat">
+                        <span class="car-stat-label-group">
+                            <svg class="car-stat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            <span class="car-stat-label">Zulassungsjahr</span>
+                        </span>
+                        <span class="car-stat-value" id="car-year"></span>
+                    </div>
+                    <div class="car-stat">
+                        <span class="car-stat-label-group">
+                            <svg class="car-stat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            <span class="car-stat-label">Leistung</span>
+                        </span>
+                        <span class="car-stat-value" id="car-hp"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="guess-display">
+                    <span class="guess-label">Dein Tipp</span>
+                    <span class="guess-value" id="guess-value">0 €</span>
+                </div>
+
+                <div class="slider-row">
+                    <div class="price-track-wrap">
+                        <input
+                            type="range"
+                            class="price-slider"
+                            id="price-slider"
+                            min="0"
+                            max="10000000"
+                            step="1"
+                            value="0"
+                        />
+                        <div class="actual-marker" id="actual-marker"></div>
+                    </div>
+                    <div class="slider-bounds">
+                        <span id="slider-min-label">0 €</span>
+                        <span id="slider-max-label">10.000.000 €</span>
+                    </div>
+                </div>
+
+                <button class="submit-btn" id="submit-btn">Prüfen</button>
+                <div class="feedback-row hidden" id="feedback-row"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="results-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="neon-text">Quiz beendet!</h2>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="final-score">0</span>
+                    <span class="stat-label">Richtig</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-total">10</span>
+                    <span class="stat-label">Gesamt</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-percentage">0%</span>
+                    <span class="stat-label">Genauigkeit</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="window.location.href='quiz-car-prices-setup.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Nochmal
+                </button>
+                <button class="modal-btn secondary" onclick="window.location.href='/quiz/index.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Zur Startseite
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="car-prices.js"></script>
+    <script>
+        var questions     = [];
+        var current       = 0;
+        var score         = 0;
+        var answered      = false;
+        var advanceTimer  = null;
+        var countInterval = null;
+
+        // aktueller Frage-Range, damit submitAnswer() darauf zugreifen kann
+        var rangeMin = 0;
+        var rangeMax = 10000000;
+        var tolerance = 0;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var total = parseInt(sessionStorage.getItem('carPricesQuestions')) || 10;
+
+            var pool = carPrices.slice();
+            if (pool.length < 1) {
+                alert('Keine Fahrzeuge in der Datenbank.');
+                window.location.href = 'quiz-car-prices-setup.html';
+                return;
+            }
+
+            // Shuffle
+            for (var i = pool.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+            }
+
+            // Falls weniger Autos als gewünschte Fragen vorhanden sind, wird der Pool wiederholt
+            questions = [];
+            while (questions.length < total) {
+                questions = questions.concat(pool);
+            }
+            questions = questions.slice(0, total);
+            document.getElementById('total-questions').textContent = questions.length;
+
+            // Events — einmalig registriert
+            document.getElementById('submit-btn').addEventListener('click', function () {
+                submitAnswer();
+            });
+
+            document.getElementById('price-slider').addEventListener('input', function () {
+                updateGuessDisplay();
+            });
+
+            loadQuestion();
+        });
+
+        function loadQuestion() {
+            if (current >= questions.length) { showResults(); return; }
+
+            answered = false;
+            if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
+            if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
+
+            var q = questions[current];
+            document.getElementById('current-question').textContent = current + 1;
+
+            // Bild aufbauen
+            var render = document.getElementById('car-render');
+            render.innerHTML = '';
+
+            var wrapper = document.createElement('div');
+            wrapper.className = 'car-image-wrapper';
+
+            var imgEl = document.createElement('img');
+            imgEl.className = 'car-image';
+            imgEl.alt = q.name;
+
+            imgEl.onerror = function () {
+                imgEl.onerror = null;
+                imgEl.style.display = 'none';
+                var err = document.createElement('div');
+                err.className = 'car-error-msg';
+                err.textContent = '⚠ Bild nicht gefunden: ' + q.image;
+                wrapper.appendChild(err);
+            };
+
+            imgEl.src = q.image;
+            wrapper.appendChild(imgEl);
+            render.appendChild(wrapper);
+
+            // Daten anzeigen
+            document.getElementById('car-name').textContent = q.name;
+            document.getElementById('car-km').textContent   = formatNumber(q.km) + ' km';
+            document.getElementById('car-year').textContent = q.year;
+            document.getElementById('car-hp').textContent   = q.hp + ' PS';
+
+            // Dynamischen Slider-Range anhand des tatsächlichen Preises berechnen
+            var range = computeRange(q.price);
+            rangeMin  = range.min;
+            rangeMax  = range.max;
+            tolerance = computeTolerance(q.price);
+
+            var slider = document.getElementById('price-slider');
+            slider.min      = rangeMin;
+            slider.max      = rangeMax;
+            slider.step     = range.step;
+            // Startwert zufällig innerhalb der Range setzen (nicht mittig!) — sonst
+            // lernt man schnell "der Preis liegt meist links/rechts vom Startpunkt"
+            var stepsInRange = Math.round((rangeMax - rangeMin) / range.step);
+            var randomSteps  = Math.floor(Math.random() * (stepsInRange + 1));
+            slider.value     = rangeMin + randomSteps * range.step;
+            slider.disabled = false;
+
+            document.getElementById('slider-min-label').textContent = formatCurrency(rangeMin);
+            document.getElementById('slider-max-label').textContent = formatCurrency(rangeMax);
+
+            var marker = document.getElementById('actual-marker');
+            marker.classList.remove('shown');
+
+            updateGuessDisplay();
+
+            var btn = document.getElementById('submit-btn');
+            btn.disabled    = false;
+            btn.textContent = 'Prüfen';
+
+            var fb = document.getElementById('feedback-row');
+            fb.textContent = '';
+            fb.className   = 'feedback-row hidden';
+
+            var guessEl = document.getElementById('guess-value');
+            guessEl.className = 'guess-value';
+        }
+
+        // Berechnet einen dynamischen Slider-Bereich um den tatsächlichen Preis herum.
+        // Günstige Autos → enger Bereich, teure Autos → weiter Bereich (jeweils grob gerundet).
+        //
+        // WICHTIG zur Zufälligkeit: Breite und Position werden über zwei unabhängige,
+        // additive Zufallszahlen bestimmt (width, pos) statt über eine Division wie
+        // z.B. "min = price*0.4". Eine Division zweier Zufallsanteile verzerrt die
+        // resultierende Position im Slider systematisch zu einer Seite hin — additiv
+        // verknüpfte Werte bleiben dagegen über die volle Bandbreite (12%–85%) gestreut.
+        // Kontrolliert mit 8000 simulierten Durchläufen pro Preisklasse.
+        function computeRange(price) {
+            var width = price * (1.6 + Math.random() * 1.6); // Gesamtbreite: 1.6x–3.2x Preis
+            var pos   = 0.12 + Math.random() * 0.73;          // Position des Preises: 12%–85%
+
+            var rawMin = price - width * pos;
+            var rawMax = rawMin + width;
+
+            // Sinnvolle Rundungsschritte je nach Preisklasse wählen
+            var step;
+            if (price < 5000)        step = 50;
+            else if (price < 20000)  step = 100;
+            else if (price < 60000)  step = 250;
+            else if (price < 150000) step = 500;
+            else if (price < 500000) step = 1000;
+            else                     step = 5000;
+
+            var min = Math.max(0, Math.floor(rawMin / step) * step);
+            var max = Math.min(10000000, Math.ceil(rawMax / step) * step);
+
+            // Absicherung: Mindestbreite, damit der Slider bei sehr günstigen Autos
+            // nicht zu winzig wird
+            var minWidth = Math.max(step * 20, price * 0.5);
+            if (max - min < minWidth) {
+                max = min + minWidth;
+                max = Math.ceil(max / step) * step;
+            }
+
+            return { min: min, max: max, step: step };
+        }
+
+        // Prozentuale Toleranz mit sinnvollem Mindestbetrag — fair, aber nicht zu streng.
+        function computeTolerance(price) {
+            var pct = price * 0.12;
+            var minAbs = 400;
+            return Math.max(pct, minAbs);
+        }
+
+        function updateGuessDisplay() {
+            var slider = document.getElementById('price-slider');
+            var val = parseInt(slider.value, 10);
+            document.getElementById('guess-value').textContent = formatCurrency(val);
+        }
+
+        function submitAnswer() {
+            if (answered) { advance(); return; }
+
+            answered = true;
+
+            var slider = document.getElementById('price-slider');
+            slider.disabled = true;
+
+            var q       = questions[current];
+            var guess   = parseInt(slider.value, 10);
+            var diff    = Math.abs(guess - q.price);
+            var isRight = diff <= tolerance;
+
+            var guessEl = document.getElementById('guess-value');
+            var fb      = document.getElementById('feedback-row');
+
+            // Marker für den tatsächlichen Preis auf dem Slider anzeigen
+            var marker = document.getElementById('actual-marker');
+            var pct = (q.price - rangeMin) / (rangeMax - rangeMin);
+            pct = Math.min(1, Math.max(0, pct));
+            marker.style.left = (pct * 100) + '%';
+            marker.classList.add('shown');
+
+            if (isRight) {
+                score++;
+                document.getElementById('score').textContent = score;
+                guessEl.className = 'guess-value correct';
+                fb.textContent = '✓ Sehr gut! Tatsächlicher Preis: ' + formatCurrency(q.price);
+                fb.className   = 'feedback-row correct';
+            } else {
+                guessEl.className = 'guess-value incorrect';
+                var richtung = guess < q.price ? 'zu niedrig' : 'zu hoch';
+                fb.textContent = '✗ ' + richtung + ' — tatsächlicher Preis: ' + formatCurrency(q.price);
+                fb.className   = 'feedback-row incorrect';
+            }
+
+            var btn      = document.getElementById('submit-btn');
+            var delay    = 3000;
+            var remaining = Math.ceil(delay / 1000);
+            btn.textContent = 'Weiter (' + remaining + ')';
+
+            countInterval = setInterval(function () {
+                remaining--;
+                if (remaining > 0) {
+                    btn.textContent = 'Weiter (' + remaining + ')';
+                } else {
+                    clearInterval(countInterval);
+                    countInterval = null;
+                }
+            }, 1000);
+
+            advanceTimer = setTimeout(function () { advance(); }, delay);
+        }
+
+        function advance() {
+            if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
+            if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
+            current++;
+            loadQuestion();
+        }
+
+        function showResults() {
+            var pct = Math.round((score / questions.length) * 100);
+            document.getElementById('final-score').textContent      = score;
+            document.getElementById('final-total').textContent      = questions.length;
+            document.getElementById('final-percentage').textContent = pct + '%';
+            document.getElementById('results-modal').classList.remove('hidden');
+        }
+
+        function formatNumber(n) {
+            return n.toLocaleString('de-DE');
+        }
+
+        function formatCurrency(n) {
+            return n.toLocaleString('de-DE') + ' €';
+        }
+    </script>
+</body>
+</html>
