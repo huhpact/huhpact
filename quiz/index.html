@@ -19,500 +19,795 @@
 
   gtag('config', 'G-76DWMSRP7P');
 </script>
+
+<style>
+/* ═══════════════════════════════════════════════════════
+   HOME PAGE REDESIGN — scoped additions, does not touch
+   the shared style.css used by quiz sub-pages.
+   ═══════════════════════════════════════════════════════ */
+
+.home-body {
+    position: relative;
+}
+
+/* ─── Ambient backdrop: slow-drifting light field behind everything ─── */
+.home-aurora {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.home-aurora::before,
+.home-aurora::after {
+    content: '';
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.16;
+}
+
+.home-aurora::before {
+    top: -20vw;
+    right: -15vw;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    animation: homeDrift1 26s ease-in-out infinite;
+}
+
+.home-aurora::after {
+    bottom: -25vw;
+    left: -20vw;
+    background: radial-gradient(circle, var(--lime) 0%, transparent 70%);
+    animation: homeDrift2 32s ease-in-out infinite;
+}
+
+@keyframes homeDrift1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(-6vw, 8vw) scale(1.12); }
+}
+
+@keyframes homeDrift2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(8vw, -6vw) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-aurora::before, .home-aurora::after { animation: none; }
+}
+
+/* ─── Top utility row ─── */
+.home-eyebrow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
+}
+
+.home-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    color: var(--text-secondary);
+    padding: 0.4rem 0.95rem;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.home-eyebrow-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 8px var(--lime);
+}
+
+/* ─── Header ─── */
+.home-header {
+    text-align: center;
+    padding: 2.5rem 0 0.5rem;
+    margin-bottom: 2.75rem;
+}
+
+.home-title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: clamp(2.6rem, 6.5vw, 4.75rem);
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 1.0;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.home-title .accent-word {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.home-subtitle {
+    font-size: 1.08rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ─── Signature element: the Dice Bar ───
+   A single dominant action — "surprise me" — built from the
+   product's own nature (you never know which quiz is next). */
+.home-dice-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem 2.25rem;
+    margin-bottom: 2.75rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.home-dice-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 70% 100% at 0% 50%, rgba(240,101,60,0.10) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.home-dice-btn {
+    position: relative;
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-md);
+    background: var(--accent-gradient);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(240,101,60,0.4);
+    transition: var(--transition);
+    color: white;
+}
+
+.home-dice-btn:hover {
+    transform: translateY(-3px) rotate(-6deg);
+    box-shadow: 0 12px 32px rgba(240,101,60,0.5);
+}
+
+.home-dice-btn:active { transform: translateY(0) rotate(0deg) scale(0.96); }
+
+.home-dice-btn svg {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.home-dice-btn.rolling svg {
+    animation: homeDiceSpin 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes homeDiceSpin {
+    0%   { transform: rotate(0deg) scale(1); }
+    50%  { transform: rotate(200deg) scale(1.15); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.home-dice-copy {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.home-dice-copy h2 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.3rem;
+}
+
+.home-dice-copy p {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+}
+
+.home-dice-copy p strong {
+    color: var(--accent-2);
+    font-weight: 700;
+}
+
+.home-search-wrap {
+    position: relative;
+    flex-shrink: 0;
+    width: 260px;
+}
+
+.home-search-wrap svg {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 17px;
+    height: 17px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.home-search-input {
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1.5px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.8rem 1rem 0.8rem 2.7rem;
+    border-radius: var(--radius-sm);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.home-search-input::placeholder { color: var(--text-muted); }
+
+.home-search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(240,101,60,0.15);
+}
+
+/* ─── Category filter chips ─── */
+.home-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+}
+
+.home-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    color: var(--text-secondary);
+    padding: 0.55rem 1.1rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.home-chip:hover {
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.home-chip.active {
+    background: var(--accent-gradient);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 4px 16px rgba(240,101,60,0.35);
+}
+
+.home-chip .chip-count {
+    background: rgba(255,255,255,0.15);
+    padding: 0.1rem 0.5rem;
+    border-radius: 100px;
+    font-size: 0.74rem;
+}
+
+.home-chip:not(.active) .chip-count {
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+}
+
+/* ─── Section labels between groups ─── */
+.home-section-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 0 1.25rem;
+    color: var(--text-muted);
+}
+
+.home-section-label h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+}
+
+.home-section-label .line {
+    height: 1.5px;
+    flex: 1;
+    background: var(--border);
+}
+
+.home-category-block {
+    margin-bottom: 2.75rem;
+}
+
+/* ─── Quiz grid (denser, more scannable than before) ─── */
+.home-quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.1rem;
+}
+
+.home-quiz-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.4rem;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-xs);
+    position: relative;
+    display: flex;
+    gap: 1.1rem;
+    align-items: center;
+}
+
+.home-quiz-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 1.5px;
+    background: var(--accent-gradient);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.home-quiz-card:hover::before { opacity: 1; }
+
+.home-quiz-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.home-quiz-card:focus-visible {
+    outline: 2.5px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.home-thumb {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-subtle);
+    border: 1.5px solid var(--border);
+    position: relative;
+}
+
+.home-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.home-card-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.home-card-body h4 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+    line-height: 1.25;
+}
+
+.home-card-body p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.home-card-go {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-subtle);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.home-quiz-card:hover .home-card-go {
+    background: var(--accent-gradient);
+    border-color: transparent;
+    color: white;
+    transform: translateX(3px);
+}
+
+/* ─── Empty state (search yields nothing) ─── */
+.home-empty {
+    display: none;
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--text-muted);
+}
+
+.home-empty.visible { display: block; }
+
+.home-empty svg {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.home-empty p { font-size: 0.95rem; }
+
+.home-category-block[data-empty="true"] { display: none; }
+
+/* ─── Footer ─── */
+.home-footer {
+    margin-top: 3rem;
+    text-align: center;
+    padding: 2rem 0;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    border-top: 1.5px solid var(--border);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 860px) {
+    .home-dice-bar { flex-wrap: wrap; }
+    .home-search-wrap { width: 100%; order: 3; }
+}
+
+@media (max-width: 640px) {
+    .home-title { font-size: 2.5rem; letter-spacing: -1.5px; }
+    .home-dice-bar { padding: 1.4rem 1.5rem; gap: 1rem; }
+    .home-dice-btn { width: 54px; height: 54px; }
+    .home-dice-btn svg { width: 25px; height: 25px; }
+    .home-quiz-grid { grid-template-columns: 1fr; }
+    .home-filters { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 0.4rem; margin: 0 -2rem 2rem; padding-left: 2rem; padding-right: 2rem; }
+    .home-chip { flex-shrink: 0; }
+}
+</style>
+
 </head>
-<body>
+<body class="home-body">
+
+<div class="home-aurora" aria-hidden="true"></div>
 
 <div class="container">
 
-    <header class="main-header">
-        <h1 class="neon-text">Quizzes</h1>
-        <p class="subtitle">How well are you informed?</p>
+    <header class="home-header">
+        <div class="home-eyebrow-row">
+            <span class="home-eyebrow"><span class="home-eyebrow-dot"></span>16 Quizze verf&uuml;gbar</span>
+        </div>
+        <h1 class="home-title">Wie gut kennst du <span class="accent-word">die Welt?</span></h1>
+        <p class="home-subtitle">Flaggen, Marken, Sprachen, Autos und mehr &mdash; w&auml;hle ein Thema oder lass den Zufall entscheiden.</p>
     </header>
 
-    <main class="quiz-grid">
+    <div class="home-dice-bar">
+        <button class="home-dice-btn" id="homeDiceBtn" type="button" aria-label="Zuf&auml;lliges Quiz starten">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/>
+                <circle cx="8" cy="8" r="1.6" fill="currentColor"/>
+                <circle cx="16" cy="8" r="1.6" fill="currentColor"/>
+                <circle cx="8" cy="16" r="1.6" fill="currentColor"/>
+                <circle cx="16" cy="16" r="1.6" fill="currentColor"/>
+                <circle cx="12" cy="12" r="1.6" fill="currentColor"/>
+            </svg>
+        </button>
+        <div class="home-dice-copy">
+            <h2>Unentschlossen?</h2>
+            <p>Ein Klick, ein <strong>zuf&auml;lliges Quiz</strong> &mdash; keine lange Auswahl n&ouml;tig.</p>
+        </div>
+        <div class="home-search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input type="text" class="home-search-input" id="homeSearchInput" placeholder="Quiz suchen&hellip;" aria-label="Quiz suchen">
+        </div>
+    </div>
 
-        
+    <nav class="home-filters" id="homeFilters" aria-label="Kategorien">
+        <button class="home-chip active" data-filter="all" type="button">Alle <span class="chip-count">16</span></button>
+        <button class="home-chip" data-filter="geo" type="button">Erde &amp; L&auml;nder <span class="chip-count">8</span></button>
+        <button class="home-chip" data-filter="fahrzeuge" type="button">Fahrzeuge &amp; Kennzeichen <span class="chip-count">4</span></button>
+        <button class="home-chip" data-filter="wissen" type="button">Wissen &amp; Sprache <span class="chip-count">4</span></button>
+    </nav>
 
-            <div class="quiz-card" onclick="location.href='/quiz/quiz-setup.html'">
+    <main>
 
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/flags/Flag_of_the_United_Nations.png"
-                        alt="Flags"
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
+        <div class="home-empty" id="homeEmptyState">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <p>Kein Quiz gefunden. Versuch einen anderen Suchbegriff.</p>
+        </div>
+
+        <div class="home-category-block" data-category="geo">
+            <div class="home-section-label"><h3>Erde &amp; L&auml;nder</h3><span class="line"></span></div>
+            <div class="home-quiz-grid">
+
+                <div class="home-quiz-card" data-name="flag quiz flaggen l&auml;nder" onclick="location.href='/quiz/quiz-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/flags/Flag_of_the_United_Nations.png" alt="Flaggen" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Flag Quiz</h4>
+                        <p>Errate L&auml;nder anhand ihrer Flaggen.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-                <h2>Flag Quiz</h2>
-
-                <p>
-                    Guess countries by their flags.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
+                <div class="home-quiz-card" data-name="country domain quiz tld l&auml;nder" onclick="location.href='/quiz/quiz-tld-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/country-tld.webp" alt="Country TLD" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Country Domain Quiz</h4>
+                        <p>Errate L&auml;nder anhand ihrer Domain-Endung.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-            </div>
-             <div class="quiz-card" onclick="location.href='/quiz/quiz-tld-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/country-tld.webp"
-                        alt="Country TLD"
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
+                <div class="home-quiz-card" data-name="country outline quiz umriss l&auml;nder" onclick="location.href='/quiz/outlines/quiz-outlines-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/country-outlines.jpg" alt="Country Outlines" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Country Outline Quiz</h4>
+                        <p>Errate L&auml;nder anhand ihrer Umrisse.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-                <h2>Country Domain Quiz</h2>
-
-                <p>
-                    Guess countries by their Domain.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
+                <div class="home-quiz-card" data-name="country capitals quiz hauptst&auml;dte" onclick="location.href='/quiz/capitals/quiz-capitals-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/capitals.png" alt="Hauptst&auml;dte" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Country Capitals Quiz</h4>
+                        <p>Errate L&auml;nder anhand ihrer Hauptstadt.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-            </div>
-
-             <div class="quiz-card" onclick="location.href='/quiz/plates/quiz-plates-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/License-plates.webp"
-                        alt="Country TLD"
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
+                <div class="home-quiz-card" data-name="city guess quiz st&auml;dte orte" onclick="location.href='/quiz/city/city-guess-quiz-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="https://play-lh.googleusercontent.com/Gbo3-_HbZam-G4FUslov4H4wwvRxv2G_PC5zvVKMhcWh8Cot6mINi2zhwgUZvEf82YewGxRWk6zBe22CRK5b5ZA" alt="City Guess" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>City Guess Quiz</h4>
+                        <p>Errate Orte anhand ihres Namens.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-                <h2>License Plate Quiz</h2>
-
-                <p>
-                    Guess countries by their License Plates.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
+                <div class="home-quiz-card" data-name="country click quiz karte" onclick="location.href='/quiz/country-click/country-click-quiz-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="https://geogames.io/_next/image?url=%2Fgames%2Fclick-country-map.png&w=1080&q=75" alt="Country Click" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Country Click Quiz</h4>
+                        <p>Klicke das richtige Land auf der Karte an.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-            </div>
-
-             <div class="quiz-card" onclick="location.href='/quiz/outlines/quiz-outlines-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/country-outlines.jpg"
-                        alt="Country Outlines"
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
+                <div class="home-quiz-card" data-name="landmarks quiz sehensw&uuml;rdigkeiten" onclick="location.href='/quiz/landmarks/landmarks-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/landmarks/landmarks/thumb.webp" alt="Landmarks" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Landmarks Quiz</h4>
+                        <p>Errate Sehensw&uuml;rdigkeiten anhand ihres Aussehens.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-                <h2>Country Outline Quiz</h2>
-
-                <p>
-                    Guess countries by their country outlines.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
-                </div>
-
-            </div>
-
-             <div class="quiz-card" onclick="location.href='/quiz/brands/quiz-brands-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/brands.jpg"
-                        alt="Country Outlines"
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
-                </div>
-
-                <h2>Brand Logo Quiz</h2>
-
-                <p>
-                    Guess brands by their logos.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
+                <div class="home-quiz-card" data-name="europe plates quiz kennzeichen europa" onclick="location.href='/quiz/plates-eu/quiz-plates-germany-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/plates-eu/plates-img/europe.png" alt="Europe Plates" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Europe Plates Quiz</h4>
+                        <p>Teste dein Wissen &uuml;ber europ&auml;ische Kennzeichen.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
             </div>
+        </div>
 
-            <div class="quiz-card" onclick="location.href='/quiz/capitals/quiz-capitals-setup.html'">
+        <div class="home-category-block" data-category="fahrzeuge">
+            <div class="home-section-label"><h3>Fahrzeuge &amp; Kennzeichen</h3><span class="line"></span></div>
+            <div class="home-quiz-grid">
 
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/capitals.png"
-                        alt="Country Capitals"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
+                <div class="home-quiz-card" data-name="license plate quiz kennzeichen" onclick="location.href='/quiz/plates/quiz-plates-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/License-plates.webp" alt="License Plates" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>License Plate Quiz</h4>
+                        <p>Errate L&auml;nder anhand ihrer Kennzeichen.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-                <h2>Country Capitals Quiz</h2>
-
-                <p>
-                    Guess countries by their capitals.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
+                <div class="home-quiz-card" data-name="germany plates quiz deutschland kennzeichen" onclick="location.href='/quiz/germany-plates/quiz-plates-germany-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/germany-plates.jpg" alt="Germany Plates" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Germany Plates Quiz</h4>
+                        <p>Errate deutsche Kennzeichen anhand ihres Codes.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-            </div>
-
-            <div class="quiz-card" onclick="location.href='/quiz/germany-plates/quiz-plates-germany-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/germany-plates.jpg"
-                        alt="Germany Plates"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
+                <div class="home-quiz-card" data-name="car model quiz autos" onclick="location.href='/quiz/car/car-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="https://image.stern.de/35341676/t/sy/v1/w1440/r1.3333/-/e-auto-elektroauto-vw-id-7-pro-s.jpg" alt="Car Model" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Car Model Quiz</h4>
+                        <p>Errate Automodelle anhand ihres Aussehens.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-                <h2>Germany Plates Quiz</h2>
-
-                <p>
-                    Guess Germany plates by their codes.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
+                <div class="home-quiz-card" data-name="car price quiz autopreise" onclick="location.href='/quiz/car-price/car-price-quiz-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="https://www.onlineprinters.de/magazin/wp-content/uploads/2021/02/Beitragsbild_Preispoltik.jpg" alt="Car Price" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Car Price Quiz</h4>
+                        <p>Errate die Preise verschiedener Autos.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
             </div>
+        </div>
 
-              <div class="quiz-card" onclick="location.href='/quiz/car/car-setup.html'">
+        <div class="home-category-block" data-category="wissen">
+            <div class="home-section-label"><h3>Wissen &amp; Sprache</h3><span class="line"></span></div>
+            <div class="home-quiz-grid">
 
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="https://image.stern.de/35341676/t/sy/v1/w1440/r1.3333/-/e-auto-elektroauto-vw-id-7-pro-s.jpg"
-                        alt="Country Capitals"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
+                <div class="home-quiz-card" data-name="brand logo quiz marken logos" onclick="location.href='/quiz/brands/quiz-brands-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/brands.jpg" alt="Brand Logos" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Brand Logo Quiz</h4>
+                        <p>Errate Marken anhand ihrer Logos.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-                <h2>Car Model Quiz</h2>
-
-                <p>
-                    Guess car models by their appearance.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
+                <div class="home-quiz-card" data-name="knowledge quiz wissen allgemeinwissen trivia" onclick="location.href='/quiz/knowledge/wissen-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/knowledge/thumb.avif" alt="Knowledge Quiz" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Knowledge Quiz</h4>
+                        <p>Teste dein Allgemeinwissen mit unseren Trivia-Fragen.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-            </div>
-
-               <div class="quiz-card" onclick="location.href='/quiz/landmarks/landmarks-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/landmarks/landmarks/thumb.webp"
-                        alt="Landmarks"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
+                <div class="home-quiz-card" data-name="languages quiz sprachen" onclick="location.href='/quiz/languages/sprachen-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/languages/thumb.jpg" alt="Languages Quiz" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Languages Quiz</h4>
+                        <p>Teste deine Sprachkenntnisse mit unseren Trivia-Fragen.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
-                <h2>Landmarks Quiz</h2>
-
-                <p>
-                    Guess landmarks by their appearance.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
+                <div class="home-quiz-card" data-name="vocabs quiz vokabeln franz&ouml;sisch" onclick="location.href='/quiz/vocabs/quiz-vocab-setup.html'" tabindex="0" role="button">
+                    <div class="home-thumb"><img src="/quiz/vocabs/Flag_of_France.svg.webp" alt="Vocabs Quiz" loading="lazy"></div>
+                    <div class="home-card-body">
+                        <h4>Vocabs Quiz</h4>
+                        <p>Teste deinen Wortschatz mit unseren Trivia-Fragen.</p>
+                    </div>
+                    <div class="home-card-go">&rarr;</div>
                 </div>
 
             </div>
-
-             <div class="quiz-card" onclick="location.href='/quiz/knowledge/wissen-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/knowledge/thumb.avif"
-                        alt="Knowledge Quiz"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
-                </div>
-
-                <h2>Knowledge Quiz</h2>
-
-                <p>
-                    Test your knowledge with our trivia questions.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
-                </div>
-
-            </div>
-
-             <div class="quiz-card" onclick="location.href='/quiz/languages/sprachen-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/languages/thumb.jpg"
-                        alt="Languages Quiz"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
-                </div>
-
-                <h2>Languages Quiz</h2>
-
-                <p>
-                    Test your language skills with our trivia questions.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
-                </div>
-
-            </div>
-
-               <div class="quiz-card" onclick="location.href='/quiz/car-price/car-price-quiz-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="https://www.onlineprinters.de/magazin/wp-content/uploads/2021/02/Beitragsbild_Preispoltik.jpg"
-                        alt="Landmarks"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
-                </div>
-
-                <h2>Car Price Quiz</h2>
-
-                <p>
-                    Guess the prices of various cars.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
-                </div>
-
-            </div>
-
-             <div class="quiz-card" onclick="location.href='/quiz/vocabs/quiz-vocab-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/vocabs/Flag_of_France.svg.webp"
-                        alt="Languages Quiz"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
-                </div>
-
-                <h2>Vocabs Quiz</h2>
-
-                <p>
-                    Test your vocabulary skills with our trivia questions.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
-                </div>
-
-            </div>
-
-             <div class="quiz-card" onclick="location.href='/quiz/city/city-guess-quiz-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="https://play-lh.googleusercontent.com/Gbo3-_HbZam-G4FUslov4H4wwvRxv2G_PC5zvVKMhcWh8Cot6mINi2zhwgUZvEf82YewGxRWk6zBe22CRK5b5ZA"
-                        alt="Landmarks"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
-                </div>
-
-                <h2>City Guess Quiz</h2>
-
-                <p>
-                    Guess locations by their name.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
-                </div>
-
-            </div>
-
-             <div class="quiz-card" onclick="location.href='/quiz/country-click/country-click-quiz-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="https://geogames.io/_next/image?url=%2Fgames%2Fclick-country-map.png&w=1080&q=75"
-                        alt="Landmarks"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
-                </div>
-
-                <h2>Country Click Quiz</h2>
-
-                <p>
-                    Click on the correct country on the map.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
-                </div>
-
-            </div>
-
-             <div class="quiz-card" onclick="location.href='/quiz/plates-eu/quiz-plates-germany-setup.html'">
-
-                <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-                    <img
-                        src="/quiz/plates-eu/plates-img/europe.png"
-                        alt="Europe Plates Quiz"
-
-
-                        style="
-                            max-width: 220px;
-                            border-radius: 12px;
-                            border: 2px solid var(--neon-blue);
-                            box-shadow: 0 0 25px var(--neon-blue-glow);
-                        "
-                    >
-                </div>
-
-                <h2>Europe Plates Quiz</h2>
-
-                <p>
-                    Test your knowledge of European plates with our questions.<br>
-                </p>
-
-                <div class="card-footer">
-                    <span class="badge">Start now</span>
-                    <span class="arrow">→</span>
-                </div>
-
-            </div>
-
-        </a>
+        </div>
 
     </main>
 
-    <footer class="main-footer">
+    <footer class="home-footer">
         <p>&copy; 2026 HUH(PACT)</p>
     </footer>
 
 </div>
+
+<script>
+(function () {
+    var allCards = Array.prototype.slice.call(document.querySelectorAll('.home-quiz-card'));
+    var blocks = Array.prototype.slice.call(document.querySelectorAll('.home-category-block'));
+    var chips = Array.prototype.slice.call(document.querySelectorAll('.home-chip'));
+    var searchInput = document.getElementById('homeSearchInput');
+    var emptyState = document.getElementById('homeEmptyState');
+    var activeFilter = 'all';
+
+    function applyFilters() {
+        var query = searchInput.value.trim().toLowerCase();
+        var anyVisible = false;
+
+        blocks.forEach(function (block) {
+            var category = block.getAttribute('data-category');
+            var categoryMatches = activeFilter === 'all' || activeFilter === category;
+            var visibleInBlock = 0;
+
+            var cards = Array.prototype.slice.call(block.querySelectorAll('.home-quiz-card'));
+            cards.forEach(function (card) {
+                var haystack = card.getAttribute('data-name') || '';
+                var searchMatches = query === '' || haystack.indexOf(query) !== -1;
+                var show = categoryMatches && searchMatches;
+                card.style.display = show ? '' : 'none';
+                if (show) visibleInBlock++;
+            });
+
+            var blockVisible = categoryMatches && visibleInBlock > 0;
+            block.setAttribute('data-empty', blockVisible ? 'false' : 'true');
+            if (blockVisible) anyVisible = true;
+        });
+
+        emptyState.classList.toggle('visible', !anyVisible);
+    }
+
+    chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            chips.forEach(function (c) { c.classList.remove('active'); });
+            chip.classList.add('active');
+            activeFilter = chip.getAttribute('data-filter');
+            applyFilters();
+        });
+    });
+
+    searchInput.addEventListener('input', applyFilters);
+
+    var diceBtn = document.getElementById('homeDiceBtn');
+    diceBtn.addEventListener('click', function () {
+        if (diceBtn.classList.contains('rolling')) return;
+        diceBtn.classList.add('rolling');
+        var links = allCards.map(function (c) { return c.getAttribute('onclick'); });
+        var pick = links[Math.floor(Math.random() * links.length)];
+        var match = pick && pick.match(/'([^']+)'/);
+        var href = match ? match[1] : null;
+        setTimeout(function () {
+            if (href) location.href = href;
+        }, 480);
+    });
+
+    allCards.forEach(function (card) {
+        card.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                card.click();
+            }
+        });
+    });
+})();
+</script>
 
 </body>
 </html>
