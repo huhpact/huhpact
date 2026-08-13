@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Städte-Quiz</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <style>
+        /* ── City stage ── */
+        .city-stage {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem 1.75rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+
+        .city-stage-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .city-name {
+            font-size: 1.65rem;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1.2;
+            animation: cityIn 0.35s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+        }
+
+        @keyframes cityIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .city-hint {
+            margin-top: 0.5rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Map ── */
+        .map-wrap {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        #map-canvas {
+            width: 100%;
+            height: 420px;
+            background: #aad3df;
+            cursor: crosshair;
+        }
+
+        .map-wrap.answered #map-canvas {
+            cursor: default;
+        }
+
+        .map-reset-hint {
+            position: absolute;
+            top: 0.6rem;
+            left: 0.6rem;
+            z-index: 500;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.4rem 0.7rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            box-shadow: var(--shadow-md);
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .map-reset-hint.hidden { opacity: 0; }
+
+        @media (max-width: 640px) {
+            #map-canvas { height: 320px; }
+        }
+
+        /* Leaflet marker icon overrides (kein Bildpfad nötig, reines CSS/SVG) */
+        .pin-guess, .pin-actual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+        }
+
+        .distance-line {
+            stroke-dasharray: 6 6;
+        }
+
+        /* ── Action row ── */
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            width: 100%;
+        }
+
+        .guess-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15rem;
+        }
+
+        .guess-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .guess-value {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+            transition: color 0.15s;
+            min-height: 2rem;
+        }
+
+        .guess-value.correct   { color: #22c55e; }
+        .guess-value.incorrect { color: #ef4444; }
+        .guess-value.empty     { color: var(--text-muted); font-size: 1rem; font-weight: 600; }
+
+        .submit-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.4rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+            white-space: nowrap;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .submit-btn:hover   { opacity: 0.88; }
+        .submit-btn:active  { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.5; cursor: default; }
+
+        /* ── Feedback ── */
+        .feedback-row {
+            min-height: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .feedback-row.correct   { color: #22c55e; }
+        .feedback-row.incorrect { color: #ef4444; }
+        .feedback-row.hidden    { opacity: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-top-bar">
+            <div class="score-display">
+                <span class="score-label">Score:</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="progress-display">
+                <span id="current-question">1</span> / <span id="total-questions">10</span>
+            </div>
+        </div>
+
+        <main class="quiz-container">
+            <div class="city-stage">
+                <div class="city-stage-label">Wo liegt</div>
+                <p class="city-name" id="city-name"></p>
+                <p class="city-hint" id="city-country"></p>
+            </div>
+
+            <div class="map-wrap" id="map-wrap">
+                <div class="map-reset-hint" id="map-reset-hint">Tippe auf die Karte, um deinen Pin zu setzen</div>
+                <div id="map-canvas"></div>
+            </div>
+
+            <div class="input-area">
+                <div class="guess-display">
+                    <span class="guess-label">Dein Tipp</span>
+                    <span class="guess-value empty" id="guess-value">Noch kein Pin gesetzt</span>
+                </div>
+
+                <button class="submit-btn" id="submit-btn" disabled>Prüfen</button>
+                <div class="feedback-row hidden" id="feedback-row"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="results-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="neon-text">Quiz beendet!</h2>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="final-score">0</span>
+                    <span class="stat-label">Richtig</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-total">10</span>
+                    <span class="stat-label">Gesamt</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-percentage">0%</span>
+                    <span class="stat-label">Genauigkeit</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="window.location.href='city-guess-quiz-setup.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Nochmal
+                </button>
+                <button class="modal-btn secondary" onclick="window.location.href='/quiz/index.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Zur Startseite
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="city-guess.js"></script>
+    <script>
+        var questions     = [];
+        var current       = 0;
+        var score         = 0;
+        var answered      = false;
+        var advanceTimer  = null;
+        var countInterval = null;
+
+        var map           = null;
+        var guessMarker    = null;
+        var actualMarker   = null;
+        var distanceLine   = null;
+        var toleranceCircle = null;
+        var guessLatLng    = null;
+
+        // Kein API-Key nötig: CARTO Voyager-Tiles ohne Beschriftungen (OpenStreetMap-Daten)
+        var TILE_URL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png';
+        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var total = parseInt(sessionStorage.getItem('cityGuessQuestions')) || 10;
+
+            var pool = cityGuessCities.slice();
+            if (pool.length < 1) {
+                alert('Keine Städte in der Datenbank.');
+                window.location.href = 'city-guess-quiz-setup.html';
+                return;
+            }
+
+            // Shuffle
+            for (var i = pool.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+            }
+
+            questions = [];
+            while (questions.length < total) {
+                questions = questions.concat(pool);
+            }
+            questions = questions.slice(0, total);
+            document.getElementById('total-questions').textContent = questions.length;
+
+            initMap();
+
+            document.getElementById('submit-btn').addEventListener('click', function () {
+                if (answered) { advance(); } else { submitAnswer(); }
+            });
+
+            loadQuestion();
+        });
+
+        function initMap() {
+            map = L.map('map-canvas', {
+                worldCopyJump: true,
+                minZoom: 2,
+                maxZoom: 11,
+                zoomControl: true
+            }).setView([20, 10], 2);
+
+            L.tileLayer(TILE_URL, {
+                attribution: TILE_ATTRIBUTION,
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(map);
+
+            map.on('click', function (e) {
+                if (answered) return;
+                placeGuessMarker(e.latlng);
+            });
+        }
+
+        function guessPinIcon() {
+            return L.divIcon({
+                className: '',
+                html: '<div class="pin-guess"><svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="#6366f1" stroke="#ffffff" stroke-width="1.5"><path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 6.72 11.24 7.01 11.5.28.25.7.25.98 0C12.28 21.24 19 15.25 19 10c0-4.42-3.58-8-7-8z"/><circle cx="12" cy="10" r="2.6" fill="#ffffff"/></svg></div>',
+                iconSize: [34, 34],
+                iconAnchor: [17, 32]
+            });
+        }
+
+        function actualPinIcon() {
+            return L.divIcon({
+                className: '',
+                html: '<div class="pin-actual"><svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="#22c55e" stroke="#ffffff" stroke-width="1.5"><path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 6.72 11.24 7.01 11.5.28.25.7.25.98 0C12.28 21.24 19 15.25 19 10c0-4.42-3.58-8-7-8z"/><circle cx="12" cy="10" r="2.6" fill="#ffffff"/></svg></div>',
+                iconSize: [34, 34],
+                iconAnchor: [17, 32]
+            });
+        }
+
+        function placeGuessMarker(latlng) {
+            guessLatLng = latlng;
+
+            if (guessMarker) {
+                guessMarker.setLatLng(latlng);
+            } else {
+                guessMarker = L.marker(latlng, { icon: guessPinIcon(), zIndexOffset: 1000 }).addTo(map);
+            }
+
+            document.getElementById('map-reset-hint').classList.add('hidden');
+            document.getElementById('submit-btn').disabled = false;
+
+            var g = document.getElementById('guess-value');
+            g.textContent = formatCoords(latlng.lat, latlng.lng);
+            g.className = 'guess-value';
+        }
+
+        function loadQuestion() {
+            if (current >= questions.length) { showResults(); return; }
+
+            answered = false;
+            guessLatLng = null;
+            if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
+            if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
+
+            var q = questions[current];
+            document.getElementById('current-question').textContent = current + 1;
+            document.getElementById('city-name').textContent = q.name;
+            document.getElementById('city-country').textContent = q.country;
+
+            // Karte zurücksetzen
+            if (guessMarker)     { map.removeLayer(guessMarker);     guessMarker = null; }
+            if (actualMarker)    { map.removeLayer(actualMarker);    actualMarker = null; }
+            if (distanceLine)    { map.removeLayer(distanceLine);    distanceLine = null; }
+            if (toleranceCircle) { map.removeLayer(toleranceCircle); toleranceCircle = null; }
+
+            document.getElementById('map-wrap').classList.remove('answered');
+            document.getElementById('map-reset-hint').classList.remove('hidden');
+
+            map.setView([20, 10], 2);
+
+            var g = document.getElementById('guess-value');
+            g.textContent = 'Noch kein Pin gesetzt';
+            g.className = 'guess-value empty';
+
+            var btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Prüfen';
+
+            var fb = document.getElementById('feedback-row');
+            fb.textContent = '';
+            fb.className   = 'feedback-row hidden';
+
+            setTimeout(function () { map.invalidateSize(); }, 50);
+        }
+
+        // Akzeptierter Radius (km) anhand der Einwohnerzahl.
+        // Große Metropolen → enger Radius (schwerer), kleine Orte → weiter Radius (leichter).
+        // Logarithmische Skalierung, da die Bevölkerung von ~800 bis 33 Mio. reicht.
+        function computeToleranceKm(population) {
+            var minPop = 800;
+            var maxPop = 33000000;
+            var p = Math.max(minPop, Math.min(maxPop, population));
+
+            var logMin = Math.log(minPop);
+            var logMax = Math.log(maxPop);
+            var t = (Math.log(p) - logMin) / (logMax - logMin); // 0 = winzig, 1 = riesig
+
+            // Winzige Orte: bis zu 130 km Toleranz. Riesige Metropolen: nur 15 km.
+            var maxTolerance = 130;
+            var minTolerance = 15;
+            return maxTolerance - t * (maxTolerance - minTolerance);
+        }
+
+        function haversineKm(lat1, lng1, lat2, lng2) {
+            var R = 6371;
+            var dLat = (lat2 - lat1) * Math.PI / 180;
+            var dLng = (lng2 - lng1) * Math.PI / 180;
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function formatCoords(lat, lng) {
+            var latDir = lat >= 0 ? 'N' : 'S';
+            var lngDir = lng >= 0 ? 'O' : 'W';
+            return Math.abs(lat).toFixed(1) + '° ' + latDir + ', ' + Math.abs(lng).toFixed(1) + '° ' + lngDir;
+        }
+
+        function formatKm(km) {
+            if (km < 10) return km.toFixed(1).replace('.', ',') + ' km';
+            return Math.round(km).toLocaleString('de-DE') + ' km';
+        }
+
+        function submitAnswer() {
+            if (answered || !guessLatLng) return;
+
+            answered = true;
+            document.getElementById('map-wrap').classList.add('answered');
+
+            var q         = questions[current];
+            var actualLL  = L.latLng(q.lat, q.lng);
+            var distKm    = haversineKm(guessLatLng.lat, guessLatLng.lng, q.lat, q.lng);
+            var toleranceKm = computeToleranceKm(q.population);
+            var isRight   = distKm <= toleranceKm;
+
+            var g  = document.getElementById('guess-value');
+            var fb = document.getElementById('feedback-row');
+
+            // Tatsächlichen Standort + Toleranzkreis + Verbindungslinie anzeigen
+            actualMarker = L.marker(actualLL, { icon: actualPinIcon(), zIndexOffset: 900 }).addTo(map);
+
+            toleranceCircle = L.circle(actualLL, {
+                radius: toleranceKm * 1000,
+                color: '#22c55e',
+                weight: 1.5,
+                fillColor: '#22c55e',
+                fillOpacity: 0.08,
+                dashArray: '4 6'
+            }).addTo(map);
+
+            distanceLine = L.polyline([guessLatLng, actualLL], {
+                color: isRight ? '#22c55e' : '#ef4444',
+                weight: 2.5,
+                dashArray: '6 6',
+                className: 'distance-line'
+            }).addTo(map);
+
+            var bounds = L.latLngBounds([guessLatLng, actualLL]).pad(0.5);
+            map.flyToBounds(bounds, { maxZoom: 7, duration: 0.6 });
+
+            g.textContent = formatKm(distKm) + ' entfernt';
+            g.className = isRight ? 'guess-value correct' : 'guess-value incorrect';
+
+            if (isRight) {
+                score++;
+                document.getElementById('score').textContent = score;
+                fb.textContent = '✓ Sehr gut! ' + q.name + ' — ' + formatKm(distKm) + ' vom Pin (Toleranz: ' + formatKm(toleranceKm) + ')';
+                fb.className   = 'feedback-row correct';
+            } else {
+                fb.textContent = '✗ ' + formatKm(distKm) + ' daneben — Toleranz war ' + formatKm(toleranceKm) + ' für ' + q.name;
+                fb.className   = 'feedback-row incorrect';
+            }
+
+            var btn      = document.getElementById('submit-btn');
+            btn.disabled = false;
+            var delay    = 3500;
+            var remaining = Math.ceil(delay / 1000);
+            btn.textContent = 'Weiter (' + remaining + ')';
+
+            countInterval = setInterval(function () {
+                remaining--;
+                if (remaining > 0) {
+                    btn.textContent = 'Weiter (' + remaining + ')';
+                } else {
+                    clearInterval(countInterval);
+                    countInterval = null;
+                }
+            }, 1000);
+
+            advanceTimer = setTimeout(function () { advance(); }, delay);
+        }
+
+        function advance() {
+            if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
+            if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
+            current++;
+            loadQuestion();
+        }
+
+        function showResults() {
+            var pct = Math.round((score / questions.length) * 100);
+            document.getElementById('final-score').textContent      = score;
+            document.getElementById('final-total').textContent      = questions.length;
+            document.getElementById('final-percentage').textContent = pct + '%';
+            document.getElementById('results-modal').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
