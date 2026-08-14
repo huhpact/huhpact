@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regionen-Quiz</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+     <link rel="icon" type="image/png" href="/quiz/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/quiz/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/quiz/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/quiz/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Quizzy" />
+    <link rel="manifest" href="/quiz/favicon/site.webmanifest" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <style>
+        /* ── Question stage ── */
+        .question-stage {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem 1.75rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+
+        .question-stage-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .target-country {
+            font-size: 1.65rem;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1.2;
+            animation: countryIn 0.35s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+        }
+
+        .target-country .target-country-name {
+            display: block;
+        }
+
+        .target-country .target-country-sub {
+            display: block;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        @keyframes countryIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Map ── */
+        .map-wrap {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        #map-canvas {
+            width: 100%;
+            height: 460px;
+            background: #aad3df;
+        }
+
+        .map-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            z-index: 999;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            gap: 0.6rem;
+        }
+
+        .map-loading.hidden { display: none; }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 640px) {
+            #map-canvas { height: 340px; }
+        }
+
+        /* Region polygon default styling (via inline style set in JS, these are fallbacks) */
+        .leaflet-interactive { cursor: pointer; }
+
+        /* ── Feedback banner (overlays map briefly) ── */
+        .feedback-banner {
+            position: absolute;
+            top: 0.6rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px);
+            z-index: 700;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.55rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            white-space: nowrap;
+            max-width: calc(100% - 1.6rem);
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .feedback-banner.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .feedback-banner.correct   { color: #22c55e; border-color: #22c55e; }
+        .feedback-banner.incorrect { color: #ef4444; border-color: #ef4444; }
+
+        /* ── Action row ── */
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            width: 100%;
+        }
+
+        .submit-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.4rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+            white-space: nowrap;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .submit-btn:hover   { opacity: 0.88; }
+        .submit-btn:active  { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.5; cursor: default; }
+
+        .feedback-row {
+            min-height: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .feedback-row.correct   { color: #22c55e; }
+        .feedback-row.incorrect { color: #ef4444; }
+        .feedback-row.hidden    { opacity: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-top-bar">
+            <div class="score-display">
+                <span class="score-label">Score:</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="progress-display">
+                <span id="current-question">1</span> / <span id="total-questions">10</span>
+            </div>
+        </div>
+
+        <main class="quiz-container">
+            <div class="question-stage">
+                <div class="question-stage-label">Klicke auf</div>
+                <p class="target-country" id="target-country"></p>
+            </div>
+
+            <div class="map-wrap" id="map-wrap">
+                <div class="map-loading" id="map-loading">
+                    <div class="spinner"></div>
+                    <span>Karte wird geladen …</span>
+                </div>
+                <div class="feedback-banner" id="feedback-banner"></div>
+                <div id="map-canvas"></div>
+            </div>
+
+            <div class="input-area">
+                <button class="submit-btn hidden" id="submit-btn">Weiter</button>
+                <div class="feedback-row hidden" id="feedback-row"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="results-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="neon-text">Quiz beendet!</h2>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="final-score">0</span>
+                    <span class="stat-label">Richtig</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-total">10</span>
+                    <span class="stat-label">Gesamt</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-percentage">0%</span>
+                    <span class="stat-label">Genauigkeit</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="window.location.href='region-click-quiz-setup.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Nochmal
+                </button>
+                <button class="modal-btn secondary" onclick="window.location.href='/quiz/index.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Zur Startseite
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="region-names-de.js"></script>
+    <script src="country-names-de-regions.js"></script>
+    <script>
+        var GEOJSON_URLS = [
+            'europe-regions.geojson'
+        ];
+
+        var TILE_URL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png';
+        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a> — Regionsgrenzen: <a href="https://www.naturalearthdata.com/">Natural Earth</a>, <a href="https://github.com/codeforgermany/click_that_hood">Click That Hood</a>';
+
+        // Europe-focused bounds (vs. the world view used by the country quiz)
+        var EUROPE_CENTER = [54, 15];
+        var EUROPE_ZOOM    = 4;
+        var MAP_MAX_BOUNDS = [[25, -35], [75, 55]];
+
+        var map          = null;
+        var geoLayer      = null;
+        var regionLayers  = {}; // "country|name" -> layer (for lookups / re-styling)
+        var questions      = [];
+        var current         = 0;
+        var score           = 0;
+        var answered        = false;
+        var advanceTimer    = null;
+        var countInterval   = null;
+
+        var COLOR_DEFAULT = '#94a3b8';
+        var COLOR_HOVER    = '#818cf8';
+        var COLOR_CORRECT  = '#22c55e';
+        var COLOR_WRONG    = '#ef4444';
+        var COLOR_TARGET_REVEAL = '#22c55e';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initMap();
+            loadGeoData();
+
+            document.getElementById('submit-btn').addEventListener('click', function () {
+                advance();
+            });
+        });
+
+        function initMap() {
+            map = L.map('map-canvas', {
+                worldCopyJump: false,
+                minZoom: 3,
+                maxZoom: 9,
+                zoomControl: true,
+                maxBounds: MAP_MAX_BOUNDS,
+                maxBoundsViscosity: 0.8
+            }).setView(EUROPE_CENTER, EUROPE_ZOOM);
+
+            L.tileLayer(TILE_URL, {
+                attribution: TILE_ATTRIBUTION,
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(map);
+        }
+
+        // Compound key so that same-named regions in different countries
+        // (e.g. "Centru" in both Romania and Moldova) never collide.
+        function regionKey(country, name) {
+            return country + '|' + name;
+        }
+
+        function regionDisplayName(country, name) {
+            var regionName  = (typeof regionNamesDE !== 'undefined' && regionNamesDE[regionKey(country, name)]) || name;
+            var countryName = (typeof countryNamesDEForRegions !== 'undefined' && countryNamesDEForRegions[country]) || country;
+            return { region: regionName, country: countryName };
+        }
+
+        function fetchWithFallback(urls, index) {
+            index = index || 0;
+            if (index >= urls.length) {
+                return Promise.reject(new Error('Alle Quellen fehlgeschlagen'));
+            }
+            return fetch(urls[index])
+                .then(function (res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .catch(function (err) {
+                    console.warn('GeoJSON-Quelle fehlgeschlagen (' + urls[index] + '):', err);
+                    return fetchWithFallback(urls, index + 1);
+                });
+        }
+
+        function loadGeoData() {
+            fetchWithFallback(GEOJSON_URLS)
+                .then(function (geojson) {
+                    buildRegionLayers(geojson);
+                    setupQuestions(geojson);
+                    document.getElementById('map-loading').classList.add('hidden');
+                    loadQuestion();
+                })
+                .catch(function (err) {
+                    document.getElementById('map-loading').innerHTML =
+                        '<span>⚠ Karte konnte nicht geladen werden. Bitte Seite neu laden.</span>';
+                    console.error('GeoJSON load failed:', err);
+                });
+        }
+
+        function buildRegionLayers(geojson) {
+            geoLayer = L.geoJSON(geojson, {
+                style: function () {
+                    return {
+                        color: '#ffffff',
+                        weight: 1,
+                        fillColor: COLOR_DEFAULT,
+                        fillOpacity: 0.55
+                    };
+                },
+                onEachFeature: function (feature, layer) {
+                    var name    = feature.properties && feature.properties.name;
+                    var country = feature.properties && feature.properties.country;
+                    if (!name || !country) return;
+                    var key = regionKey(country, name);
+                    regionLayers[key] = layer;
+
+                    layer.on('mouseover', function () {
+                        if (answered) return;
+                        layer.setStyle({ fillColor: COLOR_HOVER, fillOpacity: 0.75 });
+                    });
+                    layer.on('mouseout', function () {
+                        if (answered) return;
+                        layer.setStyle({ fillColor: COLOR_DEFAULT, fillOpacity: 0.55 });
+                    });
+                    layer.on('click', function () {
+                        if (answered) return;
+                        handleRegionClick(key, layer);
+                    });
+                }
+            }).addTo(map);
+        }
+
+        function setupQuestions(geojson) {
+            var total   = parseInt(sessionStorage.getItem('regionClickQuestions')) || 10;
+            var country = sessionStorage.getItem('regionClickCountry') || 'all';
+
+            var pool = geojson.features
+                .map(function (f) { return f.properties; })
+                .filter(function (p) {
+                    if (!p.name || !p.country) return false;
+                    if (country !== 'all' && p.country !== country) return false;
+                    return true;
+                })
+                .map(function (p) { return regionKey(p.country, p.name); });
+
+            // De-duplicate (defensive; keys should already be unique)
+            pool = pool.filter(function (k, i) { return pool.indexOf(k) === i; });
+
+            if (pool.length < 1) {
+                alert('Keine Regionen für diese Auswahl gefunden.');
+                window.location.href = 'region-click-quiz-setup.html';
+                return;
+            }
+
+            // Shuffle
+            for (var i = pool.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+            }
+
+            questions = [];
+            while (questions.length < total) {
+                questions = questions.concat(pool);
+            }
+            questions = questions.slice(0, total);
+            document.getElementById('total-questions').textContent = questions.length;
+        }
+
+        function resetAllStyles() {
+            Object.keys(regionLayers).forEach(function (key) {
+                regionLayers[key].setStyle({
+                    color: '#ffffff',
+                    weight: 1,
+                    fillColor: COLOR_DEFAULT,
+                    fillOpacity: 0.55
+                });
+            });
+        }
+
+        function loadQuestion() {
+            if (current >= questions.length) { showResults(); return; }
+
+            answered = false;
+            if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
+            if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
+
+            var targetKey = questions[current];
+            var parts     = targetKey.split('|');
+            var names     = regionDisplayName(parts[0], parts[1]);
+
+            document.getElementById('current-question').textContent = current + 1;
+            document.getElementById('target-country').innerHTML =
+                '<span class="target-country-name">' + escapeHtml(names.region) + '</span>' +
+                '<span class="target-country-sub">' + escapeHtml(names.country) + '</span>';
+
+            resetAllStyles();
+
+            var banner = document.getElementById('feedback-banner');
+            banner.className = 'feedback-banner';
+            banner.textContent = '';
+
+            var btn = document.getElementById('submit-btn');
+            btn.classList.add('hidden');
+
+            var fb = document.getElementById('feedback-row');
+            fb.textContent = '';
+            fb.className   = 'feedback-row hidden';
+
+            map.setView(EUROPE_CENTER, EUROPE_ZOOM);
+        }
+
+        function escapeHtml(str) {
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function handleRegionClick(clickedKey, clickedLayer) {
+            answered = true;
+
+            var targetKey   = questions[current];
+            var isRight     = clickedKey === targetKey;
+            var targetLayer = regionLayers[targetKey];
+
+            var clickedParts = clickedKey.split('|');
+            var clickedNames = regionDisplayName(clickedParts[0], clickedParts[1]);
+            var targetParts  = targetKey.split('|');
+            var targetNames  = regionDisplayName(targetParts[0], targetParts[1]);
+
+            var clickedLabel = clickedNames.region + ' (' + clickedNames.country + ')';
+            var targetLabel  = targetNames.region + ' (' + targetNames.country + ')';
+
+            var banner = document.getElementById('feedback-banner');
+            var fb     = document.getElementById('feedback-row');
+
+            if (isRight) {
+                score++;
+                document.getElementById('score').textContent = score;
+                clickedLayer.setStyle({ fillColor: COLOR_CORRECT, fillOpacity: 0.8, weight: 2 });
+
+                banner.textContent = '✓ Richtig! ' + targetLabel;
+                banner.className = 'feedback-banner correct show';
+                fb.textContent = '✓ Richtig! Das war ' + targetLabel + '.';
+                fb.className   = 'feedback-row correct';
+            } else {
+                clickedLayer.setStyle({ fillColor: COLOR_WRONG, fillOpacity: 0.8, weight: 2 });
+                if (targetLayer) {
+                    targetLayer.setStyle({ fillColor: COLOR_TARGET_REVEAL, fillOpacity: 0.8, weight: 2 });
+                    // Bring the correct region into view alongside the wrong click
+                    try {
+                        var bounds = L.latLngBounds(clickedLayer.getBounds()).extend(targetLayer.getBounds());
+                        map.flyToBounds(bounds.pad(0.6), { maxZoom: 7, duration: 0.5 });
+                    } catch (e) { /* geometry edge cases */ }
+                }
+
+                banner.textContent = '✗ Das war ' + clickedLabel + ' — gesucht war ' + targetLabel;
+                banner.className = 'feedback-banner incorrect show';
+                fb.textContent = '✗ Leider falsch — richtig wäre ' + targetLabel + ' gewesen.';
+                fb.className   = 'feedback-row incorrect';
+            }
+
+            var btn = document.getElementById('submit-btn');
+            btn.classList.remove('hidden');
+            btn.disabled = false;
+            var delay     = 2800;
+            var remaining = Math.ceil(delay / 1000);
+            btn.textContent = 'Weiter (' + remaining + ')';
+
+            countInterval = setInterval(function () {
+                remaining--;
+                if (remaining > 0) {
+                    btn.textContent = 'Weiter (' + remaining + ')';
+                } else {
+                    clearInterval(countInterval);
+                    countInterval = null;
+                }
+            }, 1000);
+
+            advanceTimer = setTimeout(function () { advance(); }, delay);
+        }
+
+        function advance() {
+            if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
+            if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
+            current++;
+            loadQuestion();
+        }
+
+        function showResults() {
+            var pct = Math.round((score / questions.length) * 100);
+            document.getElementById('final-score').textContent      = score;
+            document.getElementById('final-total').textContent      = questions.length;
+            document.getElementById('final-percentage').textContent = pct + '%';
+            document.getElementById('results-modal').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
