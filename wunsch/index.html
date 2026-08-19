@@ -1,421 +1,47 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/images/logo-w.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WISHLIST — 2026</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,200;0,300;0,400;0,600;0,800;0,900;1,200&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-    <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wunschliste</title>
 
-  gtag('config', 'G-76DWMSRP7P');
-</script>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
 
-    <div class="progress-bar" id="progressBar"></div>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <nav class="side-nav" id="sideNav" aria-label="Section navigation">
-      <a href="#hero"   class="side-nav__item active" data-label="INTRO">
-        <span class="side-nav__line"></span>
-      </a>
-      <a href="#item-1" class="side-nav__item" data-label="01 &mdash; Datejust 41 Grey">
-        <span class="side-nav__line"></span>
-      </a>
-      <a href="#item-2" class="side-nav__item" data-label="02 &mdash; Ralph Lauren USA">
-        <span class="side-nav__line"></span>
-      </a>
-      <a href="#item-3" class="side-nav__item" data-label="03 &mdash; Moncler Strickjacke">
-        <span class="side-nav__line"></span>
-      </a>
-       <a href="#item-4" class="side-nav__item" data-label="04 &mdash; Apple Vision Pro">
-        <span class="side-nav__line"></span>
-      </a> 
-      <a href="#item-5" class="side-nav__item" data-label="05 &mdash; Whoop">
-        <span class="side-nav__line"></span>
-      </a> 
-    </nav>
+  <div class="page">
 
-    <div class="panel-wrap" id="wrap-hero">
-      <section class="panel hero-panel" id="hero">
-        <div class="hero-bg-text" aria-hidden="true">WISH</div>
+    <header class="header">
+      <div class="header__row">
+        <h1 class="header__title">Wunschliste</h1>
+        <span class="header__count" id="count"></span>
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="Nach Wunschgrad filtern"></div>
+    </header>
 
-        <header class="site-header">
-          <span class="site-header__label">PERSONAL &mdash; 2026</span>
-          <span class="site-header__count">3 ITEMS</span>
-        </header>
+    <main>
+      <section class="grid" id="grid" aria-live="polite"></section>
+      <p class="empty" id="empty" hidden></p>
+    </main>
 
-        <div class="hero-content">
-          <h1 class="hero-title">
-            <span class="reveal-line"><span class="reveal-inner">WISH</span></span>
-            <span class="reveal-line reveal-line--offset"><span class="reveal-inner" style="--delay:0.12s">LIST</span></span>
-          </h1>
-          <p class="hero-sub">
-            <span class="reveal-fade" style="--delay:0.5s">A curated selection of things worth wanting.</span>
-          </p>
-        </div>
+  </div>
 
-        <div class="hero-scroll-hint" aria-hidden="true">
-          <div class="scroll-line"></div>
-          <span>SCROLL</span>
-        </div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="star" viewBox="0 0 20 20">
+        <path d="M10 1.5l2.47 5.18 5.65.62-4.2 3.98 1.13 5.6L10 13.9l-5.05 2.98 1.13-5.6-4.2-3.98 5.65-.62L10 1.5z"/>
+      </symbol>
+      <symbol id="arrow" viewBox="0 0 20 20">
+        <path d="M6 14L14 6M7.5 6H14v6.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+    </defs>
+  </svg>
 
-        <div class="hero-meta">
-          <span>VOL. I</span>
-          <span class="hero-meta__year">MMXXVI</span>
-        </div>
-      </section>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ITEM 01  image:left  info:right                              -->
-    <!-- ============================================================ -->
-    <div class="panel-wrap" id="wrap-item-1">
-      <section class="panel item-panel item-panel--left" id="item-1">
-        <span class="bg-number" aria-hidden="true">01</span>
-
-        <div class="item-inner">
-
-          <div class="item-image-col">
-            <div class="item-image-wrap js-tilt">
-              <div class="img-glow"></div>
-              <img
-                src="/wunsch/images/datejust.jpg"
-                alt="Datejust 41"
-                class="item-img"
-                loading="eager"
-                draggable="false"
-              />
-              <div class="img-shine"></div>
-            </div>
-          </div>
-
-          <div class="item-info-col">
-            <div class="item-info-inner">
-              <span class="item-count reveal-fade" style="--delay:0.3s">01</span>
-
-              <h2 class="item-title js-split-title">DATEJUST<br>41 GREY</h2>
-
-              <div class="divider"></div>
-
-              <div class="item-details">
-                <div class="detail-row" style="--row:0">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 .5v13M4.5 3.5C4.5 2.4 5.67 1.5 7 1.5s2.5.9 2.5 2-.86 1.62-1.88 1.88L6.38 6C5.3 6.25 4.5 7.1 4.5 8s.86 1.87 1.87 2.12L7.62 10.38C8.7 10.62 9.5 11.48 9.5 12.5s-1.12 2-2.5 2-2.5-.9-2.5-2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">PRICE</span>
-                    <span class="detail-value">9.450 EUR</span>
-                  </div>
-                </div>
-
-                <div class="detail-row" style="--row:1">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="7,0.5 8.8,4.5 13.2,5.1 10,8.1 10.9,12.4 7,10.3 3.1,12.4 4,8.1 0.8,5.1 5.2,4.5" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">PRIORITY</span>
-                    <span class="detail-value priority--high">HIGH</span>
-                  </div>
-                </div>
-
-                <div class="detail-row" style="--row:2">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">LINK</span>
-                    <a href="https://www.rolex.com/de/watches/datejust/m126334-0013" target="_blank" rel="noopener" class="detail-link">ROLEX.COM</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ITEM 02  image:right  info:left                              -->
-    <!-- ============================================================ -->
-    <div class="panel-wrap" id="wrap-item-2">
-      <section class="panel item-panel item-panel--right" id="item-2">
-        <span class="bg-number" aria-hidden="true">02</span>
-
-        <div class="item-inner">
-
-          <div class="item-info-col">
-            <div class="item-info-inner">
-              <span class="item-count reveal-fade" style="--delay:0.3s">02</span>
-
-              <h2 class="item-title js-split-title">RALPH<br>LAUREN<br>USA</h2>
-
-              <div class="divider"></div>
-
-              <div class="item-details">
-                <div class="detail-row" style="--row:0">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 .5v13M4.5 3.5C4.5 2.4 5.67 1.5 7 1.5s2.5.9 2.5 2-.86 1.62-1.88 1.88L6.38 6C5.3 6.25 4.5 7.1 4.5 8s.86 1.87 1.87 2.12L7.62 10.38C8.7 10.62 9.5 11.48 9.5 12.5s-1.12 2-2.5 2-2.5-.9-2.5-2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">PRICE</span>
-                    <span class="detail-value">495 EUR</span>
-                  </div>
-                </div>
-
-                <div class="detail-row" style="--row:1">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="7,0.5 8.8,4.5 13.2,5.1 10,8.1 10.9,12.4 7,10.3 3.1,12.4 4,8.1 0.8,5.1 5.2,4.5" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">PRIORITY</span>
-                    <span class="detail-value priority--mid">MEDIUM</span>
-                  </div>
-                </div>
-
-                <div class="detail-row" style="--row:2">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">LINK</span>
-                    <a href="https://www.ralphlauren.de/de/der-klassische-flaggenpullover-3616854058028.html" target="_blank" rel="noopener" class="detail-link">RALPHLAUREN.DE</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="item-image-col">
-            <div class="item-image-wrap js-tilt">
-              <div class="img-glow"></div>
-              <img
-                src="/wunsch/images/rl-usa.webp"
-                alt="Ralph Lauren USA "
-                class="item-img"
-                loading="lazy"
-                draggable="false"
-              />
-              <div class="img-shine"></div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ITEM 03  image:left  info:right                              -->
-    <!-- ============================================================ -->
-    <div class="panel-wrap" id="wrap-item-3">
-      <section class="panel item-panel item-panel--left" id="item-3">
-        <span class="bg-number" aria-hidden="true">03</span>
-
-        <div class="item-inner">
-
-          <div class="item-image-col">
-            <div class="item-image-wrap js-tilt">
-              <div class="img-glow"></div>
-              <img
-                src="/wunsch/images/moncler-strickjacke.avif"
-                alt="Moncler Strickjacke"
-                class="item-img"
-                loading="lazy"
-                draggable="false"
-              />
-              <div class="img-shine"></div>
-            </div>
-          </div>
-
-          <div class="item-info-col">
-            <div class="item-info-inner">
-              <span class="item-count reveal-fade" style="--delay:0.3s">03</span>
-
-              <h2 class="item-title js-split-title">MONCLER<br>Strickjacke</h2>
-
-              <div class="divider"></div>
-
-              <div class="item-details">
-                <div class="detail-row" style="--row:0">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 .5v13M4.5 3.5C4.5 2.4 5.67 1.5 7 1.5s2.5.9 2.5 2-.86 1.62-1.88 1.88L6.38 6C5.3 6.25 4.5 7.1 4.5 8s.86 1.87 1.87 2.12L7.62 10.38C8.7 10.62 9.5 11.48 9.5 12.5s-1.12 2-2.5 2-2.5-.9-2.5-2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">PRICE</span>
-                    <span class="detail-value">830 EUR</span>
-                  </div>
-                </div>
-
-                <div class="detail-row" style="--row:1">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="7,0.5 8.8,4.5 13.2,5.1 10,8.1 10.9,12.4 7,10.3 3.1,12.4 4,8.1 0.8,5.1 5.2,4.5" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">PRIORITY</span>
-                    <span class="detail-value priority--high">HIGH</span>
-                  </div>
-                </div>
-
-                <div class="detail-row" style="--row:2">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">LINK</span>
-                    <a href="https://www.moncler.com/de-de/herren/ready-to-wear/pullover-und-cardigans/gepolsterte-strickjacke-mit-reissverschluss-navyblau-L20919B50700A9341777.html" target="_blank" rel="noopener" class="detail-link">MONCLER.COM</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-    </div>
-
-     <div class="panel-wrap" id="wrap-item-2">
-      <section class="panel item-panel item-panel--right" id="item-2">
-        <span class="bg-number" aria-hidden="true">04</span>
-
-        <div class="item-inner">
-
-          <div class="item-info-col">
-            <div class="item-info-inner">
-              <span class="item-count reveal-fade" style="--delay:0.3s">04</span>
-
-              <h2 class="item-title js-split-title">Apple<br>vision pro</h2>
-
-              <div class="divider"></div>
-
-              <div class="item-details">
-                <div class="detail-row" style="--row:0">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 .5v13M4.5 3.5C4.5 2.4 5.67 1.5 7 1.5s2.5.9 2.5 2-.86 1.62-1.88 1.88L6.38 6C5.3 6.25 4.5 7.1 4.5 8s.86 1.87 1.87 2.12L7.62 10.38C8.7 10.62 9.5 11.48 9.5 12.5s-1.12 2-2.5 2-2.5-.9-2.5-2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">PRICE</span>
-                    <span class="detail-value">3.999 EUR</span>
-                  </div>
-                </div>
-
-                <div class="detail-row" style="--row:1">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="7,0.5 8.8,4.5 13.2,5.1 10,8.1 10.9,12.4 7,10.3 3.1,12.4 4,8.1 0.8,5.1 5.2,4.5" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">PRIORITY</span>
-                    <span class="detail-value priority--mid">MEDIUM</span>
-                  </div>
-                </div>
-
-                <div class="detail-row" style="--row:2">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">LINK</span>
-                    <a href="https://www.apple.com/de/shop/buy-vision/apple-vision-pro" target="_blank" rel="noopener" class="detail-link">APPLE.COM</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="item-image-col">
-            <div class="item-image-wrap js-tilt">
-              <div class="img-glow"></div>
-              <img
-                src="/wunsch/images/avp.jpg"
-                alt="Apple Vision Pro"
-                class="item-img"
-                loading="lazy"
-                draggable="false"
-              />
-              <div class="img-shine"></div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-    </div>
-
-     <div class="panel-wrap" id="wrap-item-3">
-      <section class="panel item-panel item-panel--left" id="item-3">
-        <span class="bg-number" aria-hidden="true">03</span>
-
-        <div class="item-inner">
-
-          <div class="item-image-col">
-            <div class="item-image-wrap js-tilt">
-              <div class="img-glow"></div>
-              <img
-                src="/wunsch/images/whoop.png"
-                alt="Whoop"
-                class="item-img"
-                loading="lazy"
-                draggable="false"
-              />
-              <div class="img-shine"></div>
-            </div>
-          </div>
-
-          <div class="item-info-col">
-            <div class="item-info-inner">
-              <span class="item-count reveal-fade" style="--delay:0.3s">03</span>
-
-              <h2 class="item-title js-split-title">WHOOP <br> Membership</h2>
-
-              <div class="divider"></div>
-
-              <div class="item-details">
-                <div class="detail-row" style="--row:0">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 .5v13M4.5 3.5C4.5 2.4 5.67 1.5 7 1.5s2.5.9 2.5 2-.86 1.62-1.88 1.88L6.38 6C5.3 6.25 4.5 7.1 4.5 8s.86 1.87 1.87 2.12L7.62 10.38C8.7 10.62 9.5 11.48 9.5 12.5s-1.12 2-2.5 2-2.5-.9-2.5-2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">PRICE</span>
-                    <span class="detail-value">260 EUR</span>
-                  </div>
-                </div>
-
-                <div class="detail-row" style="--row:1">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polygon points="7,0.5 8.8,4.5 13.2,5.1 10,8.1 10.9,12.4 7,10.3 3.1,12.4 4,8.1 0.8,5.1 5.2,4.5" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">PRIORITY</span>
-                    <span class="detail-value priority--medium">MEDIUM</span>
-                  </div>
-                </div>
-
-                <div class="detail-row" style="--row:2">
-                  <div class="detail-icon">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div class="detail-text">
-                    <span class="detail-label">LINK</span>
-                    <a href="https://join.whoop.com/de/de/bands/?tier=PEAK" target="_blank" rel="noopener" class="detail-link">WHOOP.COM</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-    </div>
-
-    <div class="end-spacer">
-      <p class="end-text" aria-hidden="true">FIN.</p>
-    </div>
-
-    <script type="module" src="main.js"></script>
-  </body>
+  <script src="wishes.js"></script>
+  <script src="app.js"></script>
+</body>
 </html>

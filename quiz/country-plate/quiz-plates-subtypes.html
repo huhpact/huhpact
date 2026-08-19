@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kennzeichenarten-Quiz</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+      <link rel="icon" type="image/png" href="/quiz/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/quiz/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/quiz/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/quiz/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Quizzy" />
+    <link rel="manifest" href="/quiz/favicon/site.webmanifest" />
+    <style>
+        /* ── Plate stage ── */
+        .plate-stage {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem 2rem;
+            margin-bottom: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 220px;
+            box-shadow: var(--shadow-md);
+            gap: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plate-stage::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(232,100,58,0.03) 0%, transparent 60%),
+                radial-gradient(circle at 80% 50%, rgba(0,0,153,0.03) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .plate-mode-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            position: relative;
+        }
+
+        #plate-render {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100px;
+        }
+
+        .plate-image-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: plateIn 0.38s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+        }
+
+        @keyframes plateIn {
+            from { opacity: 0; transform: perspective(600px) rotateX(18deg) scale(0.82); }
+            to   { opacity: 1; transform: perspective(600px) rotateX(0deg) scale(1); }
+        }
+
+        .plate-image {
+            width: 320px;
+            height: auto;
+            border-radius: 5px;
+            display: block;
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .plate-error-msg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        /* ── Input area: zwei gekoppelte Felder ── */
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        .dual-input-row {
+            display: flex;
+            gap: 0.75rem;
+            width: 100%;
+            align-items: flex-start;
+        }
+
+        .input-col {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            position: relative;
+        }
+
+        .input-col-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        /* Links: Länder-Live-Suche */
+        .plate-input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1.1rem;
+            font-size: 1rem;
+            color: var(--text);
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.18s, box-shadow 0.18s;
+            box-sizing: border-box;
+        }
+
+        .plate-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(232,100,58,0.13);
+        }
+
+        .plate-input.country-chosen {
+            border-color: #22c55e;
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        .plate-input.correct {
+            border-color: #22c55e;
+            background: rgba(34,197,94,0.07);
+            color: #22c55e;
+        }
+
+        .plate-input.incorrect {
+            border-color: #ef4444;
+            background: rgba(239,68,68,0.07);
+            color: #ef4444;
+        }
+
+        .plate-input:disabled { opacity: 1; cursor: default; }
+
+        .country-search-results {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            z-index: 20;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            max-height: 220px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding: 0.35rem;
+            gap: 0.15rem;
+        }
+
+        .country-search-results.hidden { display: none; }
+
+        .country-result-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm, 6px);
+            padding: 0.55rem 0.65rem;
+            font-family: inherit;
+            font-size: 0.92rem;
+            color: var(--text);
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.12s;
+        }
+
+        .country-result-item:hover,
+        .country-result-item.active {
+            background: rgba(232,100,58,0.1);
+        }
+
+        .country-result-code {
+            font-family: 'Courier New', monospace;
+            font-weight: 900;
+            font-size: 0.78rem;
+            color: #003399;
+            background: #FFD700;
+            border-radius: 3px;
+            padding: 1px 6px;
+            min-width: 1.6em;
+            text-align: center;
+        }
+
+        .country-result-name {
+            flex: 1;
+        }
+
+        /* Rechts: Unterkennzeichen-Dropdown */
+        .subtype-select-wrap.disabled {
+            opacity: 0.55;
+        }
+
+        .subtype-select {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1.1rem;
+            font-size: 1rem;
+            color: var(--text);
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.18s, box-shadow 0.18s;
+            box-sizing: border-box;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.9rem center;
+            background-size: 18px;
+            padding-right: 2.4rem;
+        }
+
+        .subtype-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(232,100,58,0.13);
+        }
+
+        .subtype-select:disabled {
+            cursor: not-allowed;
+        }
+
+        .subtype-select.correct {
+            border-color: #22c55e;
+            background-color: rgba(34,197,94,0.07);
+            color: #22c55e;
+        }
+
+        .subtype-select.incorrect {
+            border-color: #ef4444;
+            background-color: rgba(239,68,68,0.07);
+            color: #ef4444;
+        }
+
+        .submit-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .submit-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.85rem 2.4rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .submit-btn:hover   { opacity: 0.88; }
+        .submit-btn:active  { transform: scale(0.97); }
+        .submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+        /* ── Feedback ── */
+        .feedback-row {
+            min-height: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .feedback-row.correct   { color: #22c55e; }
+        .feedback-row.incorrect { color: #ef4444; }
+        .feedback-row.hidden    { opacity: 0; }
+
+        .hint-text {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-align: center;
+            min-height: 1.3em;
+        }
+
+        @media (max-width: 520px) {
+            .dual-input-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-top-bar">
+            <div class="score-display">
+                <span class="score-label">Score:</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="progress-display">
+                <span id="current-question">1</span> / <span id="total-questions">10</span>
+            </div>
+        </div>
+
+        <main class="quiz-container">
+            <div class="plate-stage">
+                <p class="plate-mode-label">Welches Land und welche Kennzeichenart ist das?</p>
+                <div id="plate-render"></div>
+            </div>
+
+            <div class="input-area">
+                <div class="dual-input-row">
+                    <div class="input-col">
+                        <label class="input-col-label" for="country-search-input">Land</label>
+                        <input
+                            type="text"
+                            class="plate-input"
+                            id="country-search-input"
+                            placeholder="Land eingeben, z. B. deu…"
+                            autocomplete="off"
+                            autocorrect="off"
+                            spellcheck="false"
+                        />
+                        <div class="country-search-results hidden" id="country-search-results"></div>
+                    </div>
+                    <div class="input-col subtype-select-wrap disabled" id="subtype-select-wrap">
+                        <label class="input-col-label" for="subtype-select">Kennzeichenart</label>
+                        <select class="subtype-select" id="subtype-select" disabled>
+                            <option value="" disabled selected>Erst Land auswählen…</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="submit-row">
+                    <button class="submit-btn" id="submit-btn">Prüfen</button>
+                </div>
+                <div class="feedback-row hidden" id="feedback-row"></div>
+                <div class="hint-text" id="hint-text"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="results-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="neon-text">Quiz beendet!</h2>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="final-score">0</span>
+                    <span class="stat-label">Richtig</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-total">10</span>
+                    <span class="stat-label">Gesamt</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-percentage">0%</span>
+                    <span class="stat-label">Genauigkeit</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="window.location.reload()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Nochmal
+                </button>
+                <button class="modal-btn secondary" onclick="window.location.href='/quiz/index.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Zur Startseite
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="plates-subtypes-data.js"></script>
+    <script src="plates-subtypes-init.js"></script>
+    <script>
+        var questions     = [];
+        var current       = 0;
+        var score         = 0;
+        var answered      = false;
+        var advanceTimer  = null;
+        var countInterval = null;
+        var currentSelection = { country: null, subtype: null };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var total = parseInt(sessionStorage.getItem('platesSubtypesQuestions')) || 10;
+
+            // Fragenpool: jede Kombination aus Land + Unterkennzeichen-Typ
+            // ist eine mögliche Frage.
+            var pool = [];
+            PLATE_COUNTRIES.forEach(function (country) {
+                country.subtypes.forEach(function (subtype) {
+                    pool.push({ country: country, subtype: subtype });
+                });
+            });
+
+            if (pool.length < 1) {
+                alert('Keine Einträge in der Kennzeichen-Datenbank gefunden.');
+                window.location.href = 'quiz-plates-subtypes-setup.html';
+                return;
+            }
+
+            // Shuffle
+            for (var i = pool.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+            }
+
+            questions = pool.slice(0, Math.min(total, pool.length));
+            document.getElementById('total-questions').textContent = questions.length;
+
+            // UI-Modul initialisieren; wird bei jeder Auswahländerung informiert
+            PlatesSubtypeUI.init(function (selection) {
+                currentSelection = selection;
+            });
+
+            document.getElementById('submit-btn').addEventListener('click', function () {
+                submitAnswer();
+            });
+
+            loadQuestion();
+        });
+
+        // Löst subtype.image zu einer tatsächlichen URL auf.
+        // - beginnt der Pfad mit '/' oder 'http' (absolut): unverändert
+        //   verwenden, IMG_BASE_PATH wird ignoriert.
+        // - sonst (relativ): an IMG_BASE_PATH angehängt.
+        // Die Dateiendung kommt in jedem Fall direkt aus dem image-Feld
+        // der Datenbank — hier wird nichts mehr automatisch ergänzt.
+        function resolveImagePath(imagePath) {
+            if (!imagePath) return '';
+            if (/^(https?:)?\/\//.test(imagePath) || imagePath.charAt(0) === '/') {
+                return imagePath;
+            }
+            var base = (typeof IMG_BASE_PATH === 'string' ? IMG_BASE_PATH : '').replace(/\/+$/, '');
+            var rel  = imagePath.replace(/^\/+/, '');
+            return base ? (base + '/' + rel) : rel;
+        }
+
+        function loadQuestion() {
+            if (current >= questions.length) { showResults(); return; }
+
+            answered = false;
+            if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
+            if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
+
+            var q = questions[current];
+            document.getElementById('current-question').textContent = current + 1;
+
+            // Bild aufbauen
+            var render = document.getElementById('plate-render');
+            render.innerHTML = '';
+
+            var wrapper = document.createElement('div');
+            wrapper.className = 'plate-image-wrapper';
+
+            var imgEl = document.createElement('img');
+            imgEl.className = 'plate-image';
+            imgEl.alt = q.country.name + ' – ' + q.subtype.name;
+
+            var resolvedSrc = resolveImagePath(q.subtype.image);
+
+            imgEl.onerror = function () {
+                imgEl.onerror = null;
+                imgEl.style.display = 'none';
+                var err = document.createElement('div');
+                err.className = 'plate-error-msg';
+                err.textContent = '⚠ Bild nicht gefunden: ' + resolvedSrc;
+                wrapper.appendChild(err);
+            };
+
+            imgEl.src = resolvedSrc;
+            wrapper.appendChild(imgEl);
+            render.appendChild(wrapper);
+
+            // Eingabefelder zurücksetzen
+            PlatesSubtypeUI.reset();
+            currentSelection = { country: null, subtype: null };
+
+            document.getElementById('country-search-input').classList.remove('correct', 'incorrect');
+            document.getElementById('subtype-select').classList.remove('correct', 'incorrect');
+
+            var btn = document.getElementById('submit-btn');
+            btn.disabled    = false;
+            btn.textContent = 'Prüfen';
+
+            var fb = document.getElementById('feedback-row');
+            fb.textContent = '';
+            fb.className   = 'feedback-row hidden';
+            document.getElementById('hint-text').textContent = '';
+
+            setTimeout(function () {
+                document.getElementById('country-search-input').focus();
+            }, 80);
+        }
+
+        function submitAnswer() {
+            if (answered) { advance(); return; }
+
+            var q = questions[current];
+            var chosenCountry = currentSelection.country;
+            var chosenSubtype = currentSelection.subtype;
+
+            if (!chosenCountry || !chosenSubtype) {
+                var fbEarly = document.getElementById('feedback-row');
+                fbEarly.textContent = 'Bitte zuerst Land und Kennzeichenart wählen.';
+                fbEarly.className   = 'feedback-row hidden';
+                fbEarly.classList.remove('hidden');
+                fbEarly.style.color = 'var(--text-muted)';
+                return;
+            }
+
+            answered = true;
+            PlatesSubtypeUI.lock();
+
+            var countryInput   = document.getElementById('country-search-input');
+            var subtypeSelect  = document.getElementById('subtype-select');
+            var fb             = document.getElementById('feedback-row');
+
+            var countryRight = chosenCountry.id === q.country.id;
+            var subtypeRight = chosenSubtype.id === q.subtype.id;
+            var isRight       = countryRight && subtypeRight;
+
+            countryInput.classList.remove('country-chosen');
+            countryInput.classList.add(countryRight ? 'correct' : 'incorrect');
+            subtypeSelect.classList.add(subtypeRight ? 'correct' : 'incorrect');
+
+            fb.style.color = '';
+
+            if (isRight) {
+                score++;
+                document.getElementById('score').textContent = score;
+                fb.textContent = '✓ Richtig! ' + q.country.name + ' – ' + q.subtype.name;
+                fb.className   = 'feedback-row correct';
+            } else {
+                fb.textContent = '✗ Richtig wäre: ' + q.country.name + ' – ' + q.subtype.name;
+                fb.className   = 'feedback-row incorrect';
+                document.getElementById('hint-text').textContent = q.country.name + ' – ' + q.subtype.name;
+            }
+
+            var btn       = document.getElementById('submit-btn');
+            btn.disabled  = false;
+            var delay     = isRight ? 1800 : 2500;
+            var remaining = Math.ceil(delay / 1000);
+            btn.textContent = 'Weiter (' + remaining + ')';
+
+            countInterval = setInterval(function () {
+                remaining--;
+                if (remaining > 0) {
+                    btn.textContent = 'Weiter (' + remaining + ')';
+                } else {
+                    clearInterval(countInterval);
+                    countInterval = null;
+                }
+            }, 1000);
+
+            advanceTimer = setTimeout(function () { advance(); }, delay);
+        }
+
+        function advance() {
+            if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
+            if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
+            current++;
+            loadQuestion();
+        }
+
+        function showResults() {
+            var pct = Math.round((score / questions.length) * 100);
+            document.getElementById('final-score').textContent      = score;
+            document.getElementById('final-total').textContent      = questions.length;
+            document.getElementById('final-percentage').textContent = pct + '%';
+            document.getElementById('results-modal').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
