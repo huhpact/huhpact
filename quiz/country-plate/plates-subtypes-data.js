@@ -115,6 +115,18 @@ var PLATE_COUNTRIES = [
         name: 'Export-Kennzeichen',
         image: '/quiz/country-plate/img/de-exp.webp',
         aliases: ['Export']
+      },
+       {
+        id: 'wechsel',
+        name: 'Wechsel-Kennzeichen',
+        image: '/quiz/country-plate/img/de-wechsel.png',
+        aliases: ['wechsel']
+      },
+        {
+        id: 'moped',
+        name: 'Moped-Kennzeichen',
+        image: '/quiz/country-plate/img/de-moped.png',
+        aliases: ['moped']
       }
     ]
   },
@@ -418,6 +430,12 @@ var PLATE_COUNTRIES = [
         image: '/quiz/country-plate/img/bg-ev.webp',
         aliases: ['elektrofahrzeug-kennzeichen']
       },
+      	{
+        id: 'cd',
+        name: 'Diplomatenkennzeichen',
+        image: '/quiz/country-plate/img/bg-cd.png',
+        aliases: ['diplomatisches kennzeichen']
+      }
 			
     ]
   },
@@ -456,6 +474,12 @@ var PLATE_COUNTRIES = [
         name: 'Diplomatenkennzeichen',
         image: '/quiz/country-plate/img/dk-cd.webp',
         aliases: ['diplomatisches kennzeichen']
+      },
+      {
+        id: 'temp',
+        name: 'temporäres Kennzeichen',
+        image: '/quiz/country-plate/img/dk-temp.png',
+        aliases: ['temp kennzeichen']
       },
 			
     ]
@@ -1878,6 +1902,30 @@ var PLATE_COUNTRIES = [
         name: 'Anhänger-Kennzeichen',
         image: '/quiz/country-plate/img/by-anhaenger.webp',
         aliases: ['anhaenger-kennzeichen']
+      },
+      {
+        id: 'ev',
+        name: 'Elektro-Kennzeichen',
+        image: '/quiz/country-plate/img/by-ev.png',
+        aliases: ['ev-kennzeichen']
+      },
+      {
+        id: 'diplomat',
+        name: 'Diplomatenkennzeichen',
+        image: '/quiz/country-plate/img/by-cd.png',
+        aliases: ['diplomatisches kennzeichen']
+      },
+       {
+        id: 'taxi',
+        name: 'Taxi-Kennzeichen',
+        image: '/quiz/country-plate/img/by-taxi.png',
+        aliases: ['Taxi kennzeichen']
+      },
+       {
+        id: 'temp',
+        name: 'temporäres Kennzeichen',
+        image: '/quiz/country-plate/img/by-temp.png',
+        aliases: ['temp kennzeichen']
       }
     ]
   },
