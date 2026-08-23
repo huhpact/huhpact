@@ -51,5 +51,12 @@ const WISHES = [
     rating: 2,
     link: "https://www.anker.com/de/products/a1695-anker-powerbank-25000mah-165w",
     note: ""
+  },
+  {
+    title: "Cloudswift 4 AD",
+    image: "/wunsch/images/on.avif",
+    rating: 3,
+    link: "https://www.on.com/de-de/products/cloudswift-4-ad-3mf1057/mens/glacier-black-shoes-3MF10570117",
+    note: ""
   }
 ];
