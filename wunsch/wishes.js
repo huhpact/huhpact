@@ -26,9 +26,9 @@ const WISHES = [
   },
   {
     title: "Moncler Strickjacke",
-    image: "/wunsch/images/moncler.avif",
+    image: "/wunsch/images/monc.webp",
     rating: 4,
-    link: "https://www.moncler.com/de-de/herren/ready-to-wear/pullover-und-cardigans/gepolsterte-strickjacke-mit-reissverschluss-navyblau-L20919B50700A9341777.html",
+    link: "https://www.farfetch.com/fr/shopping/men/moncler-veste-a-design-matelasse-item-32394674.aspx",
     note: ""
   },
   {
@@ -53,10 +53,46 @@ const WISHES = [
     note: ""
   },
   {
-    title: "Cloudswift 4 AD",
-    image: "/wunsch/images/on.avif",
+    title: "Cloudtilt On",
+    image: "/wunsch/images/on.webp",
     rating: 3,
-    link: "https://www.on.com/de-de/products/cloudswift-4-ad-3mf1057/mens/glacier-black-shoes-3MF10570117",
+    link: "https://www.farfetch.com/fr/shopping/men/on-baskets-cloudtilt-blackivory-item-24184032.aspx",
     note: ""
-  }
+  },
+  {
+    title: "Oral B IO 10",
+    image: "/wunsch/images/oralb.webp",
+    rating: 3,
+    link: "https://www.oralb.de/de-de/produkte/elektrische-zahnbuerste/oral-b-io-10-elektrische-zahnbuerste-reise-etui?variation=13936276",
+    note: ""
+  },
+  {
+    title: "Ami Paris Sweatshirt",
+    image: "/wunsch/images/ami.webp",
+    rating: 3,
+    link: "https://www.farfetch.com/fr/shopping/men/ami-paris-pull-ami-de-coeur-en-maille-intarsia-item-30651156.aspx",
+    note: ""
+  },
+   {
+    title: "Steven 8479",
+    image: "/wunsch/images/pri.webp",
+    rating: 3,
+    link: "https://premiata.eu/collections/steven/products/ste08479",
+    note: ""
+  },
+   {
+    title: "Cabin Plus",
+    image: "/wunsch/images/rimowa.avif",
+    rating: 2,
+    link: "https://www.rimowa.com/de/de/luggage/colour/silver/cabin-plus/92556004.html",
+    note: ""
+  },
+  {
+    title: "Alpha 7",
+    image: "/wunsch/images/alpha3.jpg",
+    rating: 3,
+    link: "https://www.sony.de/electronics/alpha7",
+    note: ""
+  },
+  
 ];
