@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kennzeichen-Quiz</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+     <link rel="icon" type="image/png" href="/quiz/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/quiz/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/quiz/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/quiz/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Quizzy" />
+    <link rel="manifest" href="/quiz/favicon/site.webmanifest" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <style>
+        /* ── Question stage: license plate image ── */
+        .question-stage {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem 1.75rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+
+        .question-stage-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.65rem;
+        }
+
+        .plate-frame {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: min(100%, 360px);
+            height: 90px;
+            box-sizing: border-box;
+            padding: 0.5rem;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            animation: plateIn 0.35s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+        }
+
+        .plate-frame img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+        }
+
+        .plate-frame.missing {
+            padding: 1.4rem 1.8rem;
+            border: 1.5px dashed var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        @keyframes plateIn {
+            from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ── Map ── */
+        .map-wrap {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        #map-canvas {
+            width: 100%;
+            height: 460px;
+            background: #aad3df;
+        }
+
+        .map-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            z-index: 999;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            gap: 0.6rem;
+        }
+
+        .map-loading.hidden { display: none; }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 640px) {
+            #map-canvas { height: 340px; }
+            .plate-frame {
+                width: min(100%, 360px);
+                height: 70px;
+            }
+        }
+
+        .leaflet-interactive { cursor: pointer; }
+
+        /* ── Feedback banner (overlays map briefly) ── */
+        .feedback-banner {
+            position: absolute;
+            top: 0.6rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px);
+            z-index: 700;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.55rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            white-space: nowrap;
+            max-width: calc(100% - 1.6rem);
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .feedback-banner.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .feedback-banner.correct   { color: #22c55e; border-color: #22c55e; }
+        .feedback-banner.incorrect { color: #ef4444; border-color: #ef4444; }
+
+        /* ── Action row ── */
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            width: 100%;
+        }
+
+        .submit-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.4rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+            white-space: nowrap;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .submit-btn:hover   { opacity: 0.88; }
+        .submit-btn:active  { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.5; cursor: default; }
+
+        .feedback-row {
+            min-height: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .feedback-row.correct   { color: #22c55e; }
+        .feedback-row.incorrect { color: #ef4444; }
+        .feedback-row.hidden    { opacity: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-top-bar">
+            <div class="score-display">
+                <span class="score-label">Score:</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="progress-display">
+                <span id="current-question">1</span> / <span id="total-questions">10</span>
+            </div>
+        </div>
+
+        <main class="quiz-container">
+            <div class="question-stage">
+                <div class="question-stage-label">Zu welcher Region gehört dieses Kennzeichen?</div>
+                <div class="plate-frame" id="plate-frame">
+                    <img id="plate-img" src="" alt="Kennzeichen">
+                </div>
+            </div>
+
+            <div class="map-wrap" id="map-wrap">
+                <div class="map-loading" id="map-loading">
+                    <div class="spinner"></div>
+                    <span>Karte wird geladen …</span>
+                </div>
+                <div class="feedback-banner" id="feedback-banner"></div>
+                <div id="map-canvas"></div>
+            </div>
+
+            <div class="input-area">
+                <button class="submit-btn hidden" id="submit-btn">Weiter</button>
+                <div class="feedback-row hidden" id="feedback-row"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="results-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="neon-text">Quiz beendet!</h2>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="final-score">0</span>
+                    <span class="stat-label">Richtig</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-total">10</span>
+                    <span class="stat-label">Gesamt</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-percentage">0%</span>
+                    <span class="stat-label">Genauigkeit</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="window.location.href='kennzeichen-quiz-setup.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Nochmal
+                </button>
+                <button class="modal-btn secondary" onclick="window.location.href='/quiz/index.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Zur Startseite
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="departement-names-de.js"></script>
+    <script src="kreis-names-de.js"></script>
+    <script>
+        // ── Data sources per country ──
+        // Each country entry describes: its geojson file, how to read a stable region id
+        // and display name from a feature's properties, and how to read the valid plate
+        // code(s) for that feature (always normalized to an array).
+        var COUNTRIES = {
+            FR: {
+                label: 'Frankreich',
+                geojsonUrl: 'france-departements.geojson',
+                center: [46.6, 2.3],
+                bounds: [[40, -6], [52, 10]],
+                zoom: 6,
+                getRegionId: function (props) { return 'FR|' + props.code; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof departementNamesDE !== 'undefined' && departementNamesDE[props.code]) || props.name;
+                    return { region: name, country: 'Frankreich' };
+                }
+            },
+            DE: {
+                label: 'Deutschland',
+                geojsonUrl: 'germany-kreise.geojson',
+                center: [51.2, 10.4],
+                bounds: [[47, 5.5], [55.2, 15.5]],
+                zoom: 6,
+                getRegionId: function (props) { return 'DE|' + props.ags; },
+                getCodes: function (props) { return props.codes || []; },
+                getDisplayName: function (props) {
+                    var name = (typeof kreisNamesDE !== 'undefined' && kreisNamesDE[props.ags]) || props.name;
+                    return { region: name, country: 'Deutschland' };
+                }
+            }
+        };
+
+        // Combined view (both countries together)
+        var COMBINED_CENTER = [48.7, 5];
+        var COMBINED_BOUNDS = [[39, -6], [56, 16]];
+        var COMBINED_ZOOM   = 5;
+
+        // Where the license-plate PNGs live. Files are expected to be named by plate
+        // code, e.g. plates/75.png (France), plates/M.png / plates/AC.png (Germany).
+        // Both countries share the same folder/extension since codes never collide
+        // (French codes are numeric department codes or "2A"/"2B"; German codes are
+        // 1-3 letter Unterscheidungszeichen).
+        var PLATE_IMAGE_DIR = 'plates/';
+        var PLATE_IMAGE_EXT = '.png';
+
+        var TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors — Grenzen: <a href="https://github.com/gregoiredavid/france-geojson">france-geojson</a>, <a href="https://github.com/m-ad/geofeatures-ags-germany">geofeatures-ags-germany</a> — Kennzeichen: <a href="https://github.com/openpotato/kfz-kennzeichen">openpotato/kfz-kennzeichen</a>';
+
+        var map          = null;
+        var regionLayers  = {};  // region_id -> layer
+        var regionCodes   = {};  // region_id -> [codes]
+        var regionMeta    = {};  // region_id -> {region, country}
+        var questions      = []; // array of region_id (target for each question)
+        var questionCodes  = []; // array of the specific code shown for each question
+        var current         = 0;
+        var score           = 0;
+        var answered        = false;
+        var advanceTimer    = null;
+        var countInterval   = null;
+        var activeCountries  = ['FR', 'DE']; // set from sessionStorage
+        var viewCenter = COMBINED_CENTER, viewBounds = COMBINED_BOUNDS, viewZoom = COMBINED_ZOOM;
+
+        var COLOR_DEFAULT = '#94a3b8';
+        var COLOR_HOVER    = '#818cf8';
+        var COLOR_CORRECT  = '#22c55e';
+        var COLOR_WRONG    = '#ef4444';
+        var COLOR_TARGET_REVEAL = '#22c55e';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            activeCountries = readSelectedCountries();
+            computeView();
+            initMap();
+            loadAllGeoData();
+
+            document.getElementById('submit-btn').addEventListener('click', function () {
+                advance();
+            });
+        });
+
+        function readSelectedCountries() {
+            var raw = sessionStorage.getItem('plateQuizCountries');
+            if (!raw) return ['FR', 'DE'];
+            var list = raw.split(',').map(function (s) { return s.trim(); }).filter(function (s) { return COUNTRIES[s]; });
+            return list.length ? list : ['FR', 'DE'];
+        }
+
+        function computeView() {
+            if (activeCountries.length === 1) {
+                var c = COUNTRIES[activeCountries[0]];
+                viewCenter = c.center;
+                viewBounds = c.bounds;
+                viewZoom   = c.zoom;
+            } else {
+                viewCenter = COMBINED_CENTER;
+                viewBounds = COMBINED_BOUNDS;
+                viewZoom   = COMBINED_ZOOM;
+            }
+        }
+
+        function initMap() {
+            map = L.map('map-canvas', {
+                worldCopyJump: false,
+                minZoom: 4,
+                maxZoom: 11,
+                zoomControl: true,
+                maxBounds: viewBounds,
+                maxBoundsViscosity: 0.8
+            }).setView(viewCenter, viewZoom);
+
+            L.tileLayer(TILE_URL, {
+                attribution: TILE_ATTRIBUTION,
+                subdomains: 'abc',
+                maxZoom: 19
+            }).addTo(map);
+        }
+
+        function fetchWithFallback(urls, index) {
+            index = index || 0;
+            if (index >= urls.length) {
+                return Promise.reject(new Error('Alle Quellen fehlgeschlagen'));
+            }
+            return fetch(urls[index])
+                .then(function (res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .catch(function (err) {
+                    console.warn('GeoJSON-Quelle fehlgeschlagen (' + urls[index] + '):', err);
+                    return fetchWithFallback(urls, index + 1);
+                });
+        }
+
+        function loadAllGeoData() {
+            var loaders = activeCountries.map(function (code) {
+                var cfg = COUNTRIES[code];
+                return fetchWithFallback([cfg.geojsonUrl]).then(function (geojson) {
+                    return { code: code, geojson: geojson };
+                });
+            });
+
+            Promise.all(loaders)
+                .then(function (results) {
+                    results.forEach(function (r) {
+                        buildRegionLayers(r.code, r.geojson);
+                    });
+                    setupQuestions();
+                    document.getElementById('map-loading').classList.add('hidden');
+                    loadQuestion();
+                })
+                .catch(function (err) {
+                    document.getElementById('map-loading').innerHTML =
+                        '<span>⚠ Karte konnte nicht geladen werden. Bitte Seite neu laden.</span>';
+                    console.error('GeoJSON load failed:', err);
+                });
+        }
+
+        function buildRegionLayers(countryCode, geojson) {
+            var cfg = COUNTRIES[countryCode];
+            L.geoJSON(geojson, {
+                style: function () {
+                    return {
+                        color: '#ffffff',
+                        weight: 1,
+                        fillColor: COLOR_DEFAULT,
+                        fillOpacity: 0.55
+                    };
+                },
+                onEachFeature: function (feature, layer) {
+                    var props = feature.properties || {};
+                    var regionId = cfg.getRegionId(props);
+                    var codes    = cfg.getCodes(props).filter(function (c) { return !!c; });
+                    if (!regionId || codes.length === 0) return;
+
+                    regionLayers[regionId] = layer;
+                    regionCodes[regionId]  = codes;
+                    regionMeta[regionId]   = cfg.getDisplayName(props);
+
+                    layer.on('mouseover', function () {
+                        if (answered) return;
+                        layer.setStyle({ fillColor: COLOR_HOVER, fillOpacity: 0.75 });
+                    });
+                    layer.on('mouseout', function () {
+                        if (answered) return;
+                        layer.setStyle({ fillColor: COLOR_DEFAULT, fillOpacity: 0.55 });
+                    });
+                    layer.on('click', function () {
+                        if (answered) return;
+                        handleRegionClick(regionId, layer);
+                    });
+                }
+            }).addTo(map);
+        }
+
+        function setupQuestions() {
+            var total = parseInt(sessionStorage.getItem('plateQuizQuestions')) || 10;
+
+            var pool = Object.keys(regionLayers);
+
+            if (pool.length < 1) {
+                alert('Keine Regionen für diese Auswahl gefunden.');
+                window.location.href = 'kennzeichen-quiz-setup.html';
+                return;
+            }
+
+            // Shuffle
+            for (var i = pool.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+            }
+
+            questions = [];
+            while (questions.length < total) {
+                questions = questions.concat(pool);
+            }
+            questions = questions.slice(0, total);
+
+            // For each question, pick one concrete plate code at random from that
+            // region's valid codes (relevant mainly for Germany, where a Kreis can
+            // have several current/reactivated Unterscheidungszeichen).
+            questionCodes = questions.map(function (regionId) {
+                var codes = regionCodes[regionId] || [];
+                return codes[Math.floor(Math.random() * codes.length)];
+            });
+
+            document.getElementById('total-questions').textContent = questions.length;
+        }
+
+        function resetAllStyles() {
+            Object.keys(regionLayers).forEach(function (regionId) {
+                regionLayers[regionId].setStyle({
+                    color: '#ffffff',
+                    weight: 1,
+                    fillColor: COLOR_DEFAULT,
+                    fillOpacity: 0.55
+                });
+            });
+        }
+
+        function setPlateImage(code) {
+            var frame = document.getElementById('plate-frame');
+            var img   = document.getElementById('plate-img');
+
+            img.onerror = function () {
+                frame.classList.add('missing');
+                img.style.display = 'none';
+                frame.innerHTML = '<span>⚠ Kennzeichenbild fehlt: ' + PLATE_IMAGE_DIR + code + PLATE_IMAGE_EXT + '</span>';
+            };
+            img.onload = function () {
+                frame.classList.remove('missing');
+            };
+
+            frame.classList.remove('missing');
+            frame.innerHTML = '<img id="plate-img" src="" alt="Kennzeichen">';
+            var freshImg = document.getElementById('plate-img');
+            freshImg.onerror = img.onerror;
+            freshImg.onload  = img.onload;
+            freshImg.src = PLATE_IMAGE_DIR + code + PLATE_IMAGE_EXT;
+        }
+
+        function loadQuestion() {
+            if (current >= questions.length) { showResults(); return; }
+
+            answered = false;
+            if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
+            if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
+
+            var targetCode = questionCodes[current];
+
+            document.getElementById('current-question').textContent = current + 1;
+            setPlateImage(targetCode);
+
+            resetAllStyles();
+
+            var banner = document.getElementById('feedback-banner');
+            banner.className = 'feedback-banner';
+            banner.textContent = '';
+
+            var btn = document.getElementById('submit-btn');
+            btn.classList.add('hidden');
+            btn.style.display = 'none';
+
+            var fb = document.getElementById('feedback-row');
+            fb.textContent = '';
+            fb.className   = 'feedback-row hidden';
+
+            map.setView(viewCenter, viewZoom);
+        }
+
+        function escapeHtml(str) {
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function regionLabel(regionId) {
+            var meta = regionMeta[regionId];
+            if (!meta) return regionId;
+            return meta.region + ' (' + meta.country + ')';
+        }
+
+        function handleRegionClick(clickedId, clickedLayer) {
+            try {
+                handleRegionClickInner(clickedId, clickedLayer);
+            } catch (e) {
+                console.error('handleRegionClick failed:', e);
+                answered = true;
+                var btn = document.getElementById('submit-btn');
+                btn.classList.remove('hidden');
+                btn.style.display = '';
+                btn.disabled = false;
+                btn.textContent = 'Weiter';
+            }
+        }
+
+        function handleRegionClickInner(clickedId, clickedLayer) {
+            answered = true;
+
+            var targetId    = questions[current];
+            var isRight     = clickedId === targetId;
+            var targetLayer = regionLayers[targetId];
+
+            var clickedLabel = regionLabel(clickedId);
+            var targetLabel  = regionLabel(targetId);
+
+            var banner = document.getElementById('feedback-banner');
+            var fb     = document.getElementById('feedback-row');
+
+            if (isRight) {
+                score++;
+                document.getElementById('score').textContent = score;
+                clickedLayer.setStyle({ fillColor: COLOR_CORRECT, fillOpacity: 0.8, weight: 2 });
+
+                banner.textContent = '✓ Richtig! ' + targetLabel;
+                banner.className = 'feedback-banner correct show';
+                fb.textContent = '✓ Richtig! Das war ' + targetLabel + '.';
+                fb.className   = 'feedback-row correct';
+            } else {
+                clickedLayer.setStyle({ fillColor: COLOR_WRONG, fillOpacity: 0.8, weight: 2 });
+                if (targetLayer) {
+                    targetLayer.setStyle({ fillColor: COLOR_TARGET_REVEAL, fillOpacity: 0.8, weight: 2 });
+                    try {
+                        var bounds = L.latLngBounds(clickedLayer.getBounds()).extend(targetLayer.getBounds());
+                        map.flyToBounds(bounds.pad(0.6), { maxZoom: 9, duration: 0.5 });
+                    } catch (e) { /* geometry edge cases */ }
+                }
+
+                banner.textContent = '✗ Das war ' + clickedLabel + ' — gesucht war ' + targetLabel;
+                banner.className = 'feedback-banner incorrect show';
+                fb.textContent = '✗ Leider falsch — richtig wäre ' + targetLabel + ' gewesen.';
+                fb.className   = 'feedback-row incorrect';
+            }
+
+            var btn = document.getElementById('submit-btn');
+            btn.classList.remove('hidden');
+            btn.style.display = '';
+            btn.disabled = false;
+            var delay     = 2800;
+            var remaining = Math.ceil(delay / 1000);
+            btn.textContent = 'Weiter (' + remaining + ')';
+
+            countInterval = setInterval(function () {
+                remaining--;
+                if (remaining > 0) {
+                    btn.textContent = 'Weiter (' + remaining + ')';
+                } else {
+                    clearInterval(countInterval);
+                    countInterval = null;
+                }
+            }, 1000);
+
+            advanceTimer = setTimeout(function () { advance(); }, delay);
+        }
+
+        function advance() {
+            if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
+            if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
+            current++;
+            loadQuestion();
+        }
+
+        function showResults() {
+            var pct = Math.round((score / questions.length) * 100);
+            document.getElementById('final-score').textContent      = score;
+            document.getElementById('final-total').textContent      = questions.length;
+            document.getElementById('final-percentage').textContent = pct + '%';
+            document.getElementById('results-modal').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

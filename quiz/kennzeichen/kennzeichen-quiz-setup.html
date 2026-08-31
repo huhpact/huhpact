@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kennzeichen-Quiz – Setup</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+     <link rel="icon" type="image/png" href="/quiz/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/quiz/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/quiz/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/quiz/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Quizzy" />
+    <link rel="manifest" href="/quiz/favicon/site.webmanifest" />
+    <style>
+        .region-count-hint {
+            margin-top: 0.55rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* Country toggle chips, same visual language as the existing option-btn grid */
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.6rem;
+        }
+
+        .country-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            color: var(--text);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s, color 0.15s;
+        }
+
+        .country-btn .flag {
+            font-size: 1.15rem;
+            line-height: 1;
+        }
+
+        .country-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .country-btn.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .country-hint {
+            margin-top: 0.55rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="quiz-header">
+            <button class="back-btn" onclick="window.location.href='/quiz/index.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back
+            </button>
+            <h1 class="neon-text">Kennzeichen-Quiz</h1>
+        </header>
+        <main class="setup-container">
+            <div class="setup-card">
+                <div class="setup-section">
+                    <h2>Länder</h2>
+                    <div class="country-grid">
+                        <button class="country-btn active" data-country="FR">
+                            <span class="flag">🇫🇷</span> Frankreich
+                        </button>
+                        <button class="country-btn active" data-country="DE">
+                            <span class="flag">🇩🇪</span> Deutschland
+                        </button>
+                    </div>
+                    <p class="country-hint">Nichts ausgewählt = alle Länder</p>
+                </div>
+                <div class="setup-section">
+                    <h2>Anzahl der Fragen</h2>
+                    <div class="options-grid">
+                        <button class="option-btn active" data-questions="10">10</button>
+                        <button class="option-btn" data-questions="20">20</button>
+                        <button class="option-btn" data-questions="30">30</button>
+                        <button class="option-btn" data-questions="50">50</button>
+                    </div>
+                    <p class="region-count-hint" id="region-count-hint"></p>
+                </div>
+                <button class="start-btn" onclick="startQuiz()">
+                    Quiz starten
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </button>
+            </div>
+        </main>
+    </div>
+    <script>
+        var REGION_COUNTS = { FR: 96, DE: 402 };
+
+        var selectedQuestions = 10;
+        var selectedCountries = ['FR', 'DE']; // both active by default
+
+        var countryButtons = document.querySelectorAll('.country-btn[data-country]');
+        countryButtons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var country = btn.dataset.country;
+                var idx = selectedCountries.indexOf(country);
+                var isActive = btn.classList.contains('active');
+
+                if (isActive) {
+                    // Trying to deselect — but don't allow deselecting the last active one;
+                    // instead treat "all off" as "all on" (nothing selected = everything).
+                    var otherActive = Array.from(countryButtons).some(function (b) {
+                        return b !== btn && b.classList.contains('active');
+                    });
+                    btn.classList.remove('active');
+                    if (idx !== -1) selectedCountries.splice(idx, 1);
+                    if (!otherActive) {
+                        // nothing left active -> re-activate all (means "all countries")
+                        countryButtons.forEach(function (b) { b.classList.add('active'); });
+                        selectedCountries = Array.from(countryButtons).map(function (b) { return b.dataset.country; });
+                    }
+                } else {
+                    btn.classList.add('active');
+                    if (idx === -1) selectedCountries.push(country);
+                }
+                updateHint();
+            });
+        });
+
+        document.querySelectorAll('.option-btn[data-questions]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.option-btn[data-questions]').forEach(function(b){ b.classList.remove('active'); });
+                btn.classList.add('active');
+                selectedQuestions = parseInt(btn.dataset.questions);
+                updateHint();
+            });
+        });
+
+        function activeCountryList() {
+            // If somehow every button ended up inactive (shouldn't happen given the
+            // toggle logic above, but defensively), treat as "all".
+            var active = Array.from(countryButtons)
+                .filter(function (b) { return b.classList.contains('active'); })
+                .map(function (b) { return b.dataset.country; });
+            return active.length ? active : Object.keys(REGION_COUNTS);
+        }
+
+        function updateHint() {
+            var countries = activeCountryList();
+            var available = countries.reduce(function (sum, c) { return sum + (REGION_COUNTS[c] || 0); }, 0);
+            var hint = document.getElementById('region-count-hint');
+            hint.textContent = available + ' Region' + (available === 1 ? '' : 'en') + ' verfügbar · ' +
+                selectedQuestions + ' Frage' + (selectedQuestions === 1 ? '' : 'n') +
+                (available < selectedQuestions ? ' (manche wiederholen sich)' : '');
+        }
+
+        updateHint();
+
+        function startQuiz() {
+            sessionStorage.setItem('plateQuizQuestions', selectedQuestions);
+            sessionStorage.setItem('plateQuizCountries', activeCountryList().join(','));
+            window.location.href = 'kennzeichen-quiz.html';
+        }
+    </script>
+</body>
+</html>
