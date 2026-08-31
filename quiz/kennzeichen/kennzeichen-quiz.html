@@ -524,7 +524,7 @@
             var freshImg = document.getElementById('plate-img');
             freshImg.onerror = img.onerror;
             freshImg.onload  = img.onload;
-            freshImg.src = PLATE_IMAGE_DIR + code + PLATE_IMAGE_EXT;
+            freshImg.src = PLATE_IMAGE_DIR + String(code).toLowerCase() + PLATE_IMAGE_EXT;
         }
 
         function loadQuestion() {
