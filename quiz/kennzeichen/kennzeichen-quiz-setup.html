@@ -22,7 +22,7 @@
         /* Country toggle chips, same visual language as the existing option-btn grid */
         .country-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 0.6rem;
         }
 
@@ -89,6 +89,15 @@
                         <button class="country-btn active" data-country="DE">
                             <span class="flag">🇩🇪</span> Deutschland
                         </button>
+                        <button class="country-btn active" data-country="CH">
+                            <span class="flag">🇨🇭</span> Schweiz
+                        </button>
+                        <button class="country-btn active" data-country="AT">
+                            <span class="flag">🇦🇹</span> Österreich
+                        </button>
+                        <button class="country-btn active" data-country="IT">
+                            <span class="flag">🇮🇹</span> Italien
+                        </button>
                     </div>
                     <p class="country-hint">Nichts ausgewählt = alle Länder</p>
                 </div>
@@ -110,10 +119,10 @@
         </main>
     </div>
     <script>
-        var REGION_COUNTS = { FR: 96, DE: 402 };
+        var REGION_COUNTS = { FR: 96, DE: 402, CH: 26, AT: 94, IT: 110 };
 
         var selectedQuestions = 10;
-        var selectedCountries = ['FR', 'DE']; // both active by default
+        var selectedCountries = Object.keys(REGION_COUNTS); // all active by default
 
         var countryButtons = document.querySelectorAll('.country-btn[data-country]');
         countryButtons.forEach(function (btn) {

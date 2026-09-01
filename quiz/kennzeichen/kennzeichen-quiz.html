@@ -34,14 +34,8 @@
         }
 
         .plate-frame {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: min(100%, 360px);
-            height: 90px;
-            box-sizing: border-box;
+            display: inline-block;
             padding: 0.5rem;
-            margin: 0 auto;
             background: var(--bg-card);
             border-radius: var(--radius-md);
             animation: plateIn 0.35s cubic-bezier(0.34, 1.4, 0.64, 1) both;
@@ -49,9 +43,9 @@
 
         .plate-frame img {
             display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            max-width: 100%;
+            height: auto;
+            max-height: 90px;
             border-radius: 6px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.25);
         }
@@ -115,10 +109,7 @@
 
         @media (max-width: 640px) {
             #map-canvas { height: 340px; }
-            .plate-frame {
-                width: min(100%, 360px);
-                height: 70px;
-            }
+            .plate-frame img { max-height: 70px; }
         }
 
         .leaflet-interactive { cursor: pointer; }
@@ -265,12 +256,16 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script src="departement-names-de.js"></script>
-    <script src="kreis-names.js"></script>
+    <script src="kreis-names-de.js"></script>
+    <script src="kanton-names-de.js"></script>
+    <script src="bezirk-names-de.js"></script>
+    <script src="province-names-de.js"></script>
     <script>
         // ── Data sources per country ──
         // Each country entry describes: its geojson file, how to read a stable region id
-        // and display name from a feature's properties, and how to read the valid plate
-        // code(s) for that feature (always normalized to an array).
+        // and display name from a feature's properties, how to read the valid plate
+        // code(s) for that feature (always normalized to an array), and the filename
+        // suffix used for its plate images (see PLATE_IMAGE_DIR below).
         var COUNTRIES = {
             FR: {
                 label: 'Frankreich',
@@ -297,37 +292,83 @@
                     var name = (typeof kreisNamesDE !== 'undefined' && kreisNamesDE[props.ags]) || props.name;
                     return { region: name, country: 'Deutschland' };
                 }
+            },
+            CH: {
+                label: 'Schweiz',
+                geojsonUrl: 'switzerland-cantons.geojson',
+                plateSuffix: 'ch',
+                center: [46.8, 8.3],
+                bounds: [[45.6, 5.5], [48.0, 10.7]],
+                zoom: 7,
+                getRegionId: function (props) { return 'CH|' + props.abbr; },
+                getCodes: function (props) { return [props.abbr]; },
+                getDisplayName: function (props) {
+                    var name = (typeof kantonNamesDE !== 'undefined' && kantonNamesDE[props.abbr]) || props.name_de || props.name;
+                    return { region: name, country: 'Schweiz' };
+                }
+            },
+            AT: {
+                label: 'Österreich',
+                geojsonUrl: 'austria-districts.geojson',
+                plateSuffix: 'at',
+                center: [47.6, 14.1],
+                bounds: [[46.3, 9.4], [49.1, 17.3]],
+                zoom: 7,
+                getRegionId: function (props) { return 'AT|' + props.iso; },
+                getCodes: function (props) { return props.codes || []; },
+                getDisplayName: function (props) {
+                    var name = (typeof bezirkNamesDE !== 'undefined' && bezirkNamesDE[props.iso]) || props.name;
+                    return { region: name, country: 'Österreich' };
+                }
+            },
+            IT: {
+                label: 'Italien',
+                geojsonUrl: 'italy-provinces.geojson',
+                plateSuffix: 'it',
+                center: [42.5, 12.5],
+                bounds: [[35.3, 6.0], [47.2, 19.0]],
+                zoom: 5,
+                getRegionId: function (props) { return 'IT|' + props.code; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof provinceNamesDE !== 'undefined' && provinceNamesDE[props.code]) || props.name_de || props.name;
+                    return { region: name, country: 'Italien' };
+                }
             }
         };
 
-        // Combined view (both countries together)
-        var COMBINED_CENTER = [48.7, 5];
-        var COMBINED_BOUNDS = [[39, -6], [56, 16]];
-        var COMBINED_ZOOM   = 5;
+        // Combined view (multiple countries together) — bounds/center/zoom chosen so
+        // all five countries stay comfortably on screen when several are active at once.
+        var COMBINED_CENTER = [47.5, 8];
+        var COMBINED_BOUNDS = [[34.5, -6], [56, 19.5]];
+        var COMBINED_ZOOM   = 4;
 
-        // Where the license-plate PNGs live. Files are expected to be named by plate
-        // code, e.g. plates/75.png (France), plates/M.png / plates/AC.png (Germany).
-        // Both countries share the same folder/extension since codes never collide
-        // (French codes are numeric department codes or "2A"/"2B"; German codes are
-        // 1-3 letter Unterscheidungszeichen).
-        var PLATE_IMAGE_DIR = '/quiz/kennzeichen/plates/';
+        // Where the license-plate PNGs live and how they're named: "<code>-<suffix>.png",
+        // e.g. plates/75-fr.png (France), plates/M-de.png (Germany), plates/ZH-ch.png
+        // (Switzerland), plates/W-at.png (Austria), plates/RM-it.png (Italy). The suffix
+        // keeps filenames unambiguous even where codes coincidentally match across
+        // countries, and makes it obvious at a glance which country a file belongs to.
+        var PLATE_IMAGE_DIR = 'plates/';
         var PLATE_IMAGE_EXT = '.png';
 
         var TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors — Grenzen: <a href="https://github.com/gregoiredavid/france-geojson">france-geojson</a>, <a href="https://github.com/m-ad/geofeatures-ags-germany">geofeatures-ags-germany</a> — Kennzeichen: <a href="https://github.com/openpotato/kfz-kennzeichen">openpotato/kfz-kennzeichen</a>';
+        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors — Grenzen: <a href="https://github.com/gregoiredavid/france-geojson">france-geojson</a>, <a href="https://github.com/m-ad/geofeatures-ags-germany">geofeatures-ags-germany</a>, Natural Earth, <a href="https://github.com/ginseng666/GeoJSON-TopoJSON-Austria">GeoJSON-TopoJSON-Austria</a>, <a href="https://github.com/guglielmo/geojson-italy">geojson-italy</a> — Kennzeichen: <a href="https://github.com/openpotato/kfz-kennzeichen">openpotato/kfz-kennzeichen</a>, oesterreich.gv.at';
 
         var map          = null;
         var regionLayers  = {};  // region_id -> layer
         var regionCodes   = {};  // region_id -> [codes]
         var regionMeta    = {};  // region_id -> {region, country}
+        var regionSuffix  = {};  // region_id -> plate image filename suffix (e.g. 'fr', 'de')
         var questions      = []; // array of region_id (target for each question)
         var questionCodes  = []; // array of the specific code shown for each question
+        var questionImageNames = []; // array of "<code>-<suffix>" image basenames per question
         var current         = 0;
         var score           = 0;
         var answered        = false;
+        var advancing        = false;
         var advanceTimer    = null;
         var countInterval   = null;
-        var activeCountries  = ['FR', 'DE']; // set from sessionStorage
+        var activeCountries  = Object.keys(COUNTRIES); // set from sessionStorage
         var viewCenter = COMBINED_CENTER, viewBounds = COMBINED_BOUNDS, viewZoom = COMBINED_ZOOM;
 
         var COLOR_DEFAULT = '#94a3b8';
@@ -349,9 +390,10 @@
 
         function readSelectedCountries() {
             var raw = sessionStorage.getItem('plateQuizCountries');
-            if (!raw) return ['FR', 'DE'];
+            var all = Object.keys(COUNTRIES);
+            if (!raw) return all;
             var list = raw.split(',').map(function (s) { return s.trim(); }).filter(function (s) { return COUNTRIES[s]; });
-            return list.length ? list : ['FR', 'DE'];
+            return list.length ? list : all;
         }
 
         function computeView() {
@@ -441,9 +483,10 @@
                     var codes    = cfg.getCodes(props).filter(function (c) { return !!c; });
                     if (!regionId || codes.length === 0) return;
 
-                    regionLayers[regionId] = layer;
-                    regionCodes[regionId]  = codes;
-                    regionMeta[regionId]   = cfg.getDisplayName(props);
+                    regionLayers[regionId]  = layer;
+                    regionCodes[regionId]   = codes;
+                    regionMeta[regionId]    = cfg.getDisplayName(props);
+                    regionSuffix[regionId]  = cfg.plateSuffix;
 
                     layer.on('mouseover', function () {
                         if (answered) return;
@@ -485,11 +528,17 @@
             questions = questions.slice(0, total);
 
             // For each question, pick one concrete plate code at random from that
-            // region's valid codes (relevant mainly for Germany, where a Kreis can
-            // have several current/reactivated Unterscheidungszeichen).
-            questionCodes = questions.map(function (regionId) {
-                var codes = regionCodes[regionId] || [];
-                return codes[Math.floor(Math.random() * codes.length)];
+            // region's valid codes (relevant mainly for Germany/Austria, where a
+            // Kreis/Bezirk can have several current/reactivated Unterscheidungszeichen),
+            // then build the image basename "<code>-<suffix>" (e.g. "75-fr", "M-de").
+            questionCodes = [];
+            questionImageNames = [];
+            questions.forEach(function (regionId) {
+                var codes  = regionCodes[regionId] || [];
+                var code   = codes[Math.floor(Math.random() * codes.length)];
+                var suffix = regionSuffix[regionId] || '';
+                questionCodes.push(code);
+                questionImageNames.push(suffix ? (code + '-' + suffix).toLowerCase() : code.toLowerCase());
             });
 
             document.getElementById('total-questions').textContent = questions.length;
@@ -506,38 +555,39 @@
             });
         }
 
-        function setPlateImage(code) {
+        function setPlateImage(imageName) {
             var frame = document.getElementById('plate-frame');
-            var img   = document.getElementById('plate-img');
+
+            // Always rebuild the <img> from scratch. The previous question's onerror
+            // handler may have replaced #plate-img with a placeholder <span> (see
+            // below), so #plate-img can legitimately not exist in the DOM at this
+            // point — querying the *old* element first (and touching it) was the bug.
+            frame.classList.remove('missing');
+            frame.innerHTML = '<img id="plate-img" src="" alt="Kennzeichen">';
+            var img = document.getElementById('plate-img');
 
             img.onerror = function () {
                 frame.classList.add('missing');
-                img.style.display = 'none';
-                frame.innerHTML = '<span>⚠ Kennzeichenbild fehlt: ' + PLATE_IMAGE_DIR + code + PLATE_IMAGE_EXT + '</span>';
+                frame.innerHTML = '<span>⚠ Kennzeichenbild fehlt: ' + PLATE_IMAGE_DIR + imageName + PLATE_IMAGE_EXT + '</span>';
             };
             img.onload = function () {
                 frame.classList.remove('missing');
             };
-
-            frame.classList.remove('missing');
-            frame.innerHTML = '<img id="plate-img" src="" alt="Kennzeichen">';
-            var freshImg = document.getElementById('plate-img');
-            freshImg.onerror = img.onerror;
-            freshImg.onload  = img.onload;
-            freshImg.src = PLATE_IMAGE_DIR + String(code).toLowerCase() + PLATE_IMAGE_EXT;
+            img.src = PLATE_IMAGE_DIR + imageName + PLATE_IMAGE_EXT;
         }
 
         function loadQuestion() {
             if (current >= questions.length) { showResults(); return; }
 
             answered = false;
+            advancing = false;
             if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
             if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
 
-            var targetCode = questionCodes[current];
+            var targetImageName = questionImageNames[current];
 
             document.getElementById('current-question').textContent = current + 1;
-            setPlateImage(targetCode);
+            setPlateImage(targetImageName);
 
             resetAllStyles();
 
@@ -642,6 +692,13 @@
         }
 
         function advance() {
+            // Guard against double-advancing: the "Weiter" button, the auto-advance
+            // timer, and rapid repeated clicks/taps can all try to call this within
+            // the same question. Once we've moved on, ignore further calls until the
+            // next question has actually loaded (loadQuestion resets this).
+            if (advancing) return;
+            advancing = true;
+
             if (advanceTimer  !== null) { clearTimeout(advanceTimer);   advanceTimer  = null; }
             if (countInterval !== null) { clearInterval(countInterval); countInterval = null; }
             current++;
