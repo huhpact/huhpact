@@ -24,13 +24,7 @@ const WISHES = [
     link: "https://www.ralphlauren.de/de/der-klassische-flaggenpullover-3616854058028.html",
     note: ""
   },
-  {
-    title: "Moncler Strickjacke",
-    image: "/wunsch/images/monc.webp",
-    rating: 4,
-    link: "https://www.farfetch.com/fr/shopping/men/moncler-veste-a-design-matelasse-item-32394674.aspx",
-    note: ""
-  },
+
   {
     title: "Apple Vision Pro",
     image: "/wunsch/images/avp.jpg",
