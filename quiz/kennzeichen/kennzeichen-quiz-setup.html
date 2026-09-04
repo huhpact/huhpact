@@ -98,6 +98,18 @@
                         <button class="country-btn active" data-country="IT">
                             <span class="flag">🇮🇹</span> Italien
                         </button>
+                        <button class="country-btn active" data-country="UA">
+                            <span class="flag">🇺🇦</span> Ukraine
+                        </button>
+                        <button class="country-btn active" data-country="CZ">
+                            <span class="flag">🇨🇿</span> Tschechien
+                        </button>
+                        <button class="country-btn active" data-country="IE">
+                            <span class="flag">🇮🇪</span> Irland
+                        </button>
+                        <button class="country-btn active" data-country="UK">
+                            <span class="flag">🇬🇧</span> Vereinigtes Königreich
+                        </button>
                     </div>
                     <p class="country-hint">Nichts ausgewählt = alle Länder</p>
                 </div>
@@ -119,7 +131,7 @@
         </main>
     </div>
     <script>
-        var REGION_COUNTS = { FR: 96, DE: 402, CH: 26, AT: 94, IT: 110 };
+        var REGION_COUNTS = { FR: 96, DE: 402, CH: 26, AT: 94, IT: 110, UA: 26, CZ: 14, IE: 26, UK: 19 };
 
         var selectedQuestions = 10;
         var selectedCountries = Object.keys(REGION_COUNTS); // all active by default

@@ -43,9 +43,10 @@
 
         .plate-frame img {
             display: block;
+            width: 260px;
+            height: 90px;
             max-width: 100%;
-            height: auto;
-            max-height: 90px;
+            object-fit: contain;
             border-radius: 6px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.25);
         }
@@ -109,7 +110,10 @@
 
         @media (max-width: 640px) {
             #map-canvas { height: 340px; }
-            .plate-frame img { max-height: 70px; }
+            .plate-frame img {
+                width: 220px;
+                height: 76px;
+            }
         }
 
         .leaflet-interactive { cursor: pointer; }
@@ -256,10 +260,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script src="departement-names-de.js"></script>
-    <script src="kreis-names-de.js"></script>
-    <script src="kanton-names-de.js"></script>
-    <script src="bezirk-names-de.js"></script>
-    <script src="province-names-de.js"></script>
+    <script src="kreis-names.js"></script>
+    <script src="kanton-names.js"></script>
+    <script src="bezirk-names.js"></script>
+    <script src="province-names.js"></script>
+    <script src="oblast-names.js"></script>
+    <script src="kraj-names.js"></script>
+    <script src="county-names.js"></script>
+    <script src="dvla-region-names.js"></script>
     <script>
         // ── Data sources per country ──
         // Each country entry describes: its geojson file, how to read a stable region id
@@ -270,6 +278,7 @@
             FR: {
                 label: 'Frankreich',
                 geojsonUrl: 'france-departements.geojson',
+
                 center: [46.6, 2.3],
                 bounds: [[40, -6], [52, 10]],
                 zoom: 6,
@@ -334,25 +343,83 @@
                     var name = (typeof provinceNamesDE !== 'undefined' && provinceNamesDE[props.code]) || props.name_de || props.name;
                     return { region: name, country: 'Italien' };
                 }
+            },
+            UA: {
+                label: 'Ukraine',
+                geojsonUrl: 'ukraine-oblasts.geojson',
+                plateSuffix: 'ua',
+                center: [48.9, 31.5],
+                bounds: [[44.0, 21.5], [52.6, 40.5]],
+                zoom: 5,
+                getRegionId: function (props) { return 'UA|' + props.iso; },
+                getCodes: function (props) { return props.codes || []; },
+                getDisplayName: function (props) {
+                    var name = (typeof oblastNamesDE !== 'undefined' && oblastNamesDE[props.iso]) || props.name;
+                    return { region: name, country: 'Ukraine' };
+                }
+            },
+            CZ: {
+                label: 'Tschechien',
+                geojsonUrl: 'czech-kraje.geojson',
+                plateSuffix: 'cz',
+                center: [49.8, 15.5],
+                bounds: [[48.4, 11.9], [51.2, 19.0]],
+                zoom: 7,
+                getRegionId: function (props) { return 'CZ|' + props.code; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof krajNamesDE !== 'undefined' && krajNamesDE[props.code]) || props.name;
+                    return { region: name, country: 'Tschechien' };
+                }
+            },
+            IE: {
+                label: 'Irland',
+                geojsonUrl: 'ireland-counties.geojson',
+                plateSuffix: 'ie',
+                center: [53.4, -8.0],
+                bounds: [[51.2, -10.8], [55.5, -5.9]],
+                zoom: 6,
+                getRegionId: function (props) { return 'IE|' + props.code; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof countyNamesDE !== 'undefined' && countyNamesDE[props.code]) || props.name;
+                    return { region: name, country: 'Irland' };
+                }
+            },
+            UK: {
+                label: 'Vereinigtes Königreich',
+                geojsonUrl: 'uk-dvla-regions.geojson',
+                plateSuffix: 'uk',
+                center: [54.5, -3.5],
+                bounds: [[49.8, -8.8], [60.9, 2.0]],
+                zoom: 5,
+                getRegionId: function (props) { return 'UK|' + props.region_key; },
+                getCodes: function (props) { return props.codes || []; },
+                getDisplayName: function (props) {
+                    var name = (typeof dvlaRegionNamesDE !== 'undefined' && dvlaRegionNamesDE[props.region_key]) || props.name;
+                    return { region: name, country: 'Vereinigtes Königreich' };
+                }
             }
         };
 
         // Combined view (multiple countries together) — bounds/center/zoom chosen so
-        // all five countries stay comfortably on screen when several are active at once.
-        var COMBINED_CENTER = [47.5, 8];
-        var COMBINED_BOUNDS = [[34.5, -6], [56, 19.5]];
-        var COMBINED_ZOOM   = 4;
+        // all nine countries stay comfortably on screen when several are active at
+        // once. Widened to also cover Ireland (west), the UK (north), and Ukraine
+        // (east) alongside the original five central-European countries.
+        var COMBINED_CENTER = [50, 15];
+        var COMBINED_BOUNDS = [[34.5, -11], [61.5, 40.5]];
+        var COMBINED_ZOOM   = 3;
 
         // Where the license-plate PNGs live and how they're named: "<code>-<suffix>.png",
         // e.g. plates/75-fr.png (France), plates/M-de.png (Germany), plates/ZH-ch.png
         // (Switzerland), plates/W-at.png (Austria), plates/RM-it.png (Italy). The suffix
         // keeps filenames unambiguous even where codes coincidentally match across
         // countries, and makes it obvious at a glance which country a file belongs to.
-        var PLATE_IMAGE_DIR = 'plates/';
+        var PLATE_IMAGE_DIR = '/quiz/kennzeichen/plates/';
         var PLATE_IMAGE_EXT = '.png';
 
         var TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors — Grenzen: <a href="https://github.com/gregoiredavid/france-geojson">france-geojson</a>, <a href="https://github.com/m-ad/geofeatures-ags-germany">geofeatures-ags-germany</a>, Natural Earth, <a href="https://github.com/ginseng666/GeoJSON-TopoJSON-Austria">GeoJSON-TopoJSON-Austria</a>, <a href="https://github.com/guglielmo/geojson-italy">geojson-italy</a> — Kennzeichen: <a href="https://github.com/openpotato/kfz-kennzeichen">openpotato/kfz-kennzeichen</a>, oesterreich.gv.at';
+        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ';
 
         var map          = null;
         var regionLayers  = {};  // region_id -> layer
@@ -538,7 +605,7 @@
                 var code   = codes[Math.floor(Math.random() * codes.length)];
                 var suffix = regionSuffix[regionId] || '';
                 questionCodes.push(code);
-                questionImageNames.push(suffix ? (code + '-' + suffix).toLowerCase() : code.toLowerCase());
+                questionImageNames.push(suffix ? (code + '-' + suffix) : code);
             });
 
             document.getElementById('total-questions').textContent = questions.length;
