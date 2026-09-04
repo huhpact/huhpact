@@ -605,7 +605,7 @@
                 var code   = codes[Math.floor(Math.random() * codes.length)];
                 var suffix = regionSuffix[regionId] || '';
                 questionCodes.push(code);
-                questionImageNames.push(suffix ? (code + '-' + suffix) : code);
+                questionImageNames.push((suffix ? (code + '-' + suffix) : code).toLowerCase());
             });
 
             document.getElementById('total-questions').textContent = questions.length;
