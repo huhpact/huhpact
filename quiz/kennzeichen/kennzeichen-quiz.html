@@ -43,10 +43,9 @@
 
         .plate-frame img {
             display: block;
-            width: 260px;
-            height: 90px;
             max-width: 100%;
-            object-fit: contain;
+            height: auto;
+            max-height: 130px;
             border-radius: 6px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.25);
         }
@@ -110,10 +109,7 @@
 
         @media (max-width: 640px) {
             #map-canvas { height: 340px; }
-            .plate-frame img {
-                width: 220px;
-                height: 76px;
-            }
+            .plate-frame img { max-height: 100px; }
         }
 
         .leaflet-interactive { cursor: pointer; }
@@ -268,6 +264,8 @@
     <script src="kraj-names.js"></script>
     <script src="county-names.js"></script>
     <script src="dvla-region-names.js"></script>
+    <script src="slo-region-names-de.js"></script>
+    <script src="russia-region-names-de.js"></script>
     <script>
         // ── Data sources per country ──
         // Each country entry describes: its geojson file, how to read a stable region id
@@ -278,7 +276,6 @@
             FR: {
                 label: 'Frankreich',
                 geojsonUrl: 'france-departements.geojson',
-
                 center: [46.6, 2.3],
                 bounds: [[40, -6], [52, 10]],
                 zoom: 6,
@@ -399,27 +396,54 @@
                     var name = (typeof dvlaRegionNamesDE !== 'undefined' && dvlaRegionNamesDE[props.region_key]) || props.name;
                     return { region: name, country: 'Vereinigtes Königreich' };
                 }
+            },
+            SI: {
+                label: 'Slowenien',
+                geojsonUrl: 'slovenia-regions.geojson',
+                plateSuffix: 'si',
+                center: [46.1, 14.9],
+                bounds: [[45.3, 13.2], [46.9, 16.7]],
+                zoom: 8,
+                getRegionId: function (props) { return 'SI|' + props.code; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof sloRegionNamesDE !== 'undefined' && sloRegionNamesDE[props.code]) || props.name;
+                    return { region: name, country: 'Slowenien' };
+                }
+            },
+            RU: {
+                label: 'Russland',
+                geojsonUrl: 'russia-regions.geojson',
+                plateSuffix: 'ru',
+                // Russia spans from Kaliningrad (~19°E) to the Bering Strait (~-169°E /
+                // 191°E going east). We keep bounds within -180..180 and rely on the
+                // dynamic zoom heuristic in computeView() to zoom out appropriately
+                // when Russia is combined with other, much smaller countries.
+                center: [61, 90],
+                bounds: [[41, 19], [82, 180]],
+                zoom: 2,
+                getRegionId: function (props) { return 'RU|' + props.name_ru; },
+                getCodes: function (props) { return props.codes || []; },
+                getDisplayName: function (props) {
+                    var name = (typeof russiaRegionNamesDE !== 'undefined' && russiaRegionNamesDE[props.name_ru]) || props.name;
+                    return { region: name, country: 'Russland' };
+                }
             }
         };
 
-        // Combined view (multiple countries together) — bounds/center/zoom chosen so
-        // all nine countries stay comfortably on screen when several are active at
-        // once. Widened to also cover Ireland (west), the UK (north), and Ukraine
-        // (east) alongside the original five central-European countries.
-        var COMBINED_CENTER = [50, 15];
-        var COMBINED_BOUNDS = [[34.5, -11], [61.5, 40.5]];
-        var COMBINED_ZOOM   = 3;
+        // (No fixed "combined" constant needed anymore — computeView() below unions
+        // the bounds of whichever countries are active.)
 
         // Where the license-plate PNGs live and how they're named: "<code>-<suffix>.png",
         // e.g. plates/75-fr.png (France), plates/M-de.png (Germany), plates/ZH-ch.png
         // (Switzerland), plates/W-at.png (Austria), plates/RM-it.png (Italy). The suffix
         // keeps filenames unambiguous even where codes coincidentally match across
         // countries, and makes it obvious at a glance which country a file belongs to.
-        var PLATE_IMAGE_DIR = '/quiz/kennzeichen/plates/';
+        var PLATE_IMAGE_DIR = 'plates/';
         var PLATE_IMAGE_EXT = '.png';
 
         var TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ';
+        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
         var map          = null;
         var regionLayers  = {};  // region_id -> layer
@@ -436,7 +460,7 @@
         var advanceTimer    = null;
         var countInterval   = null;
         var activeCountries  = Object.keys(COUNTRIES); // set from sessionStorage
-        var viewCenter = COMBINED_CENTER, viewBounds = COMBINED_BOUNDS, viewZoom = COMBINED_ZOOM;
+        var viewCenter = [50, 15], viewBounds = [[34.5, -11], [61.5, 40.5]], viewZoom = 3; // overwritten by computeView() before first use
 
         var COLOR_DEFAULT = '#94a3b8';
         var COLOR_HOVER    = '#818cf8';
@@ -469,17 +493,45 @@
                 viewCenter = c.center;
                 viewBounds = c.bounds;
                 viewZoom   = c.zoom;
+                return;
+            }
+
+            // Multiple countries: union their individual bounds rather than using a
+            // fixed constant. This keeps the view tight when e.g. only the eight
+            // central/western European countries are picked, but automatically
+            // widens out (with a lower zoom) when Russia — which stretches to the
+            // Pacific — is included alongside others.
+            var minLat = 90, minLng = 180, maxLat = -90, maxLng = -180;
+            activeCountries.forEach(function (code) {
+                var b = COUNTRIES[code].bounds;
+                minLat = Math.min(minLat, b[0][0]);
+                minLng = Math.min(minLng, b[0][1]);
+                maxLat = Math.max(maxLat, b[1][0]);
+                maxLng = Math.max(maxLng, b[1][1]);
+            });
+            viewBounds = [[minLat, minLng], [maxLat, maxLng]];
+            viewCenter = [(minLat + maxLat) / 2, (minLng + maxLng) / 2];
+
+            // Rough zoom heuristic based on how wide the combined view is.
+            var lngSpan = maxLng - minLng;
+            if (lngSpan > 90) {
+                viewZoom = 2;
+            } else if (lngSpan > 40) {
+                viewZoom = 3;
             } else {
-                viewCenter = COMBINED_CENTER;
-                viewBounds = COMBINED_BOUNDS;
-                viewZoom   = COMBINED_ZOOM;
+                viewZoom = 4;
             }
         }
 
         function initMap() {
+            // minZoom must never exceed the zoom computeView() picked for the current
+            // bounds, or Leaflet will clamp back in and part of the selected countries
+            // (most notably Russia, which needs a much lower zoom) won't fit on screen.
+            var effectiveMinZoom = Math.min(4, viewZoom);
+
             map = L.map('map-canvas', {
                 worldCopyJump: false,
-                minZoom: 4,
+                minZoom: effectiveMinZoom,
                 maxZoom: 11,
                 zoomControl: true,
                 maxBounds: viewBounds,
@@ -605,7 +657,7 @@
                 var code   = codes[Math.floor(Math.random() * codes.length)];
                 var suffix = regionSuffix[regionId] || '';
                 questionCodes.push(code);
-                questionImageNames.push((suffix ? (code + '-' + suffix) : code).toLowerCase());
+                questionImageNames.push(suffix ? (code + '-' + suffix) : code);
             });
 
             document.getElementById('total-questions').textContent = questions.length;
