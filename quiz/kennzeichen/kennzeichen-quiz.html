@@ -256,16 +256,18 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script src="departement-names-de.js"></script>
-    <script src="kreis-names.js"></script>
-    <script src="kanton-names.js"></script>
-    <script src="bezirk-names.js"></script>
-    <script src="province-names.js"></script>
-    <script src="oblast-names.js"></script>
-    <script src="kraj-names.js"></script>
-    <script src="county-names.js"></script>
-    <script src="dvla-region-names.js"></script>
+    <script src="kreis-names-de.js"></script>
+    <script src="kanton-names-de.js"></script>
+    <script src="bezirk-names-de.js"></script>
+    <script src="province-names-de.js"></script>
+    <script src="oblast-names-de.js"></script>
+    <script src="kraj-names-de.js"></script>
+    <script src="county-names-de.js"></script>
+    <script src="dvla-region-names-de.js"></script>
     <script src="slo-region-names-de.js"></script>
     <script src="russia-region-names-de.js"></script>
+    <script src="us-state-names-de.js"></script>
+    <script src="ca-province-names-de.js"></script>
     <script>
         // ── Data sources per country ──
         // Each country entry describes: its geojson file, how to read a stable region id
@@ -428,6 +430,39 @@
                     var name = (typeof russiaRegionNamesDE !== 'undefined' && russiaRegionNamesDE[props.name_ru]) || props.name;
                     return { region: name, country: 'Russland' };
                 }
+            },
+            US: {
+                label: 'USA',
+                geojsonUrl: 'usa-states.geojson',
+                plateSuffix: 'us',
+                // Contiguous 48 states view; Alaska/Hawaii sit further out but the
+                // maxBounds below still lets the map reach them via panning/zooming.
+                center: [39.8, -98.6],
+                bounds: [[15, -180], [72, -60]],
+                zoom: 3,
+                getRegionId: function (props) { return 'US|' + props.code; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof usStateNamesDE !== 'undefined' && usStateNamesDE[props.code]) || props.name;
+                    return { region: name, country: 'USA' };
+                }
+            },
+            CA: {
+                label: 'Kanada',
+                geojsonUrl: 'canada-provinces.geojson',
+                plateSuffix: 'ca',
+                // Canada stretches further north than any other country here (Nunavut
+                // reaches past 80°N); bounds are generous to keep the whole territory
+                // reachable while panning/zooming.
+                center: [58, -96],
+                bounds: [[41, -141], [84, -52]],
+                zoom: 3,
+                getRegionId: function (props) { return 'CA|' + props.code; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof caProvinceNamesDE !== 'undefined' && caProvinceNamesDE[props.code]) || props.name;
+                    return { region: name, country: 'Kanada' };
+                }
             }
         };
 
@@ -443,7 +478,7 @@
         var PLATE_IMAGE_EXT = '.png';
 
         var TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+        var TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ';
 
         var map          = null;
         var regionLayers  = {};  // region_id -> layer
