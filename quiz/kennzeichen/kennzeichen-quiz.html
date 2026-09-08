@@ -34,18 +34,28 @@
         }
 
         .plate-frame {
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 0.5rem;
             background: var(--bg-card);
             border-radius: var(--radius-md);
             animation: plateIn 0.35s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+            /* Fixed frame size so every plate image — regardless of its own aspect
+               ratio (long European plates, squarer US plates, etc.) — occupies the
+               same visual footprint in the quiz. margin: 0 auto re-centers it
+               horizontally now that it's a flex box instead of inline-block (the
+               parent's text-align: center no longer has any effect on it). */
+            width: 260px;
+            height: 130px;
+            margin: 0 auto;
         }
 
         .plate-frame img {
             display: block;
-            max-width: 100%;
-            height: auto;
-            max-height: 130px;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
             border-radius: 6px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.25);
         }
@@ -56,6 +66,7 @@
             color: var(--text-muted);
             font-size: 0.85rem;
             font-weight: 600;
+            text-align: center;
         }
 
         @keyframes plateIn {
@@ -109,7 +120,7 @@
 
         @media (max-width: 640px) {
             #map-canvas { height: 340px; }
-            .plate-frame img { max-height: 100px; }
+            .plate-frame { width: 210px; height: 105px; }
         }
 
         .leaflet-interactive { cursor: pointer; }
@@ -255,19 +266,23 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-    <script src="departement-names-de.js"></script>
-    <script src="kreis-names-de.js"></script>
-    <script src="kanton-names-de.js"></script>
-    <script src="bezirk-names-de.js"></script>
-    <script src="province-names-de.js"></script>
-    <script src="oblast-names-de.js"></script>
-    <script src="kraj-names-de.js"></script>
-    <script src="county-names-de.js"></script>
-    <script src="dvla-region-names-de.js"></script>
+    <script src="departement-names.js"></script>
+    <script src="kreis-names.js"></script>
+    <script src="kanton-names.js"></script>
+    <script src="bezirk-names.js"></script>
+    <script src="province-names.js"></script>
+    <script src="oblast-names.js"></script>
+    <script src="kraj-names.js"></script>
+    <script src="county-names.js"></script>
+    <script src="dvla-region-names.js"></script>
     <script src="slo-region-names-de.js"></script>
     <script src="russia-region-names-de.js"></script>
     <script src="us-state-names-de.js"></script>
     <script src="ca-province-names-de.js"></script>
+    <script src="belarus-region-names-de.js"></script>
+    <script src="judet-names-de.js"></script>
+    <script src="greece-prefecture-names-de.js"></script>
+    <script src="turkey-province-names-de.js"></script>
     <script>
         // ── Data sources per country ──
         // Each country entry describes: its geojson file, how to read a stable region id
@@ -462,6 +477,62 @@
                 getDisplayName: function (props) {
                     var name = (typeof caProvinceNamesDE !== 'undefined' && caProvinceNamesDE[props.code]) || props.name;
                     return { region: name, country: 'Kanada' };
+                }
+            },
+            BY: {
+                label: 'Belarus',
+                geojsonUrl: 'belarus-regions.geojson',
+                plateSuffix: 'by',
+                center: [53.5, 28],
+                bounds: [[51, 23], [56.2, 32.9]],
+                zoom: 6,
+                getRegionId: function (props) { return 'BY|' + props.code; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof belarusRegionNamesDE !== 'undefined' && belarusRegionNamesDE[props.code]) || props.name;
+                    return { region: name, country: 'Belarus' };
+                }
+            },
+            RO: {
+                label: 'Rumänien',
+                geojsonUrl: 'romania-counties.geojson',
+                plateSuffix: 'ro',
+                center: [45.9, 25],
+                bounds: [[43.5, 20.2], [48.3, 29.8]],
+                zoom: 6,
+                getRegionId: function (props) { return 'RO|' + props.code; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof judetNamesDE !== 'undefined' && judetNamesDE[props.code]) || props.name;
+                    return { region: name, country: 'Rumänien' };
+                }
+            },
+            GR: {
+                label: 'Griechenland',
+                geojsonUrl: 'greece-prefectures.geojson',
+                plateSuffix: 'gr',
+                center: [39.0, 22.9],
+                bounds: [[34.7, 19.3], [41.8, 29.7]],
+                zoom: 6,
+                getRegionId: function (props) { return 'GR|' + props.id; },
+                getCodes: function (props) { return props.codes || []; },
+                getDisplayName: function (props) {
+                    var name = (typeof greecePrefectureNamesDE !== 'undefined' && greecePrefectureNamesDE[props.id]) || props.name;
+                    return { region: name, country: 'Griechenland' };
+                }
+            },
+            TR: {
+                label: 'Türkei',
+                geojsonUrl: 'turkey-provinces.geojson',
+                plateSuffix: 'tr',
+                center: [39.0, 35.5],
+                bounds: [[35.5, 25.5], [42.5, 45.0]],
+                zoom: 5,
+                getRegionId: function (props) { return 'TR|' + props.code; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof turkeyProvinceNamesDE !== 'undefined' && turkeyProvinceNamesDE[props.code]) || props.name;
+                    return { region: name, country: 'Türkei' };
                 }
             }
         };
@@ -684,7 +755,9 @@
             // For each question, pick one concrete plate code at random from that
             // region's valid codes (relevant mainly for Germany/Austria, where a
             // Kreis/Bezirk can have several current/reactivated Unterscheidungszeichen),
-            // then build the image basename "<code>-<suffix>" (e.g. "75-fr", "M-de").
+            // then build the (always lowercase) image basename "<code>-<suffix>"
+            // (e.g. "75-fr", "m-de") so filenames stay predictable regardless of how
+            // the underlying region code is cased in its source data.
             questionCodes = [];
             questionImageNames = [];
             questions.forEach(function (regionId) {
@@ -692,7 +765,8 @@
                 var code   = codes[Math.floor(Math.random() * codes.length)];
                 var suffix = regionSuffix[regionId] || '';
                 questionCodes.push(code);
-                questionImageNames.push(suffix ? (code + '-' + suffix) : code);
+                var imageBase = (suffix ? (code + '-' + suffix) : code).toLowerCase();
+                questionImageNames.push(imageBase);
             });
 
             document.getElementById('total-questions').textContent = questions.length;
