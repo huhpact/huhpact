@@ -54,10 +54,10 @@ const WISHES = [
     note: ""
   },
   {
-    title: "Oral B IO 10",
-    image: "/wunsch/images/oralb.webp",
+    title: "DiamondClean 9900 Prestige",
+    image: "/wunsch/images/pz.webp",
     rating: 3,
-    link: "https://www.oralb.de/de-de/produkte/elektrische-zahnbuerste/oral-b-io-10-elektrische-zahnbuerste-reise-etui?variation=13936276",
+    link: "https://www.philips.de/c-m-pe/elektrische-zahnbuersten/next-generation-diamondclean-prestige-9900",
     note: ""
   },
   {
