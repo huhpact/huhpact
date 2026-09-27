@@ -266,15 +266,15 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-    <script src="departement-names.js"></script>
-    <script src="kreis-names.js"></script>
-    <script src="kanton-names.js"></script>
-    <script src="bezirk-names.js"></script>
-    <script src="province-names.js"></script>
-    <script src="oblast-names.js"></script>
-    <script src="kraj-names.js"></script>
-    <script src="county-names.js"></script>
-    <script src="dvla-region-names.js"></script>
+    <script src="departement-names-de.js"></script>
+    <script src="kreis-names-de.js"></script>
+    <script src="kanton-names-de.js"></script>
+    <script src="bezirk-names-de.js"></script>
+    <script src="province-names-de.js"></script>
+    <script src="oblast-names-de.js"></script>
+    <script src="kraj-names-de.js"></script>
+    <script src="county-names-de.js"></script>
+    <script src="dvla-region-names-de.js"></script>
     <script src="slo-region-names-de.js"></script>
     <script src="russia-region-names-de.js"></script>
     <script src="us-state-names-de.js"></script>
@@ -283,6 +283,8 @@
     <script src="judet-names-de.js"></script>
     <script src="greece-prefecture-names-de.js"></script>
     <script src="turkey-province-names-de.js"></script>
+    <script src="croatia-county-names-de.js"></script>
+    <script src="albania-qark-names-de.js"></script>
     <script>
         // ── Data sources per country ──
         // Each country entry describes: its geojson file, how to read a stable region id
@@ -293,6 +295,7 @@
             FR: {
                 label: 'Frankreich',
                 geojsonUrl: 'france-departements.geojson',
+                plateSuffix: 'fr',
                 center: [46.6, 2.3],
                 bounds: [[40, -6], [52, 10]],
                 zoom: 6,
@@ -306,6 +309,7 @@
             DE: {
                 label: 'Deutschland',
                 geojsonUrl: 'germany-kreise.geojson',
+                plateSuffix: 'de',
                 center: [51.2, 10.4],
                 bounds: [[47, 5.5], [55.2, 15.5]],
                 zoom: 6,
@@ -534,6 +538,34 @@
                     var name = (typeof turkeyProvinceNamesDE !== 'undefined' && turkeyProvinceNamesDE[props.code]) || props.name;
                     return { region: name, country: 'Türkei' };
                 }
+            },
+            HR: {
+                label: 'Kroatien',
+                geojsonUrl: 'croatia-counties.geojson',
+                plateSuffix: 'hr',
+                center: [45.1, 16.5],
+                bounds: [[42.3, 13.4], [46.6, 19.5]],
+                zoom: 6,
+                getRegionId: function (props) { return 'HR|' + props.id; },
+                getCodes: function (props) { return [props.code]; },
+                getDisplayName: function (props) {
+                    var name = (typeof croatiaCountyNamesDE !== 'undefined' && croatiaCountyNamesDE[props.id]) || props.name;
+                    return { region: name, country: 'Kroatien' };
+                }
+            },
+            AL: {
+                label: 'Albanien',
+                geojsonUrl: 'albania-qarks.geojson',
+                plateSuffix: 'al',
+                center: [41.1, 20.1],
+                bounds: [[39.6, 19.1], [42.7, 21.1]],
+                zoom: 7,
+                getRegionId: function (props) { return 'AL|' + props.iso; },
+                getCodes: function (props) { return props.codes || []; },
+                getDisplayName: function (props) {
+                    var name = (typeof albaniaQarkNamesDE !== 'undefined' && albaniaQarkNamesDE[props.iso]) || props.name;
+                    return { region: name, country: 'Albanien' };
+                }
             }
         };
 
@@ -732,25 +764,59 @@
         function setupQuestions() {
             var total = parseInt(sessionStorage.getItem('plateQuizQuestions')) || 10;
 
-            var pool = Object.keys(regionLayers);
+            // Group all region IDs by country instead of one flat pool, so that with
+            // several countries active, each contributes roughly equally to the quiz
+            // regardless of how many regions it actually has (Germany's 402 regions
+            // would otherwise crowd out Belarus's 7 almost entirely).
+            var byCountry = {};
+            activeCountries.forEach(function (code) { byCountry[code] = []; });
+            Object.keys(regionLayers).forEach(function (regionId) {
+                var countryCode = regionId.split('|')[0];
+                if (!byCountry[countryCode]) byCountry[countryCode] = [];
+                byCountry[countryCode].push(regionId);
+            }); 
 
-            if (pool.length < 1) {
+            var countryList = Object.keys(byCountry).filter(function (c) { return byCountry[c].length > 0; });
+
+            if (countryList.length === 0) {
                 alert('Keine Regionen für diese Auswahl gefunden.');
                 window.location.href = 'kennzeichen-quiz-setup.html';
                 return;
             }
 
-            // Shuffle
-            for (var i = pool.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+            function shuffle(arr) {
+                for (var i = arr.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+                }
+                return arr;
             }
 
+            // Shuffle each country's own region list, and shuffle the country order
+            // itself too (so which country "starts" the round-robin varies run to run).
+            countryList = shuffle(countryList);
+            var cursors = {};
+            countryList.forEach(function (c) {
+                shuffle(byCountry[c]);
+                cursors[c] = 0;
+            });
+
+            // Round-robin across countries: one region from each country per lap,
+            // wrapping (with reshuffling) if a small country runs out before we reach
+            // the requested total. This is what actually delivers the "roughly equal
+            // per country" distribution regardless of region-count imbalance.
             questions = [];
+            var countryIdx = 0;
             while (questions.length < total) {
-                questions = questions.concat(pool);
+                var c = countryList[countryIdx % countryList.length];
+                if (cursors[c] >= byCountry[c].length) {
+                    shuffle(byCountry[c]);
+                    cursors[c] = 0;
+                }
+                questions.push(byCountry[c][cursors[c]]);
+                cursors[c]++;
+                countryIdx++;
             }
-            questions = questions.slice(0, total);
 
             // For each question, pick one concrete plate code at random from that
             // region's valid codes (relevant mainly for Germany/Austria, where a
