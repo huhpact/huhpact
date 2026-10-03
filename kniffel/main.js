@@ -1,7 +1,7 @@
 /**
  * app.js
  * ---------------------------------------------------------------------------
- * Kniffelblock — application logic.
+ * Kniffelblock — application logic.  Version 1.2
  *
  * Structure of this file:
  *   1. State
@@ -14,6 +14,7 @@
  *   8. Toast notifications
  *   9. Event wiring
  *   10. PWA: service worker + install prompt
+ *   11. Siegerehrung (Podium, Sound, Konfetti)  [v1.2]
  * ---------------------------------------------------------------------------
  */
 
@@ -57,6 +58,15 @@
    * applySeniorModeUI) so all the CSS lives in one attribute-scoped block.
    */
   let seniorMode = false;
+
+  /**
+   * v1.2: Das Endergebnis (Gesamtsumme) bleibt auf dem Blatt zensiert, bis die
+   * Auswertung gelaufen ist. `revealed` wird nach der Siegerehrung true und
+   * springt wieder auf false, sobald jemand danach einen Wert ändert.
+   * CENSOR_LOWER_TOTAL: auf true setzen, um auch "Summe unten" zu verdecken.
+   */
+  let revealed = false;
+  const CENSOR_LOWER_TOTAL = false;
 
   /* Distinct, paper-friendly "pen color" hues assigned round-robin to players
      so each player's column header gets a small identifying flag. */
@@ -161,6 +171,8 @@
 
       els.body.appendChild(tr);
     });
+
+    updateAllScores();
   }
 
   /**
@@ -196,7 +208,7 @@
       td.innerHTML = `
         <span class="total-label">
           ${row.icon ? icon(row.icon) : ''}
-          <span>${row.label}</span>
+          <span>${row.label}${row.id === 'grandTotal' && row.hint ? `<span class="category-hint">${row.hint}</span>` : ''}</span>
         </span>`;
     } else {
       td.innerHTML = `
@@ -279,7 +291,7 @@
 
       if (raw === '') {
         sheetScores[row.id] = null;
-        savePlayers();
+        onScoreChanged();
         return;
       }
 
@@ -298,8 +310,20 @@
       }
 
       sheetScores[row.id] = numeric;
-      savePlayers();
+      onScoreChanged();
     });
+
+    // Kniffel (stackStep): nur volle 50er-Schritte zulassen (0/50/100/150).
+    if (row.stackStep) {
+      input.addEventListener('change', () => {
+        if (input.value === '') return;
+        let snapped = Math.round(Number(input.value) / row.stackStep) * row.stackStep;
+        snapped = Math.max(0, Math.min(maxAllowed, snapped));
+        input.value = String(snapped);
+        sheetScores[row.id] = snapped;
+        onScoreChanged();
+      });
+    }
 
     // Enter key on a score input moves focus to the next row's cell (same
     // player + same sheet) for fast, calculator-like data entry.
@@ -312,22 +336,48 @@
 
     td.appendChild(input);
 
+    // v1.2: winziger Bonus-Hinweis im oberen Block ("noch 3×"), wird live
+    // von updateNeedHints() befüllt.
+    if (row.section === 'upper') {
+      const need = document.createElement('span');
+      need.className = 'need-hint';
+      need.id = `need-${row.id}-${key}`;
+      td.appendChild(need);
+    }
+
     if (row.fixedValue) {
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'quick-fill-btn';
-      chip.textContent = row.fixedValue;
-      chip.title = `${row.fixedValue} Punkte eintragen`;
-      chip.addEventListener('click', () => {
-        input.value = row.fixedValue;
-        sheetScores[row.id] = row.fixedValue;
-        savePlayers();
-        input.focus();
-      });
+      if (row.stackStep) {
+        // Kniffel: jeder Klick addiert +50 (50 -> 100 -> 150).
+        chip.textContent = `+${row.stackStep}`;
+        chip.title = `Kniffel eintragen: je Klick +${row.stackStep} (max. ${maxAllowed})`;
+        chip.addEventListener('click', () => {
+          const current = typeof sheetScores[row.id] === 'number' ? sheetScores[row.id] : 0;
+          if (current >= maxAllowed) {
+            showToast(`Maximal ${maxAllowed} Punkte im Kniffel-Feld.`, 'error');
+            return;
+          }
+          const next = Math.min(maxAllowed, current + row.stackStep);
+          input.value = next;
+          sheetScores[row.id] = next;
+          onScoreChanged();
+        });
+      } else {
+        chip.textContent = row.fixedValue;
+        chip.title = `${row.fixedValue} Punkte eintragen`;
+        chip.addEventListener('click', () => {
+          input.value = row.fixedValue;
+          sheetScores[row.id] = row.fixedValue;
+          onScoreChanged();
+          input.focus();
+        });
+      }
       td.appendChild(chip);
     }
 
-    // "Durchgestrichen" (struck-out) toggle — a Rentner-Modus affordance for
+    // "Durchgestrichen" (struck-out) toggle — v1.2: jetzt in JEDEM Modus verfügbar (vorher nur Rentner-Modus)
     // marking a category as deliberately unusable this round, the way many
     // players cross out a box on a real paper sheet. Always built (so no
     // extra render pass is needed when senior mode is switched on), but
@@ -363,7 +413,7 @@
       } else {
         input.focus();
       }
-      savePlayers();
+      onScoreChanged();
     });
     td.appendChild(strikeBtn);
 
@@ -608,51 +658,123 @@
   const UPPER_ROW_IDS = SCORE_ROWS.filter((r) => r.section === 'upper' && r.type === 'input').map((r) => r.id);
   const LOWER_ROW_IDS = SCORE_ROWS.filter((r) => r.section === 'lower' && r.type === 'input').map((r) => r.id);
 
-  /**
-   * Recalculates and displays Upper Total, Bonus, and Lower Total for every
-   * sheet of every player, then the Grand Total per player — which, in
-   * double mode, is the sum of BOTH sheets' totals (two independent score
-   * sheets rolled up into one combined result for that player).
-   */
-  function calculateAllScores() {
-    if (players.length === 0) {
-      showToast('Füge zuerst mindestens einen Spieler hinzu.', 'error');
-      return;
-    }
+  /** Zentrale Änderungs-Routine: speichern, Endergebnis wieder verdecken, live neu rechnen. */
+  function onScoreChanged() {
+    revealed = false;
+    savePlayers();
+    updateAllScores();
+  }
 
+  /** Aufschlüsselung eines Zettels: oben, Bonus, unten, Summe. */
+  function sheetBreakdown(sheetScores) {
+    const upperSum = sumRows(sheetScores, UPPER_ROW_IDS);
+    const bonusEarned = upperSum >= BONUS_THRESHOLD;
+    const bonusPoints = bonusEarned ? BONUS_POINTS : 0;
+    const upperTotal = upperSum + bonusPoints;
+    const lowerTotal = sumRows(sheetScores, LOWER_ROW_IDS);
+    return { upperSum, bonusEarned, bonusPoints, upperTotal, lowerTotal, total: upperTotal + lowerTotal };
+  }
+
+  /** Gesamtpunkte eines Spielers (im Doppel-Modus beide Zettel addiert). */
+  function playerGrandTotal(player) {
+    return player.sheets.reduce((sum, sheet) => sum + sheetBreakdown(sheet).total, 0);
+  }
+
+  /**
+   * v1.2: LIVE-Berechnung. Läuft nach jeder Eingabe (und nach jedem Neuaufbau
+   * der Tabelle) und aktualisiert Summen, Bonus und Bonus-Hinweise. Die
+   * Gesamtsumme wird dabei zensiert angezeigt, solange `revealed` false ist.
+   */
+  function updateAllScores() {
     players.forEach((player) => {
       let grandTotal = 0;
 
       player.sheets.forEach((sheetScores, sheetIndex) => {
         const key = cellKey(player.id, sheetIndex);
+        const b = sheetBreakdown(sheetScores);
+        grandTotal += b.total;
 
-        const upperSum = sumRows(sheetScores, UPPER_ROW_IDS);
-        const bonusEarned = upperSum >= BONUS_THRESHOLD;
-        const bonusPoints = bonusEarned ? BONUS_POINTS : 0;
-        const upperTotal = upperSum + bonusPoints;
-
-        const lowerTotal = sumRows(sheetScores, LOWER_ROW_IDS);
-        const sheetTotal = upperTotal + lowerTotal;
-        grandTotal += sheetTotal;
-
-        updateTotalDisplay('upperTotal', key, upperSum);
-        updateBonusDisplay(key, upperSum, bonusEarned, bonusPoints);
-        // "Summe oben inkl. Bonus": the plain upper sum with the +35 folded
-        // in once earned (63 -> 98). Before the bonus is reached this just
-        // mirrors the plain sum, since there's nothing yet to add.
-        updateTotalDisplay('upperTotalWithBonus', key, upperTotal);
-        updateTotalDisplay('lowerTotal', key, lowerTotal);
+        updateTotalDisplay('upperTotal', key, b.upperSum);
+        updateBonusDisplay(key, b.upperSum, b.bonusEarned, b.bonusPoints);
+        updateTotalDisplay('upperTotalWithBonus', key, b.upperTotal);
+        updateTotalDisplay('lowerTotal', key, b.lowerTotal);
+        updateNeedHints(player, sheetIndex, key);
       });
 
-      // Grand total is rendered once per player, on sheet 0's cell — in
-      // single mode that's the only cell anyway; in double mode the second
-      // sheet's grandTotal cell is visually merged away (see CSS) so only
-      // the first is shown, spanning both sub-columns.
+      // Gesamtsumme: eine Zelle pro Spieler (Doppel-Modus: beide Zettel zusammen).
       updateTotalDisplay('grandTotal', cellKey(player.id, 0), grandTotal);
     });
+  }
 
-    savePlayers();
-    showToast('Punkte wurden berechnet!', 'success');
+  /* ---- Bonus-Hinweise im oberen Block ------------------------------------- */
+
+  const UPPER_ROWS = SCORE_ROWS.filter((r) => r.section === 'upper' && r.type === 'input');
+
+  /**
+   * Rechnet aus, wie viele Würfel jeder noch offenen Augenzahl für den Bonus
+   * (63) nötig sind. Ausgangslage: 3 von jeder Zahl (3×(1+…+6) = 63).
+   * Wurde eine Zahl schon eingetragen, verschiebt sich der Bedarf:
+   *  - Defizit  -> mehr Würfel bei den offenen Feldern (hohe Zahlen zuerst, max. 5)
+   *  - Überschuss -> weniger Würfel (niedrige Zahlen zuerst)
+   * Durchgestrichene Felder zählen als 0 Punkte.
+   */
+  function computeBonusNeeds(sheetScores, struckMap) {
+    let missing = BONUS_THRESHOLD;
+    const open = [];
+    UPPER_ROWS.forEach((r) => {
+      const v = sheetScores[r.id];
+      if (struckMap[r.id]) return;
+      if (typeof v === 'number' && !Number.isNaN(v)) missing -= v;
+      else open.push(r);
+    });
+
+    const counts = {};
+    open.forEach((r) => { counts[r.id] = 3; });
+    let delta = missing - open.reduce((sum, r) => sum + 3 * r.face, 0);
+
+    if (delta > 0) {
+      [...open].sort((a, b) => b.face - a.face).forEach((r) => {
+        while (delta > 0 && counts[r.id] < 5) { counts[r.id]++; delta -= r.face; }
+      });
+    } else if (delta < 0) {
+      [...open].sort((a, b) => a.face - b.face).forEach((r) => {
+        while (counts[r.id] > 0 && -delta >= r.face) { counts[r.id]--; delta += r.face; }
+      });
+    }
+
+    return { counts, reached: missing <= 0, impossible: missing > 0 && delta > 0 };
+  }
+
+  function updateNeedHints(player, sheetIndex, key) {
+    const struckMap = (player.struck && player.struck[sheetIndex]) || {};
+    const sheetScores = player.sheets[sheetIndex];
+    const info = computeBonusNeeds(sheetScores, struckMap);
+
+    UPPER_ROWS.forEach((r) => {
+      const node = document.getElementById(`need-${r.id}-${key}`);
+      if (!node) return;
+      const done = typeof sheetScores[r.id] === 'number' || struckMap[r.id];
+      if (done) {
+        node.textContent = '';
+        node.className = 'need-hint';
+        node.removeAttribute('title');
+        return;
+      }
+      if (info.reached) {
+        node.textContent = '✓';
+        node.className = 'need-hint is-ok';
+        node.title = 'Bonus ist schon sicher';
+      } else if (info.impossible) {
+        node.textContent = '✗';
+        node.className = 'need-hint is-bad';
+        node.title = 'Bonus ist nicht mehr erreichbar';
+      } else {
+        const n = info.counts[r.id];
+        node.textContent = `${n}×`;
+        node.className = 'need-hint ' + (n > 3 ? 'is-more' : n < 3 ? 'is-less' : 'is-same');
+        node.title = `Für den Bonus brauchst du noch etwa ${n}× ${r.label}`;
+      }
+    });
   }
 
   /** Sums the numeric scores of the given row ids for one sheet (nulls -> 0). */
@@ -663,14 +785,34 @@
     }, 0);
   }
 
+  function isCensored(rowId) {
+    return !revealed && (rowId === 'grandTotal' || (CENSOR_LOWER_TOTAL && rowId === 'lowerTotal'));
+  }
+
   function updateTotalDisplay(rowId, key, value) {
-    const el = document.getElementById(`total-${rowId}-${key}`);
-    if (!el) return;
-    el.textContent = value;
-    el.classList.remove('just-updated');
-    // Force reflow so the animation can retrigger on repeated calculations.
-    void el.offsetWidth;
-    el.classList.add('just-updated');
+    const node = document.getElementById(`total-${rowId}-${key}`);
+    if (!node) return;
+
+    const censored = isCensored(rowId);
+    const stamp = censored ? 'censored' : String(value);
+    const previous = node.dataset.shown;
+    if (previous === stamp) return; // nichts geändert -> keine unnötige Animation
+    node.dataset.shown = stamp;
+    node.classList.remove('just-updated', 'just-revealed');
+
+    if (censored) {
+      node.classList.add('is-censored');
+      node.innerHTML = '<span class="censor" role="img" aria-label="Ergebnis verdeckt"><span class="censor-digits">888</span>' +
+        '<svg class="censor-lock" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2.2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>';
+      return;
+    }
+
+    const wasCensored = previous === 'censored';
+    node.classList.remove('is-censored');
+    node.textContent = value;
+    if (previous === undefined && !wasCensored) return; // erster Aufbau: ohne Puls
+    void node.offsetWidth; // Reflow, damit die Animation neu startet
+    node.classList.add(wasCensored ? 'just-revealed' : 'just-updated');
   }
 
   function updateBonusDisplay(key, upperSum, earned, bonusPoints) {
@@ -796,6 +938,7 @@
     if (!proceed) return;
 
     players = [];
+    revealed = false;
     clearSavedGame();
     renderBody();
     renderPlayerHeaders();
@@ -901,15 +1044,7 @@
      =========================================================================== */
 
   els.btnAddPlayer.addEventListener('click', addPlayer);
-  els.btnCalculate.addEventListener('click', () => {
-    els.btnCalculate.classList.add('is-calculating');
-    // Tiny delay purely so the calculator-icon spin + pulse feel intentional
-    // rather than instantaneous (no real async work is happening).
-    setTimeout(() => {
-      calculateAllScores();
-      els.btnCalculate.classList.remove('is-calculating');
-    }, 260);
-  });
+  els.btnCalculate.addEventListener('click', startEvaluation);
   els.btnNewGame.addEventListener('click', startNewGame);
   els.btnModeSingle.addEventListener('click', () => setMode('single'));
   els.btnModeDouble.addEventListener('click', () => setMode('double'));
@@ -951,6 +1086,691 @@
     btnInstall.classList.add('hidden');
     showToast('Kniffelblock wurde installiert! 🎉', 'success');
   });
+
+  /* ===========================================================================
+     11. SIEGEREHRUNG (v1.2)
+     ---------------------------------------------------------------------------
+     Vollbild-Präsentation: Intro -> Plätze 4+ (von hinten) -> Treppchen
+     3 / 2 / 1 mit Trommelwirbel, Fanfare, Applaus, Konfetti & Feuerwerk.
+     Alles ohne externe Bibliotheken: Sound per WebAudio (synthetisch),
+     Konfetti per <canvas>, Animationen per CSS.
+       11a. Sfx       – Soundeffekte
+       11b. Confetti  – Konfetti / Feuerwerk
+       11c. Ceremony  – Ablauf & DOM
+     =========================================================================== */
+
+  /* ---- 11a. SOUND ---------------------------------------------------------- */
+  const Sfx = (() => {
+    let ac = null, master = null, noiseBuf = null, drumBus = null, muted = false;
+
+    function ensure() {
+      try {
+        if (!ac) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return false;
+          ac = new AC();
+          master = ac.createGain();
+          master.gain.value = muted ? 0 : 0.9;
+          const comp = ac.createDynamicsCompressor();
+          master.connect(comp);
+          comp.connect(ac.destination);
+          noiseBuf = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate);
+          const d = noiseBuf.getChannelData(0);
+          for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+        }
+        if (ac.state === 'suspended') ac.resume();
+        return true;
+      } catch (e) {
+        ac = null;
+        return false;
+      }
+    }
+
+    const now = () => ac.currentTime;
+
+    function tone(freq, t0, dur, o = {}) {
+      const { type = 'sawtooth', vol = 0.18, lp = 2400, attack = 0.02, vib = 0, dest = master, slideTo = null } = o;
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      const f = ac.createBiquadFilter();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, t0);
+      if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, t0 + dur);
+      f.type = 'lowpass';
+      f.frequency.value = lp;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(vol, t0 + attack);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      osc.connect(f); f.connect(g); g.connect(dest);
+      if (vib) {
+        const lfo = ac.createOscillator();
+        const lg = ac.createGain();
+        lfo.frequency.value = 5.5;
+        lg.gain.value = vib;
+        lfo.connect(lg); lg.connect(osc.frequency);
+        lfo.start(t0); lfo.stop(t0 + dur + 0.05);
+      }
+      osc.start(t0);
+      osc.stop(t0 + dur + 0.05);
+    }
+
+    function noise(t0, dur, o = {}) {
+      const { type = 'bandpass', freq = 2000, q = 0.7, vol = 0.2, dest = master, flat = false } = o;
+      const src = ac.createBufferSource();
+      src.buffer = noiseBuf;
+      src.loop = true;
+      const f = ac.createBiquadFilter();
+      f.type = type; f.frequency.value = freq; f.Q.value = q;
+      const g = ac.createGain();
+      g.gain.setValueAtTime(vol, t0);
+      if (!flat) g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      src.connect(f); f.connect(g); g.connect(dest);
+      src.start(t0, Math.random() * 0.9, dur);
+    }
+
+    function cymbal(t) {
+      noise(t, 1.6, { type: 'highpass', freq: 5500, q: 0.5, vol: 0.22 });
+    }
+
+    function intro() {
+      if (!ensure()) return;
+      const t = now();
+      [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) =>
+        tone(f, t + i * 0.1, 0.55, { type: 'triangle', vol: 0.16, lp: 5000 }));
+      tone(130.81, t, 1.4, { vol: 0.1, lp: 500, attack: 0.4 });
+      noise(t + 0.5, 1.0, { type: 'highpass', freq: 6000, vol: 0.06 });
+    }
+
+    function pop() {
+      if (!ensure()) return;
+      const t = now();
+      tone(420, t, 0.14, { type: 'sine', vol: 0.22, slideTo: 880, attack: 0.005 });
+      noise(t, 0.05, { freq: 3000, vol: 0.06 });
+    }
+
+    function stopDrum() {
+      if (drumBus && ac) {
+        drumBus.gain.cancelScheduledValues(now());
+        drumBus.gain.setTargetAtTime(0, now(), 0.015);
+      }
+      drumBus = null;
+    }
+
+    function drumroll(sec) {
+      if (!ensure()) return;
+      stopDrum();
+      drumBus = ac.createGain();
+      drumBus.gain.value = 1;
+      drumBus.connect(master);
+      const start = now() + 0.02;
+      let t = start, i = 0;
+      while (t < start + sec) {
+        const p = (t - start) / sec;
+        const vol = 0.07 + 0.26 * p;
+        noise(t, 0.08, { freq: 1900, q: 0.7, vol, dest: drumBus });
+        if (i % 2 === 0) tone(120, t, 0.12, { type: 'sine', vol: vol * 1.1, lp: 500, attack: 0.004, slideTo: 70, dest: drumBus });
+        t += 0.12 - 0.075 * p; // accelerating roll
+        i++;
+      }
+    }
+
+    function reveal(rank) {
+      if (!ensure()) return;
+      stopDrum();
+      const t = now() + 0.02;
+      cymbal(t);
+      const chord = rank >= 3 ? [261.63, 329.63, 392.0]
+        : rank === 2 ? [293.66, 369.99, 440.0, 587.33]
+        : [329.63, 415.3, 493.88, 659.25];
+      tone(chord[0] / 2, t, 0.6, { vol: 0.2, lp: 700 });
+      chord.forEach((f) => {
+        tone(f, t, 0.18, { vol: 0.1, lp: 2200, vib: 3 });
+        tone(f, t + 0.2, 1.0, { vol: 0.12, lp: 2400, vib: 4 });
+      });
+      tone(chord[chord.length - 1] * 2, t + 0.25, 0.6, { type: 'triangle', vol: 0.12, lp: 6000 });
+    }
+
+    function applause(sec, delay) {
+      const t0 = now() + (delay || 0);
+      const g = ac.createGain();
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.9, t0 + 0.7);
+      g.gain.setValueAtTime(0.9, t0 + sec - 1.5);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + sec);
+      g.connect(master);
+      noise(t0, sec, { freq: 2800, q: 0.35, vol: 0.1, dest: g, flat: true });
+      const claps = Math.floor(sec * 45);
+      for (let i = 0; i < claps; i++) {
+        const r = Math.random();
+        noise(t0 + Math.random() * (sec - 0.1), 0.03 + r * 0.04, { freq: 900 + r * 3200, q: 1.2, vol: 0.12 + r * 0.2, dest: g });
+      }
+    }
+
+    function fanfare() {
+      if (!ensure()) return;
+      stopDrum();
+      const t = now() + 0.02;
+      const C5 = 523.25, E5 = 659.25, G5 = 783.99, C6 = 1046.5;
+      const seq = [[C5, 0, 0.14], [C5, 0.17, 0.14], [C5, 0.34, 0.14], [E5, 0.55, 0.32],
+                   [C5, 0.95, 0.2], [E5, 1.2, 0.2], [G5, 1.5, 0.5], [C6, 2.1, 1.4]];
+      seq.forEach(([f, o, d]) => {
+        tone(f, t + o, d + 0.15, { vol: 0.16, lp: 2600, vib: 4 });
+        tone(f / 2, t + o, d + 0.15, { vol: 0.1, lp: 1400, vib: 3 });
+      });
+      [261.63, 329.63, 392, 523.25].forEach((f) => tone(f, t + 2.1, 1.7, { vol: 0.11, lp: 1800, vib: 3 }));
+      cymbal(t);
+      cymbal(t + 2.1);
+      for (let i = 0; i < 10; i++) {
+        tone(1568 + Math.random() * 2200, t + 2.1 + i * 0.07, 0.3, { type: 'sine', vol: 0.05, lp: 9000 });
+      }
+      applause(5.5, 2.0);
+    }
+
+    function setMuted(m) {
+      muted = m;
+      if (master && ac) master.gain.setTargetAtTime(m ? 0 : 0.9, now(), 0.03);
+    }
+
+    function shutdown() {
+      try { if (ac) ac.close(); } catch (e) { /* ignore */ }
+      ac = null; master = null; drumBus = null;
+    }
+
+    return { ensure, intro, pop, drumroll, stopDrum, reveal, fanfare, setMuted, shutdown, isMuted: () => muted };
+  })();
+
+  /* ---- 11b. KONFETTI & FEUERWERK ------------------------------------------- */
+  const Confetti = (() => {
+    const COLORS = ['#a8342a', '#c9573f', '#b8935a', '#d8b478', '#2f5f8a', '#4a7a4a', '#6a4a8a', '#e0a82a'];
+    const EMOJIS = ['🎉', '🎊', '⭐', '✨', '🎲', '🏆', '💫', '🥳'];
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let canvas = null, c = null, w = 0, h = 0, parts = [], raf = null, rainUntil = 0;
+
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+    function resize() {
+      if (!canvas) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function attach(cv) {
+      canvas = cv;
+      c = cv.getContext('2d');
+      resize();
+      window.addEventListener('resize', resize);
+    }
+
+    function detach() {
+      window.removeEventListener('resize', resize);
+      if (raf) cancelAnimationFrame(raf);
+      raf = null; parts = []; rainUntil = 0; canvas = null; c = null;
+    }
+
+    function piece(x, y, vx, vy, g, drag, life, emojiRatio) {
+      const emoji = Math.random() < emojiRatio ? pick(EMOJIS) : null;
+      return {
+        x, y, vx, vy, g, drag, life, emoji,
+        size: rnd(16, 30), w: rnd(6, 13), h: rnd(4, 9),
+        rot: rnd(0, 6.28), vr: rnd(-0.3, 0.3), tilt: rnd(0, 6.28), color: pick(COLORS),
+      };
+    }
+
+    /** Konfetti-Kanone. fx/fy = Position in Bildschirmbruchteilen (0..1). */
+    function burst(fx, fy, n, o = {}) {
+      if (!c) return;
+      const { angle = -90, spread = 360, speed = 14, gravity = 0.32, drag = 0.985, life = 140, emoji = 0 } = o;
+      const count = reduced ? Math.ceil(n * 0.3) : n;
+      for (let i = 0; i < count; i++) {
+        const a = (angle + (Math.random() - 0.5) * spread) * Math.PI / 180;
+        const s = speed * (0.35 + Math.random() * 0.85);
+        parts.push(piece(fx * w, fy * h, Math.cos(a) * s, Math.sin(a) * s, gravity, drag, life * rnd(0.8, 1.2), emoji));
+      }
+      kick();
+    }
+
+    /** Feuerwerk: strahlenförmige Funken. */
+    function firework(fx, fy) {
+      if (!c) return;
+      const color = pick(COLORS);
+      const count = reduced ? 14 : 55;
+      for (let i = 0; i < count; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const s = rnd(2, 8);
+        parts.push({
+          spark: true, x: fx * w, y: fy * h, vx: Math.cos(a) * s, vy: Math.sin(a) * s,
+          g: 0.07, drag: 0.962, life: rnd(55, 85), r: rnd(1.8, 3.4), color: Math.random() < 0.25 ? '#e0a82a' : color,
+        });
+      }
+      kick();
+    }
+
+    function rain(ms) {
+      rainUntil = performance.now() + ms;
+      kick();
+    }
+
+    function frame() {
+      if (!c) return;
+      c.clearRect(0, 0, w, h);
+      const t = performance.now();
+      if (t < rainUntil && !reduced) {
+        for (let i = 0; i < 2; i++) {
+          parts.push(piece(rnd(0, w), -14, rnd(-1.2, 1.2), rnd(1.5, 3.5), 0.03, 0.995, 420, 0));
+        }
+      }
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i];
+        p.vx *= p.drag;
+        p.vy = p.vy * p.drag + p.g;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life--;
+        if (p.life <= 0 || p.y > h + 60) { parts.splice(i, 1); continue; }
+        c.globalAlpha = Math.min(1, p.life / 30);
+        if (p.spark) {
+          c.fillStyle = p.color;
+          c.beginPath();
+          c.arc(p.x, p.y, p.r, 0, 6.283);
+          c.fill();
+        } else if (p.emoji) {
+          p.rot += p.vr;
+          c.save();
+          c.translate(p.x, p.y);
+          c.rotate(p.rot * 0.3);
+          c.font = p.size + 'px serif';
+          c.textAlign = 'center';
+          c.textBaseline = 'middle';
+          c.fillText(p.emoji, 0, 0);
+          c.restore();
+        } else {
+          p.rot += p.vr;
+          p.tilt += 0.12;
+          c.save();
+          c.translate(p.x, p.y);
+          c.rotate(p.rot);
+          c.scale(1, Math.cos(p.tilt));
+          c.fillStyle = p.color;
+          c.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          c.restore();
+        }
+      }
+      c.globalAlpha = 1;
+      raf = (parts.length || performance.now() < rainUntil) ? requestAnimationFrame(frame) : null;
+    }
+
+    function kick() {
+      if (!raf && c) raf = requestAnimationFrame(frame);
+    }
+
+    function clear() {
+      parts = []; rainUntil = 0;
+      if (c) c.clearRect(0, 0, w, h);
+    }
+
+    return { attach, detach, burst, firework, rain, clear };
+  })();
+
+  /* ---- 11c. ABLAUF (manuell: Pfeile vor / zurück) -------------------------- */
+  const Ceremony = (() => {
+    let root = null, token = 0, sleepers = [], entries = [], lastFocus = null, onKey = null;
+    let ui = null, steps = [], cur = 0, busy = false;
+
+    const el = (tag, cls, html) => {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (html !== undefined) e.innerHTML = html;
+      return e;
+    };
+
+    /** Abbrechbares Warten (z. B. Trommelwirbel) – "Weiter" überspringt es. */
+    const sleep = (ms) => new Promise((res) => {
+      const s = { res };
+      s.t = setTimeout(() => { sleepers = sleepers.filter((x) => x !== s); res(); }, ms);
+      sleepers.push(s);
+    });
+    function skipWait() {
+      const list = sleepers;
+      sleepers = [];
+      list.forEach((s) => { clearTimeout(s.t); s.res(); });
+    }
+
+    function buildEntries() {
+      const list = players
+        .map((p) => ({ name: p.name, color: p.colorHue, total: playerGrandTotal(p) }))
+        .sort((a, b) => b.total - a.total);
+      let rank = 0;
+      list.forEach((e, i) => {
+        if (i === 0 || e.total !== list[i - 1].total) rank = i + 1; // Gleichstand = gleicher Platz
+        e.rank = rank;
+      });
+      return list;
+    }
+
+    const medalFor = (rank) => (rank === 1 ? '🥇' : rank === 2 ? '🥈' : '🥉');
+
+    function countUp(node, to, ms) {
+      const t0 = performance.now();
+      const step = (t) => {
+        if (!node.isConnected) return;
+        const p = Math.min(1, (t - t0) / ms);
+        node.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    const ARROW_L = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+    const ARROW_R = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
+
+    function open() {
+      if (root) return;
+      lastFocus = document.activeElement;
+      root = el('div', 'ceremony');
+      root.setAttribute('role', 'dialog');
+      root.setAttribute('aria-modal', 'true');
+      root.setAttribute('aria-label', 'Siegerehrung');
+      root.tabIndex = -1;
+      root.innerHTML =
+        '<canvas class="cer-confetti" aria-hidden="true"></canvas>' +
+        '<div class="cer-flash" aria-hidden="true"></div>' +
+        '<button type="button" class="cer-close" aria-label="Siegerehrung schließen">&times;</button>' +
+        '<div class="cer-stage"></div>' +
+        '<button type="button" class="cer-nav cer-prev" aria-label="Zurück" title="Zurück (←)">' + ARROW_L + '</button>' +
+        '<button type="button" class="cer-nav cer-next" aria-label="Weiter" title="Weiter (→)">' + ARROW_R + '</button>';
+      document.body.appendChild(root);
+      document.body.classList.add('ceremony-open');
+
+      Confetti.attach(root.querySelector('.cer-confetti'));
+
+      root.querySelector('.cer-close').addEventListener('click', close);
+      root.querySelector('.cer-prev').addEventListener('click', back);
+      root.querySelector('.cer-next').addEventListener('click', next);
+
+      onKey = (e) => {
+        if (e.key === 'Escape') { e.preventDefault(); close(); }
+        else if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); next(); }
+        else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); back(); }
+      };
+      document.addEventListener('keydown', onKey);
+
+      Sfx.ensure(); // wird durch den Klick auf "Auswertung starten" freigeschaltet
+      root.focus();
+      restart();
+    }
+
+    /** Von vorn beginnen (beim Öffnen und bei "Nochmal ansehen"). */
+    function restart() {
+      token++;
+      skipWait();
+      Sfx.stopDrum();
+      Confetti.clear();
+      entries = buildEntries();
+      rebuild();
+      cur = 0;
+      run(0);
+    }
+
+    /** Baut Bühne + Schritte neu auf (ohne etwas anzuzeigen). */
+    function rebuild() {
+      ui = buildStage();
+      steps = makeSteps();
+    }
+
+    function buildStage() {
+      const stage = root.querySelector('.cer-stage');
+      stage.innerHTML = '';
+      stage.classList.remove('cer-shake');
+
+      const title = el('div', 'cer-title', 'Siegerehrung');
+      const sub = el('div', 'cer-subtitle', '&nbsp;');
+      const podium = el('div', 'cer-podium');
+      const rest = el('ol', 'cer-rest');
+      const actions = el('div', 'cer-actions');
+
+      const top = entries.slice(0, 3);
+      const order = top.length === 1 ? [0] : top.length === 2 ? [1, 0] : [1, 0, 2];
+      const slots = [];
+      order.forEach((idx) => {
+        const e = top[idx];
+        const slot = el('div', 'cer-slot rank-' + Math.min(e.rank, 3));
+        slot.style.setProperty('--pc', e.color);
+        slot.innerHTML =
+          '<div class="cer-person">' +
+            '<div class="cer-medal">' + medalFor(e.rank) + '</div>' +
+            '<div class="cer-name">' + escapeHtml(e.name) + '</div>' +
+            '<div class="cer-score"><span class="cer-score-num">0</span> <small>Punkte</small></div>' +
+          '</div>' +
+          '<div class="cer-block">?</div>';
+        podium.appendChild(slot);
+        slots[idx] = slot;
+      });
+
+      entries.slice(3).forEach((e) => {
+        rest.appendChild(el('li', 'cer-rest-item',
+          '<span class="cer-rest-rank">' + e.rank + '.</span>' +
+          '<span class="cer-rest-name"><i style="background:' + e.color + '"></i>' + escapeHtml(e.name) + '</span>' +
+          '<span class="cer-rest-score">' + e.total + ' <small>Punkte</small></span>'));
+      });
+
+      const replay = el('button', 'cer-action', '↻ Nochmal ansehen');
+      replay.type = 'button';
+      replay.addEventListener('click', restart);
+      const done = el('button', 'cer-action cer-action-primary', 'Fertig');
+      done.type = 'button';
+      done.addEventListener('click', close);
+      actions.append(replay, done);
+
+      stage.append(title, sub, podium, rest, actions);
+      return { stage, title, sub, rest, actions, slots };
+    }
+
+    /* ---- Schritte -----------------------------------------------------------
+       Jeder Schritt hat zwei Varianten:
+         play()    – animiert, mit Sound & Konfetti (beim Weiterklicken)
+         instant() – setzt nur den Endzustand (beim Zurückgehen)             */
+    function makeSteps() {
+      const list = [];
+      const setSub = (html, animate) => {
+        ui.sub.innerHTML = html;
+        ui.sub.classList.remove('swap');
+        if (animate) { void ui.sub.offsetWidth; ui.sub.classList.add('swap'); }
+      };
+      const flash = () => {
+        const f = root && root.querySelector('.cer-flash');
+        if (!f) return;
+        f.classList.remove('go');
+        void f.offsetWidth;
+        f.classList.add('go');
+      };
+      const wait = async (ms, alive) => { await sleep(ms); return alive(); };
+
+      // 0) Intro
+      list.push({
+        instant() {
+          ui.title.classList.add('is-in', 'instant');
+          setSub('Und die Plätze lauten …', false);
+        },
+        async play() {
+          ui.title.classList.add('is-in');
+          setSub('Und die Plätze lauten …', true);
+          Sfx.intro();
+          Confetti.burst(0.5, 0.3, 50, { speed: 12 });
+        },
+      });
+
+      // 1..n) Plätze ab 4, von hinten nach vorn
+      const items = Array.from(ui.rest.children);
+      for (let i = items.length - 1; i >= 0; i--) {
+        const e = entries[3 + i];
+        const text = 'Platz ' + e.rank + ': <b>' + escapeHtml(e.name) + '</b>';
+        list.push({
+          instant() { items[i].classList.add('is-in', 'instant'); setSub(text, false); },
+          async play() {
+            items[i].classList.add('is-in', i % 2 ? 'from-right' : 'from-left');
+            Sfx.pop();
+            Confetti.burst(i % 2 ? 0.8 : 0.2, 0.7, 14, { speed: 9, spread: 120 });
+            setSub(text, true);
+          },
+        });
+      }
+
+      // Treppchen: Platz 3 -> 2 -> 1
+      for (let idx = Math.min(entries.length, 3) - 1; idx >= 0; idx--) {
+        const e = entries[idx];
+        const slot = ui.slots[idx];
+        const isFinale = idx === 0;
+        const winners = entries.filter((x) => x.rank === 1);
+        const names = winners.map((x) => escapeHtml(x.name)).join(' &amp; ');
+        const afterText = isFinale
+          ? (winners.length > 1 ? 'Gleichstand! <b>' + names + '</b>' : 'Herzlichen Glückwunsch, <b>' + names + '</b>!')
+          : medalFor(e.rank) + ' <b>' + escapeHtml(e.name) + '</b> – Platz ' + e.rank + '!';
+
+        list.push({
+          instant() {
+            slot.classList.add('is-revealed', 'instant');
+            slot.querySelector('.cer-block').textContent = e.rank;
+            slot.querySelector('.cer-score-num').textContent = e.total;
+            setSub(afterText, false);
+            if (isFinale) ui.actions.classList.add('is-in');
+          },
+          async play(alive) {
+            slot.classList.add('is-spot');
+            setSub(isFinale ? 'Und der Sieg geht an …' : 'Auf Platz ' + e.rank + ' …', true);
+            const dur = isFinale ? 3.2 : 1.8;
+            Sfx.drumroll(dur);
+            if (!(await wait(dur * 1000, alive))) return;
+
+            slot.classList.remove('is-spot');
+            slot.classList.add('is-revealed');
+            slot.querySelector('.cer-block').textContent = e.rank;
+            countUp(slot.querySelector('.cer-score-num'), e.total, 1400);
+            flash();
+            setSub(afterText, true);
+
+            if (!isFinale) {
+              Sfx.reveal(e.rank);
+              const r = slot.getBoundingClientRect();
+              Confetti.burst((r.left + r.width / 2) / window.innerWidth, Math.max(0.25, r.top / window.innerHeight), 70,
+                { speed: 13, spread: 140 });
+              return;
+            }
+
+            // ---- Finale ----
+            Sfx.fanfare();
+            ui.stage.classList.add('cer-shake');
+            Confetti.burst(0.5, 0.45, 140, { speed: 18, gravity: 0.28, life: 170 });
+            Confetti.burst(0.03, 1, 100, { angle: -62, spread: 34, speed: 27, gravity: 0.4, life: 170 });
+            Confetti.burst(0.97, 1, 100, { angle: -118, spread: 34, speed: 27, gravity: 0.4, life: 170 });
+            Confetti.rain(10000);
+            ui.actions.classList.add('is-in');
+            fireworks(alive); // läuft im Hintergrund, blockiert "Zurück" nicht
+          },
+        });
+      }
+      return list;
+    }
+
+    async function fireworks(alive) {
+      for (let i = 0; i < 9; i++) {
+        await sleep(900);
+        if (!alive()) return;
+        Confetti.firework(0.12 + Math.random() * 0.76, 0.12 + Math.random() * 0.4);
+        if (i % 3 === 2) {
+          Confetti.burst(0.03, 1, 50, { angle: -62, spread: 34, speed: 25, gravity: 0.4 });
+          Confetti.burst(0.97, 1, 50, { angle: -118, spread: 34, speed: 25, gravity: 0.4 });
+        }
+      }
+    }
+
+    /** Führt den animierten Schritt i aus. */
+    async function run(i) {
+      token++;
+      const my = token;
+      busy = true;
+      syncNav();
+      await steps[i].play(() => my === token);
+      if (my === token) { busy = false; syncNav(); }
+    }
+
+    function next() {
+      if (!root) return;
+      if (busy) { skipWait(); return; }          // Trommelwirbel überspringen
+      if (cur >= steps.length - 1) return;
+      cur++;
+      run(cur);
+    }
+
+    function back() {
+      if (!root || cur <= 0) return;
+      token++;                                    // laufende Animation abbrechen
+      skipWait();
+      Sfx.stopDrum();
+      Confetti.clear();
+      busy = false;
+      cur--;
+      rebuild();
+      for (let j = 0; j <= cur; j++) steps[j].instant();
+      syncNav();
+    }
+
+    function syncNav() {
+      if (!root) return;
+      const prev = root.querySelector('.cer-prev');
+      const nxt = root.querySelector('.cer-next');
+      prev.disabled = cur <= 0;
+      nxt.disabled = !busy && cur >= steps.length - 1;
+      nxt.classList.toggle('is-ready', !busy && cur < steps.length - 1);
+    }
+
+    function close() {
+      if (!root) return;
+      token++;
+      skipWait();
+      Sfx.shutdown();
+      Confetti.detach();
+      document.removeEventListener('keydown', onKey);
+      const r = root;
+      root = null;
+      r.classList.add('is-closing');
+      document.body.classList.remove('ceremony-open');
+      setTimeout(() => r.remove(), 350);
+      // Nach der Zeremonie darf das Endergebnis auf dem Blatt gelüftet werden.
+      revealed = true;
+      updateAllScores();
+      showToast('Endergebnis aufgedeckt.', 'success');
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    return { open, close };
+  })();
+
+  /** Zählt Felder, die weder ausgefüllt noch durchgestrichen sind. */
+  function countOpenFields() {
+    let n = 0;
+    players.forEach((p) => p.sheets.forEach((sheet, i) => {
+      const st = (p.struck && p.struck[i]) || {};
+      EDITABLE_ROW_IDS.forEach((id) => {
+        if ((sheet[id] === null || sheet[id] === undefined) && !st[id]) n++;
+      });
+    }));
+    return n;
+  }
+
+  function startEvaluation() {
+    if (players.length === 0) {
+      showToast('Füge zuerst mindestens einen Spieler hinzu.', 'error');
+      return;
+    }
+    const open = countOpenFields();
+    if (open > 0 && !window.confirm('Es sind noch ' + open + ' Felder offen. Trotzdem auswerten?')) return;
+    Ceremony.open();
+  }
 
   /* ===========================================================================
      INITIALIZATION x

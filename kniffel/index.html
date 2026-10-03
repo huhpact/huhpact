@@ -23,7 +23,7 @@
 </script>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Caveat:wght@500;600;700&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/kniffel/style.css">
+  <link rel="stylesheet" href="/kniffel/style.css?v=1.2">
 </head>
 <body>
 
@@ -120,10 +120,8 @@
       <!-- Calculate button + legend -->
       <div class="action-bar">
         <button type="button" class="btn-calculate" id="btn-calculate">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="16" y1="18" x2="16" y2="18"/>
-          </svg>
-          <span>Punkte berechnen</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 5H4v1a4 4 0 0 0 4 4"/><path d="M17 5h3v1a4 4 0 0 1-4 4"/></svg>
+          <span>Auswertung starten</span>
         </button>
 
         <p class="hint-text" id="empty-state-hint">
@@ -152,8 +150,16 @@
               <li><strong>Full House:</strong> 25 Punkte</li>
               <li><strong>Kleine Straße:</strong> 30 Punkte</li>
               <li><strong>Große Straße:</strong> 40 Punkte</li>
-              <li><strong>Kniffel:</strong> 50 Punkte</li>
+              <li><strong>Kniffel:</strong> 50 Punkte &ndash; jeder weitere Kniffel <strong>+50</strong> (bis max. 150)</li>
               <li><strong>Chance:</strong> Summe aller Würfel</li>
+            </ul>
+          </div>
+          <div class="rules-col">
+            <h3>Tipps</h3>
+            <ul>
+              <li>Die Punkte aktualisieren sich <strong>live</strong>; die Gesamtsumme bleibt bis zur Auswertung verdeckt</li>
+              <li>Kleine Zahl im oberen Block: so viele Würfel dieser Augenzahl brauchst du noch für den Bonus</li>
+              <li>Mit dem <strong>&minus;</strong>-Knopf in der Ecke streichst du ein Feld durch</li>
             </ul>
           </div>
           <div class="rules-col">
@@ -176,7 +182,7 @@
   <!-- Toast for feedback messages -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="/kniffel/rows-config.js"></script>
-  <script src="/kniffel/main.js"></script>
+  <script src="/kniffel/rows-config.js?v=1.2"></script>
+  <script src="/kniffel/main.js?v=1.2"></script>
 </body>
 </html>
