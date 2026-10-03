@@ -1,7 +1,7 @@
 /**
  * app.js
  * ---------------------------------------------------------------------------
- * Kniffelblock — application logic.  Version 1.2
+ * Kniffelblock — application logic.  Version 1.3
  *
  * Structure of this file:
  *   1. State
@@ -15,6 +15,7 @@
  *   9. Event wiring
  *   10. PWA: service worker + install prompt
  *   11. Siegerehrung (Podium, Sound, Konfetti)  [v1.2]
+ *   12. Einstellungen: Zettel-Design, Wach halten, Wer ist dran, Gruppe merken  [v1.3]
  * ---------------------------------------------------------------------------
  */
 
@@ -66,6 +67,9 @@
    * CENSOR_LOWER_TOTAL: auf true setzen, um auch "Summe unten" zu verdecken.
    */
   let revealed = false;
+
+  /** v1.3: Spieler, der zuletzt etwas eingetragen hat (Basis für "Wer ist dran?"). */
+  let lastEntryPlayerId = null;
   const CENSOR_LOWER_TOTAL = false;
 
   /* Distinct, paper-friendly "pen color" hues assigned round-robin to players
@@ -89,6 +93,9 @@
     btnModeDouble: document.getElementById('btn-mode-double'),
     sheetsHeaderRow: document.getElementById('row-sheets'),
     btnSeniorMode: document.getElementById('btn-senior-mode'),
+    btnSettings: document.getElementById('btn-settings'),
+    settingsPanel: document.getElementById('settings-panel'),
+    groupRestore: document.getElementById('group-restore'),
   };
 
   /* ===========================================================================
@@ -310,7 +317,7 @@
       }
 
       sheetScores[row.id] = numeric;
-      onScoreChanged();
+      onScoreChanged(player.id);
     });
 
     // Kniffel (stackStep): nur volle 50er-Schritte zulassen (0/50/100/150).
@@ -321,7 +328,7 @@
         snapped = Math.max(0, Math.min(maxAllowed, snapped));
         input.value = String(snapped);
         sheetScores[row.id] = snapped;
-        onScoreChanged();
+        onScoreChanged(player.id);
       });
     }
 
@@ -362,7 +369,7 @@
           const next = Math.min(maxAllowed, current + row.stackStep);
           input.value = next;
           sheetScores[row.id] = next;
-          onScoreChanged();
+          onScoreChanged(player.id);
         });
       } else {
         chip.textContent = row.fixedValue;
@@ -370,7 +377,7 @@
         chip.addEventListener('click', () => {
           input.value = row.fixedValue;
           sheetScores[row.id] = row.fixedValue;
-          onScoreChanged();
+          onScoreChanged(player.id);
           input.focus();
         });
       }
@@ -413,7 +420,7 @@
       } else {
         input.focus();
       }
-      onScoreChanged();
+      onScoreChanged(player.id);
     });
     td.appendChild(strikeBtn);
 
@@ -448,6 +455,7 @@
       th.scope = 'col';
       if (mode === 'double') th.colSpan = 2;
       th.style.setProperty('--player-tint', player.colorHue);
+      th.dataset.playerId = String(player.id);
 
       const removeBtn = document.createElement('button');
       removeBtn.type = 'button';
@@ -465,11 +473,20 @@
 
       th.appendChild(buildNameElement(player));
 
+      // v1.3: kleine farbige Spaltenmarkierung "als Nächstes dran"
+      const turn = document.createElement('span');
+      turn.className = 'turn-marker';
+      turn.title = `${player.name} ist als Nächstes dran`;
+      turn.setAttribute('aria-hidden', 'true');
+      th.appendChild(turn);
+
       els.headerRow.appendChild(th);
     });
 
     renderSheetSubHeaders();
     updateAddPlayerButtonState();
+    updateTurnMarker();
+    refreshNameSuggestions();
   }
 
   /**
@@ -508,6 +525,8 @@
       input.placeholder = 'Name eingeben…';
       input.value = player.name === defaultNameFor(player) ? '' : player.name;
       input.maxLength = 18;
+      input.setAttribute('list', 'name-suggestions');
+      input.autocomplete = 'off';
       input.setAttribute('aria-label', 'Spielername eingeben, dann Enter drücken');
 
       const confirm = () => {
@@ -601,26 +620,29 @@
     return Array.from({ length: count }, () => emptyStruckMap());
   }
 
-  function addPlayer() {
+  function addPlayer(presetName, silent) {
     if (players.length >= MAX_PLAYERS) {
       showToast(`Maximal ${MAX_PLAYERS} Spieler pro Blatt.`, 'error');
       return;
     }
 
+    const preset = typeof presetName === 'string' && presetName.trim() ? presetName.trim() : null;
     const player = {
       id: nextPlayerId++,
-      name: `Spieler ${players.length + 1}`,
-      nameConfirmed: false,
+      name: preset || `Spieler ${players.length + 1}`,
+      nameConfirmed: !!preset,
       colorHue: PLAYER_HUES[players.length % PLAYER_HUES.length],
       sheets: emptySheets(),
       struck: emptyStruckSheets(),
     };
 
     players.push(player);
+    if (silent) return player;
     renderBody();
     renderPlayerHeaders();
     savePlayers();
     updateEmptyHint();
+    return player;
   }
 
   function removePlayer(id) {
@@ -649,6 +671,7 @@
     } else {
       els.emptyHint.style.display = 'none';
     }
+    updateGroupRestoreUI();
   }
 
   /* ===========================================================================
@@ -659,8 +682,9 @@
   const LOWER_ROW_IDS = SCORE_ROWS.filter((r) => r.section === 'lower' && r.type === 'input').map((r) => r.id);
 
   /** Zentrale Änderungs-Routine: speichern, Endergebnis wieder verdecken, live neu rechnen. */
-  function onScoreChanged() {
+  function onScoreChanged(playerId) {
     revealed = false;
+    if (playerId !== undefined) lastEntryPlayerId = playerId; // v1.3: Wer-ist-dran
     savePlayers();
     updateAllScores();
   }
@@ -703,6 +727,28 @@
 
       // Gesamtsumme: eine Zelle pro Spieler (Doppel-Modus: beide Zettel zusammen).
       updateTotalDisplay('grandTotal', cellKey(player.id, 0), grandTotal);
+    });
+
+    updateTurnMarker();
+  }
+
+  /* ---- Wer ist dran? (v1.3) ------------------------------------------------
+     Nächster Spieler = der Spieler NACH dem, der zuletzt etwas eingetragen hat
+     (in Spalten-Reihenfolge, am Ende wieder von vorn). Vor dem ersten Eintrag
+     ist der erste Spieler dran. Angezeigt wird nur eine kleine farbige
+     Markierung am Spaltenkopf. Aus bei nur einem Spieler, wenn das Blatt voll
+     ist oder wenn die Option in den Einstellungen abgeschaltet wurde.        */
+  function nextPlayerToPlay() {
+    if (!settings.turnMarker || players.length < 2) return null;
+    if (countOpenFields() === 0) return null;
+    const idx = players.findIndex((p) => p.id === lastEntryPlayerId);
+    return players[(idx + 1) % players.length].id; // idx = -1 -> erster Spieler
+  }
+
+  function updateTurnMarker() {
+    const nextId = nextPlayerToPlay();
+    els.headerRow.querySelectorAll('.col-player-head').forEach((th) => {
+      th.classList.toggle('is-turn', nextId !== null && th.dataset.playerId === String(nextId));
     });
   }
 
@@ -861,8 +907,10 @@
           struck: p.struck,
         })),
         nextPlayerId,
+        lastEntryPlayerId,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      rememberGroup();
     } catch (err) {
       // localStorage may be unavailable (private browsing / quota) — fail silently,
       // the app still works, it just won't persist across reloads.
@@ -881,6 +929,7 @@
         mode = payload.mode === 'double' ? 'double' : 'single';
         seniorMode = payload.seniorMode === true;
         nextPlayerId = payload.nextPlayerId || players.length + 1;
+        lastEntryPlayerId = payload.lastEntryPlayerId ?? null;
         // Backfill: saves written before the "durchgestrichen" feature
         // existed won't have a `struck` array at all — give every such
         // player a fresh, correctly-sized, all-false one rather than
@@ -937,8 +986,10 @@
     );
     if (!proceed) return;
 
+    rememberGroup();            // Gruppe bleibt für "Letzte Gruppe laden" erhalten
     players = [];
     revealed = false;
+    lastEntryPlayerId = null;
     clearSavedGame();
     renderBody();
     renderPlayerHeaders();
@@ -1043,7 +1094,7 @@
      9. EVENT WIRING
      =========================================================================== */
 
-  els.btnAddPlayer.addEventListener('click', addPlayer);
+  els.btnAddPlayer.addEventListener('click', () => addPlayer());
   els.btnCalculate.addEventListener('click', startEvaluation);
   els.btnNewGame.addEventListener('click', startNewGame);
   els.btnModeSingle.addEventListener('click', () => setMode('single'));
@@ -1773,10 +1824,229 @@
   }
 
   /* ===========================================================================
+     12. EINSTELLUNGEN & KOMFORT (v1.3)
+     ---------------------------------------------------------------------------
+       12a. Einstellungen (Zettel-Design, Wach halten, Wer ist dran)
+       12b. Wake Lock (Bildschirm bleibt an)
+       12c. Namen & letzte Gruppe merken
+     Einstellungen und Gruppe liegen in eigenen localStorage-Schlüsseln, damit
+     "Neues Blatt" sie nicht löscht.
+     =========================================================================== */
+
+  /* ---- 12a. EINSTELLUNGEN -------------------------------------------------- */
+  const SETTINGS_KEY = 'kniffelblock.settings.v1';
+
+  const THEMES = [
+    { id: 'paper',  label: 'Papier',      color: '#f3ead9', accent: '#a8342a', meta: '#c8482f' },
+    { id: 'grid',   label: 'Kariert',     color: '#fdfdfb', accent: '#2f5f8a', meta: '#2f5f8a' },
+    { id: 'coaster',label: 'Bierdeckel',  color: '#d8b98a', accent: '#8a2a1c', meta: '#8a2a1c' },
+    { id: 'chalk',  label: 'Tafel',       color: '#2f3b36', accent: '#e8c46a', meta: '#2f3b36' },
+  ];
+
+  let settings = { theme: 'paper', wakeLock: true, turnMarker: true };
+
+  function loadSettings() {
+    try {
+      const raw = localStorage.getItem(SETTINGS_KEY);
+      if (!raw) return;
+      const s = JSON.parse(raw);
+      if (s && THEMES.some((t) => t.id === s.theme)) settings.theme = s.theme;
+      if (typeof s.wakeLock === 'boolean') settings.wakeLock = s.wakeLock;
+      if (typeof s.turnMarker === 'boolean') settings.turnMarker = s.turnMarker;
+    } catch (err) { /* ignore */ }
+  }
+
+  function saveSettings() {
+    try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (err) { /* ignore */ }
+  }
+
+  function applyTheme() {
+    document.body.dataset.theme = settings.theme;
+    const t = THEMES.find((x) => x.id === settings.theme) || THEMES[0];
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', t.meta);
+  }
+
+  const WAKE_SUPPORTED = 'wakeLock' in navigator;
+
+  function buildSettingsPanel() {
+    const p = els.settingsPanel;
+    p.innerHTML =
+      '<div class="settings-section">' +
+        '<div class="settings-title">Zettel-Design</div>' +
+        '<div class="theme-grid" role="radiogroup" aria-label="Zettel-Design">' +
+          THEMES.map((t) =>
+            '<button type="button" class="theme-option" role="radio" data-theme-id="' + t.id + '" aria-checked="false">' +
+              '<span class="theme-swatch theme-swatch-' + t.id + '"><i></i></span>' +
+              '<span class="theme-name">' + t.label + '</span>' +
+            '</button>').join('') +
+        '</div>' +
+      '</div>' +
+      '<div class="settings-section">' +
+        '<label class="switch-row"><span>Bildschirm wach halten' +
+          (WAKE_SUPPORTED ? '' : '<small>Wird von diesem Browser nicht unterstützt</small>') +
+          '</span><input type="checkbox" id="set-wake"' + (WAKE_SUPPORTED ? '' : ' disabled') + '><i class="switch-ui"></i></label>' +
+        '<label class="switch-row"><span>Wer ist dran markieren</span>' +
+          '<input type="checkbox" id="set-turn"><i class="switch-ui"></i></label>' +
+      '</div>';
+
+    p.querySelectorAll('.theme-option').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        settings.theme = btn.dataset.themeId;
+        saveSettings();
+        applyTheme();
+        syncSettingsPanel();
+      });
+    });
+    p.querySelector('#set-wake').addEventListener('change', (e) => {
+      settings.wakeLock = e.target.checked;
+      saveSettings();
+      if (settings.wakeLock) requestWakeLock(); else releaseWakeLock();
+    });
+    p.querySelector('#set-turn').addEventListener('change', (e) => {
+      settings.turnMarker = e.target.checked;
+      saveSettings();
+      updateTurnMarker();
+    });
+    syncSettingsPanel();
+  }
+
+  function syncSettingsPanel() {
+    const p = els.settingsPanel;
+    p.querySelectorAll('.theme-option').forEach((btn) => {
+      const on = btn.dataset.themeId === settings.theme;
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-checked', String(on));
+    });
+    p.querySelector('#set-wake').checked = settings.wakeLock && WAKE_SUPPORTED;
+    p.querySelector('#set-turn').checked = settings.turnMarker;
+  }
+
+  function toggleSettingsPanel(force) {
+    const open = typeof force === 'boolean' ? force : els.settingsPanel.hidden;
+    els.settingsPanel.hidden = !open;
+    els.btnSettings.setAttribute('aria-expanded', String(open));
+    els.btnSettings.classList.toggle('is-active', open);
+  }
+
+  els.btnSettings.addEventListener('click', (e) => { e.stopPropagation(); toggleSettingsPanel(); });
+  document.addEventListener('click', (e) => {
+    if (!els.settingsPanel.hidden && !e.target.closest('#settings-panel') && !e.target.closest('#btn-settings')) toggleSettingsPanel(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !els.settingsPanel.hidden) toggleSettingsPanel(false);
+  });
+
+  /* ---- 12b. WAKE LOCK ------------------------------------------------------ */
+  let wakeSentinel = null;
+
+  async function requestWakeLock() {
+    if (!WAKE_SUPPORTED || !settings.wakeLock || wakeSentinel || document.visibilityState !== 'visible') return;
+    try {
+      wakeSentinel = await navigator.wakeLock.request('screen');
+      wakeSentinel.addEventListener('release', () => { wakeSentinel = null; });
+    } catch (err) {
+      wakeSentinel = null; // z. B. Energiesparmodus – später erneut versuchen
+    }
+  }
+
+  function releaseWakeLock() {
+    if (wakeSentinel) { wakeSentinel.release().catch(() => {}); wakeSentinel = null; }
+  }
+
+  // Beim Zurückkehren in den Tab neu anfordern; Safari verlangt teils eine Nutzer-Geste.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') requestWakeLock();
+  });
+  ['pointerdown', 'keydown'].forEach((evt) =>
+    document.addEventListener(evt, () => { if (!wakeSentinel) requestWakeLock(); }, { passive: true }));
+
+  /* ---- 12c. NAMEN & LETZTE GRUPPE ------------------------------------------ */
+  const GROUP_KEY = 'kniffelblock.group.v1';
+  const RECENT_NAMES_MAX = 16;
+
+  /** { names: [...], mode, recent: [...] } */
+  function loadGroupStore() {
+    try {
+      const g = JSON.parse(localStorage.getItem(GROUP_KEY) || 'null');
+      if (g && Array.isArray(g.names)) return { names: g.names, mode: g.mode === 'double' ? 'double' : 'single', recent: Array.isArray(g.recent) ? g.recent : [] };
+    } catch (err) { /* ignore */ }
+    return { names: [], mode: 'single', recent: [] };
+  }
+
+  /** Merkt sich die aktuelle Gruppe (nur eigene Namen, keine "Spieler 1"-Platzhalter). */
+  function rememberGroup() {
+    if (players.length === 0) return;
+    const store = loadGroupStore();
+    const names = players
+      .filter((p) => p.nameConfirmed && p.name !== defaultNameFor(p))
+      .map((p) => p.name);
+    if (names.length === 0) return;
+    const lower = new Set();
+    let recent = [...names, ...store.recent].filter((n) => {
+      const k = n.toLowerCase();
+      if (lower.has(k)) return false;
+      lower.add(k);
+      return true;
+    }).slice(0, RECENT_NAMES_MAX);
+    try {
+      localStorage.setItem(GROUP_KEY, JSON.stringify({ names, mode, recent }));
+    } catch (err) { /* ignore */ }
+  }
+
+  /** <datalist> mit zuletzt benutzten Namen (ohne die, die schon am Tisch sitzen). */
+  function refreshNameSuggestions() {
+    let dl = document.getElementById('name-suggestions');
+    if (!dl) {
+      dl = document.createElement('datalist');
+      dl.id = 'name-suggestions';
+      document.body.appendChild(dl);
+    }
+    const taken = new Set(players.filter((p) => p.nameConfirmed).map((p) => p.name.toLowerCase()));
+    dl.innerHTML = '';
+    loadGroupStore().recent.filter((n) => !taken.has(n.toLowerCase())).forEach((n) => {
+      const o = document.createElement('option');
+      o.value = n;
+      dl.appendChild(o);
+    });
+  }
+
+  function updateGroupRestoreUI() {
+    const box = els.groupRestore;
+    if (!box) return;
+    const g = loadGroupStore();
+    if (players.length > 0 || g.names.length === 0) {
+      box.hidden = true;
+      return;
+    }
+    box.hidden = false;
+    box.querySelector('.group-names').textContent = g.names.join(', ') + (g.mode === 'double' ? ' · Doppel' : '');
+  }
+
+  function restoreGroup() {
+    const g = loadGroupStore();
+    if (g.names.length === 0 || players.length > 0) return;
+    lastEntryPlayerId = null;
+    if (g.mode !== mode) { mode = g.mode; updateModeToggleUI(); }
+    g.names.slice(0, MAX_PLAYERS).forEach((n) => addPlayer(n, true));
+    renderBody();
+    renderPlayerHeaders();
+    savePlayers();
+    updateEmptyHint();
+    showToast('Letzte Gruppe geladen — viel Spaß!', 'success');
+  }
+
+  els.groupRestore.querySelector('button').addEventListener('click', restoreGroup);
+
+  /* ===========================================================================
      INITIALIZATION x
      =========================================================================== */
 
   function init() {
+    loadSettings();
+    applyTheme();
+    buildSettingsPanel();
+    requestWakeLock();
     const hadSavedGame = loadPlayers();
     updateModeToggleUI();
     applySeniorModeUI();

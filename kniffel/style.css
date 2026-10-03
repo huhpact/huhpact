@@ -1824,3 +1824,181 @@ body.ceremony-open { overflow: hidden; }
 .cer-slot.is-revealed.instant .cer-person { animation: none; opacity: 1; transform: none; }
 .cer-rest-item.is-in.instant { animation: none; opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .cer-next.is-ready { animation: none; } }
+
+/* ===========================================================================
+   VERSION 1.3
+   =========================================================================== */
+
+/* ---- Wer ist dran: kleine farbige Spaltenmarkierung ----------------------- */
+.player-header-cell .turn-marker {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 56%;
+  height: 5px;
+  border-radius: 5px 5px 0 0;
+  background: var(--player-tint, var(--scorepad-red));
+  opacity: 0;
+  transform: translateX(-50%) scaleX(0.2);
+  transition: opacity 0.25s ease, transform 0.35s cubic-bezier(.2,1.3,.4,1);
+  pointer-events: none;
+}
+.player-header-cell.is-turn .turn-marker {
+  opacity: 1;
+  transform: translateX(-50%) scaleX(1);
+  animation: turn-pulse 2.2s ease-in-out 0.4s infinite;
+}
+@keyframes turn-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+@media (prefers-reduced-motion: reduce) { .player-header-cell.is-turn .turn-marker { animation: none; } }
+
+/* ---- Einstellungen-Panel ------------------------------------------------- */
+.settings-wrap { position: relative; }
+.settings-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 60;
+  width: min(330px, 88vw);
+  padding: 14px 16px 8px;
+  background: var(--white-paper);
+  border: 1.5px solid var(--line-rule-strong);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  animation: panel-in 0.18s ease;
+}
+.settings-panel[hidden] { display: none; }
+@keyframes panel-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.settings-section + .settings-section { margin-top: 10px; padding-top: 6px; border-top: 1px solid var(--line-rule); }
+.settings-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+.btn-icon-label.is-active#btn-settings { background: var(--white-paper); }
+
+.theme-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding-bottom: 6px; }
+.theme-option {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 6px 2px; border-radius: 10px;
+  border: 2px solid transparent; background: transparent;
+  color: var(--ink-soft); cursor: pointer; font-family: var(--font-ui);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.theme-option:hover { background: rgba(127,127,127,0.1); }
+.theme-option.is-active { border-color: var(--scorepad-red); color: var(--ink-dark); }
+.theme-name { font-size: 0.7rem; font-weight: 600; }
+.theme-swatch {
+  position: relative; display: block; width: 100%; max-width: 62px; height: 42px;
+  border-radius: 7px; border: 1px solid rgba(0,0,0,0.25); overflow: hidden;
+}
+.theme-swatch i { position: absolute; left: 8px; right: 8px; bottom: 7px; height: 5px; border-radius: 3px; }
+.theme-swatch-paper   { background: radial-gradient(rgba(58,51,42,0.12) 0.6px, transparent 0.6px) 0 0/4px 4px, #f3ead9; }
+.theme-swatch-paper i { background: #a8342a; }
+.theme-swatch-grid    { background: linear-gradient(rgba(47,95,138,0.35) 1px, transparent 1px) 0 0/9px 9px, linear-gradient(90deg, rgba(47,95,138,0.35) 1px, transparent 1px) 0 0/9px 9px, #fdfdfb; }
+.theme-swatch-grid i  { background: #2f5f8a; }
+.theme-swatch-coaster { background: radial-gradient(rgba(60,35,10,0.22) 0.7px, transparent 0.7px) 0 0/4px 4px, #d8b98a; }
+.theme-swatch-coaster i { background: #a3281a; }
+.theme-swatch-chalk   { background: #2f3b36; }
+.theme-swatch-chalk i { background: #e8c46a; }
+
+.switch-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 2px; cursor: pointer; font-size: 0.92rem; font-weight: 600; color: var(--ink-dark); }
+.switch-row small { display: block; margin-top: 2px; font-weight: 400; font-size: 0.74rem; color: var(--ink-faint); }
+.switch-row input { position: absolute; opacity: 0; pointer-events: none; }
+.switch-ui { position: relative; flex: none; width: 42px; height: 24px; border-radius: 999px; background: var(--line-rule); transition: background 0.2s ease; }
+.switch-ui::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--white-paper); box-shadow: 0 1px 3px rgba(0,0,0,0.3); transition: transform 0.2s ease; }
+.switch-row input:checked + .switch-ui { background: var(--scorepad-red); }
+.switch-row input:checked + .switch-ui::after { transform: translateX(18px); }
+.switch-row input:focus-visible + .switch-ui { outline: 2px solid var(--scorepad-red); outline-offset: 2px; }
+.switch-row input:disabled + .switch-ui { opacity: 0.4; }
+
+@media (max-width: 640px) {
+  .settings-panel { position: fixed; top: auto; right: auto; left: 50%; bottom: 16px; transform: translateX(-50%); width: min(92vw, 380px); animation: none; }
+}
+
+/* ---- Letzte Gruppe laden ------------------------------------------------- */
+.group-restore[hidden] { display: none; }
+.btn-group-restore {
+  display: inline-flex; align-items: center; gap: 12px; text-align: left;
+  padding: 12px 22px; border-radius: 14px;
+  border: 1.5px dashed var(--line-rule-strong);
+  background: var(--white-paper); color: var(--ink-dark);
+  font-family: var(--font-ui); cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-group-restore svg { color: var(--scorepad-red); flex: none; }
+.btn-group-restore strong { display: block; font-size: 0.98rem; }
+.btn-group-restore small { display: block; margin-top: 2px; font-size: 0.8rem; color: var(--ink-soft); }
+.btn-group-restore:hover { border-style: solid; border-color: var(--scorepad-red); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+/* ===========================================================================
+   ZETTEL-DESIGNS  (body[data-theme]) – überschreiben nur die Design-Tokens
+   =========================================================================== */
+.score-input { color: var(--pen, #274a7a); }
+
+/* --- Kariert (Schulheft) --- */
+body[data-theme="grid"] {
+  --paper-base: #f9fbfd; --paper-base-2: #f4f6f2; --paper-shadow: #c7d4e2;
+  --ink-dark: #1f2937; --ink-soft: #4b5b6e; --ink-faint: #8394a8;
+  --scorepad-red: #2f5f8a; --scorepad-red-dark: #1f4468;
+  --brass: #7f9fbf; --brass-light: #a9c0d8;
+  --line-rule: #bcd0e4; --line-rule-strong: #7f9fbf;
+  --row-tint: #f1f6fb; --row-tint-lower: #f4f8fc;
+  --upper-tint: #eaf2fa; --lower-tint: #eef5fb; --grand-tint: #d3e3f3;
+  --white-paper: #ffffff; --pen: #b3261e; --danger: #b3261e;
+}
+body[data-theme="grid"] .paper-backdrop {
+  background-color: #fbfbf8;
+  background-image:
+    linear-gradient(90deg, transparent 58px, rgba(214,70,70,0.4) 58px, rgba(214,70,70,0.4) 60px, transparent 60px),
+    linear-gradient(rgba(60,110,170,0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(60,110,170,0.2) 1px, transparent 1px);
+  background-size: 100% 100%, 24px 24px, 24px 24px;
+  background-position: 0 0, 0 0, 0 0;
+}
+body[data-theme="grid"] .ceremony { background-image: linear-gradient(rgba(60,110,170,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(60,110,170,0.16) 1px, transparent 1px); background-size: 24px 24px; background-color: #fbfbf8; }
+@media (max-width: 700px) { body[data-theme="grid"] .paper-backdrop { background-image: linear-gradient(rgba(60,110,170,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(60,110,170,0.2) 1px, transparent 1px); background-size: 24px 24px; } }
+
+/* --- Bierdeckel (Karton) --- */
+body[data-theme="coaster"] {
+  --paper-base: #d9bd8f; --paper-base-2: #c8a574; --paper-shadow: #a8844f;
+  --ink-dark: #36250f; --ink-soft: #5c4326; --ink-faint: #876a44;
+  --scorepad-red: #a3281a; --scorepad-red-dark: #7a1c10;
+  --brass: #8a5a2b; --brass-light: #b58348;
+  --line-rule: #b08d5c; --line-rule-strong: #7d5d32;
+  --row-tint: #d3b583; --row-tint-lower: #cfae7c;
+  --upper-tint: #d6b988; --lower-tint: #cdad7b; --grand-tint: #bf9a62;
+  --white-paper: #e8d2a8; --pen: #1f2f52;
+}
+body[data-theme="coaster"] .paper-backdrop {
+  background-image:
+    radial-gradient(rgba(60,35,10,0.10) 0.6px, transparent 0.6px),
+    radial-gradient(rgba(60,35,10,0.07) 0.8px, transparent 0.8px),
+    radial-gradient(ellipse at 50% 0%, rgba(255,235,190,0.35) 0%, rgba(0,0,0,0) 60%);
+}
+
+/* --- Tafel (dunkel, Kreide) --- */
+body[data-theme="chalk"] {
+  --paper-base: #2b3732; --paper-base-2: #1f2a26; --paper-shadow: #121a17;
+  --ink-dark: #f1efe4; --ink-soft: #c9cbbf; --ink-faint: #8e978f;
+  --scorepad-red: #c9503c; --scorepad-red-dark: #d86f58;
+  --brass: #b8935a; --brass-light: #d8b478;
+  --line-rule: #4c5a53; --line-rule-strong: #7d8c83;
+  --row-tint: #2f3c36; --row-tint-lower: #2d3a34;
+  --upper-tint: #33413a; --lower-tint: #2e3b35; --grand-tint: #3f5148;
+  --white-paper: #34423b; --pen: #f5e9b8; --success: #8fcf8f; --danger: #ef8a78;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4); --shadow-md: 0 4px 10px rgba(0,0,0,0.4);
+  --shadow-lg: 0 14px 34px rgba(0,0,0,0.5), 0 4px 10px rgba(0,0,0,0.3); --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.5);
+  color-scheme: dark;
+}
+body[data-theme="chalk"] .paper-backdrop {
+  background-image:
+    radial-gradient(rgba(255,255,255,0.045) 0.5px, transparent 0.5px),
+    radial-gradient(rgba(255,255,255,0.03) 0.5px, transparent 0.5px),
+    radial-gradient(ellipse at 50% 0%, rgba(120,150,135,0.25) 0%, rgba(0,0,0,0) 60%);
+}
+body[data-theme="chalk"] .ceremony {
+  background-image:
+    radial-gradient(rgba(255,255,255,0.045) 0.5px, transparent 0.5px),
+    radial-gradient(rgba(255,255,255,0.03) 0.5px, transparent 0.5px),
+    radial-gradient(ellipse at 50% 0%, rgba(120,150,135,0.25) 0%, rgba(0,0,0,0) 60%);
+}
+body[data-theme="chalk"] .cer-flash { background: #e9efe9; }
+body[data-theme="chalk"] .cer-slot.is-revealed .cer-block { color: #2a1f08; }
+body[data-theme="chalk"] .btn-calculate,
+body[data-theme="chalk"] .cer-action-primary { color: #fdf6ea; }
