@@ -1,7 +1,7 @@
 /**
  * app.js
  * ---------------------------------------------------------------------------
- * Kniffelblock — application logic.  Version 1.3
+ * Kniffelblock — application logic.  Version 1.5
  *
  * Structure of this file:
  *   1. State
@@ -70,6 +70,9 @@
 
   /** v1.3: Spieler, der zuletzt etwas eingetragen hat (Basis für "Wer ist dran?"). */
   let lastEntryPlayerId = null;
+
+  /** v1.5: per Auslosung bestimmter Startspieler; gilt bis zum nächsten Eintrag. */
+  let turnOverrideId = null;
   const CENSOR_LOWER_TOTAL = false;
 
   /* Distinct, paper-friendly "pen color" hues assigned round-robin to players
@@ -93,6 +96,7 @@
     btnModeDouble: document.getElementById('btn-mode-double'),
     sheetsHeaderRow: document.getElementById('row-sheets'),
     btnSettings: document.getElementById('btn-settings'),
+    btnDraw: document.getElementById('btn-draw-start'),
     settingsPanel: document.getElementById('settings-panel'),
     groupRestore: document.getElementById('group-restore'),
   };
@@ -510,6 +514,7 @@
         th.scope = 'col';
         th.textContent = `Zettel ${sheetIndex + 1}`;
         th.style.setProperty('--player-tint', player.colorHue);
+        th.dataset.playerId = String(player.id);
         els.sheetsHeaderRow.appendChild(th);
       });
     });
@@ -683,7 +688,7 @@
   /** Zentrale Änderungs-Routine: speichern, Endergebnis wieder verdecken, live neu rechnen. */
   function onScoreChanged(playerId) {
     revealed = false;
-    if (playerId !== undefined) lastEntryPlayerId = playerId; // v1.3: Wer-ist-dran
+    if (playerId !== undefined) { lastEntryPlayerId = playerId; turnOverrideId = null; } // Wer-ist-dran
     savePlayers();
     updateAllScores();
   }
@@ -740,15 +745,58 @@
   function nextPlayerToPlay() {
     if (!settings.turnMarker || players.length < 2) return null;
     if (countOpenFields() === 0) return null;
+    if (turnOverrideId !== null && players.some((p) => p.id === turnOverrideId)) return turnOverrideId; // Auslosung
     const idx = players.findIndex((p) => p.id === lastEntryPlayerId);
     return players[(idx + 1) % players.length].id; // idx = -1 -> erster Spieler
   }
 
-  function updateTurnMarker() {
-    const nextId = nextPlayerToPlay();
-    els.headerRow.querySelectorAll('.col-player-head').forEach((th) => {
-      th.classList.toggle('is-turn', nextId !== null && th.dataset.playerId === String(nextId));
+  /** Markiert die ganze Spalte (Kopf + alle Zellen) des Spielers, der dran ist. */
+  function highlightColumn(playerId) {
+    document.querySelectorAll('#scorepad-table [data-player-id]').forEach((n) => {
+      n.classList.toggle('is-turn', playerId !== null && n.dataset.playerId === String(playerId));
     });
+    document.body.classList.toggle('turn-active', playerId !== null);
+  }
+
+  function updateTurnMarker() {
+    if (drawing) return; // während der Auslosung steuert die Animation die Markierung
+    highlightColumn(nextPlayerToPlay());
+  }
+
+  /* ---- Startspieler auslosen (v1.5) ---------------------------------------
+     Kleine Roulette über die Spalten: läuft immer langsamer und bleibt bei
+     einem zufälligen Spieler stehen, der dann als Nächstes dran ist.          */
+  let drawing = false;
+
+  async function drawStartPlayer() {
+    if (drawing) return;
+    if (players.length < 2) {
+      showToast('Für die Auslosung brauchst du mindestens zwei Spieler.', 'error');
+      return;
+    }
+    drawing = true;
+    els.btnDraw.disabled = true;
+    Sfx.ensure();
+
+    const n = players.length;
+    const winner = Math.floor(Math.random() * n);
+    const total = (n < 4 ? 3 : 2) * n + winner + 1;
+    for (let i = 0; i < total; i++) {
+      highlightColumn(players[i % n].id);
+      Sfx.pop();
+      const p = i / (total - 1);
+      await new Promise((r) => setTimeout(r, 70 + 330 * p * p));
+    }
+
+    drawing = false;
+    els.btnDraw.disabled = false;
+    turnOverrideId = players[winner].id;
+    savePlayers();
+    updateTurnMarker();
+    const head = document.querySelector('#scorepad-table .col-player-head[data-player-id="' + players[winner].id + '"]');
+    if (head) { head.classList.remove('is-drawn'); void head.offsetWidth; head.classList.add('is-drawn'); }
+    Sfx.reveal(3);
+    showToast(players[winner].name + ' fängt an! 🎲', 'success');
   }
 
   /* ---- Bonus-Hinweise im oberen Block ------------------------------------- */
@@ -907,6 +955,7 @@
         })),
         nextPlayerId,
         lastEntryPlayerId,
+        turnOverrideId,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       rememberGroup();
@@ -929,6 +978,7 @@
         seniorMode = payload.seniorMode === true;
         nextPlayerId = payload.nextPlayerId || players.length + 1;
         lastEntryPlayerId = payload.lastEntryPlayerId ?? null;
+        turnOverrideId = payload.turnOverrideId ?? null;
         // Backfill: saves written before the "durchgestrichen" feature
         // existed won't have a `struck` array at all — give every such
         // player a fresh, correctly-sized, all-false one rather than
@@ -989,6 +1039,7 @@
     players = [];
     revealed = false;
     lastEntryPlayerId = null;
+    turnOverrideId = null;
     clearSavedGame();
     renderBody();
     renderPlayerHeaders();
@@ -1841,7 +1892,7 @@
     { id: 'chalk',  label: 'Tafel',       color: '#2f3b36', accent: '#e8c46a', meta: '#2f3b36' },
   ];
 
-  let settings = { theme: 'paper', wakeLock: true, turnMarker: true };
+  let settings = { theme: 'paper', wakeLock: true, turnMarker: true, strikeButton: true };
 
   function loadSettings() {
     try {
@@ -1851,6 +1902,7 @@
       if (s && THEMES.some((t) => t.id === s.theme)) settings.theme = s.theme;
       if (typeof s.wakeLock === 'boolean') settings.wakeLock = s.wakeLock;
       if (typeof s.turnMarker === 'boolean') settings.turnMarker = s.turnMarker;
+      if (typeof s.strikeButton === 'boolean') settings.strikeButton = s.strikeButton;
     } catch (err) { /* ignore */ }
   }
 
@@ -1878,6 +1930,7 @@
   function applyTheme() {
     loadThemeFonts(settings.theme);
     document.body.dataset.theme = settings.theme;
+    document.body.classList.toggle('hide-strike', !settings.strikeButton);
     const t = THEMES.find((x) => x.id === settings.theme) || THEMES[0];
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', t.meta);
@@ -1887,7 +1940,14 @@
 
   function buildSettingsPanel() {
     const p = els.settingsPanel;
+    const row = (id, label, hint, extra) =>
+      '<label class="switch-row"><span class="switch-text">' + label +
+        (hint ? '<small>' + hint + '</small>' : '') + '</span>' +
+        '<input type="checkbox" id="' + id + '"' + (extra || '') + '><i class="switch-ui"></i></label>';
+
     p.innerHTML =
+      '<div class="settings-head"><span>Einstellungen</span>' +
+        '<button type="button" class="settings-close" aria-label="Einstellungen schließen">&times;</button></div>' +
       '<div class="settings-section">' +
         '<div class="settings-title">Zettel-Design</div>' +
         '<div class="theme-grid" role="radiogroup" aria-label="Zettel-Design">' +
@@ -1899,14 +1959,17 @@
         '</div>' +
       '</div>' +
       '<div class="settings-section">' +
-        '<label class="switch-row"><span>Rentner-Modus<small>Große Schrift, starke Farben, feste Kopfzeile</small></span>' +
-          '<input type="checkbox" id="set-senior"><i class="switch-ui"></i></label>' +
-        '<label class="switch-row"><span>Bildschirm wach halten' +
-          (WAKE_SUPPORTED ? '' : '<small>Wird von diesem Browser nicht unterstützt</small>') +
-          '</span><input type="checkbox" id="set-wake"' + (WAKE_SUPPORTED ? '' : ' disabled') + '><i class="switch-ui"></i></label>' +
-        '<label class="switch-row"><span>Wer ist dran markieren</span>' +
-          '<input type="checkbox" id="set-turn"><i class="switch-ui"></i></label>' +
+        '<div class="settings-title">Anzeige</div>' +
+        row('set-senior', 'Rentner-Modus', 'Große Schrift & starke Farben') +
+        row('set-strike', 'Streichen-Knopf (−)') +
+      '</div>' +
+      '<div class="settings-section">' +
+        '<div class="settings-title">Spiel</div>' +
+        row('set-turn', 'Wer ist dran hervorheben') +
+        row('set-wake', 'Bildschirm wach halten', WAKE_SUPPORTED ? '' : 'Von diesem Browser nicht unterstützt', WAKE_SUPPORTED ? '' : ' disabled') +
       '</div>';
+
+    p.querySelector('.settings-close').addEventListener('click', () => toggleSettingsPanel(false));
 
     p.querySelectorAll('.theme-option').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -1920,6 +1983,11 @@
       settings.wakeLock = e.target.checked;
       saveSettings();
       if (settings.wakeLock) requestWakeLock(); else releaseWakeLock();
+    });
+    p.querySelector('#set-strike').addEventListener('change', (e) => {
+      settings.strikeButton = e.target.checked;
+      saveSettings();
+      applyTheme();
     });
     p.querySelector('#set-senior').addEventListener('change', (e) => setSeniorMode(e.target.checked));
     p.querySelector('#set-turn').addEventListener('change', (e) => {
@@ -1939,6 +2007,7 @@
     });
     p.querySelector('#set-wake').checked = settings.wakeLock && WAKE_SUPPORTED;
     p.querySelector('#set-turn').checked = settings.turnMarker;
+    p.querySelector('#set-strike').checked = settings.strikeButton;
     p.querySelector('#set-senior').checked = seniorMode;
   }
 
@@ -1951,6 +2020,7 @@
   }
 
   els.btnSettings.addEventListener('click', (e) => { e.stopPropagation(); toggleSettingsPanel(); });
+  els.btnDraw.addEventListener('click', drawStartPlayer);
   document.addEventListener('click', (e) => {
     if (!els.settingsPanel.hidden && !e.target.closest('#settings-panel') && !e.target.closest('#btn-settings')) toggleSettingsPanel(false);
   });
@@ -2048,6 +2118,7 @@
     const g = loadGroupStore();
     if (g.names.length === 0 || players.length > 0) return;
     lastEntryPlayerId = null;
+    turnOverrideId = null;
     if (g.mode !== mode) { mode = g.mode; updateModeToggleUI(); }
     g.names.slice(0, MAX_PLAYERS).forEach((n) => addPlayer(n, true));
     renderBody();

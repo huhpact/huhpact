@@ -2183,3 +2183,125 @@ body[data-theme="chalk"] .cer-close { color: rgba(243,241,230,0.7); }
 body[data-theme="chalk"] .cer-nav { background: rgba(32,45,39,0.9); border-color: rgba(243,241,230,0.5); }
 body[data-theme="chalk"] .btn-calculate, body[data-theme="chalk"] .cer-action-primary { color: #fff8ec; }
 body[data-theme="chalk"] .cer-flash { background: #eef2ea; }
+
+/* ===========================================================================
+   VERSION 1.5
+   =========================================================================== */
+
+/* (Hervorhebung: siehe Version 1.6 unten) */
+.col-player-head.is-drawn { animation: drawn-pop 0.8s cubic-bezier(.2,1.4,.4,1); }
+@keyframes drawn-pop { 0% { transform: scale(1); } 40% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+/* ---- Streichen-Knopf ausblenden (Option). Bereits gestrichene Felder behalten
+        ihren Knopf, damit man das Streichen wieder rückgängig machen kann. ---- */
+body.hide-strike .cell-score:not(.is-struck) .strike-toggle-btn { display: none; }
+
+/* ---- Startspieler-Button ------------------------------------------------- */
+#btn-draw-start:disabled { opacity: 0.7; cursor: progress; transform: none; }
+#btn-draw-start:not(:disabled):hover svg { animation: dice-shake 0.5s ease; }
+@keyframes dice-shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-18deg); } 75% { transform: rotate(18deg); } }
+
+/* ===========================================================================
+   VERSION 1.6
+   =========================================================================== */
+
+/* ---- Wer ist dran: weiche, moderne Hervorhebung --------------------------
+   Statt harter Kanten: sanfte Farbfläche über die ganze Spalte, ein Kopf mit
+   Farbverlauf und eine kleine leuchtende "Pille" darunter. Alles blendet
+   weich ein und aus. Keine Streifen zwischen den beiden Zetteln im
+   Doppel-Modus – die Spalte wirkt wie eine zusammenhängende Fläche.        */
+.player-tinted-col::after { transition: background-color 0.45s ease; }
+
+body .player-tinted-col.is-turn::after,
+body.senior-mode .player-tinted-col.is-turn::after {
+  background: color-mix(in srgb, var(--player-tint) 17%, transparent);
+  animation: none;
+}
+
+/* ganz feine Außenkante nur links/rechts der gesamten Spielerspalte */
+body .player-tinted-col.is-turn { box-shadow: none; }
+body .cell-score.is-turn:not(.cell-sheet-a):not(.cell-sheet-b),
+body .cell-score.is-turn.cell-merged {
+  box-shadow: inset 2px 0 0 color-mix(in srgb, var(--player-tint) 38%, transparent), inset -2px 0 0 color-mix(in srgb, var(--player-tint) 38%, transparent);
+}
+body .cell-score.is-turn.cell-sheet-a:not(.cell-merged) { box-shadow: inset 2px 0 0 color-mix(in srgb, var(--player-tint) 38%, transparent); }
+body .cell-score.is-turn.cell-sheet-b:not(.cell-merged) { box-shadow: inset -2px 0 0 color-mix(in srgb, var(--player-tint) 38%, transparent); }
+/* gestrichelte Trennlinie zwischen Zettel 1 und 2 wird in der aktiven Spalte unauffällig */
+body td.cell-sheet-a.is-turn { border-right-color: color-mix(in srgb, var(--player-tint) 22%, transparent); }
+
+body .row-players th.col-player-head.is-turn {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--player-tint) 34%, var(--paper-base-2)),
+    color-mix(in srgb, var(--player-tint) 14%, var(--paper-base-2)));
+  box-shadow: 0 3px 8px rgba(58,51,42,0.22);
+  transition: background 0.4s ease;
+}
+body .row-sheets th.col-sheet-head.is-turn { background: color-mix(in srgb, var(--player-tint) 20%, var(--paper-base)); }
+
+.player-header-cell .turn-marker {
+  bottom: 5px;
+  width: 44%;
+  height: 5px;
+  border-radius: 999px;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--player-tint) 65%, transparent);
+}
+.player-header-cell.is-turn .turn-marker {
+  width: 44%; height: 5px;
+  animation: turn-breathe 3.2s ease-in-out infinite;
+}
+@keyframes turn-breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+.col-player-head.is-turn .player-name-display,
+.col-player-head.is-turn .player-name-input { font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { .player-header-cell.is-turn .turn-marker { animation: none; } }
+
+/* ---- Einstellungen-Menü: aufgeräumt -------------------------------------- */
+.settings-panel {
+  width: min(320px, 90vw);
+  max-height: min(80vh, 600px);
+  overflow-y: auto;
+  padding: 0;
+  border-radius: 16px;
+  overscroll-behavior: contain;
+}
+.settings-head {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 14px 10px 18px;
+  background: var(--white-paper);
+  border-bottom: 1px solid var(--line-rule);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--ink-dark);
+}
+.settings-close {
+  width: 30px; height: 30px; padding: 0 0 2px;
+  border: none; border-radius: 50%;
+  background: transparent; color: var(--ink-faint);
+  font-size: 1.5rem; line-height: 1; cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.settings-close:hover { background: rgba(127,127,127,0.15); color: var(--ink-dark); }
+.settings-section { padding: 12px 18px 6px; }
+.settings-section + .settings-section { margin-top: 0; padding-top: 12px; border-top: 1px solid var(--line-rule); }
+.settings-title { margin-bottom: 8px; font-size: 0.68rem; letter-spacing: 0.1em; }
+
+.theme-grid { gap: 6px; padding-bottom: 8px; }
+.theme-option { padding: 6px 2px 4px; border-radius: 12px; }
+.theme-option.is-active { background: rgba(127,127,127,0.1); }
+
+.switch-row {
+  padding: 9px 0;
+  gap: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.switch-row + .switch-row { border-top: 1px solid var(--line-rule); }
+.switch-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.switch-row small { margin: 0; font-size: 0.72rem; font-weight: 400; color: var(--ink-faint); line-height: 1.3; }
+.switch-ui { width: 38px; height: 22px; }
+.switch-ui::after { width: 16px; height: 16px; top: 3px; left: 3px; }
+.switch-row input:checked + .switch-ui::after { transform: translateX(16px); }
+
+@media (max-width: 640px) {
+  .settings-panel { width: min(94vw, 400px); max-height: 74vh; }
+}
