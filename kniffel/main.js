@@ -92,7 +92,6 @@
     btnModeSingle: document.getElementById('btn-mode-single'),
     btnModeDouble: document.getElementById('btn-mode-double'),
     sheetsHeaderRow: document.getElementById('row-sheets'),
-    btnSeniorMode: document.getElementById('btn-senior-mode'),
     btnSettings: document.getElementById('btn-settings'),
     settingsPanel: document.getElementById('settings-panel'),
     groupRestore: document.getElementById('group-restore'),
@@ -1057,8 +1056,8 @@
    * combined with either. Unlike setMode(), this never touches player data,
    * only presentation, so there's nothing to confirm before switching.
    */
-  function toggleSeniorMode() {
-    seniorMode = !seniorMode;
+  function setSeniorMode(on) {
+    seniorMode = !!on;
     applySeniorModeUI();
     savePlayers();
     showToast(
@@ -1071,8 +1070,8 @@
   /** Syncs the <body> class + button state with the current seniorMode flag. */
   function applySeniorModeUI() {
     document.body.classList.toggle('senior-mode', seniorMode);
-    els.btnSeniorMode.classList.toggle('is-active', seniorMode);
-    els.btnSeniorMode.setAttribute('aria-pressed', String(seniorMode));
+    const sw = document.getElementById('set-senior');   // Schalter im Einstellungen-Menü
+    if (sw) sw.checked = seniorMode;
   }
 
   /* ===========================================================================
@@ -1099,7 +1098,6 @@
   els.btnNewGame.addEventListener('click', startNewGame);
   els.btnModeSingle.addEventListener('click', () => setMode('single'));
   els.btnModeDouble.addEventListener('click', () => setMode('double'));
-  els.btnSeniorMode.addEventListener('click', toggleSeniorMode);
 
   /* ===========================================================================
      10. PWA: SERVICE WORKER + INSTALL PROMPT
@@ -1839,7 +1837,7 @@
   const THEMES = [
     { id: 'paper',  label: 'Papier',      color: '#f3ead9', accent: '#a8342a', meta: '#c8482f' },
     { id: 'grid',   label: 'Kariert',     color: '#fdfdfb', accent: '#2f5f8a', meta: '#2f5f8a' },
-    { id: 'coaster',label: 'Bierdeckel',  color: '#d8b98a', accent: '#8a2a1c', meta: '#8a2a1c' },
+    { id: 'coaster',label: 'Bierdeckel',  color: '#d8b98a', accent: '#8a2a1c', meta: '#3b2415' },
     { id: 'chalk',  label: 'Tafel',       color: '#2f3b36', accent: '#e8c46a', meta: '#2f3b36' },
   ];
 
@@ -1860,7 +1858,25 @@
     try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (err) { /* ignore */ }
   }
 
+  /** Design-Schriften werden erst geladen, wenn das Design gewählt wird. */
+  const THEME_FONTS = {
+    grid:    'family=Patrick+Hand&family=Kalam:wght@400;700',
+    coaster: 'family=Alfa+Slab+One&family=Permanent+Marker',
+    chalk:   'family=Gloria+Hallelujah&family=Gochi+Hand',
+  };
+
+  function loadThemeFonts(id) {
+    const q = THEME_FONTS[id];
+    if (!q || document.getElementById('font-' + id)) return;
+    const link = document.createElement('link');
+    link.id = 'font-' + id;
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?' + q + '&display=swap';
+    document.head.appendChild(link);
+  }
+
   function applyTheme() {
+    loadThemeFonts(settings.theme);
     document.body.dataset.theme = settings.theme;
     const t = THEMES.find((x) => x.id === settings.theme) || THEMES[0];
     const meta = document.querySelector('meta[name="theme-color"]');
@@ -1877,12 +1893,14 @@
         '<div class="theme-grid" role="radiogroup" aria-label="Zettel-Design">' +
           THEMES.map((t) =>
             '<button type="button" class="theme-option" role="radio" data-theme-id="' + t.id + '" aria-checked="false">' +
-              '<span class="theme-swatch theme-swatch-' + t.id + '"><i></i></span>' +
+              '<span class="theme-swatch theme-swatch-' + t.id + '"><b></b><i></i><u></u></span>' +
               '<span class="theme-name">' + t.label + '</span>' +
             '</button>').join('') +
         '</div>' +
       '</div>' +
       '<div class="settings-section">' +
+        '<label class="switch-row"><span>Rentner-Modus<small>Große Schrift, starke Farben, feste Kopfzeile</small></span>' +
+          '<input type="checkbox" id="set-senior"><i class="switch-ui"></i></label>' +
         '<label class="switch-row"><span>Bildschirm wach halten' +
           (WAKE_SUPPORTED ? '' : '<small>Wird von diesem Browser nicht unterstützt</small>') +
           '</span><input type="checkbox" id="set-wake"' + (WAKE_SUPPORTED ? '' : ' disabled') + '><i class="switch-ui"></i></label>' +
@@ -1903,6 +1921,7 @@
       saveSettings();
       if (settings.wakeLock) requestWakeLock(); else releaseWakeLock();
     });
+    p.querySelector('#set-senior').addEventListener('change', (e) => setSeniorMode(e.target.checked));
     p.querySelector('#set-turn').addEventListener('change', (e) => {
       settings.turnMarker = e.target.checked;
       saveSettings();
@@ -1920,11 +1939,13 @@
     });
     p.querySelector('#set-wake').checked = settings.wakeLock && WAKE_SUPPORTED;
     p.querySelector('#set-turn').checked = settings.turnMarker;
+    p.querySelector('#set-senior').checked = seniorMode;
   }
 
   function toggleSettingsPanel(force) {
     const open = typeof force === 'boolean' ? force : els.settingsPanel.hidden;
     els.settingsPanel.hidden = !open;
+    if (open) Object.keys(THEME_FONTS).forEach(loadThemeFonts);
     els.btnSettings.setAttribute('aria-expanded', String(open));
     els.btnSettings.classList.toggle('is-active', open);
   }

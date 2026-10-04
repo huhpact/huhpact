@@ -249,7 +249,7 @@ summary:focus-visible {
 .btn-icon-label:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
-  background: #fffdf6;
+  background: var(--btn-hover, #fffdf6);
 }
 
 .btn-icon-label:active {
@@ -513,8 +513,8 @@ tbody tr:nth-child(even):not(.row-spacer):not(.row-upper-total):not(.row-lower-t
 .row-lower td.cell-score { background: var(--lower-tint); }
 
 /* keep even/odd tint override consistent within sections */
-tbody tr.row-upper:nth-child(even) td { background: #ece0c2; }
-tbody tr.row-lower:nth-child(even) td { background: #e4d8ba; }
+tbody tr.row-upper:nth-child(even) td { background: var(--row-upper-even, #ece0c2); }
+tbody tr.row-lower:nth-child(even) td { background: var(--row-lower-even, #e4d8ba); }
 
 /* Category label cell contents */
 .category-label {
@@ -625,7 +625,7 @@ tbody tr:nth-child(4n)   .score-input { transform: rotate(1deg); }
    ------------------------------------------------------------------------- */
 .row-bonus td.col-label,
 .row-bonus td.cell-score {
-  background: #f1e2d4;
+  background: var(--bonus-row, #f1e2d4);
 }
 
 .bonus-cell {
@@ -650,19 +650,19 @@ tbody tr:nth-child(4n)   .score-input { transform: rotate(1deg); }
 }
 
 .bonus-badge.is-pending {
-  background: #e5dcc9;
+  background: var(--pill-pending, #e5dcc9);
   color: var(--ink-faint);
   border: 1px dashed var(--ink-faint);
 }
 
 .bonus-badge.is-earned {
-  background: #dcecdc;
+  background: var(--pill-ok, #dcecdc);
   color: var(--success);
   border: 1px solid var(--success);
 }
 
 .bonus-badge.is-missed {
-  background: #f3dcd9;
+  background: var(--pill-bad, #f3dcd9);
   color: var(--danger);
   border: 1px solid var(--danger);
 }
@@ -703,7 +703,7 @@ tr.row-lower-total td {
    continuation of that row) rather than a full peer total row. */
 tr.row-upper-total-with-bonus td {
   border-bottom: 2.5px solid var(--line-rule-strong);
-  background: #ece2cc !important;
+  background: var(--subtotal-tint, #ece2cc) !important;
   font-weight: 700;
   height: 42px;
 }
@@ -793,7 +793,7 @@ tr.row-grand-total td {
   width: 46px;
   height: 46px;
   border-radius: var(--radius-md);
-  background: linear-gradient(155deg, #fdf8ec, var(--paper-base-2));
+  background: linear-gradient(155deg, var(--add-btn-hi, #fdf8ec), var(--paper-base-2));
   color: var(--scorepad-red-dark);
   cursor: pointer;
   display: inline-flex;
@@ -810,7 +810,7 @@ tr.row-grand-total td {
 
 .btn-add-player:hover {
   transform: translateY(-2px);
-  background: linear-gradient(155deg, #fffdf7, #f6ecd6);
+  background: linear-gradient(155deg, var(--add-btn-hover-a, #fffdf7), var(--add-btn-hover-b, #f6ecd6));
   box-shadow:
     0 1px 0 rgba(255,255,255,0.8) inset,
     0 -2px 3px rgba(58,51,42,0.15) inset,
@@ -1430,7 +1430,7 @@ body.senior-mode .add-player-caption {
      hiding the label on an accessibility feature would undermine the
      feature's own purpose. Its label stays, its icon is dropped instead
      (see .btn-senior-toggle svg below) to keep it compact. */
-  .header-actions .btn-icon-label:not(.btn-senior-toggle) span { display: none; }
+  .header-actions .btn-icon-label span { display: none; }
   .btn-icon-label { padding: 10px; }
   .btn-senior-toggle { padding: 10px 14px; }
   .btn-senior-toggle svg { display: none; }
@@ -1883,20 +1883,6 @@ body.ceremony-open { overflow: hidden; }
 .theme-option:hover { background: rgba(127,127,127,0.1); }
 .theme-option.is-active { border-color: var(--scorepad-red); color: var(--ink-dark); }
 .theme-name { font-size: 0.7rem; font-weight: 600; }
-.theme-swatch {
-  position: relative; display: block; width: 100%; max-width: 62px; height: 42px;
-  border-radius: 7px; border: 1px solid rgba(0,0,0,0.25); overflow: hidden;
-}
-.theme-swatch i { position: absolute; left: 8px; right: 8px; bottom: 7px; height: 5px; border-radius: 3px; }
-.theme-swatch-paper   { background: radial-gradient(rgba(58,51,42,0.12) 0.6px, transparent 0.6px) 0 0/4px 4px, #f3ead9; }
-.theme-swatch-paper i { background: #a8342a; }
-.theme-swatch-grid    { background: linear-gradient(rgba(47,95,138,0.35) 1px, transparent 1px) 0 0/9px 9px, linear-gradient(90deg, rgba(47,95,138,0.35) 1px, transparent 1px) 0 0/9px 9px, #fdfdfb; }
-.theme-swatch-grid i  { background: #2f5f8a; }
-.theme-swatch-coaster { background: radial-gradient(rgba(60,35,10,0.22) 0.7px, transparent 0.7px) 0 0/4px 4px, #d8b98a; }
-.theme-swatch-coaster i { background: #a3281a; }
-.theme-swatch-chalk   { background: #2f3b36; }
-.theme-swatch-chalk i { background: #e8c46a; }
-
 .switch-row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 2px; cursor: pointer; font-size: 0.92rem; font-weight: 600; color: var(--ink-dark); }
 .switch-row small { display: block; margin-top: 2px; font-weight: 400; font-size: 0.74rem; color: var(--ink-faint); }
 .switch-row input { position: absolute; opacity: 0; pointer-events: none; }
@@ -1927,78 +1913,273 @@ body.ceremony-open { overflow: hidden; }
 .btn-group-restore:hover { border-style: solid; border-color: var(--scorepad-red); transform: translateY(-1px); box-shadow: var(--shadow-md); }
 
 /* ===========================================================================
-   ZETTEL-DESIGNS  (body[data-theme]) – überschreiben nur die Design-Tokens
+   ZETTEL-DESIGNS  (body[data-theme])
+   Jedes Design überschreibt Tokens (Farben, Schriften) und ergänzt Details
+   (Hintergründe, Rahmen, Texturen). Papier = Standard, ohne Overrides.
    =========================================================================== */
 .score-input { color: var(--pen, #274a7a); }
 
-/* --- Kariert (Schulheft) --- */
+/* Vorschau-Kacheln im Design-Menü */
+.theme-swatch { position: relative; display: block; width: 100%; max-width: 64px; height: 46px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,0,0,0.3); }
+.theme-swatch b { position: absolute; left: 6px; right: 6px; top: 6px; height: 7px; border-radius: 2px; }
+.theme-swatch i { position: absolute; left: 6px; right: 6px; top: 18px; height: 3px; border-radius: 2px; opacity: 0.7; }
+.theme-swatch u { position: absolute; left: 6px; right: 22px; top: 27px; height: 3px; border-radius: 2px; opacity: 0.5; text-decoration: none; }
+.theme-swatch-paper   { background: radial-gradient(rgba(58,51,42,0.14) 0.6px, transparent 0.6px) 0 0/4px 4px, #f3ead9; }
+.theme-swatch-paper b { background: #a8342a; } .theme-swatch-paper i, .theme-swatch-paper u { background: #6b5f4e; }
+.theme-swatch-grid    { background: linear-gradient(90deg, transparent 9px, rgba(214,70,70,0.6) 9px 10px, transparent 10px), linear-gradient(rgba(60,110,170,0.4) 1px, transparent 1px) 0 0/8px 8px, linear-gradient(90deg, rgba(60,110,170,0.4) 1px, transparent 1px) 0 0/8px 8px, #fdfdfb; }
+.theme-swatch-grid b  { background: #fff27a; left: 14px; } .theme-swatch-grid i, .theme-swatch-grid u { background: #1d3f9e; left: 14px; }
+.theme-swatch-coaster { background: radial-gradient(circle at 50% 55%, transparent 0 13px, rgba(163,40,26,0.55) 13px 14.5px, transparent 14.5px), radial-gradient(rgba(60,35,10,0.25) 0.7px, transparent 0.7px) 0 0/4px 4px, #d9bd8f; border: 4px solid #4a2c19; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3); }
+.theme-swatch-coaster b { background: #a3281a; left: 4px; right: 4px; top: 3px; } .theme-swatch-coaster i, .theme-swatch-coaster u { background: #1d2b52; left: 4px; top: 14px; }
+.theme-swatch-coaster u { top: 22px; right: 18px; }
+.theme-swatch-chalk   { background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.1), transparent 60%), #24322c; border: 4px solid #7b5230; }
+.theme-swatch-chalk b { background: transparent; border-bottom: 2px dashed rgba(255,255,255,0.7); left: 4px; right: 4px; top: 2px; height: 6px; border-radius: 0; }
+.theme-swatch-chalk i { background: #ffe9a0; left: 4px; top: 12px; } .theme-swatch-chalk u { background: #f1efe4; left: 4px; top: 20px; right: 16px; }
+.theme-option.is-active .theme-swatch { box-shadow: 0 0 0 2px var(--scorepad-red); }
+
+/* ===========================================================================
+   KARIERT — Schulheft mit Spiralbindung, Bleistift und Textmarker
+   =========================================================================== */
 body[data-theme="grid"] {
-  --paper-base: #f9fbfd; --paper-base-2: #f4f6f2; --paper-shadow: #c7d4e2;
-  --ink-dark: #1f2937; --ink-soft: #4b5b6e; --ink-faint: #8394a8;
-  --scorepad-red: #2f5f8a; --scorepad-red-dark: #1f4468;
-  --brass: #7f9fbf; --brass-light: #a9c0d8;
-  --line-rule: #bcd0e4; --line-rule-strong: #7f9fbf;
-  --row-tint: #f1f6fb; --row-tint-lower: #f4f8fc;
-  --upper-tint: #eaf2fa; --lower-tint: #eef5fb; --grand-tint: #d3e3f3;
-  --white-paper: #ffffff; --pen: #b3261e; --danger: #b3261e;
+  --font-display: 'Patrick Hand', 'Comic Sans MS', cursive;
+  --font-hand: 'Kalam', 'Caveat', cursive;
+  --paper-base: #fbfdff; --paper-base-2: #e9f0f8; --paper-shadow: #b5c7da;
+  --ink-dark: #1e2635; --ink-soft: #46556a; --ink-faint: #8191a6;
+  --scorepad-red: #2b5fa8; --scorepad-red-dark: #1d4380;
+  --brass: #6f95c0; --brass-light: #9dbbdc;
+  --line-rule: #b9cde3; --line-rule-strong: #6f95c0;
+  --row-tint: #f3f8fe; --row-tint-lower: #f3f8fe;
+  --upper-tint: #f4f9ff; --lower-tint: #fffef7; --grand-tint: #fff08a;
+  --row-upper-even: #eaf3fd; --row-lower-even: #fbfbec;
+  --bonus-row: #fff7b5; --subtotal-tint: #dfeaf6;
+  --pill-pending: #eef3f9; --pill-ok: #d6f1d9; --pill-bad: #fcdcd7;
+  --btn-hover: #ffffff; --add-btn-hi: #ffffff; --add-btn-hover-a: #ffffff; --add-btn-hover-b: #e9f0f8;
+  --white-paper: #ffffff; --pen: #1b3c9c; --danger: #c0392b; --success: #2e7d32;
+  --shadow-lg: 0 16px 34px rgba(30,60,100,0.22), 0 3px 8px rgba(30,60,100,0.12);
 }
 body[data-theme="grid"] .paper-backdrop {
-  background-color: #fbfbf8;
+  background-color: #f7f8f4;
   background-image:
-    linear-gradient(90deg, transparent 58px, rgba(214,70,70,0.4) 58px, rgba(214,70,70,0.4) 60px, transparent 60px),
-    linear-gradient(rgba(60,110,170,0.2) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(60,110,170,0.2) 1px, transparent 1px);
-  background-size: 100% 100%, 24px 24px, 24px 24px;
-  background-position: 0 0, 0 0, 0 0;
+    linear-gradient(90deg, transparent 70px, rgba(214,70,70,0.45) 70px 72px, transparent 72px),
+    linear-gradient(rgba(60,110,170,0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(60,110,170,0.22) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.8), transparent 65%);
+  background-size: 100% 100%, 26px 26px, 26px 26px, 100% 100%;
 }
-body[data-theme="grid"] .ceremony { background-image: linear-gradient(rgba(60,110,170,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(60,110,170,0.16) 1px, transparent 1px); background-size: 24px 24px; background-color: #fbfbf8; }
-@media (max-width: 700px) { body[data-theme="grid"] .paper-backdrop { background-image: linear-gradient(rgba(60,110,170,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(60,110,170,0.2) 1px, transparent 1px); background-size: 24px 24px; } }
+@media (max-width: 700px) { body[data-theme="grid"] .paper-backdrop { background-image: linear-gradient(rgba(60,110,170,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(60,110,170,0.22) 1px, transparent 1px); background-size: 26px 26px; } }
+body[data-theme="grid"] .brand-text h1 { font-weight: 400; letter-spacing: 0.5px; }
+body[data-theme="grid"] .brand-sub { display: inline-block; margin-left: 4px; padding: 0 8px; color: #1e2635; background: linear-gradient(transparent 52%, rgba(255,226,40,0.85) 52% 92%, transparent 92%); transform: rotate(-2deg); }
+body[data-theme="grid"] .brand-tagline { font-family: var(--font-display); font-size: 1.05rem; font-style: normal; }
+body[data-theme="grid"] .torn-edge { height: 12px; background: radial-gradient(circle at 50% 50%, #f7f8f4 0 3.5px, transparent 4px) 0 0/24px 12px repeat-x; border-top: 2px dotted rgba(60,110,170,0.5); opacity: 1; border-radius: 0; }
+/* Spiralbindung über dem Blatt */
+body[data-theme="grid"] .scorepad-card { border: 1px solid #c3d3e4; border-radius: 6px 6px 18px 18px; margin-top: 16px; }
+body[data-theme="grid"] .scorepad-card::before {
+  content: ''; position: absolute; left: 16px; right: 16px; top: -14px; height: 26px; z-index: 30; pointer-events: none;
+  background:
+    radial-gradient(ellipse 3.2px 6.5px at 50% 11px, #2c3340 0 70%, transparent 100%) 0 0/22px 26px repeat-x,
+    radial-gradient(ellipse 5.5px 5.5px at 50% 21px, rgba(30,40,60,0.35) 0 60%, transparent 100%) 0 0/22px 26px repeat-x;
+  filter: drop-shadow(0 2px 1.5px rgba(0,0,0,0.3));
+}
+body[data-theme="grid"] .page-corner { background: linear-gradient(135deg, transparent 50%, rgba(60,110,170,0.14) 50%); }
+body[data-theme="grid"] tbody td:not(.col-label) {
+  background-image: linear-gradient(rgba(70,120,180,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(70,120,180,0.2) 1px, transparent 1px);
+  background-size: 23px 23px;
+}
+body[data-theme="grid"] .col-label { border-right-width: 2px; border-right-color: rgba(214,70,70,0.65); }
+body[data-theme="grid"] .score-input { font-size: 1.35rem; font-weight: 700; text-shadow: 0 0 0.5px rgba(27,60,156,0.6); }
+body[data-theme="grid"] td.cell-sheet-a .score-input, body[data-theme="grid"] td.cell-sheet-b .score-input { font-size: 1.15rem; }
+body[data-theme="grid"] .total-label, body[data-theme="grid"] .rules-col h3 { font-family: var(--font-display); letter-spacing: 0.04em; }
+body[data-theme="grid"] tr.row-grand-total td { border-top: 4px double #c0392b; }
+body[data-theme="grid"] .row-grand-total .total-value { color: #1b3c9c; text-decoration: underline wavy rgba(192,57,43,0.7) 1.5px; text-underline-offset: 6px; }
+body[data-theme="grid"] .row-grand-total .total-label { color: #1e2635; }
+body[data-theme="grid"] .censor { color: #1b3c9c; }
+body[data-theme="grid"] .bonus-badge { font-family: var(--font-display); font-size: 0.88rem; }
+body[data-theme="grid"] .rules-card { border: 1px solid #c3d3e4; background-image: linear-gradient(rgba(70,120,180,0.16) 1px, transparent 1px); background-size: 100% 24px; background-position: 0 14px; }
+body[data-theme="grid"] .ceremony { background-color: #f7f8f4; background-image: linear-gradient(90deg, transparent 70px, rgba(214,70,70,0.4) 70px 72px, transparent 72px), linear-gradient(rgba(60,110,170,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(60,110,170,0.2) 1px, transparent 1px); background-size: 100% 100%, 26px 26px, 26px 26px; }
+body[data-theme="grid"] .cer-title { text-shadow: 3px 3px 0 rgba(255,226,40,0.7); }
 
-/* --- Bierdeckel (Karton) --- */
+/* ===========================================================================
+   BIERDECKEL — Kneipentisch aus dunklem Holz, Karton mit Druckrand, Edding
+   =========================================================================== */
 body[data-theme="coaster"] {
-  --paper-base: #d9bd8f; --paper-base-2: #c8a574; --paper-shadow: #a8844f;
-  --ink-dark: #36250f; --ink-soft: #5c4326; --ink-faint: #876a44;
-  --scorepad-red: #a3281a; --scorepad-red-dark: #7a1c10;
+  --font-display: 'Alfa Slab One', 'Rockwell', 'Georgia', serif;
+  --font-hand: 'Permanent Marker', 'Caveat', cursive;
+  --paper-base: #dcc194; --paper-base-2: #c9a672; --paper-shadow: #7a5427;
+  --ink-dark: #2e1f0e; --ink-soft: #55391d; --ink-faint: #7e623c;
+  --scorepad-red: #b02e1c; --scorepad-red-dark: #7d1d11;
   --brass: #8a5a2b; --brass-light: #b58348;
-  --line-rule: #b08d5c; --line-rule-strong: #7d5d32;
-  --row-tint: #d3b583; --row-tint-lower: #cfae7c;
-  --upper-tint: #d6b988; --lower-tint: #cdad7b; --grand-tint: #bf9a62;
-  --white-paper: #e8d2a8; --pen: #1f2f52;
+  --line-rule: #b49261; --line-rule-strong: #6f4f27;
+  --row-tint: #d6b985; --row-tint-lower: #d3b581;
+  --upper-tint: #dcc194; --lower-tint: #d4b684; --grand-tint: #8f2418;
+  --row-upper-even: #d5b87f; --row-lower-even: #cdaf79;
+  --bonus-row: #e6cf9f; --subtotal-tint: #c4a06b;
+  --pill-pending: #d3b887; --pill-ok: #c9dba9; --pill-bad: #efc3b5;
+  --btn-hover: #f3dfb6; --add-btn-hi: #ecd5a6; --add-btn-hover-a: #f5e3bd; --add-btn-hover-b: #d9bd8f;
+  --white-paper: #ebd6aa; --pen: #1b2a52; --success: #3d6b2d; --danger: #a3281a;
+  --shadow-lg: 0 22px 44px rgba(0,0,0,0.6), 0 5px 12px rgba(0,0,0,0.4);
 }
 body[data-theme="coaster"] .paper-backdrop {
+  background-color: #35200f;
   background-image:
-    radial-gradient(rgba(60,35,10,0.10) 0.6px, transparent 0.6px),
-    radial-gradient(rgba(60,35,10,0.07) 0.8px, transparent 0.8px),
-    radial-gradient(ellipse at 50% 0%, rgba(255,235,190,0.35) 0%, rgba(0,0,0,0) 60%);
+    radial-gradient(ellipse at 50% 12%, rgba(255,170,90,0.22), transparent 62%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.5) 0 3px, rgba(255,190,120,0.07) 3px 4px, transparent 4px 150px),
+    repeating-linear-gradient(0deg, rgba(255,205,150,0.04) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.10) 0 2px, transparent 2px 13px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 47px),
+    linear-gradient(180deg, #4d2e19, #2a170b);
+  background-size: 100% 100%, 100% 300px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
 }
+body[data-theme="coaster"] .brand-text h1 { color: #f7e4bb; text-shadow: 0 3px 0 #1c0e05, 0 0 22px rgba(255,170,70,0.25); font-weight: 400; letter-spacing: 1.5px; }
+body[data-theme="coaster"] .brand-sub { color: #f2a33a; }
+body[data-theme="coaster"] .brand-tagline,
+body[data-theme="coaster"] .hint-text,
+body[data-theme="coaster"] .app-footer p { color: #dcc298; }
+body[data-theme="coaster"] .hint-text strong { color: #f7e4bb; }
+body[data-theme="coaster"] .brand-dice { filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); }
+body[data-theme="coaster"] .torn-edge { height: 7px; border-radius: 4px; opacity: 1; background: linear-gradient(180deg, #f0c872, #b5812c 55%, #7c5316); box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+body[data-theme="coaster"] .btn-icon-label, body[data-theme="coaster"] .mode-toggle { box-shadow: 0 2px 0 #6f4f27, 0 4px 8px rgba(0,0,0,0.4); }
+body[data-theme="coaster"] .scorepad-card {
+  border: 4px solid #6f4a26; border-radius: 26px;
+  background: var(--white-paper);
+  outline: 2px dashed rgba(163,40,26,0.6); outline-offset: -11px;
+  box-shadow: 0 0 0 3px #2a170b, var(--shadow-lg), inset 0 0 30px rgba(90,55,20,0.35);
+  padding: clamp(10px, 1.8vw, 16px);
+}
+body[data-theme="coaster"] .scorepad-scroll-region { border-radius: 16px; box-shadow: 0 0 0 2px rgba(111,79,39,0.55); }
+body[data-theme="coaster"] .scorepad-table {
+  background-color: var(--paper-base);
+  background-image: radial-gradient(rgba(70,40,10,0.14) 0.7px, transparent 0.7px), radial-gradient(rgba(255,235,190,0.12) 0.7px, transparent 0.7px);
+  background-size: 4px 4px, 7px 7px; background-position: 0 0, 2px 3px;
+}
+body[data-theme="coaster"] .page-corner { background: linear-gradient(135deg, transparent 50%, rgba(60,30,5,0.28) 50%); }
+body[data-theme="coaster"] .category-label { font-weight: 700; letter-spacing: 0.01em; }
+body[data-theme="coaster"] .category-icon { color: #a3281a; opacity: 1; }
+body[data-theme="coaster"] .score-input { font-size: 1.25rem; font-weight: 400; transform: rotate(-1.5deg); text-shadow: 0 0 1px rgba(27,42,82,0.7); }
+body[data-theme="coaster"] td.cell-sheet-a .score-input, body[data-theme="coaster"] td.cell-sheet-b .score-input { font-size: 1.05rem; }
+body[data-theme="coaster"] .col-player-head { background: linear-gradient(180deg, #d1b07a, #c5a068); }
+body[data-theme="coaster"] .col-label-head { background: linear-gradient(180deg, #d1b07a, #c5a068); }
+body[data-theme="coaster"] tr.row-upper-total td, body[data-theme="coaster"] tr.row-lower-total td { border-top-style: solid; border-color: #6f4f27; }
+body[data-theme="coaster"] .total-label { font-size: 0.8rem; letter-spacing: 0.06em; }
+body[data-theme="coaster"] .total-value { font-size: 1.05rem; color: #7d1d11; }
+body[data-theme="coaster"] tr.row-grand-total td { border-top: 4px double #f0c872; border-bottom: 3px solid #5a1209; }
+body[data-theme="coaster"] .row-grand-total .total-label, body[data-theme="coaster"] .row-grand-total .total-value { color: #f9e6bd; text-shadow: 0 2px 0 rgba(0,0,0,0.45); }
+body[data-theme="coaster"] .row-grand-total .total-value { font-size: 1.45rem; }
+body[data-theme="coaster"] .censor { color: #f9e6bd; }
+body[data-theme="coaster"] .bonus-badge { border-radius: 4px; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.7rem; }
+body[data-theme="coaster"] .rules-card { border: 3px solid #6f4a26; outline: 1.5px dashed rgba(163,40,26,0.55); outline-offset: -8px; border-radius: 20px; }
+body[data-theme="coaster"] .ceremony {
+  background-color: #cfae79;
+  background-image:
+    radial-gradient(circle at 50% 48%, transparent 0 40vmin, rgba(163,40,26,0.28) 40vmin 40.8vmin, transparent 40.8vmin 42.6vmin, rgba(163,40,26,0.28) 42.6vmin 43.4vmin, transparent 43.4vmin),
+    radial-gradient(rgba(70,40,10,0.14) 0.7px, transparent 0.7px),
+    radial-gradient(ellipse at 50% 0%, rgba(255,235,190,0.45), transparent 60%);
+  background-size: 100% 100%, 4px 4px, 100% 100%;
+  box-shadow: inset 0 0 0 10px #6f4a26, inset 0 0 0 13px #2a170b;
+}
+body[data-theme="coaster"] .cer-title { text-shadow: 0 3px 0 rgba(255,225,160,0.7); letter-spacing: 0.06em; }
+body[data-theme="coaster"] .cer-slot.is-revealed .cer-block { color: #2e1f0e; }
 
-/* --- Tafel (dunkel, Kreide) --- */
+/* ===========================================================================
+   TAFEL — Kreidetafel im Holzrahmen mit Ablage und Kreidestücken
+   =========================================================================== */
 body[data-theme="chalk"] {
-  --paper-base: #2b3732; --paper-base-2: #1f2a26; --paper-shadow: #121a17;
-  --ink-dark: #f1efe4; --ink-soft: #c9cbbf; --ink-faint: #8e978f;
-  --scorepad-red: #c9503c; --scorepad-red-dark: #d86f58;
-  --brass: #b8935a; --brass-light: #d8b478;
-  --line-rule: #4c5a53; --line-rule-strong: #7d8c83;
-  --row-tint: #2f3c36; --row-tint-lower: #2d3a34;
-  --upper-tint: #33413a; --lower-tint: #2e3b35; --grand-tint: #3f5148;
-  --white-paper: #34423b; --pen: #f5e9b8; --success: #8fcf8f; --danger: #ef8a78;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4); --shadow-md: 0 4px 10px rgba(0,0,0,0.4);
-  --shadow-lg: 0 14px 34px rgba(0,0,0,0.5), 0 4px 10px rgba(0,0,0,0.3); --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.5);
+  --font-display: 'Gloria Hallelujah', 'Comic Sans MS', cursive;
+  --font-hand: 'Gochi Hand', 'Caveat', cursive;
+  --paper-base: #2b3a33; --paper-base-2: #202d27; --paper-shadow: #121b17;
+  --ink-dark: #f3f1e6; --ink-soft: #cdd0c3; --ink-faint: #929d94;
+  --scorepad-red: #cf5740; --scorepad-red-dark: #f0b56a;
+  --brass: #c9a35f; --brass-light: #e2c283;
+  --line-rule: rgba(243,241,230,0.2); --line-rule-strong: rgba(243,241,230,0.5);
+  --row-tint: #2f3f37; --row-tint-lower: #2d3d35;
+  --upper-tint: #2f3f37; --lower-tint: #2a3931; --grand-tint: #3f5445;
+  --row-upper-even: #33443b; --row-lower-even: #2e3e35;
+  --bonus-row: #3a4a33; --subtotal-tint: #384a40;
+  --pill-pending: #33443b; --pill-ok: #2f5a3a; --pill-bad: #5e3330;
+  --btn-hover: #3d4f45; --add-btn-hi: #3b4d43; --add-btn-hover-a: #46594e; --add-btn-hover-b: #33443b;
+  --white-paper: #34443b; --pen: #ffe9a0; --success: #93d89a; --danger: #f0907e;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.45); --shadow-md: 0 4px 10px rgba(0,0,0,0.45);
+  --shadow-lg: 0 18px 40px rgba(0,0,0,0.6), 0 4px 10px rgba(0,0,0,0.35);
+  --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.55);
   color-scheme: dark;
 }
 body[data-theme="chalk"] .paper-backdrop {
+  background-color: #17201c;
   background-image:
-    radial-gradient(rgba(255,255,255,0.045) 0.5px, transparent 0.5px),
-    radial-gradient(rgba(255,255,255,0.03) 0.5px, transparent 0.5px),
-    radial-gradient(ellipse at 50% 0%, rgba(120,150,135,0.25) 0%, rgba(0,0,0,0) 60%);
+    radial-gradient(ellipse 60% 40% at 18% 22%, rgba(255,255,255,0.07), transparent 70%),
+    radial-gradient(ellipse 50% 35% at 82% 60%, rgba(255,255,255,0.055), transparent 70%),
+    radial-gradient(ellipse 70% 30% at 40% 90%, rgba(255,255,255,0.05), transparent 70%),
+    linear-gradient(112deg, transparent 0 30%, rgba(255,255,255,0.03) 30% 34%, transparent 34% 62%, rgba(255,255,255,0.025) 62% 64%, transparent 64%),
+    radial-gradient(rgba(255,255,255,0.05) 0.5px, transparent 0.5px),
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.55) 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 5px 5px, 100% 100%;
 }
+body[data-theme="chalk"] .brand-text h1 { font-weight: 400; color: #f7f5ea; text-shadow: 0 0 14px rgba(255,255,255,0.28); letter-spacing: 1px; }
+body[data-theme="chalk"] .brand-sub { color: #ffe9a0; text-shadow: 0 0 14px rgba(255,233,160,0.45); }
+body[data-theme="chalk"] .brand-tagline { font-family: var(--font-display); font-style: normal; font-size: 0.95rem; }
+body[data-theme="chalk"] .torn-edge { height: 5px; opacity: 0.6; border-radius: 3px; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.8) 0 16px, transparent 16px 22px, rgba(255,255,255,0.8) 22px 26px, transparent 26px 32px); }
+body[data-theme="chalk"] .btn-icon-label, body[data-theme="chalk"] .mode-toggle { border-color: rgba(243,241,230,0.55); }
+body[data-theme="chalk"] .scorepad-card {
+  margin-bottom: 18px;
+  background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.05), transparent 60%), #26342d;
+  border: 13px solid transparent;
+  border-image: linear-gradient(135deg, #b88a55, #7a4f28 35%, #a6753e 55%, #623f20 80%, #8d5f33) 1;
+  border-radius: 0;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.6), var(--shadow-lg), inset 0 0 0 2px rgba(0,0,0,0.5), inset 0 8px 26px rgba(0,0,0,0.6);
+  padding: clamp(6px, 1.4vw, 10px);
+}
+/* Kreideablage mit zwei Kreidestücken */
+body[data-theme="chalk"] .scorepad-card::after {
+  content: ''; position: absolute; left: 4%; right: 4%; bottom: -27px; height: 12px; z-index: 2; pointer-events: none;
+  background: linear-gradient(180deg, #b88a55, #6e4624); border-radius: 0 0 5px 5px; box-shadow: 0 6px 10px rgba(0,0,0,0.55);
+}
+body[data-theme="chalk"] .scorepad-card::before {
+  content: ''; position: absolute; left: 10%; bottom: -21px; width: 40px; height: 9px; z-index: 3; pointer-events: none;
+  background: #f6f3e8; border-radius: 4px 5px 5px 4px; box-shadow: 58px 0 0 -1px #ffe48a, 0 2px 3px rgba(0,0,0,0.45);
+}
+body[data-theme="chalk"] .scorepad-scroll-region { border-radius: 2px; }
+body[data-theme="chalk"] .scorepad-table {
+  background-color: #26342d;
+  background-image: radial-gradient(ellipse 70% 50% at 25% 25%, rgba(255,255,255,0.045), transparent 70%), radial-gradient(rgba(255,255,255,0.045) 0.5px, transparent 0.5px);
+  background-size: 100% 100%, 5px 5px;
+}
+body[data-theme="chalk"] .page-corner { display: none; }
+body[data-theme="chalk"] tbody td { border-bottom-style: dashed; border-right-style: dashed; }
+body[data-theme="chalk"] .col-label, body[data-theme="chalk"] .col-label-head, body[data-theme="chalk"] .col-player-head { box-shadow: none; }
+body[data-theme="chalk"] .col-label { border-right: 2px solid rgba(243,241,230,0.55); }
+body[data-theme="chalk"] .category-label { font-weight: 500; font-size: 0.96rem; letter-spacing: 0.02em; }
+body[data-theme="chalk"] .category-icon { color: #ffe9a0; opacity: 0.9; }
+body[data-theme="chalk"] .score-input { font-size: 1.6rem; font-weight: 400; text-shadow: 0 0 7px rgba(255,233,160,0.4); }
+body[data-theme="chalk"] td.cell-sheet-a .score-input, body[data-theme="chalk"] td.cell-sheet-b .score-input { font-size: 1.3rem; }
+body[data-theme="chalk"] .score-input:focus { background: rgba(255,233,160,0.09); box-shadow: inset 0 -2px 0 #ffe9a0; }
+body[data-theme="chalk"] .score-input::placeholder { color: rgba(243,241,230,0.35); }
+body[data-theme="chalk"] tr.row-upper-total td, body[data-theme="chalk"] tr.row-lower-total td { border-top: 2.5px solid rgba(243,241,230,0.7); border-bottom: 2.5px solid rgba(243,241,230,0.7); }
+body[data-theme="chalk"] .total-label { font-size: 0.8rem; letter-spacing: 0.04em; }
+body[data-theme="chalk"] .total-value { color: #ffe9a0; text-shadow: 0 0 8px rgba(255,233,160,0.35); }
+body[data-theme="chalk"] tr.row-upper-total-with-bonus .total-label, body[data-theme="chalk"] tr.row-upper-total-with-bonus .total-value { color: #ffe9a0; }
+body[data-theme="chalk"] tr.row-grand-total td { border-top: 4px double #ffe9a0; border-bottom: 2.5px solid rgba(243,241,230,0.7); }
+body[data-theme="chalk"] .row-grand-total .total-label { color: #ffe9a0; }
+body[data-theme="chalk"] .row-grand-total .total-value { color: #fff3c4; font-size: 1.55rem; text-shadow: 0 0 12px rgba(255,233,160,0.55); }
+body[data-theme="chalk"] .censor { color: #ffe9a0; }
+body[data-theme="chalk"] .bonus-badge { font-family: var(--font-display); font-size: 0.78rem; }
+body[data-theme="chalk"] .need-hint { font-family: var(--font-display); }
+body[data-theme="chalk"] .rules-card { border: 8px solid transparent; border-image: linear-gradient(135deg, #b88a55, #7a4f28 40%, #a6753e 60%, #623f20) 1; border-radius: 0; background: #26342d; }
+body[data-theme="chalk"] .rules-col h3 { color: #ffe9a0; }
+body[data-theme="chalk"] .toast { background: #f3f1e6; color: #1f2b25; }
+body[data-theme="chalk"] .settings-panel { border-color: rgba(243,241,230,0.4); }
 body[data-theme="chalk"] .ceremony {
+  background-color: #1d2923;
   background-image:
+    radial-gradient(ellipse 60% 40% at 20% 20%, rgba(255,255,255,0.07), transparent 70%),
+    radial-gradient(ellipse 50% 35% at 80% 70%, rgba(255,255,255,0.05), transparent 70%),
     radial-gradient(rgba(255,255,255,0.045) 0.5px, transparent 0.5px),
-    radial-gradient(rgba(255,255,255,0.03) 0.5px, transparent 0.5px),
-    radial-gradient(ellipse at 50% 0%, rgba(120,150,135,0.25) 0%, rgba(0,0,0,0) 60%);
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.5) 100%);
+  background-size: 100% 100%, 100% 100%, 5px 5px, 100% 100%;
+  box-shadow: inset 0 0 0 14px #8d5f33, inset 0 0 0 16px #4a2e15, inset 0 0 40px 18px rgba(0,0,0,0.5);
 }
-body[data-theme="chalk"] .cer-flash { background: #e9efe9; }
+body[data-theme="chalk"] .cer-title { color: #fff3c4; text-shadow: 0 0 18px rgba(255,233,160,0.5); font-weight: 400; }
+body[data-theme="chalk"] .cer-subtitle b, body[data-theme="chalk"] .cer-score, body[data-theme="chalk"] .cer-rest-rank { color: #ffe9a0; }
 body[data-theme="chalk"] .cer-slot.is-revealed .cer-block { color: #2a1f08; }
-body[data-theme="chalk"] .btn-calculate,
-body[data-theme="chalk"] .cer-action-primary { color: #fdf6ea; }
+body[data-theme="chalk"] .cer-rest-item { border-style: dashed; border-color: rgba(243,241,230,0.4); }
+body[data-theme="chalk"] .cer-close { color: rgba(243,241,230,0.7); }
+body[data-theme="chalk"] .cer-nav { background: rgba(32,45,39,0.9); border-color: rgba(243,241,230,0.5); }
+body[data-theme="chalk"] .btn-calculate, body[data-theme="chalk"] .cer-action-primary { color: #fff8ec; }
+body[data-theme="chalk"] .cer-flash { background: #eef2ea; }
