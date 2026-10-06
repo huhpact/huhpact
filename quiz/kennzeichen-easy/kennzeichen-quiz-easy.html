@@ -291,10 +291,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script>
         // ── Config ──
-        // Number of questions per round. Change here if you want a setup screen
-        // later; for now this quiz has no setup step, since "all world countries"
-        // is the whole point.
-        var TOTAL_QUESTIONS = 15;
+        // Anzahl der Fragen und gewählte Kontinente kommen aus dem Setup
+        // (sessionStorage: plateQuizQuestions / plateQuizContinents).
+        var ALLOWED_QUESTION_COUNTS = [10, 20, 30, 50];
+        var TOTAL_QUESTIONS = (function () {
+            var n = parseInt(sessionStorage.getItem('plateQuizQuestions'), 10);
+            return ALLOWED_QUESTION_COUNTS.indexOf(n) !== -1 ? n : 10;
+        })();
+
+        // ISO-Alpha-2 -> Kontinent
+        var CONTINENT_COUNTRIES = {
+            EU: 'AD AL AT AX BA BE BG BY CH CY CZ DE DK EE ES FI FO FR GB GG GI GR HR HU IE IM IS IT JE LI LT LU LV MC MD ME MK MT NL NO PL PT RO RS RU SE SI SK SM UA VA XK',
+            AS: 'AE AF AM AZ BD BH BN BT CN GE HK ID IL IN IQ IR JO JP KG KH KP KR KW KZ LA LB LK MM MN MO MV MY NP OM PH PK PS QA SA SG SY TH TJ TL TM TR TW UZ VN YE',
+            AF: 'AO BF BI BJ BW CD CF CG CI CM CV DJ DZ EG EH ER ET GA GH GM GN GQ GW KE KM LR LS LY MA MG ML MR MU MW MZ NA NE NG RW SC SD SL SN SO SS ST SZ TD TG TN TZ UG ZA ZM ZW',
+            NA: 'AG BB BS BZ CA CR CU DM DO GD GL GT HN HT JM KN LC MX NI PA PR SV TT US VC',
+            SA: 'AR BO BR CL CO EC FK GF GY PE PY SR UY VE',
+            OC: 'AU FJ FM KI MH NR NZ PG PW SB TO TV VU WS'
+        };
+        var CONTINENT_VIEWS = {
+            EU: [[54, 15], 4], AS: [[34, 90], 3], AF: [[2, 20], 3],
+            NA: [[40, -95], 3], SA: [[-15, -60], 3], OC: [[-22, 150], 3]
+        };
+        var ALL_CONTINENTS = Object.keys(CONTINENT_COUNTRIES);
+        var selectedContinents = (function () {
+            var raw = (sessionStorage.getItem('plateQuizContinents') || '').split(',');
+            var valid = raw.filter(function (c) { return ALL_CONTINENTS.indexOf(c) !== -1; });
+            return valid.length ? valid : ALL_CONTINENTS.slice();
+        })();
+        var allowedIsoSet = {};
+        selectedContinents.forEach(function (c) {
+            CONTINENT_COUNTRIES[c].split(' ').forEach(function (iso) { allowedIsoSet[iso] = true; });
+        });
 
         // Where plate images live and how they're named: "<iso_a2-lowercase>.png",
         // e.g. plates/de.png, plates/fr.png, plates/us.png. One image per country
@@ -332,6 +359,10 @@
         var countInterval      = null;
 
         var viewCenter = [30, 15], viewZoom = 2;
+        if (selectedContinents.length === 1) {
+            viewCenter = CONTINENT_VIEWS[selectedContinents[0]][0];
+            viewZoom   = CONTINENT_VIEWS[selectedContinents[0]][1];
+        }
 
         var COLOR_DEFAULT = '#94a3b8';
         var COLOR_HOVER    = '#818cf8';
@@ -395,7 +426,7 @@
                     if (namesDoc) countryNames = namesDoc;
 
                     buildCountryLayers(geojson);
-                    countryPool = Object.keys(countryLayers);
+                    countryPool = Object.keys(countryLayers).filter(function (iso) { return allowedIsoSet[iso]; });
                     console.log('[Quiz] Länder im Fragenpool:', countryPool.length);
                     document.getElementById('map-loading').classList.add('hidden');
                     if (setupQuestions()) {
