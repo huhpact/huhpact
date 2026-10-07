@@ -42,7 +42,7 @@ const WISHES = [
   {
     title: "Anker 165W PowerBank",
     image: "/wunsch/images/anker.webp",
-    rating: 2,
+    rating: 1,
     link: "https://www.anker.com/de/products/a1695-anker-powerbank-25000mah-165w",
     note: ""
   },
