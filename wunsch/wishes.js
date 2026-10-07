@@ -88,5 +88,12 @@ const WISHES = [
     link: "https://www.sony.de/electronics/alpha7",
     note: ""
   },
+    {
+    title: "Tesla Model 3",
+    image: "https://static.scientificamerican.com/sciam/cache/file/9643E3DD-6934-495D-AF35F6D45999B832_source.png",
+    rating: 4,
+    link: "https://www.tesla.com/de_de/model3/design#overview",
+    note: ""
+  },
   
 ];
