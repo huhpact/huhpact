@@ -23,7 +23,7 @@
 </script>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Caveat:wght@500;600;700&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/kniffel/style.css?v=1.6">
+  <link rel="stylesheet" href="/kniffel/style.css?v=1.7">
 </head>
 <body>
 
@@ -86,6 +86,13 @@
 
     <!-- ===================== MAIN ===================== -->
     <main class="app-main">
+
+      <!-- Zuschauer-Leiste (nur im Zuschauer-Modus sichtbar) -->
+      <div class="viewer-bar" id="viewer-bar" hidden>
+        <span class="vb-dot" aria-hidden="true"></span>
+        <span class="vb-text" id="vb-text" aria-live="polite"></span>
+        <button type="button" class="vb-switch" id="vb-switch">Wechseln</button>
+      </div>
 
       <!-- Scoresheet card -->
       <section class="scorepad-card" aria-label="Kniffel Punktezettel">
@@ -174,6 +181,7 @@
               <li>Die Punkte aktualisieren sich <strong>live</strong>; die Gesamtsumme bleibt bis zur Auswertung verdeckt</li>
               <li>Kleine Zahl im oberen Block: so viele Würfel dieser Augenzahl brauchst du noch für den Bonus</li>
               <li>Mit dem <strong>&minus;</strong>-Knopf in der Ecke streichst du ein Feld durch</li>
+              <li><strong>Multiplayer</strong> (Einstellungen): QR-Code zeigen, Mitspieler scannen ihn und sehen nur ihre eigene Spalte</li>
               <li>Die stark eingefärbte Spalte zeigt, wer als Nächstes dran ist; „Startspieler“ lost den Beginn aus</li>
             </ul>
           </div>
@@ -197,7 +205,7 @@
   <!-- Toast for feedback messages -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="/kniffel/rows-config.js?v=1.6"></script>
-  <script src="/kniffel/main.js?v=1.6"></script>
+  <script src="/kniffel/rows-config.js?v=1.7"></script>
+  <script src="/kniffel/main.js?v=1.7"></script>
 </body>
 </html>

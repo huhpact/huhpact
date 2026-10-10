@@ -1,7 +1,7 @@
 /**
  * app.js
  * ---------------------------------------------------------------------------
- * Kniffelblock — application logic.  Version 1.5
+ * Kniffelblock — application logic.  Version 1.7
  *
  * Structure of this file:
  *   1. State
@@ -16,6 +16,7 @@
  *   10. PWA: service worker + install prompt
  *   11. Siegerehrung (Podium, Sound, Konfetti)  [v1.2]
  *   12. Einstellungen: Zettel-Design, Wach halten, Wer ist dran, Gruppe merken  [v1.3]
+ *   13. Multiplayer: Zuschauen per QR-Code (Host + Zuschauer)  [v1.7]
  * ---------------------------------------------------------------------------
  */
 
@@ -67,6 +68,11 @@
    * CENSOR_LOWER_TOTAL: auf true setzen, um auch "Summe unten" zu verdecken.
    */
   let revealed = false;
+
+  /** v1.7: Link mit #watch=<Raum> öffnet die App im Zuschauer-Modus (nur lesen). */
+  const viewerRoomMatch = location.hash.match(/watch=([A-Za-z0-9_-]+)/);
+  const viewerRoom = viewerRoomMatch ? viewerRoomMatch[1] : null;
+  const viewerMode = !!viewerRoom;
 
   /** v1.3: Spieler, der zuletzt etwas eingetragen hat (Basis für "Wer ist dran?"). */
   let lastEntryPlayerId = null;
@@ -743,6 +749,7 @@
      Markierung am Spaltenkopf. Aus bei nur einem Spieler, wenn das Blatt voll
      ist oder wenn die Option in den Einstellungen abgeschaltet wurde.        */
   function nextPlayerToPlay() {
+    if (viewerMode) return settings.turnMarker && vw.turn && players[0] ? players[0].id : null; // Zuschauer: Info vom Host
     if (!settings.turnMarker || players.length < 2) return null;
     if (countOpenFields() === 0) return null;
     if (turnOverrideId !== null && players.some((p) => p.id === turnOverrideId)) return turnOverrideId; // Auslosung
@@ -941,6 +948,7 @@
   const LEGACY_STORAGE_KEY = 'kniffelblock.state.v1'; // pre-"Doppel" format (single `scores` map)
 
   function savePlayers() {
+    if (viewerMode) return;      // Zuschauer speichern nie – sonst würde ein eigenes Blatt überschrieben
     try {
       const payload = {
         mode,
@@ -959,6 +967,7 @@
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       rememberGroup();
+      mpBroadcast();
     } catch (err) {
       // localStorage may be unavailable (private browsing / quota) — fail silently,
       // the app still works, it just won't persist across reloads.
@@ -967,6 +976,7 @@
   }
 
   function loadPlayers() {
+    if (viewerMode) return false;
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
@@ -1044,6 +1054,7 @@
     renderBody();
     renderPlayerHeaders();
     updateEmptyHint();
+    mpBroadcast();
     showToast('Neues Blatt bereit — viel Glück! 🎲');
   }
 
@@ -1843,6 +1854,7 @@
       // Nach der Zeremonie darf das Endergebnis auf dem Blatt gelüftet werden.
       revealed = true;
       updateAllScores();
+      mpBroadcast();
       showToast('Endergebnis aufgedeckt.', 'success');
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
@@ -1892,7 +1904,7 @@
     { id: 'chalk',  label: 'Tafel',       color: '#2f3b36', accent: '#e8c46a', meta: '#2f3b36' },
   ];
 
-  let settings = { theme: 'paper', wakeLock: true, turnMarker: true, strikeButton: true };
+  let settings = { theme: 'paper', wakeLock: true, turnMarker: true, strikeButton: true, multiplayer: false };
 
   function loadSettings() {
     try {
@@ -1903,6 +1915,7 @@
       if (typeof s.wakeLock === 'boolean') settings.wakeLock = s.wakeLock;
       if (typeof s.turnMarker === 'boolean') settings.turnMarker = s.turnMarker;
       if (typeof s.strikeButton === 'boolean') settings.strikeButton = s.strikeButton;
+      if (typeof s.multiplayer === 'boolean') settings.multiplayer = s.multiplayer;
     } catch (err) { /* ignore */ }
   }
 
@@ -1967,6 +1980,14 @@
         '<div class="settings-title">Spiel</div>' +
         row('set-turn', 'Wer ist dran hervorheben') +
         row('set-wake', 'Bildschirm wach halten', WAKE_SUPPORTED ? '' : 'Von diesem Browser nicht unterstützt', WAKE_SUPPORTED ? '' : ' disabled') +
+      '</div>' +
+      '<div class="settings-section settings-mp">' +
+        '<div class="settings-title">Multiplayer</div>' +
+        row('set-mp', 'Zuschauen per QR-Code', 'Mitspieler sehen ihre Spalte am eigenen Handy') +
+        '<div class="mp-actions" id="mp-actions" hidden>' +
+          '<button type="button" class="mp-qr-btn" id="mp-qr-btn">QR-Code anzeigen</button>' +
+          '<span class="mp-status" id="mp-status"></span>' +
+        '</div>' +
       '</div>';
 
     p.querySelector('.settings-close').addEventListener('click', () => toggleSettingsPanel(false));
@@ -1990,12 +2011,24 @@
       applyTheme();
     });
     p.querySelector('#set-senior').addEventListener('change', (e) => setSeniorMode(e.target.checked));
+    p.querySelector('#set-mp').addEventListener('change', (e) => {
+      settings.multiplayer = e.target.checked;
+      saveSettings();
+      applyMultiplayer();
+      updateMpUI();
+    });
+    p.querySelector('#mp-qr-btn').addEventListener('click', () => { toggleSettingsPanel(false); openQrModal(); });
     p.querySelector('#set-turn').addEventListener('change', (e) => {
       settings.turnMarker = e.target.checked;
       saveSettings();
       updateTurnMarker();
+      mpBroadcast();
     });
     syncSettingsPanel();
+    if (viewerMode) {            // Zuschauer haben weder Multiplayer-Host noch Streichen-Knopf
+      p.querySelector('.settings-mp').remove();
+      p.querySelector('#set-strike').closest('label').remove();
+    }
   }
 
   function syncSettingsPanel() {
@@ -2005,10 +2038,13 @@
       btn.classList.toggle('is-active', on);
       btn.setAttribute('aria-checked', String(on));
     });
-    p.querySelector('#set-wake').checked = settings.wakeLock && WAKE_SUPPORTED;
-    p.querySelector('#set-turn').checked = settings.turnMarker;
-    p.querySelector('#set-strike').checked = settings.strikeButton;
-    p.querySelector('#set-senior').checked = seniorMode;
+    const setChecked = (sel, val) => { const n = p.querySelector(sel); if (n) n.checked = val; };
+    setChecked('#set-wake', settings.wakeLock && WAKE_SUPPORTED);
+    setChecked('#set-turn', settings.turnMarker);
+    setChecked('#set-strike', settings.strikeButton);
+    setChecked('#set-senior', seniorMode);
+    setChecked('#set-mp', settings.multiplayer);
+    updateMpUI();
   }
 
   function toggleSettingsPanel(force) {
@@ -2131,6 +2167,517 @@
   els.groupRestore.querySelector('button').addEventListener('click', restoreGroup);
 
   /* ===========================================================================
+     13. MULTIPLAYER: ZUSCHAUEN PER QR-CODE (v1.7)
+     ---------------------------------------------------------------------------
+     Der Block auf dem Handy des Spielleiters ("Host") bleibt die einzige
+     Wahrheit. Zuschauer verbinden sich per WebRTC (PeerJS) direkt mit dem Host:
+       - Host: Einstellungen -> Multiplayer an -> "QR-Code anzeigen".
+       - Zuschauer: QR scannen (Link mit #watch=<Raum>) -> Namen wählen.
+     Der Host schickt jedem Zuschauer NUR die Daten der eigenen Spalte
+     (keine anderen Spieler, kein Endergebnis, solange es verdeckt ist).
+     Zuschauer können nichts eintragen, streichen oder auswerten – der Host
+     ignoriert alles außer "hello", "watch" und "unwatch".
+     Die Bibliotheken (peerjs.min.js, qrcode.js) werden erst bei Bedarf geladen.
+     =========================================================================== */
+
+  const APP_VERSION = '1.7';
+  const SCRIPT_BASE = (document.currentScript && document.currentScript.src)
+    ? new URL('.', document.currentScript.src).href : './';
+  const scriptPromises = {};
+
+  function loadScript(file, globalName) {
+    if (globalName && window[globalName]) return Promise.resolve();
+    if (!scriptPromises[file]) {
+      scriptPromises[file] = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = SCRIPT_BASE + file + '?v=' + APP_VERSION;
+        s.onload = resolve;
+        s.onerror = () => { delete scriptPromises[file]; reject(new Error(file)); };
+        document.head.appendChild(s);
+      });
+    }
+    return scriptPromises[file];
+  }
+
+  /** QR-Code als SVG (immer dunkel auf weiß, damit er in jedem Design scannt). */
+  function qrSvg(text) {
+    const qr = window.qrcode(0, 'M');
+    qr.addData(text);
+    qr.make();
+    const n = qr.getModuleCount();
+    const quiet = 4;
+    let d = '';
+    for (let r = 0; r < n; r++) {
+      for (let c = 0; c < n; c++) {
+        if (qr.isDark(r, c)) d += 'M' + (c + quiet) + ' ' + (r + quiet) + 'h1v1h-1z';
+      }
+    }
+    const size = n + quiet * 2;
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + size + ' ' + size + '" shape-rendering="crispEdges" role="img" aria-label="QR-Code zum Zuschauen">' +
+      '<rect width="100%" height="100%" fill="#fff"/><path d="' + d + '" fill="#1d1a15"/></svg>';
+  }
+
+  const safeSend = (conn, obj) => {
+    try { if (conn && conn.open) conn.send(obj); } catch (err) { /* Verbindung weg */ }
+  };
+
+  /* ---- 13a. HOST ----------------------------------------------------------- */
+  const MP_KEY = 'kniffelblock.mp.v1';
+  const MP_MAX_VIEWERS = 12;
+  const mp = { peer: null, room: null, status: 'off', msg: '', viewers: new Map(), retry: 0, bt: null };
+
+  function newRoomId() {
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let id = 'kniffel-';
+    const buf = new Uint32Array(8);
+    (window.crypto || { getRandomValues: (a) => a.map(() => Math.floor(Math.random() * 4294967296)) }).getRandomValues(buf);
+    buf.forEach((v) => { id += chars[v % chars.length]; });
+    return id;
+  }
+
+  function loadRoomId() {
+    try {
+      const r = JSON.parse(localStorage.getItem(MP_KEY) || 'null');
+      if (r && typeof r.room === 'string' && /^kniffel-[a-z0-9]{8}$/.test(r.room)) return r.room;
+    } catch (err) { /* ignore */ }
+    return saveRoomId(newRoomId());
+  }
+  function saveRoomId(room) {
+    try { localStorage.setItem(MP_KEY, JSON.stringify({ room })); } catch (err) { /* ignore */ }
+    return room;
+  }
+
+  const watchLink = () => location.href.split('#')[0] + '#watch=' + mp.room;
+
+  function setMpStatus(state, msg) {
+    mp.status = state;
+    mp.msg = msg || '';
+    updateMpUI();
+  }
+
+  async function hostStart() {
+    if (mp.peer || viewerMode || !settings.multiplayer) return;
+    setMpStatus('connecting');
+    try {
+      await loadScript('peerjs.min.js', 'Peer');
+    } catch (err) {
+      setMpStatus('error', 'Verbindungsbibliothek konnte nicht geladen werden.');
+      return;
+    }
+    if (mp.peer || !settings.multiplayer) return;
+
+    mp.room = mp.room || loadRoomId();
+    const peer = new window.Peer(mp.room, { debug: 0 });
+    mp.peer = peer;
+
+    peer.on('open', () => { if (mp.peer === peer) { mp.retry = 0; setMpStatus('ready'); } });
+    peer.on('connection', onViewerConnection);
+    peer.on('disconnected', () => {
+      if (mp.peer !== peer || peer.destroyed) return;
+      setMpStatus('connecting');
+      setTimeout(() => { try { if (mp.peer === peer) peer.reconnect(); } catch (err) { /* ignore */ } }, 2000);
+    });
+    peer.on('close', () => {
+      if (mp.peer !== peer) return;
+      mp.peer = null;
+      setMpStatus('error', 'Verbindung verloren – neuer Versuch …');
+      setTimeout(hostStart, 4000);
+    });
+    peer.on('error', (err) => {
+      if (mp.peer !== peer) return;
+      if (err && err.type === 'unavailable-id') {
+        // Die alte Sitzung hängt noch beim Vermittlungsserver: kurz warten, sonst neuer Raum.
+        mp.peer = null;
+        try { peer.destroy(); } catch (e) { /* ignore */ }
+        if (mp.retry++ < 3) {
+          setMpStatus('connecting');
+          setTimeout(hostStart, 3000);
+        } else {
+          mp.retry = 0;
+          mp.room = saveRoomId(newRoomId());
+          setTimeout(hostStart, 100);
+        }
+        return;
+      }
+      if (err && (err.type === 'network' || err.type === 'server-error' || err.type === 'socket-error' || err.type === 'socket-closed')) {
+        setMpStatus('error', 'Keine Verbindung zum Vermittlungsserver …');
+      }
+    });
+  }
+
+  function hostStop() {
+    const peer = mp.peer;
+    mp.peer = null;
+    mp.viewers.forEach((v) => { try { v.conn.close(); } catch (err) { /* ignore */ } });
+    mp.viewers.clear();
+    if (peer) { try { peer.destroy(); } catch (err) { /* ignore */ } }
+    setMpStatus('off');
+    closeQrModal();
+  }
+
+  function applyMultiplayer() {
+    if (viewerMode) return;
+    if (settings.multiplayer) hostStart(); else hostStop();
+  }
+
+  function onViewerConnection(conn) {
+    if (mp.viewers.size >= MP_MAX_VIEWERS) {
+      conn.on('open', () => { safeSend(conn, { t: 'full' }); setTimeout(() => { try { conn.close(); } catch (e) { /* ignore */ } }, 400); });
+      return;
+    }
+    const viewer = { conn, playerId: null };
+    const id = conn.connectionId || String(Math.random());
+    mp.viewers.set(id, viewer);
+    const drop = () => { mp.viewers.delete(id); updateMpUI(); };
+    conn.on('open', () => { updateMpUI(); sendRoster(viewer); });
+    conn.on('data', (msg) => onViewerMessage(viewer, msg));
+    conn.on('close', drop);
+    conn.on('error', drop);
+  }
+
+  function sendRoster(viewer, gone) {
+    safeSend(viewer.conn, {
+      t: 'roster',
+      gone: !!gone,
+      players: players.map((p) => ({ id: p.id, name: p.name, color: p.colorHue })),
+    });
+  }
+
+  /** Daten für genau EINE Spalte – nichts von anderen Spielern, kein verdecktes Endergebnis. */
+  function sendState(viewer) {
+    const p = players.find((x) => x.id === viewer.playerId);
+    if (!p) { viewer.playerId = null; sendRoster(viewer, true); return; }
+    safeSend(viewer.conn, {
+      t: 'state',
+      id: p.id,
+      name: p.name,
+      color: p.colorHue,
+      mode,
+      sheets: p.sheets,
+      struck: p.struck,
+      turn: nextPlayerToPlay() === p.id,
+      revealed,
+    });
+  }
+
+  function onViewerMessage(viewer, msg) {
+    if (!msg || typeof msg !== 'object') return;
+    if (msg.t === 'hello' || msg.t === 'unwatch') {
+      if (msg.t === 'unwatch') viewer.playerId = null;
+      sendRoster(viewer);
+    } else if (msg.t === 'watch') {
+      const id = Number(msg.playerId);
+      if (players.some((p) => p.id === id)) { viewer.playerId = id; sendState(viewer); }
+      else sendRoster(viewer, true);
+    }
+    updateMpUI();
+    // alles andere (Eintragen, Streichen, Auswerten …) wird bewusst ignoriert
+  }
+
+  /** Schickt allen Zuschauern den aktuellen Stand (leicht gebündelt). */
+  function mpBroadcast() {
+    if (viewerMode || mp.viewers.size === 0) return;
+    clearTimeout(mp.bt);
+    mp.bt = setTimeout(() => {
+      mp.viewers.forEach((v) => { if (v.playerId !== null) sendState(v); else sendRoster(v); });
+      updateMpUI();
+    }, 60);
+  }
+
+  /* ---- Host-Oberfläche: Status + QR-Fenster -------------------------------- */
+  let qrModal = null;
+
+  function mpStatusText() {
+    switch (mp.status) {
+      case 'connecting': return 'Verbinde …';
+      case 'ready': {
+        const n = mp.viewers.size;
+        return n === 0 ? 'Bereit – wartet auf Scan' : n + (n === 1 ? ' Gerät verbunden' : ' Geräte verbunden');
+      }
+      case 'error': return mp.msg || 'Verbindungsproblem';
+      default: return '';
+    }
+  }
+
+  function updateMpUI() {
+    const st = document.getElementById('mp-status');
+    if (st) { st.textContent = mpStatusText(); st.dataset.state = mp.status; }
+    const act = document.getElementById('mp-actions');
+    if (act) act.hidden = !settings.multiplayer;
+    if (qrModal) renderQrModal();
+  }
+
+  function openQrModal() {
+    if (qrModal || viewerMode) return;
+    qrModal = document.createElement('div');
+    qrModal.className = 'mp-modal';
+    qrModal.setAttribute('role', 'dialog');
+    qrModal.setAttribute('aria-modal', 'true');
+    qrModal.setAttribute('aria-label', 'QR-Code zum Zuschauen');
+    qrModal.innerHTML =
+      '<div class="mp-card">' +
+        '<button type="button" class="mp-x" aria-label="Schließen">&times;</button>' +
+        '<h2>Zuschauen per QR-Code</h2>' +
+        '<div class="mp-qr" id="mp-qr"></div>' +
+        '<p class="mp-hint">Code scannen und den eigenen Namen wählen. Zuschauer sehen nur ihre eigene Spalte, ohne Endergebnis, und können nichts ändern.</p>' +
+        '<div class="mp-link-row"><input type="text" readonly id="mp-link" aria-label="Link zum Zuschauen"><button type="button" id="mp-copy">Kopieren</button></div>' +
+        '<div class="mp-state" id="mp-modal-status"></div>' +
+        '<ul class="mp-viewers" id="mp-viewers"></ul>' +
+      '</div>';
+    document.body.appendChild(qrModal);
+    qrModal.addEventListener('click', (e) => { if (e.target === qrModal) closeQrModal(); });
+    qrModal.querySelector('.mp-x').addEventListener('click', closeQrModal);
+    qrModal.querySelector('#mp-copy').addEventListener('click', async () => {
+      const link = watchLink();
+      try { await navigator.clipboard.writeText(link); showToast('Link kopiert.', 'success'); }
+      catch (err) { const i = qrModal && qrModal.querySelector('#mp-link'); if (i) { i.select(); } showToast('Link markiert – bitte manuell kopieren.'); }
+    });
+    renderQrModal();
+    if (!mp.peer) hostStart();
+  }
+
+  function closeQrModal() {
+    if (!qrModal) return;
+    qrModal.remove();
+    qrModal = null;
+  }
+
+  async function renderQrModal() {
+    if (!qrModal) return;
+    const box = qrModal.querySelector('#mp-qr');
+    const ready = mp.status === 'ready' && mp.room;
+    if (ready) {
+      const link = watchLink();
+      if (box.dataset.link !== link) {
+        try {
+          await loadScript('qrcode.js', 'qrcode');
+          if (!qrModal) return;
+          box.innerHTML = qrSvg(link);
+          box.dataset.link = link;
+        } catch (err) {
+          box.innerHTML = '<div class="mp-qr-wait">QR-Bibliothek konnte nicht geladen werden – Link unten nutzen.</div>';
+        }
+      }
+      qrModal.querySelector('#mp-link').value = link;
+    } else {
+      delete box.dataset.link;
+      box.innerHTML = '<div class="mp-qr-wait">' + (mp.status === 'error' ? mpStatusText() : 'Verbinde …') + '</div>';
+      qrModal.querySelector('#mp-link').value = '';
+    }
+    qrModal.querySelector('#mp-modal-status').textContent = mpStatusText();
+    const list = qrModal.querySelector('#mp-viewers');
+    list.innerHTML = '';
+    mp.viewers.forEach((v) => {
+      const p = players.find((x) => x.id === v.playerId);
+      const li = document.createElement('li');
+      if (p) li.style.setProperty('--pc', p.colorHue);
+      li.textContent = p ? p.name : 'wählt gerade …';
+      list.appendChild(li);
+    });
+  }
+
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && qrModal) closeQrModal(); });
+
+  /* ---- 13b. ZUSCHAUER ------------------------------------------------------ */
+  const vw = { peer: null, conn: null, retry: null, roster: [], watchId: null, watchName: null, choosing: false, picker: null, turn: false };
+  if (viewerMode) {
+    try { vw.watchName = sessionStorage.getItem('kniffelblock.watch.' + viewerRoom); } catch (err) { /* ignore */ }
+  }
+
+  function setViewerStatus(state, msg) {
+    const bar = document.getElementById('viewer-bar');
+    const text = document.getElementById('vb-text');
+    if (!bar || !text) return;
+    bar.hidden = false;
+    bar.classList.toggle('is-live', state === 'live');
+    bar.classList.toggle('is-off', state === 'offline' || state === 'error');
+    bar.classList.toggle('is-turn', state === 'live' && vw.turn);
+    const p = players[0];
+    if (p) bar.style.setProperty('--pc', p.colorHue);
+    if (state === 'live' && p) text.textContent = p.name + (vw.turn ? ' · Du bist dran!' : '');
+    else if (state === 'connecting') text.textContent = 'Verbinde …';
+    else if (state === 'offline') text.textContent = msg || 'Verbindung getrennt – versuche erneut …';
+    else if (state === 'choosing') text.textContent = 'Wer bist du?';
+    else text.textContent = msg || 'Verbindungsproblem';
+    document.getElementById('vb-switch').hidden = state === 'connecting';
+  }
+
+  async function viewerStart() {
+    document.body.classList.add('viewer-mode');
+    document.getElementById('vb-switch').addEventListener('click', () => {
+      vw.choosing = true;
+      safeSend(vw.conn, { t: 'unwatch' });
+      showPicker(true);
+    });
+    setViewerStatus('connecting');
+    try {
+      await loadScript('peerjs.min.js', 'Peer');
+    } catch (err) {
+      setViewerStatus('error', 'Verbindungsbibliothek konnte nicht geladen werden.');
+      return;
+    }
+    viewerConnect();
+  }
+
+  function scheduleViewerRetry() {
+    clearTimeout(vw.retry);
+    vw.retry = setTimeout(viewerConnect, 3500);
+  }
+
+  function viewerConnect() {
+    clearTimeout(vw.retry);
+    if (vw.peer) {
+      const old = vw.peer;
+      vw.peer = null; vw.conn = null;
+      try { old.destroy(); } catch (err) { /* ignore */ }
+    }
+    const peer = new window.Peer({ debug: 0 });
+    vw.peer = peer;
+    peer.on('open', () => {
+      if (vw.peer !== peer) return;
+      const conn = peer.connect(viewerRoom, { serialization: 'json', reliable: true });
+      vw.conn = conn;
+      conn.on('open', () => { if (vw.conn === conn) safeSend(conn, { t: 'hello' }); });
+      conn.on('data', (msg) => { if (vw.conn === conn) onHostMessage(msg); });
+      conn.on('close', () => {
+        if (vw.conn !== conn) return;
+        setViewerStatus('offline');
+        scheduleViewerRetry();
+      });
+      conn.on('error', () => { /* close folgt */ });
+    });
+    peer.on('error', (err) => {
+      if (vw.peer !== peer) return;
+      setViewerStatus('offline', err && err.type === 'peer-unavailable'
+        ? 'Spiel nicht gefunden – läuft der Block noch?' : 'Verbindung getrennt – versuche erneut …');
+      scheduleViewerRetry();
+    });
+  }
+
+  function onHostMessage(msg) {
+    if (!msg || typeof msg !== 'object') return;
+    if (msg.t === 'roster' && Array.isArray(msg.players)) {
+      vw.roster = msg.players.filter((p) => p && typeof p.name === 'string');
+      const remembered = vw.watchName && vw.roster.find((p) => p.name.toLowerCase() === vw.watchName.toLowerCase());
+      if (remembered && !vw.choosing) {
+        pickPlayer(remembered);       // z. B. nach Verbindungsabbruch automatisch wieder zuordnen
+      } else {
+        vw.choosing = true;
+        showPicker(vw.watchId !== null);
+      }
+    } else if (msg.t === 'state') {
+      applyViewerState(msg);
+    } else if (msg.t === 'full') {
+      setViewerStatus('error', 'Es sind schon zu viele Geräte verbunden.');
+    }
+  }
+
+  function pickPlayer(p) {
+    vw.watchName = p.name;
+    vw.choosing = false;
+    try { sessionStorage.setItem('kniffelblock.watch.' + viewerRoom, p.name); } catch (err) { /* ignore */ }
+    hidePicker();
+    safeSend(vw.conn, { t: 'watch', playerId: p.id });
+  }
+
+  function showPicker(cancelable) {
+    if (!vw.picker) {
+      vw.picker = document.createElement('div');
+      vw.picker.className = 'mp-modal vw-picker';
+      vw.picker.setAttribute('role', 'dialog');
+      vw.picker.setAttribute('aria-modal', 'true');
+      vw.picker.setAttribute('aria-label', 'Namen wählen');
+      document.body.appendChild(vw.picker);
+    }
+    const card = document.createElement('div');
+    card.className = 'mp-card';
+    const h = document.createElement('h2');
+    h.textContent = 'Wer bist du?';
+    card.appendChild(h);
+    if (cancelable) {
+      const x = document.createElement('button');
+      x.type = 'button'; x.className = 'mp-x'; x.setAttribute('aria-label', 'Abbrechen'); x.innerHTML = '&times;';
+      x.addEventListener('click', () => {
+        vw.choosing = false;
+        hidePicker();
+        const again = vw.roster.find((p) => p.id === vw.watchId);
+        if (again) safeSend(vw.conn, { t: 'watch', playerId: again.id });
+      });
+      card.appendChild(x);
+    }
+    const hint = document.createElement('p');
+    hint.className = 'mp-hint';
+    hint.textContent = vw.roster.length ? 'Wähle den Spieler, dem du zuschauen möchtest.' : 'Noch keine Spieler am Block – einen Moment …';
+    card.appendChild(hint);
+    const list = document.createElement('div');
+    list.className = 'vw-list';
+    vw.roster.forEach((p) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'vw-name';
+      b.style.setProperty('--pc', p.color || '#888');
+      const dot = document.createElement('i');
+      const label = document.createElement('span');
+      label.textContent = p.name;
+      b.append(dot, label);
+      b.addEventListener('click', () => pickPlayer(p));
+      list.appendChild(b);
+    });
+    card.appendChild(list);
+    vw.picker.innerHTML = '';
+    vw.picker.appendChild(card);
+    setViewerStatus('choosing');
+  }
+
+  function hidePicker() {
+    if (vw.picker) { vw.picker.remove(); vw.picker = null; }
+  }
+
+  /** Zeigt die Spalte des beobachteten Spielers (nur lesen). */
+  function applyViewerState(msg) {
+    if (!Array.isArray(msg.sheets)) return;
+    vw.watchId = msg.id;
+    vw.turn = !!msg.turn;
+    hidePicker();
+    mode = msg.mode === 'double' ? 'double' : 'single';
+    updateModeToggleUI();
+    players = [{
+      id: msg.id,
+      name: String(msg.name || ''),
+      nameConfirmed: true,
+      colorHue: msg.color,
+      sheets: msg.sheets,
+      struck: msg.struck || emptyStruckSheets(),
+    }];
+    revealed = !!msg.revealed;
+
+    const region = document.querySelector('.scorepad-scroll-region');
+    const sl = region ? region.scrollLeft : 0;
+    const st = region ? region.scrollTop : 0;
+    const wy = window.scrollY;
+    renderBody();
+    renderPlayerHeaders();
+    document.querySelectorAll('#scorepad-table input').forEach((i) => {
+      i.readOnly = true;
+      i.tabIndex = -1;
+      i.setAttribute('aria-readonly', 'true');
+    });
+    if (region) { region.scrollLeft = sl; region.scrollTop = st; }
+    window.scrollTo(window.scrollX, wy);
+    setViewerStatus('live');
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible') return;
+    if (viewerMode) {
+      if (vw.peer && (!vw.conn || !vw.conn.open)) viewerConnect();
+    } else if (settings.multiplayer) {
+      if (!mp.peer) hostStart();
+      else if (mp.peer.disconnected && !mp.peer.destroyed) { try { mp.peer.reconnect(); } catch (err) { /* ignore */ } }
+    }
+  });
+
+  /* ===========================================================================
      INITIALIZATION x
      =========================================================================== */
 
@@ -2148,6 +2695,8 @@
     if (hadSavedGame && players.length > 0) {
       showToast('Dein letztes Blatt wurde geladen.');
     }
+    if (viewerMode) viewerStart();
+    else if (settings.multiplayer) hostStart();
   }
 
   init();
