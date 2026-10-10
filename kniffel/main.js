@@ -2419,7 +2419,6 @@
         '<button type="button" class="mp-x" aria-label="Schließen">&times;</button>' +
         '<h2>Zuschauen per QR-Code</h2>' +
         '<div class="mp-qr" id="mp-qr"></div>' +
-        '<p class="mp-hint">Code scannen und den eigenen Namen wählen. Zuschauer sehen nur ihre eigene Spalte, ohne Endergebnis, und können nichts ändern.</p>' +
         '<div class="mp-link-row"><input type="text" readonly id="mp-link" aria-label="Link zum Zuschauen"><button type="button" id="mp-copy">Kopieren</button></div>' +
         '<div class="mp-state" id="mp-modal-status"></div>' +
         '<ul class="mp-viewers" id="mp-viewers"></ul>' +
