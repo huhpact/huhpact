@@ -1,0 +1,52 @@
+// Produkt-Preise Quiz — Datenbank
+// name, image (voller Pfad inkl. Endung), category, condition ("neu" | "gebraucht"),
+// release ("JJJJ-MM" oder nur "JJJJ"), brand (Hersteller), price (€, gerundet)
+// "neu"  = UVP bei Marktstart in Deutschland (gerundet)
+// "gebraucht" = typischer Marktpreis für ein funktionierendes Gerät
+// Alle Preise sind Näherungswerte — bitte vor Veröffentlichung gegenchecken.
+const IMG = "/quiz/price-guess/img/";
+const productPrices = [
+  { name: "iPhone Duo 256 GB", image: IMG + "iphoneduo.jpeg", category: "Smartphone", condition: "neu", release: "2026-1O", brand: "Apple", price: 2299 },
+  { name: "Macbook Neo 256GB", image: IMG + "macbookneo.png", category: "Laptop", condition: "neu", release: "2026-03", brand: "Apple", price: 799 },
+  { name: "Macbook Air 15\" M5 512GB", image: IMG + "macbookair.jpeg", category: "Laptop", condition: "neu", release: "2026-03", brand: "Apple", price: 1799 },
+  { name: "Macbook Pro 16\" M5 Max", image: IMG + "macbookpro.jpg", category: "Laptop", condition: "neu", release: "2026-03", brand: "Apple", price: 11364 },
+  { name: "iPad Pro 13\" M4 512 GB", image: IMG + "ipadpro.webp", category: "Tablet", condition: "neu", release: "2024-05", brand: "Apple", price: 1899 },
+  { name: "MacBook Air 13\" M2", image: IMG + "macbookair.avif", category: "Laptop", condition: "neu", release: "2022-07", brand: "Apple", price: 1499 },
+  { name: "Studio Display", image: IMG + "studiodisplay.avif", category: "Monitor", condition: "neu", release: "2022-03", brand: "Apple", price: 1749 },
+  { name: "Apple Vision Pro 256 GB", image: IMG + "visionpro.avif", category: "VR / AR", condition: "neu", release: "2024-07", brand: "Apple", price: 3999 },
+  { name: "Apple Watch Ultra 2", image: IMG + "watchultra2.avif", category: "Smartwatch", condition: "neu", release: "2023-09", brand: "Apple", price: 999 },
+  { name: "AirPods Pro (2. Generation)", image: IMG + "airpodspro2.avif", category: "Kopfhörer", condition: "neu", release: "2022-09", brand: "Apple", price: 279 },
+  { name: "AirTag", image: IMG + "airtag.avif", category: "Zubehör", condition: "neu", release: "2021-04", brand: "Apple", price: 35 },
+  { name: "Bose QuietComfort Ultra Headphones", image: IMG + "qcultra.avif", category: "Kopfhörer", condition: "neu", release: "2023-10", brand: "Bose", price: 450 },
+  { name: "Sonos Era 300", image: IMG + "era300.avif", category: "Lautsprecher", condition: "neu", release: "2023-03", brand: "Sonos", price: 499 },
+  { name: "Kindle Paperwhite (2024)", image: IMG + "kindle.avif", category: "E-Reader", condition: "neu", release: "2024-10", brand: "Amazon", price: 170 },
+  { name: "Leica M11", image: IMG + "leicam11.avif", category: "Kamera", condition: "neu", release: "2022-01", brand: "Leica", price: 8350 },
+  { name: "GoPro HERO12 Black", image: IMG + "hero12.avif", category: "Actioncam", condition: "neu", release: "2023-09", brand: "GoPro", price: 430 },
+  { name: "DJI Mini 4 Pro", image: IMG + "mini4pro.avif", category: "Drohne", condition: "neu", release: "2023-09", brand: "DJI", price: 799 },
+  { name: "GeForce RTX 5090 Founders Edition", image: IMG + "rtx5090.avif", category: "Grafikkarte", condition: "neu", release: "2025-01", brand: "NVIDIA", price: 2329 },
+  { name: "GeForce RTX 4090 Founders Edition", image: IMG + "rtx4090.avif", category: "Grafikkarte", condition: "neu", release: "2022-10", brand: "NVIDIA", price: 1949 },
+  { name: "PlayStation 5 Pro", image: IMG + "ps5pro.avif", category: "Konsole", condition: "neu", release: "2024-11", brand: "Sony", price: 800 },
+  { name: "PlayStation 5 Slim (Disc)", image: IMG + "ps5slim.avif", category: "Konsole", condition: "neu", release: "2023-11", brand: "Sony", price: 549 },
+  { name: "Nintendo Switch 2", image: IMG + "switch2.avif", category: "Konsole", condition: "neu", release: "2025-06", brand: "Nintendo", price: 470 },
+  { name: "Nintendo Switch OLED", image: IMG + "switcholed.avif", category: "Konsole", condition: "neu", release: "2021-10", brand: "Nintendo", price: 359 },
+  { name: "Nintendo Switch Lite", image: IMG + "switchlite.avif", category: "Konsole", condition: "neu", release: "2019-09", brand: "Nintendo", price: 220 },
+  { name: "Steam Deck OLED 512 GB", image: IMG + "steamdeck.avif", category: "Handheld", condition: "neu", release: "2023-11", brand: "Valve", price: 569 },
+  { name: "Meta Quest 3 512 GB", image: IMG + "quest3.avif", category: "VR / AR", condition: "neu", release: "2023-10", brand: "Meta", price: 550 },
+  { name: "LEGO Star Wars Millennium Falcon UCS (75192)", image: IMG + "falcon.avif", category: "Spielzeug", condition: "neu", release: "2017-10", brand: "LEGO", price: 850 },
+  { name: "LEGO Icons Titanic (10294)", image: IMG + "titanic.avif", category: "Spielzeug", condition: "neu", release: "2021-11", brand: "LEGO", price: 680 },
+  { name: "LEGO Icons Eiffelturm (10307)", image: IMG + "eiffel.avif", category: "Spielzeug", condition: "neu", release: "2022-10", brand: "LEGO", price: 630 },
+  { name: "LEGO Harry Potter Schloss Hogwarts (71043)", image: IMG + "hogwarts.avif", category: "Spielzeug", condition: "neu", release: "2018-09", brand: "LEGO", price: 400 },
+  { name: "Rubik's Cube 3×3 Original", image: IMG + "rubik.avif", category: "Spielzeug", condition: "neu", release: "1980", brand: "Rubik's", price: 12 },
+  { name: "Dunk Low \"Panda\"", image: IMG + "dunk.avif", category: "Sneaker", condition: "neu", release: "2021-03", brand: "Nike", price: 120 },
+  { name: "MoonSwatch Mission to the Moon", image: IMG + "moonswatch.avif", category: "Uhr", condition: "neu", release: "2022-03", brand: "Swatch × Omega", price: 250 },
+  { name: "Casio F-91W", image: IMG + "f91w.avif", category: "Uhr", condition: "neu", release: "1989", brand: "Casio", price: 15 },
+  { name: "Submariner Date 126610LN", image: IMG + "submariner.avif", category: "Uhr", condition: "gebraucht", release: "2020-09", brand: "Rolex", price: 12000 },
+  { name: "Glurak Holo Base Set 1st Edition (PSA 10)", image: IMG + "glurak.avif", category: "Sammelkarte", condition: "gebraucht", release: "1999", brand: "Pokémon", price: 350000 },
+  { name: "Game Boy Classic", image: IMG + "gameboy.avif", category: "Konsole", condition: "gebraucht", release: "1990-09", brand: "Nintendo", price: 80 },
+  { name: "Game Boy Advance", image: IMG + "gba.avif", category: "Konsole", condition: "gebraucht", release: "2001-06", brand: "Nintendo", price: 60 },
+  { name: "Nintendo 64", image: IMG + "n64.avif", category: "Konsole", condition: "gebraucht", release: "1997-03", brand: "Nintendo", price: 120 },
+  { name: "PlayStation 2 Slim", image: IMG + "ps2slim.avif", category: "Konsole", condition: "gebraucht", release: "2004-11", brand: "Sony", price: 70 },
+  { name: "Commodore 64", image: IMG + "c64.avif", category: "Computer", condition: "gebraucht", release: "1982-08", brand: "Commodore", price: 150 },
+  { name: "iPhone 4", image: IMG + "iphone4.avif", category: "Smartphone", condition: "gebraucht", release: "2010-06", brand: "Apple", price: 40 },
+  { name: "Nokia 3310", image: IMG + "nokia3310.avif", category: "Handy", condition: "gebraucht", release: "2000-09", brand: "Nokia", price: 40 }
+];

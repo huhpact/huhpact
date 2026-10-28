@@ -95,5 +95,12 @@ const WISHES = [
     link: "https://www.tesla.com/de_de/model3/design#overview",
     note: ""
   },
+    {
+    title: "Wayfarer (Gen 2)",
+    image: "https://lookaside.fbsbx.com/elementpath/media/?media_id=932011162886561&version=1778755195&transcode_extension=webp&resize_width=1600&resize_height=1600",
+    rating: 4,
+    link: "https://www.meta.com/de/ai-glasses/ray-ban-meta-wayfarer-shiny-grey-transitions-gen-2/",
+    note: ""
+  },
   
 ];
