@@ -102,5 +102,12 @@ const WISHES = [
     link: "https://www.meta.com/de/ai-glasses/ray-ban-meta-wayfarer-shiny-grey-transitions-gen-2/",
     note: ""
   },
+    {
+    title: "MacBook Pro PROLED 16 inch",
+    image: "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/mac-macbook-pro-proled-size-unselect-202610-gallery-1?wid=5120&hei=3280&fmt=webp&qlt=90&.v=aXlkdGF0T0RUUVdDckNLaUc0OEE0d0srUG5YOFJwY2tVVVVYd0dscVQycXJBR042YUJkL0JkQlh6SjU3bXZFVVZUbmZiaUV1N0t3cE40WXNwN2E2Wm9udjBacjRkNlhoeitBa0VZQytxaGYrQnNBL0hnUkpWWCtoUzNMQytJejVlYmlRYlNpZXhicEd6aFp3MTNwUUln&traceId=1",
+    rating: 4,
+    link: "https://www.apple.com/de/shop/buy-mac/macbook-pro-proled-xdr",
+    note: ""
+  },
   
 ];
