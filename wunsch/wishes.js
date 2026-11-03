@@ -109,5 +109,19 @@ const WISHES = [
     link: "https://www.apple.com/de/shop/buy-mac/macbook-pro-proled-xdr",
     note: ""
   },
+   {
+    title: "Arcteryx Gamma MX Hoody",
+    image: "https://images-dynamic-arcteryx.imgix.net/details/1350x1710/F26-X000008485-Gamma-MX-Hoody-Black-Front-View.jpg?auto=format&q=70&fit=crop&fill=white&max-w=1350&max-h=1710&ixlib=react-9.10.0&w=927",
+    rating: 4,
+    link: "https://arcteryx.com/de/de/shop/mens/gamma-mx-hoody-8485?colour=1836",
+    note: ""
+  },
+   {
+    title: "Xiaomi Electric Scooter 6",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR86m2Q38OnCaKj583Bww_ZI58PU--cIqrIYue1ztYAk9IheUVO6ixhdm0&s=10",
+    rating: 3,
+    link: "https://www.mi.com/de/product/xiaomi-electric-scooter-6/",
+    note: ""
+  },
   
 ];
