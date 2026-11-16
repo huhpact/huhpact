@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wo bin ich? – Setup</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <link rel="icon" type="image/png" href="/quiz/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/quiz/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/quiz/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/quiz/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Quizzy" />
+    <link rel="manifest" href="/quiz/favicon/site.webmanifest" />
+    <style>
+        .country-select-wrap { position: relative; }
+
+        .country-select {
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none;
+            background: var(--bg-card);
+            color: var(--text);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 2.6rem 0.85rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .country-select:hover,
+        .country-select:focus { outline: none; border-color: var(--accent); }
+
+        .country-select-wrap::after {
+            content: "";
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid var(--text-muted);
+            border-bottom: 2px solid var(--text-muted);
+            transform: translateY(-70%) rotate(45deg);
+            pointer-events: none;
+        }
+
+        .setup-hint {
+            margin-top: 0.55rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="quiz-header">
+            <button class="back-btn" onclick="window.location.href='/quiz/index.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back
+            </button>
+            <h1 class="neon-text">Wo bin ich?</h1>
+        </header>
+        <main class="setup-container">
+            <div class="setup-card">
+                <div class="setup-section">
+                    <h2>Anzahl der Runden</h2>
+                    <div class="options-grid">
+                        <button class="option-btn active" data-rounds="10">10</button>
+                        <button class="option-btn" data-rounds="20">20</button>
+                        <button class="option-btn" data-rounds="30">30</button>
+                        <button class="option-btn" data-rounds="50">50</button>
+                    </div>
+                </div>
+                <div class="setup-section">
+                    <h2>Schwierigkeit</h2>
+                    <div class="options-grid">
+                        <button class="option-btn" data-zoom="14">Leicht</button>
+                        <button class="option-btn active" data-zoom="16">Mittel</button>
+                        <button class="option-btn" data-zoom="17">Schwer</button>
+                    </div>
+                    <p class="setup-hint" id="zoom-hint"></p>
+                </div>
+                <div class="setup-section">
+                    <h2>Orte</h2>
+                    <div class="options-grid">
+                        <button class="option-btn" data-places="major">Großstädte</button>
+                        <button class="option-btn active" data-places="all">Alle</button>
+                        <button class="option-btn" data-places="small">Kleinorte</button>
+                    </div>
+                    <p class="setup-hint" id="places-hint"></p>
+                </div>
+                <div class="setup-section">
+                    <h2>Gebiet</h2>
+                    <div class="country-select-wrap">
+                        <select class="country-select" id="region-select"></select>
+                    </div>
+                    <p class="setup-hint" id="count-hint"></p>
+                </div>
+                <button class="start-btn" onclick="startQuiz()">
+                    Quiz starten
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script src="geo-view-locations.js"></script>
+    <script>
+        var selectedRounds = 10;
+        var selectedZoom   = 16;
+        var selectedRegion = 'all';
+        var selectedPlaces = 'all';
+
+        var ZOOM_HINTS = {
+            14: 'Größerer Ausschnitt: ganze Stadtteile und Hauptstraßen sind sichtbar.',
+            16: 'Mittlerer Ausschnitt: einige Straßen und Gebäude.',
+            17: 'Sehr nah dran: nur ein paar Straßen und Beschriftungen.'
+        };
+
+        document.querySelectorAll('.option-btn[data-rounds]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.option-btn[data-rounds]').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                selectedRounds = parseInt(btn.dataset.rounds);
+                updateHints();
+            });
+        });
+
+        document.querySelectorAll('.option-btn[data-zoom]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.option-btn[data-zoom]').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                selectedZoom = parseInt(btn.dataset.zoom);
+                updateHints();
+            });
+        });
+
+        var PLACES_HINTS = {
+            major: 'Nur bekannte Großstädte.',
+            all: 'Bunte Mischung: Großstädte, Städte und kleine Orte.',
+            small: 'Nur Kleinstädte, Dörfer und abgelegene Orte – hier hilft nur Orientierung an wenigen Hinweisen.'
+        };
+
+        document.querySelectorAll('.option-btn[data-places]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.option-btn[data-places]').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                selectedPlaces = btn.dataset.places;
+                updateHints();
+            });
+        });
+
+        var regionSelect = document.getElementById('region-select');
+        Object.keys(geoViewRegionNames).forEach(function (key) {
+            var opt = document.createElement('option');
+            opt.value = key;
+            opt.textContent = geoViewRegionNames[key];
+            regionSelect.appendChild(opt);
+        });
+        regionSelect.addEventListener('change', function () {
+            selectedRegion = regionSelect.value;
+            updateHints();
+        });
+
+        function poolSize() {
+            return geoViewLocations.filter(function (l) {
+                if (selectedRegion !== 'all' && l[4] !== selectedRegion) return false;
+                if (selectedPlaces === 'major' && l[5] !== 1) return false;
+                if (selectedPlaces === 'small' && l[5] !== 3) return false;
+                return true;
+            }).length;
+        }
+
+        function updateHints() {
+            document.getElementById('zoom-hint').textContent = ZOOM_HINTS[selectedZoom] || '';
+            document.getElementById('places-hint').textContent = PLACES_HINTS[selectedPlaces] || '';
+            var n = poolSize();
+            var text = n + ' Orte verfügbar';
+            if (n < selectedRounds) text += ' – das Quiz hat dann nur ' + n + ' Runden';
+            document.getElementById('count-hint').textContent = text;
+        }
+        updateHints();
+
+        function startQuiz() {
+            sessionStorage.setItem('geoViewRounds', selectedRounds);
+            sessionStorage.setItem('geoViewZoom', selectedZoom);
+            sessionStorage.setItem('geoViewRegion', selectedRegion);
+            sessionStorage.setItem('geoViewPlaces', selectedPlaces);
+            window.location.href = 'geo-view-quiz.html';
+        }
+    </script>
+</body>
+</html>

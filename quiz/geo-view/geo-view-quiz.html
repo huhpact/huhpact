@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wo bin ich?</title>
+    <link rel="stylesheet" href="/quiz/style.css">
+    <link rel="icon" type="image/png" href="/quiz/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/quiz/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/quiz/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/quiz/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Quizzy" />
+    <link rel="manifest" href="/quiz/favicon/site.webmanifest" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <style>
+        .map-wrap {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        #view-canvas { width: 100%; height: 340px; background: #e8e4dc; }
+        #guess-canvas { width: 100%; height: 420px; background: #aad3df; }
+
+        @media (max-width: 640px) {
+            #view-canvas  { height: 260px; }
+            #guess-canvas { height: 340px; }
+        }
+
+        /* Der obere Ausschnitt ist nicht bedienbar */
+        #view-canvas, #view-canvas .leaflet-container { cursor: default; }
+
+        .map-badge {
+            position: absolute;
+            top: 0.6rem;
+            left: 0.6rem;
+            z-index: 700;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.4rem 0.75rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text);
+            box-shadow: var(--shadow-md);
+            pointer-events: none;
+        }
+
+        .map-badge.right { left: auto; right: 0.6rem; }
+
+        .map-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            z-index: 999;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            gap: 0.6rem;
+        }
+        .map-loading.hidden { display: none; }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Marker */
+        .pin {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+        }
+        .pin-guess  { background: #ef4444; }
+        .pin-target { background: #22c55e; }
+
+        .leaflet-container.guessing { cursor: crosshair; }
+
+        /* Ergebnis der Runde */
+        .round-result {
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            min-height: 3.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.15rem;
+        }
+        .round-result .place   { font-size: 1.15rem; font-weight: 900; color: var(--text); }
+        .round-result .detail  { color: var(--text-muted); font-size: 0.88rem; }
+        .round-result .points  { color: #22c55e; font-weight: 800; }
+        .round-result.hidden   { opacity: 0; }
+
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            width: 100%;
+        }
+
+        .submit-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.4rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+            font-family: inherit;
+            width: 100%;
+        }
+        .submit-btn:hover    { opacity: 0.88; }
+        .submit-btn:active   { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.45; cursor: default; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-top-bar">
+            <div class="score-display">
+                <span class="score-label">Punkte:</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="progress-display">
+                <span id="current-question">1</span> / <span id="total-questions">10</span>
+            </div>
+        </div>
+
+        <main class="quiz-container">
+            <!-- Oben: fester Kartenausschnitt in der Landessprache -->
+            <div class="map-wrap">
+                <div class="map-loading" id="map-loading">
+                    <div class="spinner"></div>
+                    <span>Karte wird geladen …</span>
+                </div>
+                <div class="map-badge">Wo bin ich?</div>
+                <div id="view-canvas"></div>
+            </div>
+
+            <!-- Unten: Weltkarte zum Tippen -->
+            <div class="map-wrap">
+                <div class="map-badge" id="guess-badge">Tippe auf die Karte</div>
+                <div id="guess-canvas"></div>
+            </div>
+
+            <div class="input-area">
+                <div class="round-result hidden" id="round-result"></div>
+                <button class="submit-btn" id="submit-btn" disabled>Tipp abgeben</button>
+            </div>
+        </main>
+    </div>
+
+    <div id="results-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="neon-text">Quiz beendet!</h2>
+            <div class="results-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="final-score">0</span>
+                    <span class="stat-label" id="final-max-label">Punkte</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-avg">0 km</span>
+                    <span class="stat-label">Ø Entfernung</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="final-best">0</span>
+                    <span class="stat-label">Beste Runde</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="window.location.href='geo-view-quiz-setup.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                    Nochmal
+                </button>
+                <button class="modal-btn secondary" onclick="window.location.href='/quiz/index.html'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Zur Startseite
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="geo-view-locations.js"></script>
+    <script>
+        // ── Einstellungen aus dem Setup ──
+        var ROUNDS_WANTED = parseInt(sessionStorage.getItem('geoViewRounds')) || 10;
+        var VIEW_ZOOM     = parseInt(sessionStorage.getItem('geoViewZoom'))   || 16;
+        var REGION        = sessionStorage.getItem('geoViewRegion') || 'all';
+
+        var MAX_POINTS = 5000;
+        var SCALE_KM   = geoViewScoreScale[REGION] || 2000;
+
+        // OSM-Standardkarte: Beschriftungen in der Landessprache / Landesschrift
+        var VIEW_TILES  = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var VIEW_ATTR   = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+        // Tippkarte: normale OpenStreetMap-Standardkarte
+        var GUESS_TILES = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+        var GUESS_ATTR  = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
+        var REGION_VIEWS = {
+            all: { center: [25, 10],   zoom: 2 },
+            eu:  { center: [52, 15],   zoom: 3 },
+            as:  { center: [30, 90],   zoom: 2 },
+            na:  { center: [30, -100], zoom: 2 },
+            sa:  { center: [-15, -60], zoom: 2 },
+            af:  { center: [3, 20],    zoom: 2 },
+            oc:  { center: [-25, 150], zoom: 3 }
+        };
+
+        var viewMap = null, guessMap = null;
+        var guessMarker = null, targetMarker = null, resultLine = null;
+        var guessLatLng = null;
+
+        var rounds   = [];
+        var current  = 0;
+        var total    = 0;
+        var answered = false;
+        var distances = [];
+        var roundPoints = [];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            buildRounds();
+            initMaps();
+            document.getElementById('submit-btn').addEventListener('click', onSubmit);
+            loadRound();
+        });
+
+        // ── Runden vorbereiten ──
+        function buildRounds() {
+            var pool = geoViewLocations.filter(function (l) {
+                return REGION === 'all' || l[4] === REGION;
+            });
+            for (var i = pool.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+            }
+            rounds = pool.slice(0, Math.min(ROUNDS_WANTED, pool.length)).map(function (l) {
+                // Zufälliger Versatz (~300 m), damit der Ausschnitt nicht immer das Zentrum zeigt
+                var jitter = 0.003;
+                return {
+                    name: l[0],
+                    country: l[1],
+                    lat: l[2],
+                    lng: l[3],
+                    viewLat: l[2] + (Math.random() - 0.5) * 2 * jitter,
+                    viewLng: l[3] + (Math.random() - 0.5) * 2 * jitter
+                };
+            });
+            total = rounds.length;
+            document.getElementById('total-questions').textContent = total;
+        }
+
+        // ── Karten ──
+        function initMaps() {
+            // Oberer Ausschnitt: alles gesperrt (kein Zoomen, kein Verschieben)
+            viewMap = L.map('view-canvas', {
+                zoomControl: false,
+                dragging: false,
+                touchZoom: false,
+                scrollWheelZoom: false,
+                doubleClickZoom: false,
+                boxZoom: false,
+                keyboard: false,
+                tap: false,
+                inertia: false,
+                attributionControl: true
+            });
+            viewMap.attributionControl.setPrefix(false);
+            L.tileLayer(VIEW_TILES, {
+                attribution: VIEW_ATTR,
+                minZoom: VIEW_ZOOM,
+                maxZoom: VIEW_ZOOM
+            }).addTo(viewMap);
+            viewMap.setView([0, 0], VIEW_ZOOM, { animate: false });
+
+            // Untere Tippkarte
+            var v = REGION_VIEWS[REGION] || REGION_VIEWS.all;
+            guessMap = L.map('guess-canvas', {
+                worldCopyJump: true,
+                minZoom: 2,
+                maxZoom: 14,
+                zoomControl: true
+            }).setView(v.center, v.zoom);
+            guessMap.attributionControl.setPrefix(false);
+            L.tileLayer(GUESS_TILES, {
+                attribution: GUESS_ATTR,
+                maxZoom: 19
+            }).addTo(guessMap);
+
+            guessMap.getContainer().classList.add('guessing');
+            guessMap.on('click', onMapClick);
+        }
+
+        function makeIcon(cls) {
+            return L.divIcon({
+                className: '',
+                html: '<div class="pin ' + cls + '"></div>',
+                iconSize: [22, 22],
+                iconAnchor: [11, 11]
+            });
+        }
+
+        function onMapClick(e) {
+            if (answered) return;
+            guessLatLng = e.latlng;
+            if (guessMarker) {
+                guessMarker.setLatLng(e.latlng);
+            } else {
+                guessMarker = L.marker(e.latlng, { icon: makeIcon('pin-guess'), interactive: false }).addTo(guessMap);
+            }
+            document.getElementById('submit-btn').disabled = false;
+            document.getElementById('guess-badge').textContent = 'Tipp setzen oder verschieben';
+        }
+
+        // ── Ablauf ──
+        function loadRound() {
+            if (current >= total) { showResults(); return; }
+
+            answered    = false;
+            guessLatLng = null;
+
+            if (guessMarker)  { guessMap.removeLayer(guessMarker);  guessMarker = null; }
+            if (targetMarker) { guessMap.removeLayer(targetMarker); targetMarker = null; }
+            if (resultLine)   { guessMap.removeLayer(resultLine);   resultLine = null; }
+
+            var r = rounds[current];
+            document.getElementById('current-question').textContent = current + 1;
+
+            var loading = document.getElementById('map-loading');
+            loading.classList.remove('hidden');
+            viewMap.invalidateSize();
+            viewMap.setView([r.viewLat, r.viewLng], VIEW_ZOOM, { animate: false });
+            // Kurz warten, bis die Kacheln da sind
+            var done = false;
+            function hide() { if (done) return; done = true; loading.classList.add('hidden'); }
+            viewMap.eachLayer(function (layer) {
+                if (layer instanceof L.TileLayer) layer.once('load', hide);
+            });
+            setTimeout(hide, 2500);
+
+            var v = REGION_VIEWS[REGION] || REGION_VIEWS.all;
+            guessMap.invalidateSize();
+            guessMap.setView(v.center, v.zoom, { animate: false });
+            guessMap.getContainer().classList.add('guessing');
+            document.getElementById('guess-badge').textContent = 'Tippe auf die Karte';
+
+            var res = document.getElementById('round-result');
+            res.className = 'round-result hidden';
+            res.innerHTML = '';
+
+            var btn = document.getElementById('submit-btn');
+            btn.textContent = 'Tipp abgeben';
+            btn.disabled = true;
+        }
+
+        function onSubmit() {
+            if (!answered) {
+                if (!guessLatLng) return;
+                submitGuess();
+            } else {
+                current++;
+                loadRound();
+            }
+        }
+
+        function submitGuess() {
+            answered = true;
+            var r = rounds[current];
+            var g = guessLatLng.wrap();
+
+            var km     = haversineKm(g.lat, g.lng, r.lat, r.lng);
+            var points = Math.round(MAX_POINTS * Math.exp(-km / SCALE_KM));
+            if (km < 0.5) points = MAX_POINTS;
+
+            distances.push(km);
+            roundPoints.push(points);
+            var sum = roundPoints.reduce(function (a, b) { return a + b; }, 0);
+            document.getElementById('score').textContent = sum.toLocaleString('de-DE');
+
+            // Ziel zeigen, Tipp-Marker auf den umgebrochenen Wert setzen
+            guessMarker.setLatLng(g);
+            targetMarker = L.marker([r.lat, r.lng], { icon: makeIcon('pin-target'), interactive: false }).addTo(guessMap);
+            resultLine = L.polyline([g, [r.lat, r.lng]], {
+                color: '#111827',
+                weight: 2.5,
+                dashArray: '6 8',
+                opacity: 0.8
+            }).addTo(guessMap);
+            guessMap.getContainer().classList.remove('guessing');
+            guessMap.fitBounds(L.latLngBounds([g, [r.lat, r.lng]]).pad(0.5), { maxZoom: 12, animate: true });
+            document.getElementById('guess-badge').textContent = 'Grün = richtiger Ort';
+
+            var res = document.getElementById('round-result');
+            res.className = 'round-result';
+            res.innerHTML =
+                '<span class="place">' + escapeHtml(r.name) + ', ' + escapeHtml(r.country) + '</span>' +
+                '<span class="detail">' + formatKm(km) + ' daneben · <span class="points">+' +
+                points.toLocaleString('de-DE') + ' Punkte</span></span>';
+
+            var btn = document.getElementById('submit-btn');
+            btn.disabled = false;
+            btn.textContent = (current + 1 >= total) ? 'Ergebnis anzeigen' : 'Nächste Runde';
+        }
+
+        function showResults() {
+            var sum  = roundPoints.reduce(function (a, b) { return a + b; }, 0);
+            var avg  = distances.reduce(function (a, b) { return a + b; }, 0) / (distances.length || 1);
+            var best = roundPoints.reduce(function (a, b) { return Math.max(a, b); }, 0);
+
+            document.getElementById('final-score').textContent = sum.toLocaleString('de-DE');
+            document.getElementById('final-max-label').textContent =
+                'von ' + (total * MAX_POINTS).toLocaleString('de-DE') + ' Punkten';
+            document.getElementById('final-avg').textContent  = formatKm(avg);
+            document.getElementById('final-best').textContent = best.toLocaleString('de-DE');
+            document.getElementById('results-modal').classList.remove('hidden');
+        }
+
+        // ── Hilfsfunktionen ──
+        function haversineKm(lat1, lon1, lat2, lon2) {
+            var R = 6371;
+            var toRad = function (d) { return d * Math.PI / 180; };
+            var dLat = toRad(lat2 - lat1);
+            var dLon = toRad(lon2 - lon1);
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        function formatKm(km) {
+            if (km < 10) return km.toLocaleString('de-DE', { maximumFractionDigits: 1 }) + ' km';
+            return Math.round(km).toLocaleString('de-DE') + ' km';
+        }
+
+        function escapeHtml(str) {
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
