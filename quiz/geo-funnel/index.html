@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trichter – Geo-Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+<section id="setup" class="screen"><div class="card">
+ <div class="eyebrow">Geo-Quiz</div><h1>Trichter</h1>
+ <p class="lead">Ein Ausgangspunkt, ein Trichter. Nenne eine Stadt, die darin liegt.</p>
+ <span class="lbl">Modus</span>
+ <div class="seg" data-k="mode"><button data-v="single">Ein Land</button><button data-v="multi">Mehrere Länder</button></div>
+ <div id="pSingle" style="margin-top:10px"><select id="selC"></select></div>
+ <div id="pMulti" style="margin-top:10px" hidden>
+  <div class="presets"><button data-p="eu">Europa</button><button data-p="world">Weltweit</button><button data-p="all">Alle</button><button data-p="none">Keine</button></div>
+  <div class="chips" id="chips"></div><div class="hint muted" id="cnt"></div>
+ </div>
+ <span class="lbl">Schwierigkeit</span>
+ <div class="seg" data-k="diff"><button data-v="easy">Leicht</button><button data-v="med">Mittel</button><button data-v="hard">Schwer</button></div>
+ <div class="hint muted" id="dh"></div>
+ <span class="lbl">Runden</span>
+ <div class="seg" data-k="rounds"><button data-v="10">10</button><button data-v="20">20</button><button data-v="30">30</button><button data-v="50">50</button></div>
+ <button class="primary" id="go">Quiz starten</button>
+ <p class="foot" id="stat"></p>
+</div></section>
+
+<section id="game" class="screen" hidden>
+ <div class="top"><button class="ghost" id="back">← Setup</button><span class="sp"></span><span id="rn"></span><span>Treffer <b id="sc">0</b></span><span>Serie <b id="st">0</b></span></div>
+ <div class="bar"><i id="pb"></i></div>
+ <div class="prompt"><small>Ausgangspunkt</small><b id="pc"></b><span id="pk"></span></div>
+ <div id="mapwrap"><canvas id="cv"></canvas></div>
+ <div class="dock">
+  <div id="sug" hidden></div>
+  <div class="in" id="inrow"><input id="q" placeholder="Stadt im Trichter eingeben …" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="ghost" id="skip">Weiß nicht</button></div>
+  <div id="fb" hidden><p id="ft"></p><button class="primary" id="nx">Weiter</button></div>
+ </div>
+</section>
+
+<section id="result" class="screen" hidden><div class="card">
+ <div class="eyebrow">Ergebnis</div>
+ <div class="big" id="rs"></div><p class="lead" id="rt"></p>
+ <div class="dots" id="rd"></div>
+ <div class="row"><button class="primary" id="again">Nochmal</button><button class="ghost" id="tosetup">Zum Setup</button></div>
+</div></section>
+</div>
+<script src="geo-funnel-cities.js"></script>
+<script src="geo-funnel-shapes.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
