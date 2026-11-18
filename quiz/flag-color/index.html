@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flaggenfarbe – Farb-Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+<section id="setup" class="screen"><div class="card">
+ <div class="eyebrow">Farb-Quiz</div><h1>Flaggenfarbe</h1>
+ <p class="lead">Ein Abschnitt der Flagge hat die falsche Farbe. Stelle mit drei Reglern den Originalton ein.</p>
+ <span class="lbl">Flaggen</span>
+ <div class="chips" id="cats"></div>
+ <div class="hint" id="catHint"></div>
+ <span class="lbl">Regler</span>
+ <div class="seg" data-k="mode"><button data-v="rgb">RGB</button><button data-v="hsl">HSL (Farbton, Sättigung, Helligkeit)</button></div>
+ <span class="lbl">Runden</span>
+ <div class="seg" data-k="rounds"><button data-v="10">10</button><button data-v="20">20</button><button data-v="30">30</button><button data-v="50">50</button></div>
+ <button class="primary" id="go">Quiz starten</button>
+ <p class="foot" id="stat"></p>
+</div></section>
+
+<section id="game" class="screen" hidden>
+ <div class="top"><button class="ghost" id="back">← Setup</button><span class="sp"></span><span id="rn"></span><span>Ø <b id="avg">–</b></span></div>
+ <div class="bar"><i id="pb"></i></div>
+ <div class="prompt"><small>Flagge von</small><b id="pn"></b><span id="pk"></span></div>
+ <div class="stage" id="stage">
+  <div class="flagbox" id="flag"></div>
+  <div id="cmp" hidden><div class="seg"><button data-s="orig" class="on">Original</button><button data-s="mine">Deine Wahl</button></div></div>
+ </div>
+ <div class="ctl" id="ctl">
+  <div class="ctlhead"><div class="seg" id="modeSeg"><button data-v="rgb">RGB</button><button data-v="hsl">HSL</button></div><span class="sp"></span><div class="sw"><span id="hex">#808080</span><i id="swc"></i></div></div>
+  <div id="sl"></div>
+  <button class="primary" id="ok">Bestätigen</button>
+ </div>
+ <div class="fbx" id="fb" hidden>
+  <div class="pct" id="pct"></div>
+  <div class="pairs"><div class="pair"><i id="pm"></i><span>Deine Wahl<b id="pmh"></b></span></div><div class="pair"><i id="po"></i><span>Original<b id="poh"></b></span></div></div>
+  <button class="primary" id="nx">Weiter</button>
+ </div>
+</section>
+
+<section id="result" class="screen" hidden><div class="card">
+ <div class="eyebrow">Ergebnis</div>
+ <div class="big" id="rs"></div><p class="lead" id="rt"></p>
+ <div class="stats" id="rst"></div>
+ <div class="list" id="rl"></div>
+ <div class="rowb"><button class="primary" id="again">Nochmal</button><button class="ghost" id="tosetup">Zum Setup</button></div>
+</div></section>
+
+</div>
+<script src="flags.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

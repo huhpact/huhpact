@@ -1440,3 +1440,14 @@ input[type="range"].quiz-range::-webkit-slider-thumb:hover { transform: scale(1.
   .home-quiz-grid { grid-template-columns:1fr; }
   .home-feature-copy { padding:1.5rem; }
 }
+
+/* Karten mit eigener Illustration (statt Bild) */
+.home-thumb.art svg { position:absolute; inset:0; width:100%; height:100%; background:radial-gradient(circle at 50% 30%, var(--bg-elevated), var(--bg-subtle)); }
+.home-thumb .home-new { position:absolute; top:10px; left:10px; z-index:2; background:var(--bg-card); box-shadow:var(--shadow-xs); }
+@media (prefers-reduced-motion:no-preference) {
+  .fq-mid { animation:fqMid 5s ease-in-out infinite; }
+  @keyframes fqMid { 0%,12% { fill:#808080; } 55%,88% { fill:#ffffff; } 100% { fill:#808080; } }
+  .fq-t { animation:fqSlide 5s ease-in-out infinite; }
+  .fq-t2 { animation-delay:.15s; } .fq-t3 { animation-delay:.3s; }
+  @keyframes fqSlide { 0%,12% { transform:translateX(90px); } 55%,88% { transform:translateX(178px); } 100% { transform:translateX(90px); } }
+}

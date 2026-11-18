@@ -70,7 +70,7 @@
         <section class="home-category-block" data-category="geo">
             <div class="home-section-label"><h3>Erde &amp; Länder</h3><span class="n"></span><span class="line"></span></div>
             <div class="home-quiz-grid">
-                <a class="home-quiz-card is-feature" href="/quiz/geo-funnel/index.html" data-name="trichter funnel quiz städte karte geo neu">
+                <a class="home-quiz-card is-feature" href="/quiz/funnel/index.html" data-name="trichter funnel quiz städte karte geo neu">
                     <div class="home-feature-copy">
                         <span class="home-new">Neu</span>
                         <h4>Trichter Quiz</h4>
@@ -98,6 +98,33 @@
                     <div class="home-card-body">
                         <div class="home-card-head"><h4>Flag Quiz</h4><span class="home-card-go" aria-hidden="true">&rarr;</span></div>
                         <p>Errate Länder anhand ihrer Flaggen.</p>
+                    </div>
+                </a>
+                <a class="home-quiz-card" href="/quiz/farbquiz/index.html" data-name="flaggenfarbe farb quiz flaggen farben rgb hsl regler länder organisationen neu">
+                    <div class="home-thumb art">
+                        <span class="home-new">Neu</span>
+                        <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="fqR"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#f00"/></linearGradient>
+                                <linearGradient id="fqG"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#0c0"/></linearGradient>
+                                <linearGradient id="fqB"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#22f"/></linearGradient>
+                            </defs>
+                            <rect x="104" y="14" width="112" height="84" rx="5" fill="#fff"/>
+                            <rect x="104" y="14" width="37.3" height="84" fill="#0055a4"/>
+                            <rect class="fq-mid" x="141.3" y="14" width="37.4" height="84" fill="#808080"/>
+                            <rect x="178.7" y="14" width="37.3" height="84" fill="#ef4135"/>
+                            <rect x="104" y="14" width="112" height="84" rx="5" fill="none" stroke="rgba(127,127,127,.35)"/>
+                            <rect x="70" y="118" width="180" height="7" rx="3.5" fill="url(#fqR)"/>
+                            <rect x="70" y="138" width="180" height="7" rx="3.5" fill="url(#fqG)"/>
+                            <rect x="70" y="158" width="180" height="7" rx="3.5" fill="url(#fqB)"/>
+                            <circle class="fq-t fq-t1" cx="70" cy="121.5" r="8" fill="#fff" stroke="rgba(0,0,0,.35)"/>
+                            <circle class="fq-t fq-t2" cx="70" cy="141.5" r="8" fill="#fff" stroke="rgba(0,0,0,.35)"/>
+                            <circle class="fq-t fq-t3" cx="70" cy="161.5" r="8" fill="#fff" stroke="rgba(0,0,0,.35)"/>
+                        </svg>
+                    </div>
+                    <div class="home-card-body">
+                        <div class="home-card-head"><h4>Flaggenfarbe Quiz</h4><span class="home-card-go" aria-hidden="true">&rarr;</span></div>
+                        <p>Stelle die Originalfarbe eines Flaggenabschnitts mit drei Reglern ein.</p>
                     </div>
                 </a>
                 <a class="home-quiz-card" href="/quiz/quiz-tld-setup.html" data-name="country domain quiz tld länder endung">
@@ -302,7 +329,7 @@
         var thumb = card.querySelector('.home-thumb'), img = thumb && thumb.querySelector('img');
         if (!thumb) return;
         thumb.setAttribute('data-i', card.querySelector('h4').textContent.trim().charAt(0));
-        img.addEventListener('error', function () { thumb.classList.add('noimg'); });
+        if (img) img.addEventListener('error', function () { thumb.classList.add('noimg'); });
     });
 
     /* Einblend-Animation (gestaffelt) */
